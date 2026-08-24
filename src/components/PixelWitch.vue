@@ -1,48 +1,10 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { sparkle } from '../lib/sparkle'
+import { WITCH_PALETTE, WITCH_SPRITE } from '../data/witchSprite'
 
-/** 像素画调色板 */
-const PALETTE: Record<string, string> = {
-  K: '#2e2650', // 描边
-  H: '#6b5bd6', // 帽子
-  h: '#8d7ff0', // 帽子高光
-  G: '#f5c86e', // 金星
-  S: '#ffdcc5', // 皮肤
-  E: '#3a2e5c', // 眼睛
-  B: '#ff9fce', // 腮红
-  L: '#b3a6f7', // 头发
-  l: '#cfc5ff', // 头发高光
-  D: '#5a4bbf', // 裙子
-  W: '#fff6ec', // 领子
-  O: '#8a5a3b', // 靴子
-}
-
-const SPRITE = [
-  '...........KK.......',
-  '..........KGGK......',
-  '..........KHHK......',
-  '.........KHHHK......',
-  '........KHHHHK......',
-  '.......KHHHHHK......',
-  '.....KHHHHHHHHK.....',
-  '...KHHHHHHHHHHHHK...',
-  '..KKHHHHHHHHHHHHKK..',
-  '...KLLSSSSSSSSLLK...',
-  '...KLSSSSSSSSSSLK...',
-  '...KLSSESSSSSESLK...',
-  '...KLSSSSSSSSSSLK...',
-  '...KLSBSSSSSSBSLK...',
-  '....KSSSSKKSSSSK....',
-  '.....KWDDDDDDWK.....',
-  '....KSWDDDDDDWSK....',
-  '....KDDDDDDDDDDK....',
-  '.....KDDDDDDDDK.....',
-  '.....KDDKKKKDDK.....',
-  '.....KOOK..KOOK.....',
-  '.....KOOK..KOOK.....',
-  '.....KKKK..KKKK.....',
-]
+const PALETTE = WITCH_PALETTE
+const SPRITE = WITCH_SPRITE
 
 interface Pixel {
   x: number
@@ -84,6 +46,7 @@ const bubbleOpen = ref(false)
 const typedText = ref('')
 let typeTimer: number | null = null
 let closeTimer: number | null = null
+let chatterTimer: number | null = null
 
 function say(text: string): void {
   if (typeTimer !== null) window.clearInterval(typeTimer)
@@ -109,13 +72,17 @@ function onClick(event: MouseEvent): void {
 
 onMounted(() => {
   window.setTimeout(() => (visible.value = true), 600)
-  const greet = window.setTimeout(() => say('嗨！我是小巫女露娜，点我可以听星星的悄悄话～'), 1600)
-  window.setTimeout(() => window.clearTimeout(greet), 100)
+  window.setTimeout(() => say('嗨！我是小巫女露娜，点我可以听星星的悄悄话～'), 1600)
+  // 定时自言自语
+  chatterTimer = window.setInterval(() => {
+    if (!bubbleOpen.value) say(TIPS[Math.floor(Math.random() * TIPS.length)]!)
+  }, 42000)
 })
 
 onBeforeUnmount(() => {
   if (typeTimer !== null) window.clearInterval(typeTimer)
   if (closeTimer !== null) window.clearTimeout(closeTimer)
+  if (chatterTimer !== null) window.clearInterval(chatterTimer)
 })
 </script>
 

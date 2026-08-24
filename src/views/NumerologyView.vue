@@ -4,6 +4,7 @@ import { NUMBER_MEANINGS, PERSONAL_YEAR_MEANINGS, calculateNumerology, personalD
 import { loadJSON, saveJSON } from '../lib/storage'
 import { askAI, isAiEnabled, oracleSystemPrompt } from '../lib/ai'
 import { sparkleFromEvent } from '../lib/sparkle'
+import { sfx } from '../lib/sfx'
 
 const birthDate = ref(loadJSON<{ date?: string }>('num-profile', {}).date ?? '')
 const fullName = ref(loadJSON<{ name?: string }>('num-profile', {}).name ?? '')
@@ -32,6 +33,7 @@ function submit(e?: MouseEvent): void {
   result.value = calculateNumerology({ y, m, d }, fullName.value)
   saveJSON('num-profile', { date: birthDate.value, name: fullName.value })
   countUp(result.value.lifePath)
+  sfx.pop()
   aiText.value = null
   aiFailed.value = false
   if (e) sparkleFromEvent(e, 10)

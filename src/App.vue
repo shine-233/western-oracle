@@ -1,7 +1,14 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import PixelWitch from './components/PixelWitch.vue'
+import { isSoundOn, toggleSound } from './lib/sfx'
+
+const soundOn = ref(isSoundOn())
+
+function onToggleSound(): void {
+  soundOn.value = toggleSound()
+}
 
 let lastTrail = 0
 let trailCount = 0
@@ -71,13 +78,16 @@ onBeforeUnmount(() => {
       <RouterLink to="/numerology">灵数</RouterLink>
       <RouterLink to="/runes">符文</RouterLink>
       <RouterLink to="/settings">设置</RouterLink>
+      <button class="sound-toggle" :title="soundOn ? '关闭音效' : '开启音效'" @click="onToggleSound">
+        {{ soundOn ? '🔊' : '🔇' }}
+      </button>
     </nav>
   </header>
 
   <main>
     <RouterView v-slot="{ Component }">
-      <Transition name="page" mode="out-in">
-        <component :is="Component" />
+      <Transition name="page">
+        <component :is="Component" :key="$route.fullPath" />
       </Transition>
     </RouterView>
   </main>
@@ -89,3 +99,17 @@ onBeforeUnmount(() => {
 
   <PixelWitch />
 </template>
+
+<style scoped>
+.sound-toggle {
+  background: var(--void-2);
+  border: 2px solid rgba(179, 166, 247, 0.5);
+  border-radius: 0;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 0.95rem;
+  padding: 5px 10px;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s;
+}
+.sound-toggle:hover { transform: scale(1.12) rotate(-6deg); border-color: var(--pink); }
+</style>

@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { drawRunes, type Rune } from '../data/runes'
 import { askAI, isAiEnabled, oracleSystemPrompt } from '../lib/ai'
 import { sparkle, sparkleFromEvent } from '../lib/sparkle'
+import { sfx } from '../lib/sfx'
 
 interface DrawnRune {
   rune: Rune
@@ -25,18 +26,23 @@ function draw(e?: MouseEvent): void {
   revealedStones.value = drawn.value.map(() => false)
   aiText.value = null
   aiFailed.value = false
+  sfx.whoosh()
   if (e) sparkleFromEvent(e, 12)
 }
 
 function revealStone(i: number, e: MouseEvent): void {
   if (revealedStones.value[i]) return
   revealedStones.value[i] = true
+  sfx.ding()
   sparkle(e.clientX, e.clientY, 8)
 }
 
 function revealAll(): void {
   revealedStones.value.forEach((_, i) => {
-    setTimeout(() => (revealedStones.value[i] = true), 280 * i)
+    setTimeout(() => {
+      revealedStones.value[i] = true
+      sfx.ding()
+    }, 280 * i)
   })
 }
 

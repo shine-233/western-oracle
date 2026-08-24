@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 import { RouterLink } from 'vue-router'
 import { dailyCard, cardImageUrl } from '../data/tarot'
 import { dailyRune } from '../data/runes'
 import { moonPhase } from '../lib/astrology'
 import { loadJSON } from '../lib/storage'
 import { vTilt } from '../lib/tilt'
+
+const VoxelWitch3D = defineAsyncComponent(() => import('../components/VoxelWitch3D.vue'))
 
 const today = dailyCard()
 const rune = dailyRune()
@@ -73,6 +75,17 @@ const greeting = computed(() => {
 
   <div class="divider-star">✦ ✦ ✦</div>
 
+  <!-- 露娜的 3D 小屋 -->
+  <section class="panel voxel-panel">
+    <div class="voxel-head">
+      <h3 style="margin: 0;">露娜的 3D 小屋</h3>
+      <p class="hint" style="margin: 6px 0 0;">她从 2D 像素画被拉伸成了体素！拖拽她转圈圈，滚轮拉近看脸红。</p>
+    </div>
+    <VoxelWitch3D />
+  </section>
+
+  <div class="divider-star">✦ ✦ ✦</div>
+
   <section class="oracle-grid">
     <RouterLink v-for="m in modules" :key="m.to" :to="m.to" v-tilt="7" class="oracle-card">
       <span class="glyph">{{ m.glyph }}</span>
@@ -113,4 +126,6 @@ const greeting = computed(() => {
 .moon-emoji { font-size: 3rem; margin: 6px 0 10px; line-height: 1; }
 .luna-face { font-size: 3rem; margin: 6px 0 10px; line-height: 1; animation: floaty 4s ease-in-out infinite; }
 .mini-link { color: var(--pink-soft); }
+.voxel-panel { margin-top: 10px; }
+.voxel-head { margin-bottom: 16px; }
 </style>

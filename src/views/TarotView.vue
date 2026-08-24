@@ -4,6 +4,7 @@ import { ALL_CARDS, SPREADS, dailyCard, type SpreadDef, type TarotCard } from '.
 import { randInt, shuffle } from '../lib/random'
 import { askAI, isAiEnabled, oracleSystemPrompt } from '../lib/ai'
 import { sparkle, sparkleFromEvent } from '../lib/sparkle'
+import { sfx } from '../lib/sfx'
 import { cardImageUrl } from '../data/tarot'
 import TarotCardItem from '../components/TarotCardItem.vue'
 
@@ -17,6 +18,7 @@ const spread = ref<SpreadDef>(SPREADS[1]!)
 const question = ref('')
 const allowReversed = ref(true)
 const drawn = ref<DrawnCard[]>([])
+const detail = ref<DrawnCard | null>(null)
 const aiText = ref<string | null>(null)
 const aiLoading = ref(false)
 const aiFailed = ref(false)
@@ -35,11 +37,18 @@ function draw(e?: MouseEvent): void {
   }))
   aiText.value = null
   aiFailed.value = false
+  sfx.whoosh()
   if (e) sparkleFromEvent(e, 12)
 }
 
 function onFlip(e: MouseEvent | undefined, d: DrawnCard): void {
+  if (d.flipped) {
+    detail.value = d
+    sfx.toggle()
+    return
+  }
   d.flipped = true
+  sfx.flip()
   if (e) sparkle(e.clientX, e.clientY, 6)
 }
 
@@ -188,6 +197,34 @@ async function askAiInterpretation(): Promise<void> {
       </section>
     </template>
   </div>
+
+  <!-- 卡牌详情弹窗 -->
+  <Teleport to="body">
+    <Transition name="modal">
+      <div v-if="detail" class="modal-backdrop" @click.self="detail = null">
+        <div class="modal-panel panel bounce-in">
+          <button class="modal-close btn small ghost" @click="detail = null">✕ 关闭</button>
+          <div class="modal-body">
+            <img :src="cardImageUrl(detail.card.id)" :alt="detail.card.nameCn" :class="{ upside: detail.reversed }" />
+            <div class="modal-info">
+              <span class="dc-label">{{ detail.card.rankLabel }} · {{ detail.card.name }}</span>
+              <h3 style="margin: 6px 0;">{{ detail.card.nameCn }}{{ detail.reversed ? ' · 逆位' : '' }}</h3>
+              <p class="hint">关键词：{{ detail.card.keywords.join(' / ') }}</p>
+              <div class="modal-sec">
+                <strong>正位</strong>
+                <p class="reading">{{ detail.card.upright }}</p>
+              </div>
+              <div class="modal-sec">
+                <strong>逆位</strong>
+                <p class="reading">{{ detail.card.reversed }}</p>
+              </div>
+              <p class="hint" style="font-style: italic;">小提示：再点一下可以收起弹窗～</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Transition>
+  </Teleport>
 </template>
 
 <style scoped>
@@ -263,4 +300,45 @@ async function askAiInterpretation(): Promise<void> {
   .celtic-cell { width: 50%; }
   .crossing-card { transform: rotate(90deg) scale(0.8); }
 }
+
+/* ---------- 详情弹窗 ---------- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(10, 8, 30, 0.78);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-panel {
+  max-width: 620px;
+  width: 100%;
+  max-height: 86vh;
+  overflow: auto;
+  position: relative;
+  background: var(--void-1);
+}
+.modal-close { position: absolute; top: 14px; right: 14px; }
+.modal-body { display: flex; gap: 22px; flex-wrap: wrap; align-items: flex-start; }
+.modal-body > img {
+  width: 190px;
+  border: 3px solid var(--gold);
+  filter: drop-shadow(5px 5px 0 rgba(10, 8, 30, 0.6));
+}
+.modal-body > img.upside { transform: rotate(180deg); }
+.modal-info { flex: 1 1 260px; }
+.modal-sec {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: rgba(13, 11, 32, 0.6);
+  border-left: 3px solid var(--pink);
+}
+.modal-sec strong { color: var(--gold-bright); font-family: var(--cute); font-weight: 400; }
+.modal-enter-active { transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.modal-leave-active { transition: all 0.18s ease; }
+.modal-enter-from { opacity: 0; }
+.modal-enter-from .modal-panel { transform: scale(0.85) translateY(20px); }
+.modal-leave-to { opacity: 0; }
 </style>

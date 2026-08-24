@@ -265,6 +265,6 @@ export function dailyCard(date = new Date()): { card: TarotCard; reversed: boole
   let h = (key ^ 0x9e3779b9) >>> 0
   h = Math.imul(h ^ (h >>> 16), 0x85ebca6b) >>> 0
   h = Math.imul(h ^ (h >>> 13), 0xc2b2ae35) >>> 0
-  const card = ALL_CARDS[(h ^ (h >>> 16)) % ALL_CARDS.length]!
-  return { card, reversed: ((h >>> 8) & 1) === 0 }
+  const idx = ((h ^ (h >>> 16)) >>> 0) % ALL_CARDS.length
+  return { card: ALL_CARDS[idx]!, reversed: ((h >>> 8) & 1) === 0 }
 }

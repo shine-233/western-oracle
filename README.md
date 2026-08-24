@@ -18,12 +18,15 @@
 
 - 每个模块都内置**本地规则文案解读**；可选配置任意 OpenAI 兼容接口获得 **AI 个性化解读**（密钥仅存 localStorage，浏览器直连服务商）
 - 首页每日板块：每日一牌（按日期全局确定）、每日符文、实时月相
-- 互动彩蛋：像素女巫打字机对话、翻牌星屑爆裂、鼠标星星拖尾、随机流星、卡片 3D 跟随倾斜、符文石逐颗揭晓、灵数跳字滚动、星盘轮缓旋装饰环（尊重 `prefers-reduced-motion`）
+- 🧊 **露娜的 3D 小屋**：Three.js 体素版露娜，可拖拽旋转、滚轮缩放、闲置自转、星尘环绕
+- 🔊 **8-bit 音效**：WebAudio 实时合成（翻牌/洗牌/揭晓/点击），导航栏一键开关
+- 互动彩蛋：像素女巫打字机对话（还会定时自言自语）、翻牌星屑爆裂、鼠标星星拖尾、随机流星、卡片 3D 跟随倾斜、点已翻开的牌看详情弹窗、行星落座点击展开详解、符文石逐颗揭晓、灵数跳字滚动、星盘轮缓旋装饰环（尊重 `prefers-reduced-motion`）
 
 ## 技术栈
 
 - Vue 3 + TypeScript（strict）+ Vue Router
 - Vite 构建
+- [Three.js](https://threejs.org/) —— 首页体素 3D 吉祥物（按需懒加载）
 - [celestine](https://github.com/Anonyfox/celestine) —— 纯 JS 星历计算（经 NASA/JPL/Swiss Ephemeris 验证）
 - 字体：[ZCOOL KuaiLe](https://fonts.google.com/specimen/ZCOOL+KuaiLe)（站酷快乐体，OFL）+ Press Start 2P（OFL），经 fontsource 自托管
 - 随机数基于 `crypto.getRandomValues`

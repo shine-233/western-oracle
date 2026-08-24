@@ -4,6 +4,8 @@ import {
   CITY_PRESETS,
   ELEMENT_CN,
   MODALITY_CN,
+  PLANET_CN,
+  PLANET_MEANINGS,
   TIMEZONES,
   ZODIAC_SIGNS,
   computeNatalChart,
@@ -12,12 +14,8 @@ import {
 } from '../lib/astrology'
 import { loadJSON, saveJSON } from '../lib/storage'
 import { askAI, isAiEnabled, oracleSystemPrompt } from '../lib/ai'
+import { sfx } from '../lib/sfx'
 import AstroWheel from '../components/AstroWheel.vue'
-
-const PLANET_CN: Record<string, string> = {
-  Sun: '太阳', Moon: '月亮', Mercury: '水星', Venus: '金星', Mars: '火星',
-  Jupiter: '木星', Saturn: '土星', Uranus: '天王星', Neptune: '海王星', Pluto: '冥王星',
-}
 
 interface ProfileForm {
   date: string
@@ -40,9 +38,15 @@ const form = ref<ProfileForm>({
 
 const chart = ref<NatalChart | null>(null)
 const errorText = ref('')
+const expandedPlanet = ref<string | null>(null)
 const aiText = ref<string | null>(null)
 const aiLoading = ref(false)
 const aiFailed = ref(false)
+
+function togglePlanet(name: string): void {
+  expandedPlanet.value = expandedPlanet.value === name ? null : name
+  sfx.blip()
+}
 
 function onCityChange(): void {
   const preset = CITY_PRESETS[form.value.cityIndex]
@@ -172,15 +176,20 @@ async function askAiInterpretation(): Promise<void> {
           <li>元素分布：{{ elementSummary }}</li>
           <li>三大模式：{{ modalitySummary }}</li>
         </ul>
-        <h3>行星落座</h3>
+        <h3>行星落座<span class="hint" style="font-size: 0.75rem;">（点击行星看详解）</span></h3>
         <table class="planet-table">
           <tbody>
-            <tr v-for="p in chart.planets" :key="p.name">
-              <td class="pg">{{ p.glyph }}</td>
-              <td>{{ PLANET_CN[p.name] }}<span v-if="p.retro" class="retro">℞</span></td>
-              <td>{{ p.signCn }} {{ p.degText }}</td>
-              <td class="dim">第{{ p.house }}宫</td>
-            </tr>
+            <template v-for="p in chart.planets" :key="p.name">
+              <tr class="planet-row" @click="togglePlanet(p.name)">
+                <td class="pg">{{ p.glyph }}</td>
+                <td>{{ PLANET_CN[p.name] }}<span v-if="p.retro" class="retro">℞</span><span class="chev">{{ expandedPlanet === p.name ? '▾' : '▸' }}</span></td>
+                <td>{{ p.signCn }} {{ p.degText }}</td>
+                <td class="dim">第{{ p.house }}宫</td>
+              </tr>
+              <tr v-if="expandedPlanet === p.name">
+                <td colspan="4" class="planet-detail bounce-in">{{ PLANET_MEANINGS[p.name] }}</td>
+              </tr>
+            </template>
           </tbody>
         </table>
         <h3>主要相位（{{ chart.aspects.length }}）</h3>
@@ -225,6 +234,15 @@ async function askAiInterpretation(): Promise<void> {
 .fact-list { margin: 0; padding-left: 20px; line-height: 2; }
 .planet-table { width: 100%; border-collapse: collapse; }
 .planet-table td { padding: 6px 8px; border-bottom: 1px solid rgba(169, 158, 240, 0.15); font-size: 0.95rem; }
+.planet-row { cursor: pointer; transition: background 0.2s; }
+.planet-row:hover { background: rgba(124, 107, 214, 0.18); }
+.planet-row .chev { color: var(--ink-dim); font-size: 0.7rem; margin-left: 6px; }
+.planet-detail {
+  color: var(--lavender-soft);
+  font-size: 0.85rem;
+  line-height: 1.8;
+  background: rgba(124, 107, 214, 0.12);
+}
 .planet-table .pg { font-size: 1.2rem; color: var(--gold); width: 34px; }
 .retro { color: var(--danger); font-size: 0.75rem; margin-left: 4px; }
 .dim { color: var(--ink-dim); font-size: 0.85rem; text-align: right; }
