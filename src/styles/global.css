@@ -1,0 +1,249 @@
+:root {
+  --void-0: #0b0a18;
+  --void-1: #12102a;
+  --void-2: #1a1738;
+  --void-3: #242049;
+  --gold: #d4af6a;
+  --gold-bright: #f0d49a;
+  --violet: #7c6bd6;
+  --violet-soft: #a99ef0;
+  --ink: #e8e4f5;
+  --ink-dim: #a49fc4;
+  --danger: #e07a7a;
+  --serif: 'Palatino Linotype', Palatino, 'Songti SC', STSong, 'Noto Serif SC', Georgia, serif;
+  --sans: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { color-scheme: dark; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--sans);
+  color: var(--ink);
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(124, 107, 214, 0.18), transparent),
+    radial-gradient(1.5px 1.5px at 12% 22%, rgba(240, 212, 154, 0.9), transparent),
+    radial-gradient(1px 1px at 34% 64%, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(1.5px 1.5px at 58% 14%, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1px 1px at 76% 42%, rgba(240, 212, 154, 0.7), transparent),
+    radial-gradient(1.5px 1.5px at 88% 78%, rgba(255, 255, 255, 0.45), transparent),
+    radial-gradient(1px 1px at 22% 86%, rgba(169, 158, 240, 0.7), transparent),
+    radial-gradient(1.5px 1.5px at 66% 92%, rgba(255, 255, 255, 0.35), transparent),
+    linear-gradient(180deg, var(--void-1) 0%, var(--void-0) 100%);
+  background-attachment: fixed;
+}
+
+h1, h2, h3, .display {
+  font-family: var(--serif);
+  color: var(--gold-bright);
+  letter-spacing: 0.06em;
+}
+
+#app {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+}
+
+/* ---------- 导航 ---------- */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 18px 0 14px;
+  border-bottom: 1px solid rgba(212, 175, 106, 0.25);
+}
+
+.brand {
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  color: var(--gold-bright);
+  text-decoration: none;
+  letter-spacing: 0.15em;
+}
+.brand .en { color: var(--ink-dim); font-size: 0.85rem; letter-spacing: 0.3em; margin-left: 8px; }
+
+.site-nav { display: flex; gap: 4px; flex-wrap: wrap; }
+.site-nav a {
+  color: var(--ink-dim);
+  text-decoration: none;
+  padding: 7px 13px;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+.site-nav a:hover { color: var(--gold-bright); }
+.site-nav a.router-link-active {
+  color: var(--gold-bright);
+  background: rgba(212, 175, 106, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(212, 175, 106, 0.4);
+}
+
+/* ---------- 卡片容器 ---------- */
+.panel {
+  background: linear-gradient(160deg, var(--void-2), var(--void-1));
+  border: 1px solid rgba(212, 175, 106, 0.28);
+  border-radius: 14px;
+  padding: 26px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+}
+
+.divider-star {
+  text-align: center;
+  color: var(--gold);
+  opacity: 0.75;
+  letter-spacing: 1.2em;
+  text-indent: 1.2em;
+  margin: 30px 0;
+  user-select: none;
+}
+
+/* ---------- 表单 ---------- */
+label.field { display: block; margin: 14px 0; }
+label.field > span {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--ink-dim);
+  margin-bottom: 6px;
+  letter-spacing: 0.08em;
+}
+
+input[type='text'], input[type='password'], input[type='date'], input[type='time'],
+input[type='number'], select, textarea {
+  width: 100%;
+  background: var(--void-0);
+  border: 1px solid rgba(169, 158, 240, 0.35);
+  border-radius: 8px;
+  color: var(--ink);
+  padding: 10px 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--gold); }
+select option { background: var(--void-1); }
+
+.form-row { display: flex; gap: 14px; flex-wrap: wrap; }
+.form-row > label.field { flex: 1 1 180px; }
+
+/* ---------- 按钮 ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  font-family: var(--serif);
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  color: var(--void-0);
+  background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+  border: none;
+  border-radius: 999px;
+  padding: 11px 28px;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s;
+  box-shadow: 0 4px 18px rgba(212, 175, 106, 0.25);
+}
+.btn:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.06); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.btn.ghost {
+  background: transparent;
+  color: var(--gold);
+  box-shadow: inset 0 0 0 1px rgba(212, 175, 106, 0.55);
+}
+.btn.small { padding: 6px 16px; font-size: 0.85rem; }
+
+.toggle-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink-dim);
+  font-size: 0.9rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* ---------- 解读文本 ---------- */
+.reading {
+  line-height: 1.9;
+  color: var(--ink);
+  white-space: pre-wrap;
+}
+.reading.ai {
+  border-left: 3px solid var(--violet);
+  padding-left: 16px;
+}
+.tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(169, 158, 240, 0.5);
+  color: var(--violet-soft);
+  margin-left: 10px;
+  vertical-align: middle;
+}
+.hint { color: var(--ink-dim); font-size: 0.85rem; line-height: 1.7; }
+.error-text { color: var(--danger); font-size: 0.9rem; }
+
+/* ---------- 首页模块卡 ---------- */
+.oracle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 18px;
+  margin-top: 26px;
+}
+.oracle-card {
+  display: block;
+  text-decoration: none;
+  background: linear-gradient(165deg, var(--void-2), var(--void-1));
+  border: 1px solid rgba(212, 175, 106, 0.3);
+  border-radius: 14px;
+  padding: 28px 22px;
+  transition: transform 0.2s ease, box-shadow 0.25s ease, border-color 0.2s;
+}
+.oracle-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5), 0 0 24px rgba(212, 175, 106, 0.15);
+}
+.oracle-card .glyph { font-size: 2.4rem; display: block; margin-bottom: 12px; }
+.oracle-card h3 { margin: 0 0 8px; font-size: 1.15rem; }
+.oracle-card p { margin: 0; color: var(--ink-dim); font-size: 0.88rem; line-height: 1.7; }
+
+.hero {
+  text-align: center;
+  padding: 54px 0 30px;
+}
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  margin: 0 0 14px;
+  background: linear-gradient(120deg, var(--gold-bright), #fff2d9 45%, var(--gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero .sub { color: var(--ink-dim); letter-spacing: 0.25em; font-size: 0.95rem; }
+
+footer.site-footer {
+  margin-top: 70px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(212, 175, 106, 0.2);
+  color: var(--ink-dim);
+  font-size: 0.8rem;
+  text-align: center;
+  line-height: 1.8;
+}
+
+@media (max-width: 600px) {
+  .panel { padding: 18px; }
+  #app { padding: 0 14px 40px; }
+}
