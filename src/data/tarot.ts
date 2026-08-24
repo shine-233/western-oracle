@@ -104,13 +104,15 @@ function buildMinor(spec: MinorSpec): TarotCard[] {
   const cards: TarotCard[] = []
   const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10']
   spec.numbers.forEach(([en, cn, kw, up, rev], i) => {
+    const rank = ranks[i]!
+    const idPart = rank === 'A' ? 'ace' : rank
     cards.push({
-      id: `${spec.suit}-${ranks[i]!.toLowerCase()}`,
+      id: `${spec.suit}-${idPart}`,
       name: `${en} of ${spec.suit[0]!.toUpperCase()}${spec.suit.slice(1)}`,
       nameCn: `${spec.suitCn}${cn}`,
       arcana: 'minor',
       suit: spec.suit,
-      rankLabel: ranks[i]!,
+      rankLabel: rank,
       keywords: [...kw],
       upright: up,
       reversed: rev,
@@ -232,11 +234,9 @@ export function getCard(id: string): TarotCard | undefined {
   return ALL_CARDS.find((c) => c.id === id)
 }
 
-export const SUIT_CN: Record<Suit, string> = {
-  wands: '权杖',
-  cups: '圣杯',
-  swords: '宝剑',
-  pentacles: '星币',
+/** 1909 公版 RWS 扫描图（public/cards/ 下） */
+export function cardImageUrl(id: string): string {
+  return `${import.meta.env.BASE_URL}cards/${id}.jpg`
 }
 
 /** 牌阵定义 */
@@ -251,4 +251,20 @@ export const SPREADS: SpreadDef[] = [
   { id: 'single', name: '单张指引', desc: '每日一张，直指当下核心', positions: ['今日指引'] },
   { id: 'three', name: '三张牌阵', desc: '过去 · 现在 · 未来', positions: ['过去', '现在', '未来'] },
   { id: 'five', name: '十字五张', desc: '现状·阻碍·助力·建议·走向', positions: ['现状', '阻碍', '助力', '建议', '走向'] },
+  {
+    id: 'celtic',
+    name: '凯尔特十字',
+    desc: '经典十张大阵，全面剖析一件事',
+    positions: ['现状', '挑战', '根基', '过去', '冠冕', '近期未来', '自我', '环境', '希望与恐惧', '结果'],
+  },
 ]
+
+/** 按日期确定的每日一牌（同一天所有人看到同一张） */
+export function dailyCard(date = new Date()): { card: TarotCard; reversed: boolean } {
+  const key = date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate()
+  let h = (key ^ 0x9e3779b9) >>> 0
+  h = Math.imul(h ^ (h >>> 16), 0x85ebca6b) >>> 0
+  h = Math.imul(h ^ (h >>> 13), 0xc2b2ae35) >>> 0
+  const card = ALL_CARDS[(h ^ (h >>> 16)) % ALL_CARDS.length]!
+  return { card, reversed: ((h >>> 8) & 1) === 0 }
+}

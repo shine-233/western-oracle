@@ -35,7 +35,8 @@ async function test(): Promise<void> {
 </script>
 
 <template>
-  <h2>设置 · AI 解读</h2>
+  <div class="page-root">
+    <h2>设置 · AI 解读</h2>
   <p class="hint">
     本站默认使用内置的本地规则文案进行解读。若想获得更个性化的 AI 解读，可配置任意 OpenAI 兼容接口
     （OpenAI、DeepSeek、Moonshot、本地 Ollama 等）。密钥只保存在你浏览器的 localStorage 中，
@@ -75,4 +76,5 @@ async function test(): Promise<void> {
       你的出生信息与抽牌历史仅存在于本机。
     </p>
   </section>
+  </div>
 </template>

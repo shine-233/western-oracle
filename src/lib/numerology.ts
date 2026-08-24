@@ -98,3 +98,34 @@ export const NUMBER_MEANINGS: Record<number, NumberMeaning> = {
   22: { title: '筑梦师（大师数）', essence: '宏图 · 落地 · 影响力', detail: '22 是高配的 4：有能力把宏大愿景砌成真实建筑。课题是承受，大梦想需要大心脏，允许自己慢慢盖。' },
   33: { title: '引路人（大师数）', essence: '大爱 · 教导 · 疗愈', detail: '33 是高配的 6：以近乎圣者的慈悲服务众人。课题是自渡，照亮别人之前请先点亮自己。' },
 }
+
+/* ---------- 流年 / 流月 / 流日 ---------- */
+
+/** 流年数 = 出生月 + 出生日 + 目标年份，保留大师数 */
+export function personalYear(birthMonth: number, birthDay: number, year: number): number {
+  const sum = digitSum(birthMonth) + digitSum(birthDay) + digitSum(year)
+  return reduceKeepMasters(String(sum))
+}
+
+/** 流月数 = 流年数 + 当月 */
+export function personalMonth(pYear: number, month: number): number {
+  return digitSum(digitSum(pYear) + digitSum(month))
+}
+
+/** 流日数 = 流月数 + 当日 */
+export function personalDay(pMonth: number, day: number): number {
+  return digitSum(digitSum(pMonth) + digitSum(day))
+}
+
+/** 流年主题（1-9） */
+export const PERSONAL_YEAR_MEANINGS: Record<number, string> = {
+  1: '播种年 —— 万物重启，适合开新局、立新志。',
+  2: '扎根年 —— 慢就是快，合作与耐心是关键词。',
+  3: '绽放年 —— 表达、社交与创造力的高光时刻。',
+  4: '筑基年 —— 修房子、修身体、修规矩，务实为上。',
+  5: '变奏年 —— 拥抱变化，旅行与新鲜事在路上。',
+  6: '归巢年 —— 家庭与关系升温，责任里藏着甜。',
+  7: '深潜年 —— 学习研究的好年份，答案向内求。',
+  8: '丰收年 —— 事业与财务的收获季，大胆收获。',
+  9: '谢幕年 —— 总结、感恩、放手，给下个九年腾地方。',
+}

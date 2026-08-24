@@ -56,3 +56,12 @@ export function drawRunes(count: number, allowReversed: boolean): Array<{ rune: 
   }
   return out
 }
+
+/** 按日期确定的每日一符文 */
+export function dailyRune(date = new Date()): { rune: Rune; reversed: boolean } {
+  const key = date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate()
+  let h = (key ^ 0x85ebca6b) >>> 0
+  h = Math.imul(h ^ (h >>> 15), 0x2545f491) >>> 0
+  h = (h ^ (h >>> 13)) >>> 0
+  return { rune: RUNES[h % RUNES.length]!, reversed: ((h >>> 7) & 1) === 1 }
+}

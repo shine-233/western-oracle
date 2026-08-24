@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { NUMBER_MEANINGS, calculateNumerology, type NumerologyResult } from '../lib/numerology'
+import { NUMBER_MEANINGS, PERSONAL_YEAR_MEANINGS, calculateNumerology, personalDay, personalMonth, personalYear, type NumerologyResult } from '../lib/numerology'
 import { loadJSON, saveJSON } from '../lib/storage'
 import { askAI, isAiEnabled, oracleSystemPrompt } from '../lib/ai'
 
@@ -49,6 +49,20 @@ function hasName(): boolean {
   return result.value?.expression !== null
 }
 
+const todayNumbers = computed(() => {
+  if (!result.value) return null
+  const now = new Date()
+  const [y, m, d] = birthDate.value.split('-').map(Number)
+  if (!y || !m || !d) return null
+  const py = personalYear(m, d, now.getFullYear())
+  return {
+    year: py,
+    month: personalMonth(py, now.getMonth() + 1),
+    day: personalDay(personalMonth(py, now.getMonth() + 1), now.getDate()),
+    yearMeaning: PERSONAL_YEAR_MEANINGS[py] ?? '',
+  }
+})
+
 async function askAiInterpretation(): Promise<void> {
   if (!result.value || !isAiEnabled() || aiLoading.value) return
   aiLoading.value = true
@@ -70,7 +84,8 @@ async function askAiInterpretation(): Promise<void> {
 </script>
 
 <template>
-  <h2>生命灵数</h2>
+  <div class="page-root">
+    <h2>生命灵数</h2>
   <p class="hint">毕达哥拉斯体系：数字是宇宙的语言。输入生日即可开始；填写英文或拼音名可解锁姓名相关数字。</p>
 
   <section class="panel" style="margin-top: 18px;">
@@ -104,6 +119,16 @@ async function askAiInterpretation(): Promise<void> {
 
     <p v-if="!hasName()" class="hint" style="text-align: center;">提示：表达数、灵魂愿望数与人格数需要英文字母参与计算。</p>
 
+    <section v-if="todayNumbers" class="panel" style="margin-top: 18px;">
+      <h3 style="margin-top: 0;">今日流日<span class="tag">PERSONAL DAY</span></h3>
+      <div class="pday-row">
+        <div class="pday-box"><small>流年</small><strong>{{ todayNumbers.year }}</strong></div>
+        <div class="pday-box"><small>流月</small><strong>{{ todayNumbers.month }}</strong></div>
+        <div class="pday-box"><small>流日</small><strong>{{ todayNumbers.day }}</strong></div>
+        <p class="hint" style="flex: 1 1 200px; margin: 0;">{{ todayNumbers.yearMeaning }}</p>
+      </div>
+    </section>
+
     <section class="panel reading-panel" style="margin-top: 18px;">
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <h3 style="margin: 0;">AI 灵数解读</h3>
@@ -116,6 +141,7 @@ async function askAiInterpretation(): Promise<void> {
       <p v-else-if="!isAiEnabled()" class="hint" style="margin-bottom: 0;">在「设置」中配置 OpenAI 兼容接口的 API Key 即可启用 AI 解读。</p>
     </section>
   </template>
+  </div>
 </template>
 
 <style scoped>
@@ -138,4 +164,18 @@ async function askAiInterpretation(): Promise<void> {
   margin-top: 16px;
 }
 .reading-panel { margin-top: 26px; }
+.pday-row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+.pday-box {
+  min-width: 86px;
+  text-align: center;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: rgba(13, 11, 32, 0.7);
+  border: 2px solid rgba(255, 159, 206, 0.35);
+  animation: floaty 4.5s ease-in-out infinite;
+}
+.pday-box:nth-child(2) { animation-delay: 0.6s; border-color: rgba(125, 232, 195, 0.4); }
+.pday-box:nth-child(3) { animation-delay: 1.2s; border-color: rgba(245, 200, 110, 0.45); }
+.pday-box small { display: block; color: var(--ink-dim); font-size: 0.75rem; letter-spacing: 0.2em; margin-bottom: 4px; }
+.pday-box strong { font-family: var(--cute); font-size: 1.9rem; color: var(--gold-bright); font-weight: 400; }
 </style>

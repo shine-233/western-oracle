@@ -128,7 +128,8 @@ async function askAiInterpretation(): Promise<void> {
 </script>
 
 <template>
-  <h2>西洋占星 · 本命盘</h2>
+  <div class="page-root">
+    <h2>西洋占星 · 本命盘</h2>
   <p class="hint">输入出生年月日、时间（尽量精确到分钟，影响上升星座）与出生地坐标，全部计算在你的浏览器内完成。</p>
 
   <section class="panel" style="margin-top: 18px;">
@@ -208,6 +209,7 @@ async function askAiInterpretation(): Promise<void> {
       </p>
     </section>
   </template>
+  </div>
 </template>
 
 <style scoped>

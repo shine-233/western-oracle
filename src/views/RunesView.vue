@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { drawRunes, type Rune } from '../data/runes'
 import { askAI, isAiEnabled, oracleSystemPrompt } from '../lib/ai'
+import { sparkleFromEvent } from '../lib/sparkle'
 
 interface DrawnRune {
   rune: Rune
@@ -17,11 +18,12 @@ const aiText = ref<string | null>(null)
 const aiLoading = ref(false)
 const aiFailed = ref(false)
 
-function draw(): void {
+function draw(e?: MouseEvent): void {
   drawn.value = drawRunes(count.value, allowReversed.value)
   revealed.value = false
   aiText.value = null
   aiFailed.value = false
+  if (e) sparkleFromEvent(e, 12)
   setTimeout(() => (revealed.value = true), 60)
 }
 
@@ -52,7 +54,8 @@ async function askAiInterpretation(): Promise<void> {
 </script>
 
 <template>
-  <h2>卢恩符文占卜</h2>
+  <div class="page-root">
+    <h2>卢恩符文占卜</h2>
   <p class="hint">古弗萨克（Elder Futhark）是北欧最古老的符文体系。静心默想问题，再从智慧之袋中抽取符文石。</p>
 
   <section class="panel" style="margin-top: 18px;">
@@ -71,7 +74,7 @@ async function askAiInterpretation(): Promise<void> {
     </div>
     <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
       <label class="toggle-row"><input v-model="allowReversed" type="checkbox" /> 启用倒转</label>
-      <button class="btn" @click="draw">探入符文袋 · 抽 {{ count }} 颗</button>
+      <button class="btn" @click="draw($event)">探入符文袋 · 抽 {{ count }} 颗</button>
     </div>
   </section>
 
@@ -103,6 +106,7 @@ async function askAiInterpretation(): Promise<void> {
       <p v-else-if="!isAiEnabled()" class="hint" style="margin-bottom: 0;">在「设置」中配置 OpenAI 兼容接口的 API Key 即可启用 AI 解读。</p>
     </section>
   </template>
+  </div>
 </template>
 
 <style scoped>

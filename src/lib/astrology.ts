@@ -1,4 +1,4 @@
-import { calculateChart } from 'celestine'
+import { calculateChart, getMoonPosition, getSunPosition, toJulianDate } from 'celestine'
 
 export const ZODIAC_SIGNS = [
   { en: 'Aries', cn: '白羊座', glyph: '♈' },
@@ -26,6 +26,11 @@ export const MODALITY_CN: Record<string, string> = {
   cardinal: '开创',
   fixed: '固定',
   mutable: '变动',
+}
+
+export const PLANET_CN: Record<string, string> = {
+  Sun: '太阳', Moon: '月亮', Mercury: '水星', Venus: '金星', Mars: '火星',
+  Jupiter: '木星', Saturn: '土星', Uranus: '天王星', Neptune: '海王星', Pluto: '冥王星',
 }
 
 const PLANET_GLYPHS: Record<string, string> = {
@@ -169,3 +174,97 @@ export const CITY_PRESETS: Array<{ city: string; lat: number; lng: number }> = [
   { city: '洛杉矶', lat: 34.0522, lng: -118.2437 },
   { city: '悉尼', lat: -33.8688, lng: 151.2093 },
 ]
+
+/* ---------- 合盘 / 行运共用：两组星体的交叉相位 ---------- */
+
+const CROSS_ORBS: Record<string, number> = {
+  conjunction: 8,
+  opposition: 6,
+  trine: 6,
+  square: 6,
+  sextile: 4,
+}
+
+const ASPECT_ANGLES: Record<string, number> = {
+  conjunction: 0,
+  sextile: 60,
+  square: 90,
+  trine: 120,
+  opposition: 180,
+}
+
+export const ASPECT_CN: Record<string, string> = {
+  conjunction: '合相',
+  sextile: '六合',
+  square: '刑相',
+  trine: '拱相',
+  opposition: '冲相',
+}
+
+export interface CrossAspect {
+  body1: string
+  body2: string
+  type: string
+  /** 与精确相位的偏差（度） */
+  orb: number
+}
+
+/**
+ * 计算 A 组星体与 B 组星体之间的主要相位（合盘/行运）。
+ * 返回按 orb（紧密程度）升序排列。
+ */
+export function crossAspects(a: ChartPlanet[], b: ChartPlanet[]): CrossAspect[] {
+  const out: CrossAspect[] = []
+  for (const p1 of a) {
+    for (const p2 of b) {
+      let sep = Math.abs(p1.lon - p2.lon) % 360
+      if (sep > 180) sep = 360 - sep
+      for (const [type, angle] of Object.entries(ASPECT_ANGLES)) {
+        const orb = Math.abs(sep - angle)
+        if (orb <= CROSS_ORBS[type]!) {
+          out.push({ body1: p1.name, body2: p2.name, type, orb: Math.round(orb * 100) / 100 })
+          break
+        }
+      }
+    }
+  }
+  return out.sort((x, y) => x.orb - y.orb)
+}
+
+/* ---------- 月相 ---------- */
+
+export interface MoonPhaseInfo {
+  /** 0-7：新月→蛾眉月→上弦→盈凸→满月→亏凸→下弦→残月 */
+  index: number
+  name: string
+  emoji: string
+  desc: string
+}
+
+const PHASES: Array<{ name: string; emoji: string; desc: string }> = [
+  { name: '新月', emoji: '🌑', desc: '适合播种愿望、开启新计划的日子。' },
+  { name: '蛾眉月', emoji: '🌒', desc: '行动力萌芽，迈出第一步吧。' },
+  { name: '上弦月', emoji: '🌓', desc: '遇到阻力的考验期，坚持就是胜利。' },
+  { name: '盈凸月', emoji: '🌔', desc: '成果渐渐丰满，调整细节冲刺。' },
+  { name: '满月', emoji: '🌕', desc: '能量顶点，适合庆祝、感恩与释放。' },
+  { name: '亏凸月', emoji: '🌖', desc: '开始做减法，把收获消化成智慧。' },
+  { name: '下弦月', emoji: '🌗', desc: '断舍离的好时机，放下不再需要的。' },
+  { name: '残月', emoji: '🌘', desc: '静养休整，为新周期积蓄力量。' },
+]
+
+/** 计算给定时刻的月相（默认当前） */
+export function moonPhase(date = new Date()): MoonPhaseInfo {
+  const jd = toJulianDate({
+    year: date.getFullYear(),
+    month: date.getMonth() + 1,
+    day: date.getDate(),
+    hour: date.getHours(),
+    minute: date.getMinutes(),
+    second: 0,
+  })
+  const sun = getSunPosition(jd)
+  const moon = getMoonPosition(jd)
+  const elong = (((moon.longitude - sun.longitude) % 360) + 360) % 360
+  const index = Math.floor(elong / 45) % 8
+  return { index, ...PHASES[index]! }
+}
