@@ -152,7 +152,12 @@ async function askAiInterpretation(): Promise<void> {
   <!-- 普通牌阵布局 -->
   <section v-if="drawn.length && !isCeltic" style="margin-top: 34px;">
     <div class="tarot-row">
-      <div v-for="(d, i) in drawn" :key="d.card.id" class="tarot-slot">
+      <div
+        v-for="(d, i) in drawn"
+        :key="d.card.id"
+        class="tarot-slot deal-in"
+        :style="{ animationDelay: `${i * 90}ms` }"
+      >
         <span class="pos-label">{{ spread.positions[i] }}</span>
         <TarotCardItem :card="d.card" :reversed="d.reversed" :revealed="d.flipped" @flip="onFlip($event, d)" />
       </div>
@@ -202,6 +207,11 @@ async function askAiInterpretation(): Promise<void> {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   gap: 16px;
+}
+.deal-in { animation: deal-in 0.55s cubic-bezier(0.34, 1.4, 0.64, 1) both; }
+@keyframes deal-in {
+  0% { opacity: 0; transform: translateY(46px) rotate(9deg) scale(0.85); }
+  100% { opacity: 1; transform: none; }
 }
 .pos-label {
   display: block;

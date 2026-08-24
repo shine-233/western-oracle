@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { TarotCard } from '../data/tarot'
 import { cardImageUrl } from '../data/tarot'
+import { vTilt } from '../lib/tilt'
 
 defineProps<{
   card: TarotCard
@@ -12,7 +13,7 @@ defineEmits<{ flip: [e: MouseEvent] }>()
 </script>
 
 <template>
-  <div class="tci-wrap" :class="{ revealed }" @click="$emit('flip', $event)">
+  <div v-tilt="12" class="tci-wrap" :class="{ revealed }" @click="$emit('flip', $event)">
     <div class="tci-inner" :class="{ flipped: revealed, rev: reversed }">
       <!-- 牌背 -->
       <div class="tci-face tci-back">
@@ -70,8 +71,8 @@ defineEmits<{ flip: [e: MouseEvent] }>()
     radial-gradient(circle at 50% 42%, rgba(255, 196, 224, 0.28), transparent 55%),
     radial-gradient(circle at 50% 58%, rgba(245, 200, 110, 0.2), transparent 50%),
     repeating-linear-gradient(45deg, #221d4e 0 8px, #191542 8px 16px);
-  border: 2px solid rgba(245, 200, 110, 0.55);
-  box-shadow: inset 0 0 0 5px #151232, inset 0 0 0 7px rgba(255, 159, 206, 0.35);
+  border: 3px solid #2e2650;
+  box-shadow: inset 0 0 0 3px #151232, inset 0 0 0 5px rgba(255, 159, 206, 0.5);
   transition: box-shadow 0.3s;
 }
 .tci-wrap:hover .tci-back {
@@ -103,8 +104,15 @@ defineEmits<{ flip: [e: MouseEvent] }>()
 .tci-front {
   transform: rotateY(180deg);
   background: #efe6d0;
-  border: 2px solid var(--gold);
+  border: 3px solid #2e2650;
   padding: 0;
+}
+.tci-front::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 2px solid rgba(245, 200, 110, 0.85);
+  pointer-events: none;
 }
 .tci-inner.rev .tci-front { transform: rotateY(180deg) rotate(180deg); }
 .tci-img {

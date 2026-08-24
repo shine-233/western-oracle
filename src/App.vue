@@ -33,11 +33,30 @@ onMounted(() => {
   if (fine && !reduced) {
     window.addEventListener('mousemove', onMouseMove, { passive: true })
   }
+  if (!reduced) scheduleShootingStar()
 })
+
+/** 随机流星 */
+let starTimer: number | null = null
+function scheduleShootingStar(): void {
+  starTimer = window.setTimeout(() => {
+    spawnShootingStar()
+    scheduleShootingStar()
+  }, 7000 + Math.random() * 8000)
+}
+function spawnShootingStar(): void {
+  const el = document.createElement('span')
+  el.className = 'shooting-star'
+  el.style.left = `${-60 + Math.random() * 40}vw`
+  el.style.top = `${5 + Math.random() * 35}vh`
+  document.body.appendChild(el)
+  window.setTimeout(() => el.remove(), 1300)
+}
 
 onBeforeUnmount(() => {
   window.removeEventListener('mousemove', onMouseMove)
   if (raf) cancelAnimationFrame(raf)
+  if (starTimer !== null) window.clearTimeout(starTimer)
 })
 </script>
 

@@ -174,6 +174,8 @@ const ascTick = computed(() => pt(props.ascLon, R.zodiacOut + 4))
     </defs>
 
     <circle :cx="C" :cy="C" :r="R.zodiacOut" fill="url(#wheelBg)" stroke="#f5c86e" stroke-width="1.6" />
+    <!-- 缓慢旋转的装饰刻度环 -->
+    <circle class="deco-ring" :cx="C" :cy="C" :r="R.zodiacOut + 8" fill="none" stroke="#b3a6f7" stroke-width="2" stroke-dasharray="2 10" opacity="0.5" />
     <circle :cx="C" :cy="C" :r="R.zodiacIn" fill="none" stroke="#f5c86e" stroke-width="1" opacity="0.8" />
     <circle :cx="C" :cy="C" :r="R.aspect" fill="none" stroke="#b3a6f7" stroke-width="1" opacity="0.55" />
     <circle v-if="innerPlanets" :cx="C" :cy="C" :r="R.innerPlanet + 16" fill="none" stroke="#7de8c3" stroke-width="1" opacity="0.45" />
@@ -241,7 +243,7 @@ const ascTick = computed(() => pt(props.ascLon, R.zodiacOut + 4))
         <circle :cx="p.dotX" :cy="p.dotY" r="3" fill="#ffe3a8">
           <title>{{ p.name }} {{ p.signCn }} {{ p.degText }}{{ p.retro ? ' ℞' : '' }}</title>
         </circle>
-        <text :x="p.x" :y="p.y" text-anchor="middle" dominant-baseline="central" fill="#ffe3a8" font-size="21">
+        <text :x="p.x" :y="p.y" class="planet-glyph" text-anchor="middle" dominant-baseline="central" fill="#ffe3a8" font-size="21">
           {{ p.glyph }}<tspan v-if="p.retro" font-size="10" dy="-8">℞</tspan>
           <title>{{ p.name }} {{ p.signCn }} {{ p.degText }}{{ p.retro ? ' 逆行' : '' }}</title>
         </text>
@@ -277,5 +279,25 @@ const ascTick = computed(() => pt(props.ascLon, R.zodiacOut + 4))
 @keyframes wheel-in {
   0% { opacity: 0; transform: rotate(-14deg) scale(0.9); }
   100% { opacity: 1; transform: rotate(0) scale(1); }
+}
+.deco-ring {
+  transform-origin: 300px 300px;
+  animation: ring-spin 90s linear infinite;
+}
+@keyframes ring-spin {
+  to { transform: rotate(360deg); }
+}
+.planet-glyph {
+  cursor: pointer;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.planet-glyph:hover {
+  transform: scale(1.45);
+  filter: drop-shadow(0 0 6px rgba(255, 227, 168, 0.9));
+}
+@media (prefers-reduced-motion: reduce) {
+  .deco-ring { animation: none; }
 }
 </style>

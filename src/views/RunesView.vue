@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { drawRunes, type Rune } from '../data/runes'
 import { askAI, isAiEnabled, oracleSystemPrompt } from '../lib/ai'
-import { sparkleFromEvent } from '../lib/sparkle'
+import { sparkle, sparkleFromEvent } from '../lib/sparkle'
 
 interface DrawnRune {
   rune: Rune
@@ -13,18 +13,31 @@ const count = ref(3)
 const allowReversed = ref(true)
 const question = ref('')
 const drawn = ref<DrawnRune[]>([])
-const revealed = ref(false)
+const revealedStones = ref<boolean[]>([])
 const aiText = ref<string | null>(null)
 const aiLoading = ref(false)
 const aiFailed = ref(false)
 
+const allRevealed = computed(() => drawn.value.length > 0 && revealedStones.value.length > 0 && revealedStones.value.every(Boolean))
+
 function draw(e?: MouseEvent): void {
   drawn.value = drawRunes(count.value, allowReversed.value)
-  revealed.value = false
+  revealedStones.value = drawn.value.map(() => false)
   aiText.value = null
   aiFailed.value = false
   if (e) sparkleFromEvent(e, 12)
-  setTimeout(() => (revealed.value = true), 60)
+}
+
+function revealStone(i: number, e: MouseEvent): void {
+  if (revealedStones.value[i]) return
+  revealedStones.value[i] = true
+  sparkle(e.clientX, e.clientY, 8)
+}
+
+function revealAll(): void {
+  revealedStones.value.forEach((_, i) => {
+    setTimeout(() => (revealedStones.value[i] = true), 280 * i)
+  })
 }
 
 function meaningOf(d: DrawnRune): string {
@@ -79,22 +92,34 @@ async function askAiInterpretation(): Promise<void> {
   </section>
 
   <template v-if="drawn.length">
-    <div class="rune-row" :class="{ show: revealed }">
-      <figure v-for="d in drawn" :key="d.rune.name" class="rune-stone" :class="{ rev: d.reversed }">
-        <div class="stone-face">
-          <span class="glyph">{{ d.rune.glyph }}</span>
+    <div style="display: flex; justify-content: flex-end; margin-top: 16px;">
+      <button v-if="!allRevealed" class="btn ghost small" @click="revealAll">全部翻开</button>
+    </div>
+    <div class="rune-row">
+      <figure
+        v-for="(d, i) in drawn"
+        :key="d.rune.name"
+        class="rune-stone drop-in"
+        :class="{ rev: d.reversed, open: revealedStones[i] }"
+        :style="{ animationDelay: `${i * 130}ms` }"
+        @click="revealStone(i, $event)"
+      >
+        <div class="stone-face" :class="{ flipped: revealedStones[i] }">
+          <span v-if="!revealedStones[i]" class="mystery">✦</span>
+          <span v-else class="glyph">{{ d.rune.glyph }}</span>
         </div>
-        <figcaption>
+        <figcaption v-if="revealedStones[i]" class="bounce-in">
           <strong>{{ d.rune.nameCn }}</strong>
           <small>{{ d.rune.name }} · {{ d.reversed ? '倒转' : '正位' }}</small>
           <p>{{ meaningOf(d) }}</p>
         </figcaption>
+        <figcaption v-else class="tap-hint">点一下揭晓</figcaption>
       </figure>
     </div>
 
     <div class="divider-star">✦ ✦ ✦</div>
 
-    <section class="panel reading-panel">
+    <section v-if="allRevealed" class="panel reading-panel">
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <h3 style="margin: 0;">AI 综合解读</h3>
         <button v-if="!aiText" class="btn small" :disabled="aiLoading" @click="askAiInterpretation">
@@ -114,12 +139,14 @@ async function askAiInterpretation(): Promise<void> {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 18px;
-  margin-top: 30px;
-  opacity: 0;
-  transform: translateY(14px);
-  transition: all 0.8s ease;
+  margin-top: 14px;
 }
-.rune-row.show { opacity: 1; transform: none; }
+.drop-in { animation: drop-in 0.55s cubic-bezier(0.34, 1.5, 0.64, 1) both; }
+@keyframes drop-in {
+  0% { opacity: 0; transform: translateY(-34px) scale(0.8); }
+  100% { opacity: 1; transform: none; }
+}
+.rune-stone { cursor: pointer; text-align: center; margin: 0; user-select: none; }
 .stone-face {
   width: 92px;
   height: 108px;
@@ -127,16 +154,29 @@ async function askAiInterpretation(): Promise<void> {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 16px;
+  border-radius: 0;
   background: linear-gradient(160deg, #4a4462, #2a2547);
-  box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.12), inset 0 -4px 10px rgba(0, 0, 0, 0.5), 0 6px 16px rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(212, 175, 106, 0.35);
+  box-shadow: inset 0 0 0 3px #2e2650, inset 0 0 0 5px rgba(240, 230, 200, 0.18), 6px 6px 0 rgba(10, 8, 30, 0.6);
+  border: 3px solid #2e2650;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-.glyph { font-size: 2.6rem; color: #f0e6c8; text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6); }
+.rune-stone:hover .stone-face { transform: translateY(-5px) rotate(-3deg); }
+.rune-stone.open .stone-face { background: linear-gradient(160deg, #565075, #332d58); }
+.glyph { font-size: 2.6rem; color: #f0e6c8; text-shadow: 0 2px 0 rgba(0, 0, 0, 0.6); }
+.mystery {
+  font-size: 1.8rem;
+  color: var(--gold-bright);
+  animation: mystery-pulse 1.6s ease-in-out infinite;
+}
+@keyframes mystery-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
 .rune-stone.rev .stone-face .glyph { display: inline-block; transform: rotate(180deg); }
-.rune-stone figcaption { text-align: center; margin-top: 12px; }
+.rune-stone figcaption { margin-top: 12px; }
 .rune-stone strong { color: var(--gold-bright); letter-spacing: 0.08em; }
 .rune-stone small { display: block; color: var(--ink-dim); font-size: 0.78rem; margin: 3px 0 8px; }
 .rune-stone p { font-size: 0.88rem; line-height: 1.75; color: var(--ink); margin: 0; }
+.tap-hint { color: var(--ink-dim); opacity: 0.65; font-size: 0.8rem; }
 .reading-panel { margin-top: 26px; }
 </style>

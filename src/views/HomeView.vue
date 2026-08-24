@@ -5,6 +5,7 @@ import { dailyCard, cardImageUrl } from '../data/tarot'
 import { dailyRune } from '../data/runes'
 import { moonPhase } from '../lib/astrology'
 import { loadJSON } from '../lib/storage'
+import { vTilt } from '../lib/tilt'
 
 const today = dailyCard()
 const rune = dailyRune()
@@ -73,7 +74,7 @@ const greeting = computed(() => {
   <div class="divider-star">✦ ✦ ✦</div>
 
   <section class="oracle-grid">
-    <RouterLink v-for="m in modules" :key="m.to" :to="m.to" class="oracle-card">
+    <RouterLink v-for="m in modules" :key="m.to" :to="m.to" v-tilt="7" class="oracle-card">
       <span class="glyph">{{ m.glyph }}</span>
       <h3>{{ m.title }}</h3>
       <p>{{ m.desc }}</p>

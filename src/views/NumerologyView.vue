@@ -3,23 +3,38 @@ import { computed, ref } from 'vue'
 import { NUMBER_MEANINGS, PERSONAL_YEAR_MEANINGS, calculateNumerology, personalDay, personalMonth, personalYear, type NumerologyResult } from '../lib/numerology'
 import { loadJSON, saveJSON } from '../lib/storage'
 import { askAI, isAiEnabled, oracleSystemPrompt } from '../lib/ai'
+import { sparkleFromEvent } from '../lib/sparkle'
 
 const birthDate = ref(loadJSON<{ date?: string }>('num-profile', {}).date ?? '')
 const fullName = ref(loadJSON<{ name?: string }>('num-profile', {}).name ?? '')
 
 const result = ref<NumerologyResult | null>(null)
+const displayLifePath = ref(0)
 const aiText = ref<string | null>(null)
 const aiLoading = ref(false)
 const aiFailed = ref(false)
 
-function submit(): void {
+function countUp(target: number): void {
+  const start = performance.now()
+  const dur = 700
+  const step = (t: number): void => {
+    const p = Math.min(1, (t - start) / dur)
+    displayLifePath.value = Math.round(target * (1 - Math.pow(1 - p, 3)))
+    if (p < 1) requestAnimationFrame(step)
+  }
+  requestAnimationFrame(step)
+}
+
+function submit(e?: MouseEvent): void {
   const parts = birthDate.value.split('-').map(Number)
   const [y, m, d] = parts
   if (!y || !m || !d) return
   result.value = calculateNumerology({ y, m, d }, fullName.value)
   saveJSON('num-profile', { date: birthDate.value, name: fullName.value })
+  countUp(result.value.lifePath)
   aiText.value = null
   aiFailed.value = false
+  if (e) sparkleFromEvent(e, 10)
 }
 
 interface Row {
@@ -90,10 +105,10 @@ async function askAiInterpretation(): Promise<void> {
 
   <section class="panel" style="margin-top: 18px;">
     <div class="form-row">
-      <label class="field"><span>出生日期</span><input v-model="birthDate" type="date" @change="submit" /></label>
+      <label class="field"><span>出生日期</span><input v-model="birthDate" type="date" @change="submit()" /></label>
       <label class="field"><span>英文 / 拼音全名（可选）</span><input v-model="fullName" type="text" placeholder="例如：Zhang San" /></label>
     </div>
-    <button class="btn" :disabled="!birthDate" @click="submit">计算灵数</button>
+    <button class="btn" :disabled="!birthDate" @click="submit($event)">计算灵数</button>
   </section>
 
   <template v-if="result">
@@ -101,7 +116,7 @@ async function askAiInterpretation(): Promise<void> {
 
     <section class="num-hero panel">
       <p class="nh-label">生命路径数</p>
-      <p class="nh-value">{{ result.lifePath }}</p>
+      <p class="nh-value">{{ displayLifePath }}</p>
       <p class="nh-title">{{ NUMBER_MEANINGS[result.lifePath]?.title }}</p>
       <p class="reading">{{ NUMBER_MEANINGS[result.lifePath]?.detail }}</p>
     </section>
