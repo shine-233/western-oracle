@@ -7,13 +7,31 @@ import { t } from '../lib/i18n'
 import DecryptTitle from '../components/DecryptTitle.vue'
 import ThemePicker from '../components/ThemePicker.vue'
 import PixelArcanaCard from '../components/PixelArcanaCard.vue'
+import ApprenticeDossier from '../components/ApprenticeDossier.vue'
 import { locale } from '../lib/i18n'
 
 const LAB_CARDS = [
   { id: 0, cn: '愚者', en: 'The Fool' },
   { id: 1, cn: '魔术师', en: 'The Magician' },
+  { id: 2, cn: '女祭司', en: 'The High Priestess' },
+  { id: 3, cn: '皇后', en: 'The Empress' },
+  { id: 4, cn: '皇帝', en: 'The Emperor' },
+  { id: 5, cn: '教皇', en: 'The Hierophant' },
+  { id: 6, cn: '恋人', en: 'The Lovers' },
+  { id: 7, cn: '战车', en: 'The Chariot' },
+  { id: 8, cn: '力量', en: 'Strength' },
+  { id: 9, cn: '隐者', en: 'The Hermit' },
   { id: 10, cn: '命运之轮', en: 'Wheel of Fortune' },
+  { id: 11, cn: '正义', en: 'Justice' },
+  { id: 12, cn: '倒吊人', en: 'The Hanged Man' },
   { id: 13, cn: '死神', en: 'Death' },
+  { id: 14, cn: '节制', en: 'Temperance' },
+  { id: 15, cn: '恶魔', en: 'The Devil' },
+  { id: 16, cn: '高塔', en: 'The Tower' },
+  { id: 17, cn: '星星', en: 'The Star' },
+  { id: 18, cn: '月亮', en: 'The Moon' },
+  { id: 19, cn: '太阳', en: 'The Sun' },
+  { id: 20, cn: '审判', en: 'Judgement' },
   { id: 21, cn: '世界', en: 'The World' },
 ]
 
@@ -130,8 +148,8 @@ function onClearHistory(): void {
       <p class="hint" style="margin: 0 0 14px;">
         {{
           locale === 'zh'
-            ? '露娜画风的塔罗重绘计划：已完成大阿卡纳前五张样板，其余牌先用星阵占位。'
-            : 'Tarot redrawn in Luna\'s style — five Major Arcana samples so far; the rest use starfield placeholders.'
+            ? '露娜画风的塔罗重绘：大阿卡纳 22 张全部完成，小阿卡纳陆续上稿中。'
+            : 'Tarot redrawn in Luna\'s style: all 22 Major Arcana done; minors on the way.'
         }}
       </p>
       <div class="arcana-lab">
@@ -141,10 +159,12 @@ function onClearHistory(): void {
           :id="c.id"
           :name-cn="c.cn"
           :name-en="c.en"
-          :size="108"
+          :size="86"
         />
       </div>
     </section>
+
+    <ApprenticeDossier />
   </div>
 </template>
 

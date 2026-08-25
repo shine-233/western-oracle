@@ -7,6 +7,7 @@ import './styles/global.css'
 import { vReveal } from './lib/reveal'
 import { vMagnetic } from './lib/magnetic'
 import { installKonami } from './lib/konami'
+import { installOverlays } from './lib/overlays'
 import { initThemes } from './lib/themes'
 
 const app = createApp(App).use(router)
@@ -15,3 +16,4 @@ app.directive('magnetic', vMagnetic)
 initThemes()
 app.mount('#app')
 installKonami()
+installOverlays()

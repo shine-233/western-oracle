@@ -157,6 +157,8 @@ onBeforeUnmount(() => {
       <RouterLink to="/hours">⏳ {{ tt('hours.nav') }}</RouterLink>
       <RouterLink to="/arcade">🎲 {{ t('nav.arcade') }}</RouterLink>
       <RouterLink to="/dreams">🌙 {{ t('nav.dreams') }}</RouterLink>
+      <RouterLink to="/palmistry">🖐 {{ t('nav.palmistry') }}</RouterLink>
+      <RouterLink to="/musicbox">✦ {{ t('nav.musicbox') }}</RouterLink>
       <RouterLink to="/history">{{ t('nav.history') }}</RouterLink>
       <RouterLink to="/settings">{{ t('nav.settings') }}</RouterLink>
       <button class="lang-toggle" :title="locale === 'zh' ? 'Switch to English' : '切换到中文'" @click="onToggleLocale">

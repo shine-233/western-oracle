@@ -170,8 +170,394 @@ const WORLD: ArcanaArt = {
   ],
 }
 
+/* ---------- II 女祭司：双柱之间，月落脚边 ---------- */
+const PRIESTESS: ArcanaArt = {
+  id: 2,
+  rows: [
+    '..K...........K......',
+    '.KW.K.......K.WK.....',
+    '.K..K..PPP..K..K.....',
+    '.K..KK.PDP.KK..K.....',
+    '.K..KDPPSDPDK..K.....',
+    '.K..KPSSSSSPK..K.....',
+    '.K..KPSBSSBPK..K.....',
+    '.K..KKSSSSSKK..K.....',
+    '.K...KDDDDK....K.....',
+    '.K...DDDDDD....K.....',
+    '.KKKKKKKKKKKKKKK.....',
+    '........GG...........',
+    '.....G.GGGG.G........',
+    '.......GGGG..........',
+    '........GG...........',
+  ],
+}
+
+/* ---------- III 皇后：王座上的丰饶 ---------- */
+const EMPRESS: ArcanaArt = {
+  id: 3,
+  rows: [
+    '....Y.Y.Y.Y.........',
+    '....YYYYYYY.........',
+    '.....PPPPP..........',
+    '....PPSSSPP....R....',
+    '....PSSBSSP....RR...',
+    '.....PSSSSP.....R...',
+    '....PPSSSSPP........',
+    '...DDDSSDDD.........',
+    '..DDDPSSPDDD........',
+    '..DDDDDDDDDD........',
+    '..DDDDDDDDDD.M.M....',
+    '..DDD.DD.DDD.MMM....',
+    '...DG.DG.DG..M.M....',
+    '....................',
+    '..T.T.T.T.T.T.......',
+    '.TTTTTTTTTTTTT......',
+  ],
+}
+
+/* ---------- IV 皇帝：山石般的威严 ---------- */
+const EMPEROR: ArcanaArt = {
+  id: 4,
+  rows: [
+    '..G.G.......G.G.....',
+    '..GGG..PPP..GGG.....',
+    '...K..PPDPP..K......',
+    '...KK.PSSPP.KK......',
+    '...KM.PSBSP.MK......',
+    '...K..PSSSP..K......',
+    '......PSDSP.........',
+    '.....DDDDDDD........',
+    '....DDDDDDDDD.......',
+    '....DDDDDDDDD.......',
+    '....DDD.D.DDD.......',
+    '...KKKKKKKKKKK......',
+    '..CC.....CC.........',
+    '.CCCC...CCCC........',
+    'CC..C..C..CC........',
+  ],
+}
+
+/* ---------- V 教皇：三重冠与钥匙 ---------- */
+const HIEROPHANT: ArcanaArt = {
+  id: 5,
+  rows: [
+    '...YYYYY............',
+    '....YYY.............',
+    '...YYYYY............',
+    '..PPPPPPP...........',
+    '..PPSSSPP.G.G.......',
+    '..PPSBSPP..K........',
+    '..PPSSSPP.GGG.......',
+    '..PPPPPPP...........',
+    '.PPPSSSPPP..........',
+    '.PPDDDDDPP..........',
+    '.PPDDDDDPP..........',
+    '.PPDDDDDPP..........',
+    '..PPPPPPP...........',
+    '..WW...WW...........',
+    '.KKW...WKK..........',
+    '.S.S...S.S..........',
+  ],
+}
+
+/* ---------- VI 恋人：天使之下 ---------- */
+const LOVERS: ArcanaArt = {
+  id: 6,
+  rows: [
+    '.........L.L.L......',
+    '........LLLLLLL.....',
+    '.........LLLLL......',
+    '....G.......G.......',
+    '...GGG.....GGG......',
+    '..PPSSP...PPSSP.....',
+    '..PSBSP...PSBSP.....',
+    '...PSSP...PSSSP.....',
+    '...DDDD...WWDW......',
+    '..DDDDDD.WWWWWD.....',
+    '..DD..DD.WW.WWD.....',
+    '....................',
+    '..RR.....RR.........',
+    '.RRRR...RRRR........',
+    '..RR.....RR.........',
+  ],
+}
+
+/* ---------- VII 战车：星幕下的凯旋 ---------- */
+const CHARIOT: ArcanaArt = {
+  id: 7,
+  rows: [
+    '.L.L.L.L.L.L.L......',
+    '.LLLLLLLLLLLLL......',
+    '.....PSSP...........',
+    '.KK.PSSBSP.KK.......',
+    '...KPDSSDPK.........',
+    '.KKKDDDDDKKK........',
+    '.KDDDDDDDDDK........',
+    '.KKKKKKKKKKK........',
+    '..G.......G.........',
+    '..GG.....GG.........',
+    '.GGG.....GGG........',
+    '.KGK.....KGK........',
+    '..K.......K.........',
+    '....................',
+    '..M.....M...........',
+    '..MM...MM...........',
+  ],
+}
+
+/* ---------- VIII 力量：驯狮者 ---------- */
+const STRENGTH: ArcanaArt = {
+  id: 8,
+  rows: [
+    '.......Y.Y..........',
+    '........Y...........',
+    '.....PPPPPP.........',
+    '....PPSSSSPP........',
+    '....PSBSSBSP........',
+    '.....PSSSSP.........',
+    '....WWSSSSWW........',
+    '...W..DDDD..W.......',
+    '..WW.DDDDDD.WW......',
+    '.W...DDDDDD...W.....',
+    '.W..GGDDDDGG..W.....',
+    '.WG.GGDDDDGG.GW.....',
+    '..WGGGGGGGGGGW......',
+    '...GG.GG.GG.G.......',
+    '....W.WW.WW.........',
+  ],
+}
+
+/* ---------- IX 隐者：提灯独行 ---------- */
+const HERMIT: ArcanaArt = {
+  id: 9,
+  rows: [
+    '..............YY....',
+    '.............YWWY...',
+    '..............YY....',
+    '.....PP.............',
+    '....PPPP............',
+    '...PPDDPP...........',
+    '...PDSSDP...KM......',
+    '...PDSSDP...KM......',
+    '...PPBBPP...KM......',
+    '....PPPP....KM......',
+    '...DDDDDD...KM......',
+    '..DDDDDDDD..KM......',
+    '..DDDDDDDD..KM......',
+    '..DDD..DDD..KM......',
+    '..KKK..KKK..KKK.....',
+    '.CC.....C...........',
+  ],
+}
+
+/* ---------- XI 正义：剑与天平 ---------- */
+const JUSTICE: ArcanaArt = {
+  id: 11,
+  rows: [
+    '.K.............K....',
+    'KWKK..........KKWK..',
+    'KW..K........K..WK..',
+    '.KKKKKKKKKKKKKKK....',
+    '......PPPPP.........',
+    '.....PPSSSPP........',
+    '.....PPSBSP.........',
+    '.....PPSSSPP........',
+    '.....PPPPPPP........',
+    '..G..PDDDDP..G......',
+    '.GGG.PDDDDP.GGG.....',
+    '.KKK.DD..DD.KKK.....',
+    '......KK.KK.........',
+    '......M..M..........',
+    '......MMMMMM........',
+    '........M...........',
+    '........M...........',
+  ],
+}
+
+/* ---------- XII 倒吊人：光晕中的倒影 ---------- */
+const HANGED: ArcanaArt = {
+  id: 12,
+  rows: [
+    '.KKKKKKKKKKKKKKK....',
+    '......K.....K.......',
+    '......K..Y..K.......',
+    '......KY.Y.K........',
+    '......K..Y..K.......',
+    '.....PPSSPP.........',
+    '.....PSBSSP.........',
+    '.....PSSSSP.........',
+    '....PPDDPP..........',
+    '...DDDDDDDD.........',
+    '...DD.DD.DD.........',
+    '...DD.KK.DD.........',
+    '....D.KK.D..........',
+    '....DDDDDD..........',
+    '....KK..KK..........',
+    '...CC....CCC........',
+  ],
+}
+
+/* ---------- XIV 节制：双杯之间的水流 ---------- */
+const TEMPERANCE: ArcanaArt = {
+  id: 14,
+  rows: [
+    '....Y...............',
+    '...YYY..............',
+    '....Y...............',
+    '..PPPP..............',
+    '.PPSSPP.............',
+    '.PPSBSP.....T.......',
+    '.PPSSPP....TTT......',
+    '..PPPP.....TTT......',
+    '.PPPPPP....TTT......',
+    '.PDDDDP....TTT......',
+    '..PPPP.....TTT......',
+    '.KKKKKK....TTT......',
+    '.KWWWWK....TTT......',
+    '.KKKKKKKKKKKKK......',
+    '....T....T..........',
+  ],
+}
+
+/* ---------- XV 恶魔：锁链比想象中松 ---------- */
+const DEVIL: ArcanaArt = {
+  id: 15,
+  rows: [
+    '.K...............K..',
+    '..K.....Y.Y.....K...',
+    '.KK...YYYYYYY..KK...',
+    '..KK..PPPPPPP.KK....',
+    '...KKPSSSSSSPKK.....',
+    '....KPBSSSSBPK......',
+    '....KPSSKSSSPK......',
+    '...PPDDDDDDPP.......',
+    '..PPDDDDDDDPPP......',
+    '..PD.DDDDD.DP.......',
+    '..KK.KKKKK.KK.......',
+    '..SS.....SS.........',
+    '..SK.....KS.........',
+    '.SS.......SS........',
+    '..KK.......KK.......',
+  ],
+}
+
+/* ---------- XVI 高塔：闪电劈开旧冠冕 ---------- */
+const TOWER: ArcanaArt = {
+  id: 16,
+  rows: [
+    '....Y........Y......',
+    '.YYYYYYYYYYYYYYY....',
+    '....Y...GGGG..Y.....',
+    '....Y..GGGGGG.......',
+    '.......KGGGGK.......',
+    '.......KKKKKK.......',
+    '......KDDDDDDK......',
+    '......KDDDDDDK......',
+    '......KDDKKDDK......',
+    '......KDDKKDDK......',
+    '.....KKDDDDDDKK.....',
+    '....Y..KKKKKK..Y....',
+    '...YYY.RR.RR.YYY....',
+    '....Y.RRR.RRR.Y.....',
+    '......RR...RR.......',
+    '.......R...R........',
+  ],
+}
+
+/* ---------- XVII 星星：倒水与希望 ---------- */
+const STAR: ArcanaArt = {
+  id: 17,
+  rows: [
+    '.........Y..........',
+    '....G....Y....G.....',
+    '....GG..YYY..GG.....',
+    '.....YYYYYYYYYY.....',
+    '....GG..YYY..GG.....',
+    '....G....Y....G.....',
+    '.........Y..........',
+    '....PP......l.......',
+    '...PPSSP............',
+    '...PSBSPP...........',
+    '...PSSSSP...........',
+    '..PPDDPPP..T........',
+    '..DDDDDD..TTT.......',
+    '..DD..DD.TTT........',
+    '.KKKKKKKKKKKKK......',
+    '.T..T...T..T........',
+  ],
+}
+
+/* ---------- XVIII 月亮：小径两端 ---------- */
+const MOONCARD: ArcanaArt = {
+  id: 18,
+  rows: [
+    '....YYYYYYYY........',
+    '...YWWYYYYWWY.......',
+    '...YYYYYYYYYY.......',
+    '....YY.YY.YY........',
+    '.....Y..Y..Y........',
+    '..K............K....',
+    '.KWK..........KWK...',
+    '.KKK..........KKK...',
+    '....................',
+    '..WW..........WW....',
+    '..WWW........WWW....',
+    '...WW....K...WW.....',
+    '....KK..KK..KK......',
+    '.....KKKKKKKK.......',
+    '......KK..KK........',
+    '.......K..K.........',
+  ],
+}
+
+/* ---------- XIX 太阳：向日葵与小骑士 ---------- */
+const SUN: ArcanaArt = {
+  id: 19,
+  rows: [
+    '......YYYYYY........',
+    '...YYYYYYYYYYYY.....',
+    '..YYYYYWWYYYYYYY....',
+    '..YYYYW..WYYYYYY....',
+    '..YYYYYWWYYYYYYY....',
+    '...YYYYYYYYYYYY.....',
+    '......YYYYYY........',
+    '..G.............G...',
+    '.GGG....PP....GGG...',
+    'GGGGG..PSSP..GGGGG..',
+    '.GGG...PSBSP..GGG...',
+    '..G....PSSSP...G....',
+    '.......WWDW.........',
+    '......WWWWW.........',
+    '......WW.WW.........',
+    '.T.T.T....T.T.T.....',
+  ],
+}
+
+/* ---------- XX 审判：号角唤醒 ---------- */
+const JUDGEMENT: ArcanaArt = {
+  id: 20,
+  rows: [
+    '......LLLLLL........',
+    '.....LLLLLLLL.......',
+    '....LLL.MM.LLL......',
+    '.....LL.MMMM.LL.....',
+    '......LL.MM.........',
+    '.......L.MM.........',
+    '.........MM.........',
+    '....G...MM...G......',
+    '...GGG.PSSP.GGG.....',
+    '....G..PSSSP..G.....',
+    '.......DDDDD........',
+    '....DDDDDDDDDD......',
+    '...DDD.DDDD.DDD.....',
+    '...DD...DD...DD.....',
+    '..KKK..KKK...KKK....',
+    '.CC.CC.CC..CC.CC....',
+  ],
+}
+
 /** 已收录的精绘牌 */
-export const ARCANA_ARTS: ArcanaArt[] = [FOOL, MAGICIAN, WHEEL, DEATH, WORLD]
+export const ARCANA_ARTS: ArcanaArt[] = [FOOL, MAGICIAN, PRIESTESS, EMPRESS, EMPEROR, HIEROPHANT, LOVERS, CHARIOT, STRENGTH, HERMIT, WHEEL, JUSTICE, HANGED, DEATH, TEMPERANCE, DEVIL, TOWER, STAR, MOONCARD, SUN, JUDGEMENT, WORLD]
 
 export function getArcanaArt(id: number): ArcanaArt | null {
   return ARCANA_ARTS.find((a) => a.id === id) ?? null

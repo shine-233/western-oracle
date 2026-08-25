@@ -50,6 +50,8 @@ const messages: Record<string, Pair> = {
   'nav.library': ['牌库', 'Deck'],
   'nav.arcade': ['占卜坊', 'Arcade'],
   'nav.dreams': ['解梦', 'Dreams'],
+  'nav.palmistry': ['手相', 'Palm'],
+  'nav.musicbox': ['八音盒', 'Music Box'],
   'nav.history': ['历史', 'Grimoire'],
   'nav.settings': ['设置', 'Settings'],
   'app.soundOff': ['关闭音效', 'Mute'],
@@ -110,6 +112,8 @@ const messages: Record<string, Pair> = {
   'mod.library.desc': ['78 张牌全图鉴：大阿卡纳与四花色浏览、搜索、正逆位详解一键直达。', 'All 78 cards: browse by arcana/suit, search, tap for upright & reversed meanings.'],
   'mod.arcade.desc': ['三件口袋占卜小玩具：3D 骰子、命运转盘、神签，专治选择困难。', 'Three pocket oracles: 3D dice, fortune wheel and omikuji slips.'],
   'mod.dreams.desc': ['解梦词典：搜一搜昨晚的怪梦，或挑三个元素拼一份专属解读。', 'Dream dictionary: search last night\'s weirdness or blend three elements.'],
+  'mod.palmistry.desc': ['把左手当星空图：掌纹是星座连线，掌丘是星域，点亮就有得聊。', 'Your palm as a star chart: lines are constellations, mounts are nebulae.'],
+  'mod.musicbox.desc': ['北斗七星八音盒：点星演奏，或让作曲骰子写一首十六步小曲。', 'The Big Dipper as a music box: play the stars or roll a 16-step tune.'],
   'mod.history.desc': ['每一次占卜都被记进魔法书，随时回看、生成星空分享图。', 'Every reading logged in your grimoire — revisit anytime, export starry share cards.'],
 
   /* ---------- 塔罗 ---------- */

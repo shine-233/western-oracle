@@ -13,6 +13,8 @@ import CrystalView from '../views/CrystalView.vue'
 import HoursView from '../views/HoursView.vue'
 import ArcadeView from '../views/ArcadeView.vue'
 import DreamView from '../views/DreamView.vue'
+import PalmistryView from '../views/PalmistryView.vue'
+import MusicBoxView from '../views/MusicBoxView.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -29,6 +31,8 @@ const router = createRouter({
     { path: '/hours', component: HoursView },
     { path: '/arcade', component: ArcadeView },
     { path: '/dreams', component: DreamView },
+    { path: '/palmistry', component: PalmistryView },
+    { path: '/musicbox', component: MusicBoxView },
     { path: '/history', component: HistoryView },
     { path: '/settings', component: SettingsView },
     { path: '/:pathMatch(.*)*', redirect: '/' },
