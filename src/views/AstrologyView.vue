@@ -16,6 +16,9 @@ import { useEscClose } from '../lib/useEsc'
 import { TETRABIBLOS_PLANETS } from '../data/tetrabiblosPlanets'
 import { vTilt } from '../lib/tilt'
 import { t, locale } from '../lib/i18n'
+import { tt } from '../lib/i18nExtra'
+import { findSolarReturn } from '../lib/solarReturn'
+import { ASPECT_CN, crossAspects, type CrossAspect } from '../lib/astrology'
 import AstroWheel from '../components/AstroWheel.vue'
 import AiChat from '../components/AiChat.vue'
 import DecryptTitle from '../components/DecryptTitle.vue'
@@ -169,6 +172,59 @@ function submit(): void {
     pet.value?.celebrate()
   } catch (e) {
     errorText.value = t('err.calc', { msg: e instanceof Error ? e.message : String(e) })
+  }
+}
+
+/* ---------- 太阳回归盘 ---------- */
+const srBusy = ref(false)
+const srMoment = ref<Date | null>(null)
+const srChart = ref<NatalChart | null>(null)
+const srAspects = ref<CrossAspect[]>([])
+const srAscHouse = ref(0)
+
+const srMomentText = computed(() => {
+  const d = srMoment.value
+  if (!d) return ''
+  return d.toLocaleString(locale.value === 'zh' ? 'zh-CN' : 'en-US', {
+    year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit',
+  })
+})
+
+/** 黄经落在第几宫（按本命宫头数组，含跨双鱼回绕） */
+function houseOfLon(lon: number, cusps: number[]): number {
+  for (let i = 0; i < cusps.length; i++) {
+    const a = cusps[i]!
+    const b = cusps[(i + 1) % cusps.length]!
+    if (a <= b ? lon >= a && lon < b : lon >= a || lon < b) return i + 1
+  }
+  return 1
+}
+
+function computeSr(): void {
+  const c = chart.value
+  if (!c || srBusy.value) return
+  srBusy.value = true
+  try {
+    const sun = c.planets.find((p) => p.name === 'Sun')
+    if (!sun) return
+    const { moment } = findSolarReturn(sun.lon, new Date().getFullYear(), form.value.date.split('-').map(Number)[1]!, form.value.date.split('-').map(Number)[2]!)
+    srMoment.value = moment
+    const input: BirthInput = {
+      year: moment.getFullYear(),
+      month: moment.getMonth() + 1,
+      day: moment.getDate(),
+      hour: moment.getHours(),
+      minute: moment.getMinutes(),
+      timezone: -moment.getTimezoneOffset() / 60,
+      latitude: form.value.lat,
+      longitude: form.value.lng,
+    }
+    srChart.value = computeNatalChart(input)
+    srAspects.value = crossAspects(srChart.value.planets, c.planets).sort((x, y) => x.orb - y.orb).slice(0, 8)
+    srAscHouse.value = houseOfLon(srChart.value.ascendant.lon, c.cusps)
+    sfx.ding()
+  } finally {
+    srBusy.value = false
   }
 }
 
@@ -343,6 +399,43 @@ export default {}
         </div>
       </section>
 
+      <!-- 太阳回归盘 -->
+      <section class="panel reading-panel">
+        <h3 style="margin-top: 0;">{{ tt('sr.title') }}<span class="tag">SR</span></h3>
+        <p class="hint" style="margin-top: 0;">{{ tt('sr.hint') }}</p>
+        <button v-if="!srChart" v-magnetic class="btn ghost small" :disabled="srBusy" @click="computeSr">
+          ✦ {{ tt('sr.calc') }}
+        </button>
+        <template v-else>
+          <p class="sr-moment">⏱ {{ tt('sr.moment') }}：{{ srMomentText }}</p>
+          <p v-if="srAscHouse" class="sr-asc">↑ {{ tt('sr.ascInHouse', { n: srAscHouse }) }}</p>
+          <div class="astro-layout" style="margin-top: 14px;">
+            <div v-tilt="5">
+              <AstroWheel
+                :planets="srChart.planets"
+                :cusps="srChart.cusps"
+                :asc-lon="srChart.ascendant.lon"
+                :aspects="srChart.aspects"
+              />
+            </div>
+            <div>
+              <h4 style="margin: 0 0 8px; font-family: var(--cute); color: var(--gold-bright); font-weight: 400;">{{ tt('sr.vsNatal') }}</h4>
+              <div class="sr-chips">
+                <span
+                  v-for="(a, i) in srAspects"
+                  :key="'sr' + i"
+                  class="sr-chip"
+                  :class="'asp-' + a.type"
+                >
+                  {{ PLANETS[a.body1]?.cn ?? a.body1 }} {{ ASPECT_CN[a.type] }} {{ PLANETS[a.body2]?.cn ?? a.body2 }}
+                  <em>{{ a.orb.toFixed(1) }}°</em>
+                </span>
+              </div>
+            </div>
+          </div>
+        </template>
+      </section>
+
       <!-- 星座 & 宫位百科入口 -->
       <section class="panel reading-panel">
         <h3 style="margin-top: 0;">{{ t('astro.zodiac') }}<span class="hint" style="font-size: 0.75rem;">{{ t('astro.zodiacTip') }}</span></h3>
@@ -386,6 +479,23 @@ export default {}
 </template>
 
 <style scoped>
+.sr-moment { margin: 12px 0 4px; color: var(--gold-bright); font-family: var(--cute); letter-spacing: 0.04em; }
+.sr-asc { margin: 0 0 10px; color: var(--mint); font-size: 0.92rem; }
+.sr-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.sr-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  background: color-mix(in srgb, var(--lavender) 10%, var(--void-0));
+  border: 1.5px solid color-mix(in srgb, var(--lavender) 40%, transparent);
+}
+.sr-chip em { font-style: normal; color: var(--ink-dim); font-size: 0.72rem; }
+.sr-chip.asp-trine, .sr-chip.asp-sextile { border-color: color-mix(in srgb, var(--mint) 55%, transparent); }
+.sr-chip.asp-square, .sr-chip.asp-opposition { border-color: color-mix(in srgb, var(--danger) 55%, transparent); }
+
 .astro-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
@@ -400,13 +510,13 @@ export default {}
 .bal-title { color: var(--ink-dim); font-size: 0.78rem; letter-spacing: 0.15em; margin: 0 0 6px; }
 .balance-row { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; }
 .bal-label { width: 58px; font-size: 0.85rem; color: var(--ink); text-align: right; flex-shrink: 0; }
-.bal-track { flex: 1; height: 10px; background: rgba(13, 11, 32, 0.8); border-radius: 999px; overflow: hidden; border: 1px solid rgba(179, 166, 247, 0.25); }
+.bal-track { flex: 1; height: 10px; background: rgba(13, 11, 32, 0.8); border-radius: 999px; overflow: hidden; border: 1px solid color-mix(in srgb, var(--lavender) 25%, transparent); }
 .bal-fill {
   display: block;
   height: 100%;
   border-radius: 999px;
   animation: bar-grow 1s cubic-bezier(0.34, 1.3, 0.64, 1) both;
-  box-shadow: 0 0 8px rgba(255, 227, 168, 0.35);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--gold-bright) 35%, transparent);
 }
 @keyframes bar-grow { from { width: 0 !important; } }
 .bal-count { width: 20px; text-align: center; font-family: var(--pixel); font-size: 0.55rem; color: var(--gold-bright); }
@@ -425,7 +535,7 @@ export default {}
 .planet-table .pg { font-size: 1.2rem; color: var(--gold); width: 34px; }
 .tb-wrap {
   margin-top: 10px;
-  border: 1.5px dashed rgba(245, 200, 110, 0.5);
+  border: 1.5px dashed color-mix(in srgb, var(--gold) 50%, transparent);
   border-radius: 8px;
   padding: 9px 12px;
   background: rgba(13, 11, 32, 0.45);
@@ -446,7 +556,7 @@ export default {}
 .aspect-chip-row { display: flex; flex-wrap: wrap; gap: 7px; }
 .mini-aspect {
   background: rgba(30, 26, 69, 0.65);
-  border: 1.5px solid rgba(179, 166, 247, 0.35);
+  border: 1.5px solid color-mix(in srgb, var(--lavender) 35%, transparent);
   color: var(--ink);
   font-size: 0.82rem;
   padding: 4px 10px;
@@ -479,7 +589,7 @@ export default {}
   align-items: center;
   gap: 5px;
   background: rgba(30, 26, 69, 0.6);
-  border: 1.5px solid rgba(179, 166, 247, 0.3);
+  border: 1.5px solid color-mix(in srgb, var(--lavender) 30%, transparent);
   color: var(--ink);
   font-size: 0.85rem;
   padding: 5px 11px;

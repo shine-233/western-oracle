@@ -4,6 +4,7 @@ import { RouterLink, RouterView } from 'vue-router'
 import PixelWitch from './components/PixelWitch.vue'
 import { isSoundOn, toggleSound, sfx } from './lib/sfx'
 import { t, toggleLocale, locale } from './lib/i18n'
+import { tt } from './lib/i18nExtra'
 
 const soundOn = ref(isSoundOn())
 
@@ -152,6 +153,10 @@ onBeforeUnmount(() => {
       <RouterLink to="/numerology">{{ t('nav.numerology') }}</RouterLink>
       <RouterLink to="/runes">{{ t('nav.runes') }}</RouterLink>
       <RouterLink to="/library">{{ t('nav.library') }}</RouterLink>
+      <RouterLink to="/crystal">🔮 {{ tt('crystal.nav') }}</RouterLink>
+      <RouterLink to="/hours">⏳ {{ tt('hours.nav') }}</RouterLink>
+      <RouterLink to="/arcade">🎲 {{ t('nav.arcade') }}</RouterLink>
+      <RouterLink to="/dreams">🌙 {{ t('nav.dreams') }}</RouterLink>
       <RouterLink to="/history">{{ t('nav.history') }}</RouterLink>
       <RouterLink to="/settings">{{ t('nav.settings') }}</RouterLink>
       <button class="lang-toggle" :title="locale === 'zh' ? 'Switch to English' : '切换到中文'" @click="onToggleLocale">
@@ -194,13 +199,13 @@ onBeforeUnmount(() => {
   display: block;
   height: 100%;
   background: linear-gradient(90deg, var(--gold), var(--pink), var(--lavender));
-  box-shadow: 0 0 10px rgba(245, 200, 110, 0.8);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--gold) 80%, transparent);
   transition: width 0.12s linear;
 }
 
 .sound-toggle {
   background: var(--void-2);
-  border: 2px solid rgba(179, 166, 247, 0.5);
+  border: 2px solid color-mix(in srgb, var(--lavender) 50%, transparent);
   border-radius: 0;
   color: var(--ink);
   cursor: pointer;
@@ -211,7 +216,7 @@ onBeforeUnmount(() => {
 .sound-toggle:hover { transform: scale(1.12) rotate(-6deg); border-color: var(--pink); }
 .lang-toggle {
   background: var(--void-2);
-  border: 2px solid rgba(245, 200, 110, 0.55);
+  border: 2px solid color-mix(in srgb, var(--gold) 55%, transparent);
   border-radius: 0;
   color: var(--gold-bright);
   cursor: pointer;

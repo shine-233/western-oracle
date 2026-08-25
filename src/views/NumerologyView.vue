@@ -242,17 +242,17 @@ function replayChain(e?: MouseEvent): void {
   padding: 12px 16px;
   border-radius: 16px;
   background: rgba(13, 11, 32, 0.7);
-  border: 2px solid rgba(255, 159, 206, 0.35);
+  border: 2px solid color-mix(in srgb, var(--pink) 35%, transparent);
   animation: floaty 4.5s ease-in-out infinite;
 }
-.pday-box:nth-child(2) { animation-delay: 0.6s; border-color: rgba(125, 232, 195, 0.4); }
-.pday-box:nth-child(3) { animation-delay: 1.2s; border-color: rgba(245, 200, 110, 0.45); }
+.pday-box:nth-child(2) { animation-delay: 0.6s; border-color: color-mix(in srgb, var(--mint) 40%, transparent); }
+.pday-box:nth-child(3) { animation-delay: 1.2s; border-color: color-mix(in srgb, var(--gold) 45%, transparent); }
 .pday-box small { display: block; color: var(--ink-dim); font-size: 0.75rem; letter-spacing: 0.2em; margin-bottom: 4px; }
 .pday-box strong { font-family: var(--cute); font-size: 1.9rem; color: var(--gold-bright); font-weight: 400; }
 
 /* 数字约减链 */
 .chain-panel { margin-top: 16px; cursor: pointer; transition: border-color 0.25s; }
-.chain-panel:hover { border-color: rgba(245, 200, 110, 0.5); }
+.chain-panel:hover { border-color: color-mix(in srgb, var(--gold) 50%, transparent); }
 .chain-digits { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; margin-bottom: 14px; }
 .chain-digit {
   width: 30px;
@@ -261,7 +261,7 @@ function replayChain(e?: MouseEvent): void {
   place-items: center;
   border-radius: 8px;
   background: rgba(13, 11, 32, 0.75);
-  border: 1.5px solid rgba(179, 166, 247, 0.3);
+  border: 1.5px solid color-mix(in srgb, var(--lavender) 30%, transparent);
   color: var(--lavender-soft);
   font-family: var(--pixel);
   font-size: 0.65rem;
@@ -283,12 +283,12 @@ function replayChain(e?: MouseEvent): void {
 .chain-chip.final {
   background: linear-gradient(135deg, var(--gold), #ffe6b3);
   color: var(--void-2);
-  box-shadow: 0 0 18px rgba(245, 200, 110, 0.55);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--gold) 55%, transparent);
   transform: scale(1.12);
 }
 .chain-chip.master {
   border-color: var(--pink);
-  box-shadow: 0 0 16px rgba(255, 159, 206, 0.6);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--pink) 60%, transparent);
 }
 .chain-arrow { color: var(--ink-dim); animation: arrow-in 0.4s ease both; animation-delay: var(--d); }
 @keyframes chip-in { from { opacity: 0; transform: translateY(12px) scale(0.55); } }

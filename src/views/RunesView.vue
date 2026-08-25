@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
-import { drawRunes, type Rune } from '../data/runes'
+import { drawRunes, dailyRune, type Rune } from '../data/runes'
 import { RUNE_POEMS, type PoemLang } from '../data/runePoems'
 import { sparkle, sparkleFromEvent } from '../lib/sparkle'
 import { addHistory } from '../lib/history'
@@ -37,6 +37,7 @@ const allowReversed = ref(true)
 const question = ref('')
 const drawn = ref<DrawnRune[]>([])
 const revealedStones = ref<boolean[]>([])
+const todayRune = dailyRune()
 
 const allRevealed = computed(() => drawn.value.length > 0 && revealedStones.value.length > 0 && revealedStones.value.every(Boolean))
 
@@ -131,6 +132,18 @@ watch(allRevealed, (done) => {
     </div>
   </section>
 
+  <!-- 今日一符 -->
+  <section class="panel daily-rune stagger-in">
+    <span class="dr-glyph">{{ todayRune.rune.glyph }}</span>
+    <div class="dr-text">
+      <h3 style="margin: 0 0 4px;">{{ t('rune.daily.title') }}<span class="tag">{{ todayRune.rune.name }}</span></h3>
+      <p style="margin: 0; line-height: 1.8; font-size: 0.9rem;">
+        {{ todayRune.rune.nameCn }} · {{ todayRune.reversed ? t('c.inverted') : t('c.upright') }}<br />
+        {{ todayRune.reversed && todayRune.rune.reversed ? todayRune.rune.reversed : todayRune.rune.upright }}
+      </p>
+    </div>
+  </section>
+
   <template v-if="drawn.length">
     <div style="display: flex; justify-content: flex-end; margin-top: 16px;">
       <button v-if="!allRevealed" class="btn ghost small" @click="revealAll">{{ t('rune.revealAll') }}</button>
@@ -193,6 +206,25 @@ watch(allRevealed, (done) => {
   100% { opacity: 1; transform: none; }
 }
 .rune-stone { cursor: pointer; text-align: center; margin: 0; user-select: none; }
+
+/* 今日一符 */
+.daily-rune {
+  margin-top: 18px;
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  border-color: color-mix(in srgb, var(--mint) 40%, transparent);
+}
+.dr-glyph {
+  font-size: 2.6rem;
+  color: var(--mint);
+  text-shadow: 0 0 14px color-mix(in srgb, var(--mint) 55%, transparent);
+  animation: glyph-breathe 3s ease-in-out infinite;
+}
+@keyframes glyph-breathe {
+  50% { opacity: 0.65; transform: scale(1.06); }
+}
+.dr-text { flex: 1; }
 .stone-face {
   width: 92px;
   height: 108px;
@@ -226,7 +258,7 @@ watch(allRevealed, (done) => {
 .tap-hint { color: var(--ink-dim); opacity: 0.65; font-size: 0.8rem; }
 .poem-wrap {
   margin-top: 10px;
-  border: 1.5px dashed rgba(245, 200, 110, 0.45);
+  border: 1.5px dashed color-mix(in srgb, var(--gold) 45%, transparent);
   border-radius: 8px;
   padding: 8px 10px;
 }

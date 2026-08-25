@@ -49,7 +49,7 @@ defineExpose({ celebrate: (): void => inner.value?.celebrate() })
   grid-template-columns: minmax(200px, 0.9fr) minmax(240px, 1.1fr);
   gap: 16px;
   align-items: stretch;
-  border-color: rgba(179, 166, 247, 0.35);
+  border-color: color-mix(in srgb, var(--lavender) 35%, transparent);
 }
 @media (max-width: 720px) {
   .pet-card { grid-template-columns: 1fr; }
@@ -89,7 +89,7 @@ defineExpose({ celebrate: (): void => inner.value?.celebrate() })
   margin: auto 0;
   padding: 12px 14px;
   background: rgba(13, 11, 32, 0.6);
-  border: 1.5px dashed rgba(245, 200, 110, 0.4);
+  border: 1.5px dashed color-mix(in srgb, var(--gold) 40%, transparent);
   border-radius: 10px;
   line-height: 1.85;
   font-size: 0.88rem;

@@ -362,7 +362,7 @@ const selInfo = computed(() => {
 }
 .planet-glyph:hover {
   transform: scale(1.45);
-  filter: drop-shadow(0 0 6px rgba(255, 227, 168, 0.9));
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--gold-bright) 90%, transparent));
 }
 
 /* 相位线：级联描边入场 + 刑冲虚线流动 */

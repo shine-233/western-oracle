@@ -9,6 +9,10 @@ import RunesView from '../views/RunesView.vue'
 import SettingsView from '../views/SettingsView.vue'
 import HistoryView from '../views/HistoryView.vue'
 import LibraryView from '../views/LibraryView.vue'
+import CrystalView from '../views/CrystalView.vue'
+import HoursView from '../views/HoursView.vue'
+import ArcadeView from '../views/ArcadeView.vue'
+import DreamView from '../views/DreamView.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -21,6 +25,10 @@ const router = createRouter({
     { path: '/numerology', component: NumerologyView },
     { path: '/runes', component: RunesView },
     { path: '/library', component: LibraryView },
+    { path: '/crystal', component: CrystalView },
+    { path: '/hours', component: HoursView },
+    { path: '/arcade', component: ArcadeView },
+    { path: '/dreams', component: DreamView },
     { path: '/history', component: HistoryView },
     { path: '/settings', component: SettingsView },
     { path: '/:pathMatch(.*)*', redirect: '/' },

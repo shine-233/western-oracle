@@ -5,6 +5,17 @@ import { clearHistory, getHistory } from '../lib/history'
 import { sfx, toggleSound, isSoundOn } from '../lib/sfx'
 import { t } from '../lib/i18n'
 import DecryptTitle from '../components/DecryptTitle.vue'
+import ThemePicker from '../components/ThemePicker.vue'
+import PixelArcanaCard from '../components/PixelArcanaCard.vue'
+import { locale } from '../lib/i18n'
+
+const LAB_CARDS = [
+  { id: 0, cn: '愚者', en: 'The Fool' },
+  { id: 1, cn: '魔术师', en: 'The Magician' },
+  { id: 10, cn: '命运之轮', en: 'Wheel of Fortune' },
+  { id: 13, cn: '死神', en: 'Death' },
+  { id: 21, cn: '世界', en: 'The World' },
+]
 
 const baseUrl = ref(getAiConfig().baseUrl)
 const apiKey = ref(getAiConfig().apiKey)
@@ -73,8 +84,8 @@ function onClearHistory(): void {
         <input v-model="model" type="text" :placeholder="t('set.modelPh')" />
       </label>
       <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-        <button class="btn small" @click="save">{{ t('set.save') }}</button>
-        <button class="btn ghost small" :disabled="testing || apiKey.trim() === ''" @click="test">
+        <button v-magnetic class="btn small" @click="save">{{ t('set.save') }}</button>
+        <button v-magnetic class="btn ghost small" :disabled="testing || apiKey.trim() === ''" @click="test">
           {{ testing ? t('set.testing') : t('set.test') }}
         </button>
         <Transition name="pop-saved">
@@ -87,7 +98,7 @@ function onClearHistory(): void {
     </section>
 
     <!-- 偏好设置 -->
-    <section class="panel stagger-in" style="margin-top: 20px; max-width: 640px;">
+    <section v-reveal class="panel stagger-in" style="margin-top: 20px; max-width: 640px;">
       <h3 style="margin-top: 0;">{{ t('set.prefs') }}</h3>
       <button class="pref-row" @click="onToggleSound">
         <span class="pref-icon">{{ soundOn ? '🔊' : '🔇' }}</span>
@@ -107,14 +118,39 @@ function onClearHistory(): void {
       </button>
     </section>
 
-    <section class="panel stagger-in" style="margin-top: 20px; max-width: 640px;">
+    <section v-reveal class="panel stagger-in" style="margin-top: 20px; max-width: 640px;">
       <h3 style="margin-top: 0;">{{ t('set.privacy') }}</h3>
       <p class="hint">{{ t('set.privacyBody') }}</p>
+    </section>
+
+    <ThemePicker />
+
+    <section v-reveal class="panel" style="margin-top: 20px; max-width: 760px;">
+      <h3 style="margin: 0 0 4px;">🃏 {{ locale === 'zh' ? '像素牌面实验室' : 'Pixel Arcana Lab' }}</h3>
+      <p class="hint" style="margin: 0 0 14px;">
+        {{
+          locale === 'zh'
+            ? '露娜画风的塔罗重绘计划：已完成大阿卡纳前五张样板，其余牌先用星阵占位。'
+            : 'Tarot redrawn in Luna\'s style — five Major Arcana samples so far; the rest use starfield placeholders.'
+        }}
+      </p>
+      <div class="arcana-lab">
+        <PixelArcanaCard
+          v-for="c in LAB_CARDS"
+          :key="c.id"
+          :id="c.id"
+          :name-cn="c.cn"
+          :name-en="c.en"
+          :size="108"
+        />
+      </div>
     </section>
   </div>
 </template>
 
 <style scoped>
+.arcana-lab { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+
 .saved-flash {
   color: var(--gold-bright);
   animation: saved-bounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);

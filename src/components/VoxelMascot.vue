@@ -425,7 +425,7 @@ onBeforeUnmount(() => {
   color: var(--gold-bright);
   background: rgba(21, 18, 50, 0.85);
   padding: 6px 12px;
-  border: 2px solid rgba(245, 200, 110, 0.5);
+  border: 2px solid color-mix(in srgb, var(--gold) 50%, transparent);
   border-radius: 8px;
   pointer-events: none;
   white-space: nowrap;

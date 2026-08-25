@@ -185,7 +185,7 @@ const aiContext = (): string => {
 .score-ring { width: 150px; height: 150px; }
 .ring-bg {
   fill: none;
-  stroke: rgba(179, 166, 247, 0.18);
+  stroke: color-mix(in srgb, var(--lavender) 18%, transparent);
   stroke-width: 9;
 }
 .ring-fg {
@@ -195,7 +195,7 @@ const aiContext = (): string => {
   stroke-linecap: round;
   transform: rotate(-90deg);
   transform-origin: 60px 60px;
-  filter: drop-shadow(0 0 8px rgba(255, 159, 206, 0.7));
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--pink) 70%, transparent));
   animation: ring-fill 1.4s cubic-bezier(0.34, 1.3, 0.64, 1) both;
 }
 @keyframes ring-fill {

@@ -97,7 +97,7 @@ function setFilter(k: FilterKey): void {
       >{{ f.glyph }} {{ t(f.keyName) }}<span class="cnt">{{ counts[f.key] ?? 0 }}</span></button>
     </div>
 
-    <TransitionGroup name="hist" tag="section" class="hist-list">
+    <TransitionGroup v-reveal name="hist" tag="section" class="hist-list">
       <article v-for="e in filtered" :key="e.id" class="panel hist-item" @click="toggle(e.id)">
         <header class="hist-head">
           <span class="type-badge" :style="{ color: TYPE_META[e.type].color, borderColor: TYPE_META[e.type].color }">
@@ -126,7 +126,7 @@ function setFilter(k: FilterKey): void {
     </p>
 
     <div v-if="entries.length > 0" style="margin-top: 22px;">
-      <button class="btn ghost small danger" @click="onClear">{{ t('his.clear') }}</button>
+      <button v-magnetic class="btn ghost small danger" @click="onClear">{{ t('his.clear') }}</button>
     </div>
 
     <!-- 分享图预览 -->
@@ -138,7 +138,7 @@ function setFilter(k: FilterKey): void {
             <h3 style="margin: 0 0 14px;">✦ {{ t('his.share') }}</h3>
             <img :src="sharePreview" alt="share card" class="preview-img" />
             <div style="display: flex; gap: 10px; justify-content: center; margin-top: 16px;">
-              <a class="btn small" :href="sharePreview" download="western-oracle.png">⬇ PNG</a>
+              <a v-magnetic class="btn small" :href="sharePreview" download="western-oracle.png">⬇ PNG</a>
             </div>
           </div>
         </div>

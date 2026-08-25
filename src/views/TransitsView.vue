@@ -216,7 +216,7 @@ const aiContext = (): string => {
   display: inline-block;
   padding: 1px 10px;
   border-radius: 999px;
-  border: 1.5px dashed rgba(125, 232, 195, 0.55);
+  border: 1.5px dashed color-mix(in srgb, var(--mint) 55%, transparent);
   color: var(--mint);
   animation: cd-breathe 3s ease-in-out infinite;
 }
@@ -226,9 +226,9 @@ const aiContext = (): string => {
 }
 
 .highlight-card {
-  border-color: rgba(245, 200, 110, 0.55);
+  border-color: color-mix(in srgb, var(--gold) 55%, transparent);
   background:
-    radial-gradient(ellipse at 90% 10%, rgba(245, 200, 110, 0.12), transparent 55%),
+    radial-gradient(ellipse at 90% 10%, color-mix(in srgb, var(--gold) 12%, transparent), transparent 55%),
     var(--void-1);
 }
 
@@ -241,7 +241,7 @@ const aiContext = (): string => {
 @media (max-width: 800px) { .astro-layout { grid-template-columns: 1fr; } }
 
 .planet-table { width: 100%; border-collapse: collapse; }
-.planet-table td { padding: 6px 8px; border-bottom: 1px solid rgba(179, 166, 247, 0.15); font-size: 0.95rem; }
+.planet-table td { padding: 6px 8px; border-bottom: 1px solid color-mix(in srgb, var(--lavender) 15%, transparent); font-size: 0.95rem; }
 .planet-table .pg { font-size: 1.2rem; color: var(--gold); width: 34px; }
 .planet-table .pg.mint { color: var(--mint); }
 .retro { color: var(--danger); font-size: 0.75rem; margin-left: 4px; }
@@ -255,14 +255,14 @@ const aiContext = (): string => {
   padding: 11px 15px;
   border-radius: 12px;
   background: rgba(30, 26, 69, 0.6);
-  border: 1px solid rgba(179, 166, 247, 0.2);
+  border: 1px solid color-mix(in srgb, var(--lavender) 20%, transparent);
   font-size: 0.92rem;
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s;
 }
-.transit-item:hover { transform: translateX(6px); border-color: rgba(179, 166, 247, 0.55); }
+.transit-item:hover { transform: translateX(6px); border-color: color-mix(in srgb, var(--lavender) 55%, transparent); }
 .lvl-dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
 .lv-high .lvl-dot { background: var(--pink); box-shadow: 0 0 10px var(--pink); animation: dot-pulse 1.6s ease-in-out infinite; }
-.lv-mid .lvl-dot { background: var(--gold); box-shadow: 0 0 8px rgba(245, 200, 110, 0.7); }
+.lv-mid .lvl-dot { background: var(--gold); box-shadow: 0 0 8px color-mix(in srgb, var(--gold) 70%, transparent); }
 .lv-low .lvl-dot { background: var(--lavender); opacity: 0.6; }
 @keyframes dot-pulse { 50% { transform: scale(1.35); opacity: 0.75; } }
 .transit-item .txt { flex: 1; display: flex; flex-direction: column; gap: 3px; }

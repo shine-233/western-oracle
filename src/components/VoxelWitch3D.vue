@@ -401,7 +401,7 @@ onBeforeUnmount(() => {
   height: 380px;
   cursor: grab;
   touch-action: none;
-  border: 3px solid rgba(179, 166, 247, 0.35);
+  border: 3px solid color-mix(in srgb, var(--lavender) 35%, transparent);
   image-rendering: pixelated;
 }
 .voxel-canvas:active { cursor: grabbing; }
@@ -416,7 +416,7 @@ onBeforeUnmount(() => {
   color: var(--gold-bright);
   background: rgba(21, 18, 50, 0.85);
   padding: 8px 14px;
-  border: 2px solid rgba(245, 200, 110, 0.5);
+  border: 2px solid color-mix(in srgb, var(--gold) 50%, transparent);
   pointer-events: none;
   animation: hint-bob 2s ease-in-out infinite;
 }

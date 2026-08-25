@@ -69,9 +69,9 @@ function open(c: TarotCard, e: MouseEvent): void {
       <input v-model="keyword" class="lib-search" type="text" :placeholder="t('lib.searchPh')" />
     </div>
 
-    <p class="hint lib-count">{{ t('lib.count', { n: filtered.length }) }}</p>
+    <p v-reveal class="hint lib-count">{{ t('lib.count', { n: filtered.length }) }}</p>
 
-    <TransitionGroup name="lib" tag="section" class="lib-grid">
+    <TransitionGroup v-reveal="1" name="lib" tag="section" class="lib-grid">
       <button
         v-for="(c, i) in filtered"
         :key="c.id"

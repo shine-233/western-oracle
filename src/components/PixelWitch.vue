@@ -159,7 +159,7 @@ onBeforeUnmount(() => {
   color: var(--gold-bright);
   pointer-events: none;
   animation: orbit-twinkle 2.2s ease-in-out infinite;
-  text-shadow: 0 0 8px rgba(255, 227, 168, 0.9);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--gold-bright) 90%, transparent);
 }
 .orbit-star.s1 { top: -4px; right: -6px; font-size: 14px; }
 .orbit-star.s2 { top: 40%; left: -14px; font-size: 10px; animation-delay: 0.7s; color: var(--pink-soft); }

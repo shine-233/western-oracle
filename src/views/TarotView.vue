@@ -40,6 +40,25 @@ const pickedSet = ref<Set<number>>(new Set())
 
 const today = dailyCard()
 
+/* ---------- 是/否 快问 ---------- */
+const ynResult = ref<{ card: TarotCard; reversed: boolean } | null>(null)
+
+function drawYesNo(e?: MouseEvent): void {
+  const card = ALL_CARDS[randInt(ALL_CARDS.length)]!
+  const reversed = allowReversed.value && Math.random() < 0.5
+  ynResult.value = { card, reversed }
+  sfx.flip()
+  pet.value?.celebrate()
+  if (e) sparkleFromEvent(e, 10)
+}
+
+const ynAdvice = computed(() => {
+  const r = ynResult.value
+  if (!r) return ''
+  const kw = locale.value === 'zh' ? r.card.nameCn : r.card.name
+  return `${kw}（${r.reversed ? t('c.reversed') : t('c.upright')}）：${r.reversed ? r.card.reversed : r.card.upright}`
+})
+
 useEscClose(() => {
   detail.value = null
 })
@@ -212,6 +231,29 @@ watch(allFlipped, (done) => {
       </div>
     </section>
 
+    <!-- 是/否 快问 -->
+    <section class="panel yn-panel stagger-in">
+      <div class="yn-left">
+        <h3 style="margin: 0 0 6px;">{{ t('tarot.yn.title') }}<span class="tag">1 CARD</span></h3>
+        <p class="hint" style="margin: 0 0 12px;">{{ t('tarot.yn.hint') }}</p>
+        <button v-if="!ynResult" class="btn" @click="drawYesNo($event)">{{ t('tarot.yn.draw') }}</button>
+        <button v-else class="btn ghost small" @click="drawYesNo($event)">{{ t('tarot.yn.again') }}</button>
+        <p v-if="ynResult" class="reading" style="margin: 10px 0 0; font-size: 0.88rem;">{{ ynAdvice }}</p>
+      </div>
+      <Transition name="pop">
+        <div v-if="ynResult" class="yn-card" :key="ynResult.card.id + String(ynResult.reversed)">
+          <img
+            :src="cardImageUrl(ynResult.card.id)"
+            :alt="ynResult.card.nameCn"
+            :class="{ upside: ynResult.reversed }"
+          />
+          <span class="yn-verdict" :class="ynResult.reversed ? 'no' : 'yes'">
+            {{ ynResult.reversed ? t('tarot.yn.no') : t('tarot.yn.yes') }}
+          </span>
+        </div>
+      </Transition>
+    </section>
+
     <!-- ① 设定阶段 -->
     <section v-if="stage === 'form'" class="panel stagger-in" style="margin-top: 18px;">
       <div class="form-row">
@@ -368,7 +410,7 @@ watch(allFlipped, (done) => {
 </template>
 
 <style scoped>
-.daily-panel { border-color: rgba(245, 200, 110, 0.4); }
+.daily-panel { border-color: color-mix(in srgb, var(--gold) 40%, transparent); }
 .daily-inner { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
 .daily-inner img {
   width: 96px;
@@ -379,6 +421,39 @@ watch(allFlipped, (done) => {
 .daily-inner img.upside { transform: rotate(180deg); }
 .daily-text { flex: 1 1 260px; }
 .dc-label { font-family: var(--pixel); font-size: 0.55rem; letter-spacing: 0.15em; color: var(--pink-soft); }
+
+/* 是/否 快问 */
+.yn-panel { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; margin-top: 18px; }
+.yn-left { flex: 1 1 260px; }
+.yn-card {
+  position: relative;
+  width: 96px;
+  animation: yn-drop 0.55s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+}
+.yn-card img {
+  width: 100%;
+  border-radius: 10px;
+  border: 2px solid var(--gold);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+}
+.yn-card img.upside { transform: rotate(180deg); }
+.yn-verdict {
+  position: absolute;
+  left: 50%;
+  bottom: -12px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--cute);
+  font-size: 0.8rem;
+  padding: 2px 12px;
+  border-radius: 999px;
+  background: var(--void-2);
+}
+.yn-verdict.yes { color: var(--mint); border: 1.5px solid var(--mint); box-shadow: 0 0 10px color-mix(in srgb, var(--mint) 40%, transparent); }
+.yn-verdict.no { color: var(--pink); border: 1.5px solid var(--pink); box-shadow: 0 0 10px color-mix(in srgb, var(--pink) 40%, transparent); }
+@keyframes yn-drop {
+  from { opacity: 0; transform: translateY(-26px) rotate(-8deg) scale(0.85); }
+}
 
 .tarot-row {
   display: grid;
@@ -406,8 +481,8 @@ watch(allFlipped, (done) => {
   animation: ritual-glow 2.6s ease-in-out infinite;
 }
 @keyframes ritual-glow {
-  0%, 100% { box-shadow: 0 0 0 rgba(245, 200, 110, 0); transform: scale(1); }
-  50% { box-shadow: 0 0 26px rgba(245, 200, 110, 0.4); transform: scale(1.02); }
+  0%, 100% { box-shadow: 0 0 0 color-mix(in srgb, var(--gold) 0%, transparent); transform: scale(1); }
+  50% { box-shadow: 0 0 26px color-mix(in srgb, var(--gold) 40%, transparent); transform: scale(1.02); }
 }
 
 /* ---------- 洗牌阶段 ---------- */
@@ -418,10 +493,10 @@ watch(allFlipped, (done) => {
   inset: 0;
   border-radius: 10px;
   background:
-    radial-gradient(circle at 50% 42%, rgba(255, 196, 224, 0.28), transparent 55%),
+    radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--pink-soft) 28%, transparent), transparent 55%),
     repeating-linear-gradient(45deg, #221d4e 0 8px, #191542 8px 16px);
   border: 3px solid #2e2650;
-  box-shadow: inset 0 0 0 3px #151232, inset 0 0 0 5px rgba(255, 159, 206, 0.5);
+  box-shadow: inset 0 0 0 3px #151232, inset 0 0 0 5px color-mix(in srgb, var(--pink) 50%, transparent);
   animation: riffle-shuffle 0.55s cubic-bezier(0.34, 1.4, 0.64, 1) infinite alternate;
   animation-delay: calc(var(--i) * 70ms);
 }
@@ -452,20 +527,20 @@ watch(allFlipped, (done) => {
   transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
   cursor: pointer;
   background:
-    radial-gradient(circle at 50% 42%, rgba(255, 196, 224, 0.28), transparent 55%),
-    radial-gradient(circle at 50% 58%, rgba(245, 200, 110, 0.2), transparent 50%),
+    radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--pink-soft) 28%, transparent), transparent 55%),
+    radial-gradient(circle at 50% 58%, color-mix(in srgb, var(--gold) 20%, transparent), transparent 50%),
     repeating-linear-gradient(45deg, #221d4e 0 8px, #191542 8px 16px);
   border: 3px solid #2e2650;
-  box-shadow: inset 0 0 0 3px #151232, inset 0 0 0 5px rgba(255, 159, 206, 0.5), 0 4px 14px rgba(0, 0, 0, 0.45);
+  box-shadow: inset 0 0 0 3px #151232, inset 0 0 0 5px color-mix(in srgb, var(--pink) 50%, transparent), 0 4px 14px rgba(0, 0, 0, 0.45);
   border-radius: 9px;
   padding: 0;
 }
 .fan-card:hover:not(.picked) {
-  filter: brightness(1.22) drop-shadow(0 0 12px rgba(255, 196, 224, 0.55));
+  filter: brightness(1.22) drop-shadow(0 0 12px color-mix(in srgb, var(--pink-soft) 55%, transparent));
 }
 .fan-card.picked {
   filter: brightness(0.6) saturate(0.5);
-  box-shadow: inset 0 0 0 3px #151232, inset 0 0 0 5px rgba(255, 159, 206, 0.2);
+  box-shadow: inset 0 0 0 3px #151232, inset 0 0 0 5px color-mix(in srgb, var(--pink) 20%, transparent);
 }
 .fan-card-inner { position: relative; display: block; width: 100%; height: 100%; }
 .fan-card-inner .star-big {
@@ -475,7 +550,7 @@ watch(allFlipped, (done) => {
   transform: translate(-50%, -50%);
   font-size: 1.7rem;
   color: var(--gold-bright);
-  text-shadow: 0 0 12px rgba(255, 227, 168, 0.8);
+  text-shadow: 0 0 12px color-mix(in srgb, var(--gold-bright) 80%, transparent);
 }
 .fan-card-inner .star-small { position: absolute; bottom: 8px; right: 10px; font-size: 0.7rem; color: var(--pink-soft); opacity: 0.8; }
 .reshuffle { display: block; margin: 0 auto; }
@@ -563,7 +638,7 @@ watch(allFlipped, (done) => {
 .modal-sec strong { color: var(--gold-bright); font-family: var(--cute); font-weight: 400; }
 .sources-box {
   margin-top: 14px;
-  border: 1.5px dashed rgba(245, 200, 110, 0.5);
+  border: 1.5px dashed color-mix(in srgb, var(--gold) 50%, transparent);
   border-radius: 10px;
   padding: 10px 14px;
   background: rgba(13, 11, 32, 0.45);

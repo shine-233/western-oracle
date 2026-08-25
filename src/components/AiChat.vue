@@ -215,15 +215,15 @@ onBeforeUnmount(() => {
 .ai-panel { margin-top: 18px; }
 .ai-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
 .ai-tag {
-  background: linear-gradient(120deg, rgba(179, 166, 247, 0.25), rgba(255, 159, 206, 0.25));
-  border-color: rgba(255, 159, 206, 0.6);
+  background: linear-gradient(120deg, color-mix(in srgb, var(--lavender) 25%, transparent), color-mix(in srgb, var(--pink) 25%, transparent));
+  border-color: color-mix(in srgb, var(--pink) 60%, transparent);
   margin-left: 8px;
 }
 .ai-empty { text-align: center; padding: 14px 0 4px; }
 .ai-empty .btn { animation: empty-pulse 2.4s ease-in-out infinite; }
 @keyframes empty-pulse {
-  0%, 100% { box-shadow: 0 0 0 rgba(245, 200, 110, 0); }
-  50% { box-shadow: 0 0 22px rgba(245, 200, 110, 0.35); }
+  0%, 100% { box-shadow: 0 0 0 color-mix(in srgb, var(--gold) 0%, transparent); }
+  50% { box-shadow: 0 0 22px color-mix(in srgb, var(--gold) 35%, transparent); }
 }
 .ai-thread { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
 .ai-msg {
@@ -237,13 +237,13 @@ onBeforeUnmount(() => {
 .ai-msg.user {
   align-self: flex-end;
   background: rgba(124, 107, 214, 0.28);
-  border: 1px solid rgba(179, 166, 247, 0.5);
+  border: 1px solid color-mix(in srgb, var(--lavender) 50%, transparent);
   border-radius: 14px 14px 3px 14px;
 }
 .ai-msg.assistant {
   align-self: flex-start;
   background: rgba(30, 26, 69, 0.72);
-  border: 1px solid rgba(245, 200, 110, 0.35);
+  border: 1px solid color-mix(in srgb, var(--gold) 35%, transparent);
   border-radius: 14px 14px 14px 3px;
 }
 .caret { color: var(--gold-bright); animation: caret-blink 0.85s steps(2) infinite; }
@@ -256,11 +256,11 @@ onBeforeUnmount(() => {
 .orb i {
   width: 9px; height: 9px; border-radius: 50%;
   background: radial-gradient(circle at 32% 32%, #fff6d8, var(--gold-bright) 55%, #b98a2e);
-  box-shadow: 0 0 10px rgba(245, 200, 110, 0.9);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--gold) 90%, transparent);
   animation: orb-glow 1s ease-in-out infinite;
 }
-.orb i:nth-child(2) { animation-delay: 0.16s; background: radial-gradient(circle at 32% 32%, #ffe9f4, var(--pink) 55%, #b04a7a); box-shadow: 0 0 10px rgba(255, 159, 206, 0.9); }
-.orb i:nth-child(3) { animation-delay: 0.32s; background: radial-gradient(circle at 32% 32%, #e9fff6, var(--mint) 55%, #2e8a6e); box-shadow: 0 0 10px rgba(125, 232, 195, 0.9); }
+.orb i:nth-child(2) { animation-delay: 0.16s; background: radial-gradient(circle at 32% 32%, #ffe9f4, var(--pink) 55%, #b04a7a); box-shadow: 0 0 10px color-mix(in srgb, var(--pink) 90%, transparent); }
+.orb i:nth-child(3) { animation-delay: 0.32s; background: radial-gradient(circle at 32% 32%, #e9fff6, var(--mint) 55%, #2e8a6e); box-shadow: 0 0 10px color-mix(in srgb, var(--mint) 90%, transparent); }
 @keyframes orb-glow {
   0%, 100% { transform: translateY(0) scale(0.85); opacity: 0.65; }
   50% { transform: translateY(-5px) scale(1.15); opacity: 1; }

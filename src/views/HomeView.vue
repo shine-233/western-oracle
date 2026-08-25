@@ -35,10 +35,13 @@ const modules = [
   { to: '/numerology', glyph: '∴', title: 'nav.numerology', desc: 'mod.numerology.desc' },
   { to: '/runes', glyph: 'ᛟ', title: 'nav.runes', desc: 'mod.runes.desc' },
   { to: '/library', glyph: '📖', title: 'nav.library', desc: 'mod.library.desc' },
+  { to: '/arcade', glyph: '🎲', title: 'nav.arcade', desc: 'mod.arcade.desc' },
+  { to: '/dreams', glyph: '🌙', title: 'nav.dreams', desc: 'mod.dreams.desc' },
   { to: '/history', glyph: '📜', title: 'nav.history', desc: 'mod.history.desc' },
 ]
 
 const savedName = loadJSON<{ name?: string }>('num-profile', {}).name
+
 const greeting = computed(() => {
   const h = new Date().getHours()
   if (h < 5) return t('home.greeting.night')
@@ -173,7 +176,7 @@ const greeting = computed(() => {
 .voxel-head { margin-bottom: 16px; }
 
 /* 今日星历 */
-.almanac { margin-top: 18px; border-color: rgba(125, 232, 195, 0.35); }
+.almanac { margin-top: 18px; border-color: color-mix(in srgb, var(--mint) 35%, transparent); }
 .alm-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -182,7 +185,7 @@ const greeting = computed(() => {
 .alm-item {
   padding: 13px 15px;
   background: rgba(30, 26, 69, 0.55);
-  border: 1.5px solid rgba(179, 166, 247, 0.25);
+  border: 1.5px solid color-mix(in srgb, var(--lavender) 25%, transparent);
   border-radius: 12px;
   display: flex;
   flex-direction: column;
