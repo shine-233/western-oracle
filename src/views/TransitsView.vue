@@ -4,6 +4,7 @@ import { ASPECT_CN, ELEMENT_CN, PLANET_CN, computeNatalChart, crossAspects, moon
 import { askAI, isAiEnabled, oracleSystemPrompt } from '../lib/ai'
 import AstroWheel from '../components/AstroWheel.vue'
 import BirthForm from '../components/BirthForm.vue'
+import { vTilt } from '../lib/tilt'
 
 const natal = ref<NatalChart | null>(null)
 const sky = ref<NatalChart | null>(null)
@@ -99,14 +100,16 @@ async function askAiInterpretation(): Promise<void> {
     </section>
 
     <section class="astro-layout" style="margin-top: 18px;">
-      <AstroWheel
-        :planets="natal.planets"
-        :cusps="natal.cusps"
-        :asc-lon="natal.ascendant.lon"
-        :aspects="natal.aspects"
-        :inner-planets="sky.planets"
-        :synastry-aspects="aspects"
-      />
+      <div v-tilt="5">
+        <AstroWheel
+          :planets="natal.planets"
+          :cusps="natal.cusps"
+          :asc-lon="natal.ascendant.lon"
+          :aspects="natal.aspects"
+          :inner-planets="sky.planets"
+          :synastry-aspects="aspects"
+        />
+      </div>
 
       <section class="panel">
         <h3 style="margin-top: 0;">此刻的天空</h3>

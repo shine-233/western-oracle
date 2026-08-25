@@ -1,0 +1,57 @@
+{
+  "dataset": "alignment_cn_en_tarot",
+  "version": "v1",
+  "generated": "2026-08-25",
+  "method": {
+    "majors": "逐张人工对齐：站点中文关键词 ↔ McElroy 英文关键词 ↔ Waite 原书主题，标注置信度与依据",
+    "minors": "规则模板对齐：花色主题（四元素/四大事务）× 阶位叙事弧（Ace=开端，2-6/7-9 为 Papus 正反合三段循环，10=不确定，宫廷=人物阶段）。依据 Papus《TOB》第二十课的数字三段论体系",
+    "usage": "对齐数据用于 AI 解读 prompt 增强（中英双语关键词锚定），减少模型幻觉"
+  },
+  "major_alignments": [
+    { "site_id": "fool", "cn_keywords": ["开端", "纯真", "冒险"], "en_keywords": ["freedom", "faith", "innocence", "beginnings"], "waite_theme": "Folly, expiation, the body of the new man", "confidence": "high", "note": "中文『开端/纯真』与 EN innocence/beginnings 直接对应" },
+    { "site_id": "magician", "cn_keywords": ["显化", "意志", "资源"], "en_keywords": ["capability", "empowerment", "activity"], "waite_theme": "Skill, diplomacy, will, self-confidence", "confidence": "high", "note": "显化=empowerment 的意译对齐" },
+    { "site_id": "high-priestess", "cn_keywords": ["直觉", "奥秘", "静观"], "en_keywords": ["intuition", "reflection", "purity", "secrets"], "waite_theme": "Secrets, mystery, the future as yet unrevealed", "confidence": "high", "note": "" },
+    { "site_id": "empress", "cn_keywords": ["丰盛", "孕育", "滋养"], "en_keywords": ["fertility", "creativity", "abundance"], "waite_theme": "Fertility, fruitfulness, action of days", "confidence": "high", "note": "" },
+    { "site_id": "emperor", "cn_keywords": ["秩序", "权威", "结构"], "en_keywords": ["authority", "structure", "control", "regulation"], "waite_theme": "Stable power, protection, a great person", "confidence": "high", "note": "" },
+    { "site_id": "hierophant", "cn_keywords": ["传统", "导师", "信仰"], "en_keywords": ["education", "tradition", "conformity", "guidance"], "waite_theme": "Marriage alliance, captivity, mercy and goodness", "confidence": "medium", "note": "Waite 原义较抽象，对齐主要依赖 McElroy" },
+    { "site_id": "lovers", "cn_keywords": ["结合", "选择", "价值观"], "en_keywords": ["relationship", "attraction", "personal beliefs", "values"], "waite_theme": "Attraction, passion, the choice between paths", "confidence": "high", "note": "" },
+    { "site_id": "chariot", "cn_keywords": ["胜利", "意志", "前进"], "en_keywords": ["victory", "willpower", "self-assertion", "triumph"], "waite_theme": "Providence, war, triumph, presumption", "confidence": "high", "note": "" },
+    { "site_id": "strength", "cn_keywords": ["勇气", "柔韧", "驯服"], "en_keywords": ["strength", "courage", "persuasion", "compassion"], "waite_theme": "Power, energy, courage, magnanimity", "confidence": "high", "note": "" },
+    { "site_id": "hermit", "cn_keywords": ["内省", "寻找", "独处"], "en_keywords": ["soul-searching", "introspection", "solitude", "guidance"], "waite_theme": "Prudence, circumspection, a pilgrimage", "confidence": "high", "note": "" },
+    { "site_id": "wheel-of-fortune", "cn_keywords": ["转折", "周期", "机运"], "en_keywords": ["turning point", "fate", "cycles", "destiny"], "waite_theme": "Fate, fortune, success and elevation", "confidence": "high", "note": "" },
+    { "site_id": "justice", "cn_keywords": ["公正", "因果", "真相"], "en_keywords": ["justice", "truth", "cause and effect", "law"], "waite_theme": "Equity, rightness, triumph of the right", "confidence": "high", "note": "" },
+    { "site_id": "hanged-man", "cn_keywords": ["悬置", "换位", "臣服"], "en_keywords": ["suspension", "sacrifice", "letting go", "new perspective"], "waite_theme": "Wisdom, trials, surrender to a greater design", "confidence": "high", "note": "" },
+    { "site_id": "death", "cn_keywords": ["终结", "转化", "重生"], "en_keywords": ["ending", "transformation", "transition", "release"], "waite_theme": "End, mortality, destruction of the old", "confidence": "high", "note": "" },
+    { "site_id": "temperance", "cn_keywords": ["调和", "中道", "耐心"], "en_keywords": ["moderation", "balance", "patience", "blending"], "waite_theme": "Economy, moderation, frugality", "confidence": "high", "note": "" },
+    { "site_id": "devil", "cn_keywords": ["束缚", "欲望", "执念"], "en_keywords": ["bondage", "addiction", "materialism", "shadow self"], "waite_theme": "Ravage, violence, extraordinary efforts", "confidence": "medium", "note": "Waite 原义偏『暴力/毁灭』，现代对齐偏『束缚/成瘾』" },
+    { "site_id": "tower", "cn_keywords": ["剧变", "崩塌", "启示"], "en_keywords": ["upheaval", "ruin", "revelation", "sudden change"], "waite_theme": "Misery, distress, ruin, deception", "confidence": "high", "note": "" },
+    { "site_id": "star", "cn_keywords": ["希望", "疗愈", "信念"], "en_keywords": ["hope", "healing", "faith", "inspiration"], "waite_theme": "Loss, theft, privation; another reading: hope and bright prospects", "confidence": "high", "note": "" },
+    { "site_id": "moon", "cn_keywords": ["幻象", "潜意识", "不安"], "en_keywords": ["illusion", "fear", "anxiety", "subconscious"], "waite_theme": "Hidden enemies, danger, darkness, deception", "confidence": "high", "note": "" },
+    { "site_id": "sun", "cn_keywords": ["喜悦", "成功", "活力"], "en_keywords": ["success", "vitality", "joy", "clarity"], "waite_theme": "Material happiness, fortunate marriage", "confidence": "high", "note": "" },
+    { "site_id": "judgement", "cn_keywords": ["觉醒", "召唤", "重生"], "en_keywords": ["awakening", "rebirth", "inner calling", "reckoning"], "waite_theme": "Change of position, renewal, outcome", "confidence": "high", "note": "" },
+    { "site_id": "world", "cn_keywords": ["圆满", "完成", "整合"], "en_keywords": ["completion", "integration", "accomplishment", "wholeness"], "waite_theme": "Assured success, completion, reward", "confidence": "high", "note": "" }
+  ],
+  "minor_suit_themes": {
+    "wands": { "element": "Fire", "cn_theme": "行动与热情", "en_theme": "enterprise, glory, creation (Papus: Sceptres)", "papuus_principle": "Enterprise" },
+    "cups": { "element": "Water", "cn_theme": "情感与联结", "en_theme": "love, happiness, preservation (Papus: Cups)", "papuus_principle": "Love" },
+    "swords": { "element": "Air", "cn_theme": "思想与沟通", "en_theme": "hatred, war, transformation (Papus: Swords)", "papuus_principle": "Hatred" },
+    "pentacles": { "element": "Earth", "cn_theme": "物质与现实", "en_theme": "money, trade, development (Papus: Pentacles)", "papuus_principle": "Fortune" }
+  },
+  "minor_rank_arc": {
+    "ace": { "cn": "开端", "en": "commencement of the suit principle", "papus": "1. Commencement of Commencement" },
+    "2": { "cn": "初步阻力", "en": "opposition to the commencement", "papus": "2. Opposition" },
+    "3": { "cn": "初步达成", "en": "realization of the commencement", "papus": "3. Equilibrium" },
+    "4": { "cn": "停滞/阻力", "en": "obstacles", "papus": "4. Commencement of Opposition" },
+    "5": { "cn": "冲突/抗争", "en": "victory after struggle", "papus": "5. Opposition" },
+    "6": { "cn": "转折点", "en": "the opposition prevails / turning point", "papus": "6. Equilibrium" },
+    "7": { "cn": "新的优势", "en": "commencement of success", "papus": "7. Commencement of Equilibrium" },
+    "8": { "cn": "部分受挫", "en": "partial opposition", "papus": "8. Opposition" },
+    "9": { "cn": "接近完成", "en": "realization of success", "papus": "9. Equilibrium" },
+    "10": { "cn": "不确定/终局", "en": "undetermined; the following card explains", "papus": "10. Undetermined" },
+    "page": { "cn": "学习者/信使", "en": "child / messenger stage", "papus": "Knave = Child" },
+    "knight": { "cn": "行动者/青年", "en": "young man / conflict stage", "papus": "Knight = Young Man" },
+    "queen": { "cn": "接纳者/内在", "en": "woman / receptive stage", "papus": "Queen = Woman" },
+    "king": { "cn": "掌控者/外显", "en": "man / creative stage", "papus": "King = Man" }
+  },
+  "todo": "v2: 小牌从『花色×阶位模板』升级为逐张人工对齐（56条），并增加中文释义与 EN 的语义相似度评分"
+}

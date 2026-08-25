@@ -60,6 +60,27 @@
     "icelandic": 16
    },
    "pass": true
+  },
+  "tetrabiblos_astro_v1": {
+   "checks": {
+    "seven_planets": true,
+    "all_have_nature": true,
+    "all_have_houses": true,
+    "all_have_exaltation": true,
+    "all_cited": true
+   },
+   "pass": true
+  },
+  "alignment_cn_en_v1": {
+   "checks": {
+    "majors_22": true,
+    "all_have_cn": true,
+    "all_have_en": true,
+    "all_have_confidence": true,
+    "suit_themes_4": true,
+    "rank_arc_14": true
+   },
+   "pass": true
   }
  },
  "all_pass": true

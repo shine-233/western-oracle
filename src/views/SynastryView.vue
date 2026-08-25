@@ -4,6 +4,7 @@ import { PLANET_CN, computeNatalChart, crossAspects, type BirthInput, type Chart
 import { askAI, isAiEnabled, oracleSystemPrompt } from '../lib/ai'
 import AstroWheel from '../components/AstroWheel.vue'
 import BirthForm from '../components/BirthForm.vue'
+import { vTilt } from '../lib/tilt'
 
 const chartA = ref<NatalChart | null>(null)
 const chartB = ref<NatalChart | null>(null)
@@ -79,14 +80,16 @@ async function askAiInterpretation(): Promise<void> {
     <div class="divider-star">✦ ✦ ✦</div>
 
     <section class="astro-layout">
-      <AstroWheel
-        :planets="chartA.planets"
-        :cusps="chartA.cusps"
-        :asc-lon="chartA.ascendant.lon"
-        :aspects="chartA.aspects"
-        :inner-planets="chartB.planets"
-        :synastry-aspects="aspects"
-      />
+      <div v-tilt="5">
+        <AstroWheel
+          :planets="chartA.planets"
+          :cusps="chartA.cusps"
+          :asc-lon="chartA.ascendant.lon"
+          :aspects="chartA.aspects"
+          :inner-planets="chartB.planets"
+          :synastry-aspects="aspects"
+        />
+      </div>
 
       <section class="panel">
         <h3 style="margin-top: 0;">双方速览</h3>

@@ -13,6 +13,7 @@ research/
 │   ├── mcelroy_tarot_raw.json          # Mark McElroy《A Guide to Tarot Meanings》（作者声明公版，78张）
 │   ├── rune_poem_anglosaxon_raw.txt    # 盎格鲁-撒克逊卢恩诗（29节，OE原文+Dickins 1915英译）
 │   ├── rune_poems_norwegian_icelandic_raw.txt  # 挪威诗16节+冰岛诗16节（同上英译）
+│   ├── tetrabiblos_book1_raw.txt        # Ptolemy《Tetrabiblos》Book I 选章（Ashmand 1822 英译）
 │   └── astro_rulerships_ptolemy.json   # 传统行星守护表（源自 Ptolemy《Tetrabiblos》体系，curated）
 ├── pipeline/
 │   ├── 01_fetch/dl_sources.py          # 拉取/校验原始文献
@@ -30,6 +31,8 @@ research/
     ├── mcelroy_candidates_v1.json      # McElroy 挖掘候选（78）
     ├── tarot_waite_v1.json             # 清洗后 Waite 牌意（78张）
     ├── tarot_sources_v2.json           # 三源合并对照（78张 × 3来源）
+    ├── tetrabiblos_astro_v1.json        # Tetrabiblos 行星性质/庙宫/旺位（7行星，含原文引句）
+    ├── alignment_cn_en_v1.json          # 中文-原文语义对齐（22大牌逐张+小牌规则模板）
     ├── rune_poem_oe_v1.json            # [v1, 已被v2取代] 仅盎格鲁-撒克逊诗
     ├── rune_poems_v2.json              # 清洗后三诗对照（24符文：16个三诗齐全+8个仅OE诗）
     └── audit_report.json               # 审计报告
@@ -107,6 +110,8 @@ python research/pipeline/04_audit/export_ts.py    # 导出站点 TS
 - [x] 挪威卢恩诗 / 冰岛卢恩诗对照（v2，2026-08-25）
 - [x] 第二独立塔罗牌意来源：Papus 1892（三源对照 v2，2026-08-25）
 - [x] McElroy 公版结构化释义（fortune-telling/light/shadow，2026-08-25）
-- [ ] Ptolemy《Tetrabiblos》行星 significations 全量挖掘（sacred-texts 公版英译 Ashmand 1822）
-- [ ] 中文牌意与 Waite 原文的语义对齐标注（用于 AI 解读 prompt 增强）
+- [x] Ptolemy《Tetrabiblos》Book I 选章挖掘：行星性质/庙宫/旺位，与 curated 守护表交叉验证一致（v1，2026-08-25）
+- [x] 中文-原文语义对齐标注 v1：22 大牌逐张（人工，含置信度）+ 56 小牌花色×阶位规则模板（依据 Papus 三段论）；已注入 AI 解读 prompt 做双语锚定（2026-08-25）
+- [ ] 对齐 v2：小牌逐张人工对齐 + 语义相似度评分
+- [ ] Tetrabiblos Book III/IV（命盘专题各章）继续挖掘
 - [ ] Golden Dawn《Book T》占星对应（Tarotoo 数据集已含 GD 归属，可作参考实现）

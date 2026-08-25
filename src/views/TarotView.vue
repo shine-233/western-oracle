@@ -82,7 +82,9 @@ async function askAiInterpretation(): Promise<void> {
 
   const lines = drawn.value.map((d, i) => {
     const pos = spread.value.positions[i] ?? `第${i + 1}张`
-    return `${pos}：${d.card.name}（${d.reversed ? '逆位' : '正位'}，关键词 ${d.card.keywords.join('、')}；传统释义：${meaningOf(d)}）`
+    const en = TAROT_SOURCES[d.card.id]
+    const enKw = en?.keywords.length ? `；EN keywords: ${en.keywords.join(', ')}` : ''
+    return `${pos}：${d.card.name}（${d.reversed ? '逆位' : '正位'}，关键词 ${d.card.keywords.join('、')}${enKw}；传统释义：${meaningOf(d)}）`
   })
   const payload = [
     question.value.trim() ? `提问者的问题：「${question.value.trim()}」` : '提问者没有具体问题，请做整体运势指引。',

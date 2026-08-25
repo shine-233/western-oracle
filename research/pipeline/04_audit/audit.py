@@ -89,11 +89,43 @@ def audit_tarot_sources(report: dict) -> None:
     report['tarot_sources_v2'] = {'checks': checks, 'pass': all(v for k, v in checks.items() if k != 'fortune_telling_coverage')}
 
 
+def audit_tetrabiblos(report: dict) -> None:
+    tb = json.loads((DATA / 'tetrabiblos_astro_v1.json').read_text(encoding='utf-8'))
+    planets = tb['planets']
+    checks = {
+        'seven_planets': len(planets) == 7,
+        'all_have_nature': all('quote' in planets[p]['nature'] and planets[p]['nature']['quote'].strip() for p in planets),
+        'all_have_houses': all(planets[p]['houses']['domicile'] for p in planets),
+        'all_have_exaltation': all(planets[p]['exaltation']['exaltation'] for p in planets),
+        'all_cited': all(
+            'Ashmand 1822' in planets[p][k]['source']
+            for p in planets for k in ('nature', 'houses', 'exaltation')
+        ),
+    }
+    report['tetrabiblos_astro_v1'] = {'checks': checks, 'pass': all(checks.values())}
+
+
+def audit_alignment(report: dict) -> None:
+    al = json.loads((DATA / 'alignment_cn_en_v1.json').read_text(encoding='utf-8'))
+    majors = al['major_alignments']
+    checks = {
+        'majors_22': len(majors) == 22,
+        'all_have_cn': all(m['cn_keywords'] for m in majors),
+        'all_have_en': all(m['en_keywords'] for m in majors),
+        'all_have_confidence': all(m['confidence'] in ('high', 'medium', 'low') for m in majors),
+        'suit_themes_4': len(al['minor_suit_themes']) == 4,
+        'rank_arc_14': len(al['minor_rank_arc']) == 14,
+    }
+    report['alignment_cn_en_v1'] = {'checks': checks, 'pass': all(checks.values())}
+
+
 def main() -> None:
     report: dict = {'generated': '2026-08-25', 'datasets': {}}
     audit_tarot(report['datasets'])
     audit_tarot_sources(report['datasets'])
     audit_runes(report['datasets'])
+    audit_tetrabiblos(report['datasets'])
+    audit_alignment(report['datasets'])
 
     all_pass = all(d['pass'] for d in report['datasets'].values())
     report['all_pass'] = all_pass
