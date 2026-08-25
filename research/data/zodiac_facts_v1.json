@@ -1,0 +1,205 @@
+{
+ "dataset": "zodiac_facts",
+ "version": "v1",
+ "generated": "2026-08-25",
+ "source": {
+  "work": "dariusk/corpora data/divination/zodiac.json",
+  "rights": "CC0 / public domain",
+  "note": "古典守护列已与本仓库 astro_rulerships_ptolemy.json（Tetrabiblos 体系）交叉验证一致"
+ },
+ "count": 12,
+ "signs": [
+  {
+   "sign": "Aries",
+   "longitude_start": 0.0,
+   "longitude_end": 30.0,
+   "element": "Fire",
+   "ruler_classic": "Mars",
+   "ruler_modern": "Mars",
+   "unicode_symbol": "♈",
+   "gloss": "The Ram",
+   "approximate_dates": "21 March - 20 April",
+   "keywords": [
+    "driven",
+    "idealistic",
+    "aggressive"
+   ]
+  },
+  {
+   "sign": "Taurus",
+   "longitude_start": 30.0,
+   "longitude_end": 60.0,
+   "element": "Earth",
+   "ruler_classic": "Venus",
+   "ruler_modern": "Earth",
+   "unicode_symbol": "♉",
+   "gloss": "The Bull",
+   "approximate_dates": "21 April - 21 May",
+   "keywords": [
+    "resolute",
+    "sensual",
+    "indulgent"
+   ]
+  },
+  {
+   "sign": "Gemini",
+   "longitude_start": 60.0,
+   "longitude_end": 90.0,
+   "element": "Air",
+   "ruler_classic": "Mercury",
+   "ruler_modern": "Mercury",
+   "unicode_symbol": "♊",
+   "gloss": "The Twins",
+   "approximate_dates": "22 May - 21 June",
+   "keywords": [
+    "playful",
+    "curious",
+    "two-faced"
+   ]
+  },
+  {
+   "sign": "Cancer",
+   "longitude_start": 90.0,
+   "longitude_end": 120.0,
+   "element": "Water",
+   "ruler_classic": "Moon",
+   "ruler_modern": "Moon",
+   "unicode_symbol": "♋",
+   "gloss": "The Crab",
+   "approximate_dates": "22 June - 23 July",
+   "keywords": [
+    "nurturing",
+    "snobby",
+    "petty"
+   ]
+  },
+  {
+   "sign": "Leo",
+   "longitude_start": 120.0,
+   "longitude_end": 150.0,
+   "element": "Fire",
+   "ruler_classic": "Sun",
+   "ruler_modern": "Sun",
+   "unicode_symbol": "♌",
+   "gloss": "The Lion",
+   "approximate_dates": "24 July - 23 August",
+   "keywords": [
+    "fierce",
+    "opulent",
+    "narcissistic"
+   ]
+  },
+  {
+   "sign": "Virgo",
+   "longitude_start": 150.0,
+   "longitude_end": 180.0,
+   "element": "Earth",
+   "ruler_classic": "Mercury",
+   "ruler_modern": "Ceres",
+   "unicode_symbol": "♍",
+   "gloss": "The Maiden",
+   "approximate_dates": "24 August - 23 September",
+   "keywords": [
+    "meticulous",
+    "helpful",
+    "naive"
+   ]
+  },
+  {
+   "sign": "Libra",
+   "longitude_start": 180.0,
+   "longitude_end": 210.0,
+   "element": "Air",
+   "ruler_classic": "Venus",
+   "ruler_modern": "Venus",
+   "unicode_symbol": "♎",
+   "gloss": "The Scales",
+   "approximate_dates": "24 September - 23 October",
+   "keywords": [
+    "balanced",
+    "chatty",
+    "indecisive"
+   ]
+  },
+  {
+   "sign": "Scorpio",
+   "longitude_start": 210.0,
+   "longitude_end": 240.0,
+   "element": "Water",
+   "ruler_classic": "Mars",
+   "ruler_modern": "Pluto",
+   "unicode_symbol": "♏",
+   "gloss": "The Scorpion",
+   "approximate_dates": "24 October - 22 November",
+   "keywords": [
+    "deep",
+    "magnetic",
+    "destructive"
+   ]
+  },
+  {
+   "sign": "Sagittarius",
+   "longitude_start": 240.0,
+   "longitude_end": 270.0,
+   "element": "Fire",
+   "ruler_classic": "Jupiter",
+   "ruler_modern": "Jupiter",
+   "unicode_symbol": "♐",
+   "gloss": "The Archer",
+   "approximate_dates": "23 November - 21 December",
+   "keywords": [
+    "ambitious",
+    "daring",
+    "coarse"
+   ]
+  },
+  {
+   "sign": "Capricorn",
+   "longitude_start": 270.0,
+   "longitude_end": 300.0,
+   "element": "Earth",
+   "ruler_classic": "Saturn",
+   "ruler_modern": "Saturn",
+   "unicode_symbol": "♑",
+   "gloss": "The Mountain Sea-goat",
+   "approximate_dates": "22 December - 20 January",
+   "keywords": [
+    "responsible",
+    "awkward",
+    "rigid"
+   ]
+  },
+  {
+   "sign": "Aquarius",
+   "longitude_start": 300.0,
+   "longitude_end": 330.0,
+   "element": "Air",
+   "ruler_classic": "Saturn",
+   "ruler_modern": "Uranus",
+   "unicode_symbol": "♒",
+   "gloss": "The Water-bearer",
+   "approximate_dates": "21 January - 19 February",
+   "keywords": [
+    "inventive",
+    "zany",
+    "erratic"
+   ]
+  },
+  {
+   "sign": "Pisces",
+   "longitude_start": 330.0,
+   "longitude_end": 360.0,
+   "element": "Water",
+   "ruler_classic": "Jupiter",
+   "ruler_modern": "Neptune",
+   "unicode_symbol": "♓",
+   "gloss": "The Fish",
+   "approximate_dates": "20 February - 20 March",
+   "keywords": [
+    "artistic",
+    "sentimental",
+    "dependent"
+   ]
+  }
+ ]
+}

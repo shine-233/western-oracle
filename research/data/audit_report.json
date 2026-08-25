@@ -81,6 +81,111 @@
     "rank_arc_14": true
    },
    "pass": true
+  },
+  "fixed_stars_robson_v1": {
+   "checks": {
+    "count_ge_60": true,
+    "required_stars": true,
+    "all_have_text": true,
+    "unique_names": true,
+    "nature_extracted": true
+   },
+   "count": 96,
+   "pass": true
+  },
+  "dreams_miller_v1": {
+   "checks": {
+    "count_ge_1500": true,
+    "required_terms": true,
+    "all_have_meanings": true
+   },
+   "count": 2250,
+   "pass": true
+  },
+  "cheiro_palmistry_v1": {
+   "checks": {
+    "sections_ge_14": true,
+    "required_sections": true,
+    "min_text_length": true
+   },
+   "count": 18,
+   "pass": true
+  },
+  "sepharial_numbers_v1": {
+   "checks": {
+    "minor_key_9": true,
+    "minor_key_all_text": true,
+    "thought_of_9": true,
+    "resultant_ge_55": true
+   },
+   "pass": true
+  },
+  "kunz_birthstones_v1": {
+   "checks": {
+    "months_12": true,
+    "jan_garnet": true,
+    "feb_amethyst": true,
+    "breastplate_rows_12": true,
+    "crystal_passage": true
+   },
+   "pass": true
+  },
+  "lilly_signs_v1": {
+   "checks": {
+    "length_ge_8000": true,
+    "aries_anchor": true,
+    "gemini_anchor": true
+   },
+   "pass": true
+  },
+  "leo_nativity_v1": {
+   "checks": {
+    "three_sections": true,
+    "min_length": true
+   },
+   "pass": true
+  },
+  "tetrabiblos_books34_v1": {
+   "checks": {
+    "required_topics": true,
+    "quotes_long": true,
+    "all_cited": true,
+    "house_hints_valid": true
+   },
+   "count": 10,
+   "pass": true
+  },
+  "book_t_decans_v1": {
+   "checks": {
+    "rows_36": true,
+    "cards_unique": true,
+    "gd_anchors": true,
+    "degrees_contiguous": true
+   },
+   "count": 36,
+   "pass": true
+  },
+  "tarot_modern_v1": {
+   "checks": {
+    "count_78": true,
+    "majors_22": true,
+    "minors_56": true,
+    "unique_ids": true,
+    "decan_crosscheck_56_agree": true,
+    "all_have_meanings": true
+   },
+   "count": 78,
+   "pass": true
+  },
+  "zodiac_facts_v1": {
+   "checks": {
+    "signs_12": true,
+    "longitude_contiguous": true,
+    "classic_rulers_match_ptolemy": true,
+    "all_have_element": true
+   },
+   "count": 12,
+   "pass": true
   }
  },
  "all_pass": true

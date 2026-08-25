@@ -14,17 +14,36 @@ research/
 │   ├── rune_poem_anglosaxon_raw.txt    # 盎格鲁-撒克逊卢恩诗（29节，OE原文+Dickins 1915英译）
 │   ├── rune_poems_norwegian_icelandic_raw.txt  # 挪威诗16节+冰岛诗16节（同上英译）
 │   ├── tetrabiblos_book1_raw.txt        # Ptolemy《Tetrabiblos》Book I 选章（Ashmand 1822 英译）
-│   └── astro_rulerships_ptolemy.json   # 传统行星守护表（源自 Ptolemy《Tetrabiblos》体系，curated）
+│   ├── tetrabiblos_ashmand_full_1822_raw.txt   # Ptolemy《Tetrabiblos》全书（Ashmand 1822，IA OCR）[2026-08-25]
+│   ├── astro_rulerships_ptolemy.json   # 传统行星守护表（源自 Ptolemy《Tetrabiblos》体系，curated）
+│   ├── robson_fixed_stars_1923_raw.txt # Robson《The Fixed Stars and Constellations in Astrology》(IA OCR) [2026-08-25]
+│   ├── lilly_christian_astrology_1647_raw.txt # Lilly《Christian Astrology》(IA OCR) [2026-08-25]
+│   ├── leo_how_to_judge_nativity_1928_raw.txt # Alan Leo《How to Judge a Nativity》(IA OCR) [2026-08-25]
+│   ├── miller_ten_thousand_dreams_raw.txt     # Miller《Ten Thousand Dreams Interpreted》(PG #926) [2026-08-25]
+│   ├── kunz_curious_lore_precious_stones_1913_raw.txt # Kunz《The Curious Lore of Precious Stones》(IA OCR) [2026-08-25]
+│   ├── cheiro_palmistry_for_all_1916_raw.txt  # Cheiro《Palmistry for All》(PG #20480) [2026-08-25]
+│   ├── sepharial_kabala_of_numbers_raw.txt    # Sepharial《The Kabala of Numbers》(IA OCR) [2026-08-25]
+│   ├── tarotoo_cards_mirrored.json            # Tarotoo 现代结构化塔罗 (MIT, github Tarotoo-com/tarotoo-tarot-dataset) [2026-08-25]
+│   └── corpora_zodiac_cc0_raw.json            # 黄道事实层 (CC0, dariusk/corpora divination/zodiac.json) [2026-08-25]
 ├── pipeline/
-│   ├── 01_fetch/dl_sources.py          # 拉取/校验原始文献
+│   ├── 01_fetch/dl_sources.py          # 拉取/校验原始文献（塔罗+全部 IA/PG 源；Papus/McElroy/北欧诗为人工誊录）
 │   ├── 02_mine/mine_waite.py           # 编码映射（sacred-texts码 → 站点id）+ 文本规范化
 │   ├── 02_mine/mine_papus_mcelroy.py   # Papus 文本解析 + McElroy JSON 挖掘（含牌名变体归一）
+│   ├── 02_mine/mine_fixed_stars.py     # Robson 恒星目录条目挖掘（Influence/With Sun/Moon 分节）[2026-08-25]
+│   ├── 02_mine/mine_dreams_miller.py   # Miller 词条挖掘（2250 条 term→meanings）[2026-08-25]
+│   ├── 02_mine/mine_cheiro_palmistry.py # Cheiro 章节→结构化 section（主线/副线/星丘/手型）[2026-08-25]
+│   ├── 02_mine/mine_sepharial_numbers.py # Sepharial Minor Key + 合成数释义表 [2026-08-25]
+│   ├── 02_mine/mine_kunz_birthstones.py # Kunz 诞生石票数表/胸甲十二石/水晶凝视章 [2026-08-25]
+│   ├── 02_mine/mine_lilly_signs.py     # Lilly Book I 星座描述章整段收录（OCR 长音 s 噪声）[2026-08-25]
+│   ├── 02_mine/mine_leo_nativity.py    # Leo 十二宫/太阳十二星座/月亮十二星座三段 [2026-08-25]
+│   ├── 02_mine/mine_tetrabiblos_books34.py # Tetrabiblos B3/B4 命盘专题十章按主题切分 [2026-08-25]
+│   ├── 02_mine/curate_bookt_decans.py  # Golden Dawn Book T 三十六旬对应表（程序化生成+锚点校验）[2026-08-25]
 │   ├── 03_clean/clean_tarot.py         # 清洗：78张结构校验/去重/空值/与站点id集合对齐
 │   ├── 03_clean/clean_tarot_sources.py # 清洗：三源合并对照（waite+papus+mcelroy 78×3）
-│   ├── 03_clean/clean_runes.py         # 清洗：三诗合并 → 24老弗萨克（16符文三诗齐全）
-│   └── 04_audit/
-│       ├── audit.py                    # 审计：覆盖率/完整性/防篡改抽查(5张与原始JSON比对)
-│       └── export_ts.py                # 导出站点 TS 模块（研究数据喂给网站）
+│   ├── 04_audit/
+│   │   ├── audit.py                    # 审计：覆盖率/完整性/交叉验证（现覆盖 16 个数据集）
+│   │   ├── qa_scan.py                  # 清洗质量扫描：OCR 噪声/页眉残留/编码损坏 [2026-08-25]
+│   │   └── export_ts.py                # 导出站点 TS 模块（研究数据喂给网站）
 └── data/                      # 版本化数据集（v1, v2, ... 只增不改）
     ├── waite_candidates_v1.json        # 挖掘候选
     ├── papus_candidates_v1.json        # Papus 挖掘候选（78）
@@ -32,10 +51,21 @@ research/
     ├── tarot_waite_v1.json             # 清洗后 Waite 牌意（78张）
     ├── tarot_sources_v2.json           # 三源合并对照（78张 × 3来源）
     ├── tetrabiblos_astro_v1.json        # Tetrabiblos 行星性质/庙宫/旺位（7行星，含原文引句）
+    ├── tetrabiblos_books34_v1.json      # Tetrabiblos B3/B4 命盘专题引文（10主题×宫位提示）[2026-08-25]
+    ├── fixed_stars_robson_v1.json       # Robson 恒星目录（96星：nature/influence/with_sun/with_moon/culminating）[2026-08-25]
+    ├── lilly_signs_v1.json              # Lilly 星座描述章 passage（1647 原文 OCR）[2026-08-25]
+    ├── leo_nativity_v1.json             # Leo 十二宫/日座/月座段落（1928 ed.）[2026-08-25]
+    ├── book_t_decans_v1.json            # Golden Dawn 三十六旬→小牌/守护/GD称号（curated+程序生成）[2026-08-25]
+    ├── dreams_miller_v1.json            # Miller 解梦词条（2250 条）[2026-08-25]
+    ├── kunz_birthstones_v1.json         # Kunz 诞生石月度票数表+胸甲十二石+水晶凝视段 [2026-08-25]
+    ├── cheiro_palmistry_v1.json         # Cheiro 手相章节库（18 sections）[2026-08-25]
+    ├── sepharial_numbers_v1.json        # Sepharial 数字学（Minor Key 1-9+行星 / 问事9 / 合成数12..84）[2026-08-25]
+    ├── tarot_modern_v1.json             # Tarotoo 现代结构化塔罗（78张×love/career/mood/spiritual/yes_no；56数字牌与 Book T 表交叉验证一致）[2026-08-25]
+    ├── zodiac_facts_v1.json             # 黄道事实层（12星座：黄经/元素/古典现代守护/日期；古典守护与 Ptolemy 庙宫表互证）[2026-08-25]
     ├── alignment_cn_en_v1.json          # 中文-原文语义对齐（22大牌逐张+小牌规则模板）
     ├── rune_poem_oe_v1.json            # [v1, 已被v2取代] 仅盎格鲁-撒克逊诗
     ├── rune_poems_v2.json              # 清洗后三诗对照（24符文：16个三诗齐全+8个仅OE诗）
-    └── audit_report.json               # 审计报告
+    └── audit_report.json               # 审计报告（all_pass: true, 14 datasets）
 ```
 
 ## 数据字典
@@ -78,21 +108,72 @@ research/
 ### astro_rulerships_ptolemy.json
 传统（古典）行星守护关系：七大经典行星 × 双重守护星座，源自 Ptolemy《Tetrabiblos》第一卷体系，人工整理并标注出处。
 
+### fixed_stars_robson_v1.json
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| num | int/null | 原书目录序号（OCR 个别损坏为 null） |
+| name / name_key | string | 星名 / 归一化键（折叠空白+casefold，OCR 断名如 "Reg ulus" 可命中） |
+| designation | string | Bayer 编号与黄经位置原文（星座符号被 OCR 破坏，v2 与现代星表交叉补齐） |
+| nature | string[] | 从 "Of the nature of X and Y" 抽取的行星性质 |
+| influence / with_sun / with_moon / culminating | string | Robson 分节释义（节标题含 OCR 变体已归并） |
+
+覆盖说明：目录章约百条中成功解析 96 条；个别星（如 Aldebaran）的 Influence 段被
+OCR 页眉截断，内容并入 notes。审计校验关键八星（Algol/Aldebaran/Regulus/Antares/
+Arcturus/Spica/Sirius/Pleiades）必须命中。
+
+### tetrabiblos_books34_v1.json
+按主题收录 Ashmand 1822 英译 Book III/IV 命盘专题章引文（quote 截首段），
+每条带 `book/chapter/title/house_hint/source`。`house_hint` 为传统宫位对应（curated）：
+siblings→3、marriage→7、children→5、friends→11、travel→9、death_quality→8、
+occupation/rank→10、parents→4、body/mind→1、longevity→8。
+
+### book_t_decans_v1.json
+Golden Dawn《Book T》三十六旬对应表：sign/decan/度数区间/Chaldean 守护/
+塔罗小牌/GD 称号（Lord of ...）。守护序列由程序生成（杜绝手抄错位），
+牌卡-旬对应与称号人工对照录入，审计内置 11 个通行锚点抽查。
+
+### dreams_miller_v1.json / kunz_birthstones_v1.json / cheiro_palmistry_v1.json / sepharial_numbers_v1.json
+- dreams：2250 词条（term/term_key/meanings[]），PG #926 正文 `_词条_.` 标题切分；
+- kunz：12 月诞生石票数表（八传统汇总）+ 胸甲/根基十二石对照 + 水晶凝视章段落；
+  OCR 月名残缺月份以原书表值核对后补录（防篡改式验证）；
+- cheiro：18 个结构化 section（head/life/destiny/sun/heart/marriage/children/health/
+  girdle/intuition 八条线 + 七星丘 + 手型），章节标题关键词归档；
+- sepharial：Minor Key 数字 1-9 含义与对应行星 + 问事所思 1-9 + 合成数释义 12..84。
+
+### lilly_signs_v1.json / leo_nativity_v1.json
+17-20 世纪公版占星教科书的星座/宫位语义层源头文献：
+Lilly 1647 Book I 星座描述章整章 passage（长音 s OCR 噪声保留原貌）；
+Leo 十二宫、太阳十二星座、月亮十二星座三段（1928 ed.）。逐星座切分与清洗留待 v2。
+
 ## 复现方式
 
 ```bash
-python research/pipeline/01_fetch/dl_sources.py   # 拉取+校验
-python research/pipeline/02_mine/mine_waite.py    # 挖掘
-python research/pipeline/03_clean/clean_tarot.py  # 清洗塔罗
-python research/pipeline/03_clean/clean_runes.py  # 清洗卢恩诗
-python research/pipeline/04_audit/audit.py        # 审计（不过则退出码1）
-python research/pipeline/04_audit/export_ts.py    # 导出站点 TS
+python research/pipeline/01_fetch/dl_sources.py          # 拉取+校验全部公版源（IA/PG 直连）
+python research/pipeline/02_mine/mine_waite.py           # 塔罗挖掘
+python research/pipeline/02_mine/mine_papus_mcelroy.py   # Papus/McElroy 挖掘
+python research/pipeline/03_clean/clean_tarot.py         # 清洗塔罗
+python research/pipeline/03_clean/clean_tarot_sources.py # 三源合并
+python research/pipeline/03_clean/clean_runes.py         # 清洗卢恩诗
+python research/pipeline/02_mine/mine_fixed_stars.py     # 固定恒星（96星）
+python research/pipeline/02_mine/mine_dreams_miller.py   # 解梦词条（2250）
+python research/pipeline/02_mine/mine_cheiro_palmistry.py # 手相章节库
+python research/pipeline/02_mine/mine_sepharial_numbers.py # 数字学
+python research/pipeline/02_mine/mine_kunz_birthstones.py  # 诞生石/水晶
+python research/pipeline/02_mine/mine_lilly_signs.py     # Lilly 星座章
+python research/pipeline/02_mine/mine_leo_nativity.py    # Leo 宫位/日座/月座
+python research/pipeline/02_mine/mine_tetrabiblos_books34.py # Tetrabiblos B3/B4 专题
+python research/pipeline/02_mine/curate_bookt_decans.py  # Book T 三十六旬
+python research/pipeline/04_audit/audit.py               # 审计14数据集（不过则退出码1）
+python research/pipeline/04_audit/export_ts.py           # 导出站点 TS
 ```
 
 ## 站点消费位置
 
 - 塔罗详情弹窗 → 「Waite 原文牌意 · 1911」（`src/data/waiteMeanings.ts`）
 - 符文揭晓卡 → 三首卢恩诗原文+英译对照（`src/data/runePoems.ts`）
+- 占星语义层 → Tetrabiblos 行星性质/庙旺（`src/data/tetrabiblosPlanets.ts`）
+- 待接线：fixed_stars / book_t_decans / dreams_miller / kunz_birthstones /
+  cheiro_palmistry / sepharial_numbers（见 Roadmap export_ts 扩展项）
 
 ## 来源与版权
 
@@ -103,7 +184,28 @@ python research/pipeline/04_audit/export_ts.py    # 导出站点 TS
 | 塔罗释义（来源3） | Mark McElroy, *A Guide to Tarot Meanings*（作者声明公版），取自 dariusk/corpora | 公版 |
 | 盎格鲁-撒克逊卢恩诗 | 8-9世纪佚名，英译 Bruce Dickins 1915，取自 Wikisource | 原诗与译本均公版 |
 | 挪威/冰岛卢恩诗 | 约13/15世纪佚名，英译 Bruce Dickins 1915，取自 Wikisource | 同上 |
-| 行星守护 | Ptolemy, *Tetrabiblos*（约2世纪）体系 | 公版 |
+| 行星守护 / 命盘专题章 | Ptolemy, *Tetrabiblos*（约2世纪），J.M. Ashmand 英译 1822 | 公版 |
+| 固定恒星 | Vivian E. Robson, *The Fixed Stars and Constellations in Astrology*, 1923, Cecil Palmer | 公版 |
+| 星座/宫位语义层（古典） | William Lilly, *Christian Astrology*, 1647 | 公版 |
+| 星座/宫位语义层（现代） | Alan Leo (1860-1917), *How to Judge a Nativity*, 1928 ed. | 公版 |
+| 解梦词条 | Gustavus Hindman Miller, *Ten Thousand Dreams Interpreted*, 1901（PG #926） | 公版 |
+| 宝石/水晶民俗 | George F. Kunz, *The Curious Lore of Precious Stones*, 1913, Lippincott | 公版 |
+| 手相 | Cheiro, *Palmistry for All*, 1916（PG #20480） | 公版 |
+| 数字学 | Sepharial, *The Kabala of Numbers*, 约1911 | 公版 |
+| 三十六旬对应 | Golden Dawn, *Book T – The Tarot*, 约1892 手稿 | 公版（原始手稿） |
+| 塔罗现代结构化层（来源4） | Tarotoo-com/tarotoo-tarot-dataset v2.0.0（github，MIT） | MIT 开源 |
+| 黄道事实层 | dariusk/corpora data/divination/zodiac.json（github） | CC0 |
+
+IA=Internet Archive 公版扫描件 OCR；PG=Project Gutenberg。
+
+### 已评估并拒绝的来源
+
+| 来源 | 拒绝原因 |
+|---|---|
+| ljt-one/dream-symbols-dataset（985 词条） | 仓库无 LICENSE（默认保留版权），不可再分发 |
+| metabismuth/tarot-json | 仅牌名/花色元数据，与站点已有数据重复，无释义增量 |
+| dariusk/corpora gemstones.json | 仅 350 个宝石名词列表，无民俗/疗愈语义 |
+| smallcat419/tarot-card-data 等 SEO 性新仓库 | 星数低、内容溯源不明（指向商业站），许可声明不可信 |
 
 ## 路线图（Roadmap）
 
@@ -112,6 +214,11 @@ python research/pipeline/04_audit/export_ts.py    # 导出站点 TS
 - [x] McElroy 公版结构化释义（fortune-telling/light/shadow，2026-08-25）
 - [x] Ptolemy《Tetrabiblos》Book I 选章挖掘：行星性质/庙宫/旺位，与 curated 守护表交叉验证一致（v1，2026-08-25）
 - [x] 中文-原文语义对齐标注 v1：22 大牌逐张（人工，含置信度）+ 56 小牌花色×阶位规则模板（依据 Papus 三段论）；已注入 AI 解读 prompt 做双语锚定（2026-08-25）
+- [x] Robson 固定恒星目录挖掘 v1：96 星 nature/influence/with_sun/moon/culminating（2026-08-25）
+- [x] Lilly《Christian Astrology》1647 + Alan Leo 十二宫/日座/月座语料入库，补星座宫位出处（2026-08-25）
+- [x] 零语料模块补齐：Miller 解梦 / Kunz 水晶诞生石 / Cheiro 手相 / Sepharial 数字学（2026-08-25）
+- [x] Tetrabiblos Book III/IV 命盘专题十章按主题挖掘 + Golden Dawn《Book T》三十六旬对应表（roadmap「Book T 占星对应」落地）（2026-08-25）
 - [ ] 对齐 v2：小牌逐张人工对齐 + 语义相似度评分
-- [ ] Tetrabiblos Book III/IV（命盘专题各章）继续挖掘
-- [ ] Golden Dawn《Book T》占星对应（Tarotoo 数据集已含 GD 归属，可作参考实现）
+- [ ] fixed_stars v2：与现代星表（如 Yale Bright Star / HYG）交叉补齐黄经与星座
+- [ ] lilly/leo v2：逐星座、逐宫切分与 OCR 清洗；站点 corpus.ts 语义层接入研究层引用
+- [ ] export_ts.py 扩展：新数据集导出站点 TS 模块并接线消费

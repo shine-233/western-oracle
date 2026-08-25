@@ -1,0 +1,374 @@
+{
+ "dataset": "golden_dawn_decans",
+ "version": "v1",
+ "generated": "2026-08-25",
+ "source": {
+  "work": "Golden Dawn, Book T – The Tarot (c. 1892 manuscript)",
+  "rights": "public domain (original manuscript)",
+  "method": "十度守护由 Chaldean 序列程序化生成；称号与牌卡对应人工对照录入",
+  "note": "roadmap 中「Golden Dawn Book T 占星对应」项落地；站点塔罗/占星可交叉引用"
+ },
+ "count": 36,
+ "decans": [
+  {
+   "sign": "Aries",
+   "decan": 1,
+   "from_degree": 0,
+   "to_degree": 10,
+   "ruler": "Mars",
+   "card": "wands-2",
+   "element": "fire",
+   "gd_title": "Lord of Dominion"
+  },
+  {
+   "sign": "Aries",
+   "decan": 2,
+   "from_degree": 10,
+   "to_degree": 20,
+   "ruler": "Sun",
+   "card": "wands-3",
+   "element": "fire",
+   "gd_title": "Lord of Established Strength"
+  },
+  {
+   "sign": "Aries",
+   "decan": 3,
+   "from_degree": 20,
+   "to_degree": 30,
+   "ruler": "Venus",
+   "card": "wands-4",
+   "element": "fire",
+   "gd_title": "Lord of Perfected Work"
+  },
+  {
+   "sign": "Taurus",
+   "decan": 1,
+   "from_degree": 0,
+   "to_degree": 10,
+   "ruler": "Mercury",
+   "card": "pentacles-5",
+   "element": "earth",
+   "gd_title": "Lord of Material Trouble"
+  },
+  {
+   "sign": "Taurus",
+   "decan": 2,
+   "from_degree": 10,
+   "to_degree": 20,
+   "ruler": "Moon",
+   "card": "pentacles-6",
+   "element": "earth",
+   "gd_title": "Lord of Material Success"
+  },
+  {
+   "sign": "Taurus",
+   "decan": 3,
+   "from_degree": 20,
+   "to_degree": 30,
+   "ruler": "Saturn",
+   "card": "pentacles-7",
+   "element": "earth",
+   "gd_title": "Lord of Success Unfulfilled"
+  },
+  {
+   "sign": "Gemini",
+   "decan": 1,
+   "from_degree": 0,
+   "to_degree": 10,
+   "ruler": "Jupiter",
+   "card": "swords-8",
+   "element": "air",
+   "gd_title": "Lord of Shortened Force"
+  },
+  {
+   "sign": "Gemini",
+   "decan": 2,
+   "from_degree": 10,
+   "to_degree": 20,
+   "ruler": "Mars",
+   "card": "swords-9",
+   "element": "air",
+   "gd_title": "Lord of Despair and Cruelty"
+  },
+  {
+   "sign": "Gemini",
+   "decan": 3,
+   "from_degree": 20,
+   "to_degree": 30,
+   "ruler": "Sun",
+   "card": "swords-10",
+   "element": "air",
+   "gd_title": "Lord of Ruin"
+  },
+  {
+   "sign": "Cancer",
+   "decan": 1,
+   "from_degree": 0,
+   "to_degree": 10,
+   "ruler": "Venus",
+   "card": "cups-2",
+   "element": "water",
+   "gd_title": "Lord of Love"
+  },
+  {
+   "sign": "Cancer",
+   "decan": 2,
+   "from_degree": 10,
+   "to_degree": 20,
+   "ruler": "Mercury",
+   "card": "cups-3",
+   "element": "water",
+   "gd_title": "Lord of Abundance"
+  },
+  {
+   "sign": "Cancer",
+   "decan": 3,
+   "from_degree": 20,
+   "to_degree": 30,
+   "ruler": "Moon",
+   "card": "cups-4",
+   "element": "water",
+   "gd_title": "Lord of Luxury"
+  },
+  {
+   "sign": "Leo",
+   "decan": 1,
+   "from_degree": 0,
+   "to_degree": 10,
+   "ruler": "Saturn",
+   "card": "wands-5",
+   "element": "fire",
+   "gd_title": "Lord of Strife"
+  },
+  {
+   "sign": "Leo",
+   "decan": 2,
+   "from_degree": 10,
+   "to_degree": 20,
+   "ruler": "Jupiter",
+   "card": "wands-6",
+   "element": "fire",
+   "gd_title": "Lord of Victory"
+  },
+  {
+   "sign": "Leo",
+   "decan": 3,
+   "from_degree": 20,
+   "to_degree": 30,
+   "ruler": "Mars",
+   "card": "wands-7",
+   "element": "fire",
+   "gd_title": "Lord of Valour"
+  },
+  {
+   "sign": "Virgo",
+   "decan": 1,
+   "from_degree": 0,
+   "to_degree": 10,
+   "ruler": "Sun",
+   "card": "pentacles-8",
+   "element": "earth",
+   "gd_title": "Lord of Prudence"
+  },
+  {
+   "sign": "Virgo",
+   "decan": 2,
+   "from_degree": 10,
+   "to_degree": 20,
+   "ruler": "Venus",
+   "card": "pentacles-9",
+   "element": "earth",
+   "gd_title": "Lord of Material Gain"
+  },
+  {
+   "sign": "Virgo",
+   "decan": 3,
+   "from_degree": 20,
+   "to_degree": 30,
+   "ruler": "Mercury",
+   "card": "pentacles-10",
+   "element": "earth",
+   "gd_title": "Lord of Wealth"
+  },
+  {
+   "sign": "Libra",
+   "decan": 1,
+   "from_degree": 0,
+   "to_degree": 10,
+   "ruler": "Moon",
+   "card": "swords-2",
+   "element": "air",
+   "gd_title": "Lord of Peace Restored"
+  },
+  {
+   "sign": "Libra",
+   "decan": 2,
+   "from_degree": 10,
+   "to_degree": 20,
+   "ruler": "Saturn",
+   "card": "swords-3",
+   "element": "air",
+   "gd_title": "Lord of Sorrow"
+  },
+  {
+   "sign": "Libra",
+   "decan": 3,
+   "from_degree": 20,
+   "to_degree": 30,
+   "ruler": "Jupiter",
+   "card": "swords-4",
+   "element": "air",
+   "gd_title": "Lord of Rest from Strife"
+  },
+  {
+   "sign": "Scorpio",
+   "decan": 1,
+   "from_degree": 0,
+   "to_degree": 10,
+   "ruler": "Mars",
+   "card": "cups-5",
+   "element": "water",
+   "gd_title": "Lord of Disappointment"
+  },
+  {
+   "sign": "Scorpio",
+   "decan": 2,
+   "from_degree": 10,
+   "to_degree": 20,
+   "ruler": "Sun",
+   "card": "cups-6",
+   "element": "water",
+   "gd_title": "Lord of Pleasure"
+  },
+  {
+   "sign": "Scorpio",
+   "decan": 3,
+   "from_degree": 20,
+   "to_degree": 30,
+   "ruler": "Venus",
+   "card": "cups-7",
+   "element": "water",
+   "gd_title": "Lord of Illusionary Success"
+  },
+  {
+   "sign": "Sagittarius",
+   "decan": 1,
+   "from_degree": 0,
+   "to_degree": 10,
+   "ruler": "Mercury",
+   "card": "wands-8",
+   "element": "fire",
+   "gd_title": "Lord of Swiftness"
+  },
+  {
+   "sign": "Sagittarius",
+   "decan": 2,
+   "from_degree": 10,
+   "to_degree": 20,
+   "ruler": "Moon",
+   "card": "wands-9",
+   "element": "fire",
+   "gd_title": "Lord of Great Strength"
+  },
+  {
+   "sign": "Sagittarius",
+   "decan": 3,
+   "from_degree": 20,
+   "to_degree": 30,
+   "ruler": "Saturn",
+   "card": "wands-10",
+   "element": "fire",
+   "gd_title": "Lord of Oppression"
+  },
+  {
+   "sign": "Capricorn",
+   "decan": 1,
+   "from_degree": 0,
+   "to_degree": 10,
+   "ruler": "Jupiter",
+   "card": "pentacles-2",
+   "element": "earth",
+   "gd_title": "Lord of Harmonious Change"
+  },
+  {
+   "sign": "Capricorn",
+   "decan": 2,
+   "from_degree": 10,
+   "to_degree": 20,
+   "ruler": "Mars",
+   "card": "pentacles-3",
+   "element": "earth",
+   "gd_title": "Lord of Material Works"
+  },
+  {
+   "sign": "Capricorn",
+   "decan": 3,
+   "from_degree": 20,
+   "to_degree": 30,
+   "ruler": "Sun",
+   "card": "pentacles-4",
+   "element": "earth",
+   "gd_title": "Lord of Earthly Power"
+  },
+  {
+   "sign": "Aquarius",
+   "decan": 1,
+   "from_degree": 0,
+   "to_degree": 10,
+   "ruler": "Venus",
+   "card": "swords-5",
+   "element": "air",
+   "gd_title": "Lord of Defeat"
+  },
+  {
+   "sign": "Aquarius",
+   "decan": 2,
+   "from_degree": 10,
+   "to_degree": 20,
+   "ruler": "Mercury",
+   "card": "swords-6",
+   "element": "air",
+   "gd_title": "Lord of Earned Success"
+  },
+  {
+   "sign": "Aquarius",
+   "decan": 3,
+   "from_degree": 20,
+   "to_degree": 30,
+   "ruler": "Moon",
+   "card": "swords-7",
+   "element": "air",
+   "gd_title": "Lord of Unstable Effort"
+  },
+  {
+   "sign": "Pisces",
+   "decan": 1,
+   "from_degree": 0,
+   "to_degree": 10,
+   "ruler": "Saturn",
+   "card": "cups-8",
+   "element": "water",
+   "gd_title": "Lord of Indolence"
+  },
+  {
+   "sign": "Pisces",
+   "decan": 2,
+   "from_degree": 10,
+   "to_degree": 20,
+   "ruler": "Jupiter",
+   "card": "cups-9",
+   "element": "water",
+   "gd_title": "Lord of Material Happiness"
+  },
+  {
+   "sign": "Pisces",
+   "decan": 3,
+   "from_degree": 20,
+   "to_degree": 30,
+   "ruler": "Mars",
+   "card": "cups-10",
+   "element": "water",
+   "gd_title": "Lord of Perpetual Success"
+  }
+ ]
+}

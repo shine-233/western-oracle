@@ -119,6 +119,180 @@ def audit_alignment(report: dict) -> None:
     report['alignment_cn_en_v1'] = {'checks': checks, 'pass': all(checks.values())}
 
 
+def _load(name: str) -> dict:
+    return json.loads((DATA / name).read_text(encoding='utf-8'))
+
+
+def audit_fixed_stars(report: dict) -> None:
+    d = _load('fixed_stars_robson_v1.json')
+    stars = d['stars']
+    keys = {s['name_key'] for s in stars}
+    required = ['algol', 'aldebaran', 'regulus', 'antares', 'arcturus', 'spica', 'sirius', 'pleiades']
+    checks = {
+        'count_ge_60': len(stars) >= 60,
+        'required_stars': all(k in keys for k in required),
+        'all_have_text': all(s['influence'] or s['notes'] for s in stars),
+        'unique_names': len(keys) == len(stars),
+        'nature_extracted': sum(1 for s in stars if s['nature']) >= 30,
+    }
+    report['fixed_stars_robson_v1'] = {'checks': checks, 'count': len(stars), 'pass': all(checks.values())}
+
+
+def audit_dreams(report: dict) -> None:
+    d = _load('dreams_miller_v1.json')
+    entries = d['entries']
+    keys = {e['term_key'] for e in entries}
+    required = ['water', 'snake', 'death', 'baby', 'house', 'money', 'marriage', 'teeth']
+    checks = {
+        'count_ge_1500': len(entries) >= 1500,
+        'required_terms': all(any(k.startswith(t) for k in keys) for t in required),
+        'all_have_meanings': all(e['meanings'] and e['meanings'][0] for e in entries),
+    }
+    report['dreams_miller_v1'] = {'checks': checks, 'count': len(entries), 'pass': all(checks.values())}
+
+
+def audit_palmistry(report: dict) -> None:
+    d = _load('cheiro_palmistry_v1.json')
+    sections = d['sections']
+    required = ('line_of_head', 'line_of_life', 'line_of_destiny', 'line_of_heart',
+                'mount_jupiter', 'mount_saturn', 'mount_venus', 'mount_moon')
+    checks = {
+        'sections_ge_14': len(sections) >= 14,
+        'required_sections': all(k in sections for k in required),
+        'min_text_length': all(len(sections[k]['text']) >= 400 for k in required if k in sections),
+    }
+    report['cheiro_palmistry_v1'] = {'checks': checks, 'count': len(sections), 'pass': all(checks.values())}
+
+
+def audit_numerology(report: dict) -> None:
+    d = _load('sepharial_numbers_v1.json')
+    mk = d['minor_key']
+    covered = [int(k) for k in d['resultant_meanings'] if 12 <= int(k) <= 84]
+    checks = {
+        'minor_key_9': len(mk) == 9,
+        'minor_key_all_text': all(v['meaning'] for v in mk.values()),
+        'thought_of_9': len(d['things_thought_of']) == 9,
+        'resultant_ge_55': len(covered) >= 55,
+    }
+    report['sepharial_numbers_v1'] = {'checks': checks, 'pass': all(checks.values())}
+
+
+def audit_birthstones(report: dict) -> None:
+    d = _load('kunz_birthstones_v1.json')
+    favored = d['favored_by_month']
+    months = {'January', 'February', 'March', 'April', 'May', 'June',
+              'July', 'August', 'September', 'October', 'November', 'December'}
+    checks = {
+        'months_12': set(favored) == months,
+        'jan_garnet': favored.get('January', [{}])[0].get('stone') == 'Garnet',
+        'feb_amethyst': favored.get('February', [{}])[0].get('stone') == 'Amethyst',
+        'breastplate_rows_12': len(d['breastplate_and_foundation']) == 12,
+        'crystal_passage': len(d['crystal_gazing']['passage']) >= 150,
+    }
+    report['kunz_birthstones_v1'] = {'checks': checks, 'pass': all(checks.values())}
+
+
+def audit_lilly(report: dict) -> None:
+    d = _load('lilly_signs_v1.json')
+    ch = d['chapter_passage']
+    checks = {
+        'length_ge_8000': len(ch) >= 8000,
+        'aries_anchor': 'Mafculine' in ch or 'Diurnall Signe' in ch,
+        'gemini_anchor': 'double-bodied' in ch,
+    }
+    report['lilly_signs_v1'] = {'checks': checks, 'pass': all(checks.values())}
+
+
+def audit_leo(report: dict) -> None:
+    d = _load('leo_nativity_v1.json')
+    sections = d['sections']
+    checks = {
+        'three_sections': set(sections) == {'twelve_houses', 'sun_in_signs', 'moon_in_signs'},
+        'min_length': all(len(v['passage']) >= 3000 for v in sections.values()),
+    }
+    report['leo_nativity_v1'] = {'checks': checks, 'pass': all(checks.values())}
+
+
+def audit_tetrabiblos34(report: dict) -> None:
+    d = _load('tetrabiblos_books34_v1.json')
+    topics = d['topics']
+    required = ('siblings', 'marriage', 'children', 'travel', 'death_quality',
+                'occupation', 'body', 'mind', 'longevity')
+    checks = {
+        'required_topics': all(k in topics for k in required),
+        'quotes_long': all(len(topics[k]['quote']) >= 200 for k in topics),
+        'all_cited': all('Ashmand 1822' in topics[k]['source'] for k in topics),
+        'house_hints_valid': all(1 <= topics[k]['house_hint'] <= 12 for k in topics),
+    }
+    report['tetrabiblos_books34_v1'] = {'checks': checks, 'count': len(topics), 'pass': all(checks.values())}
+
+
+def audit_bookt_decans(report: dict) -> None:
+    d = _load('book_t_decans_v1.json')
+    decans = d['decans']
+    by_card = {x['card']: x for x in decans}
+    anchors = {
+        'wands-2': ('Mars', 'Aries'), 'cups-2': ('Venus', 'Cancer'),
+        'swords-3': ('Saturn', 'Libra'), 'pentacles-9': ('Venus', 'Virgo'),
+        'wands-10': ('Saturn', 'Sagittarius'), 'cups-10': ('Mars', 'Pisces'),
+    }
+    ok = all(
+        card in by_card
+        and by_card[card]['ruler'] == ruler
+        and by_card[card]['sign'] == sign
+        for card, (ruler, sign) in anchors.items()
+    )
+    checks = {
+        'rows_36': len(decans) == 36,
+        'cards_unique': len(by_card) == 36,
+        'gd_anchors': ok,
+        'degrees_contiguous': all(x['from_degree'] < x['to_degree'] for x in decans),
+    }
+    report['book_t_decans_v1'] = {'checks': checks, 'count': len(decans), 'pass': all(checks.values())}
+
+
+def audit_tarot_modern(report: dict) -> None:
+    d = _load('tarot_modern_v1.json')
+    cards = d['cards']
+    decans = {x['card']: x for x in _load('book_t_decans_v1.json')['decans']}
+    numbered = [c for c in cards if c['arcana'] == 'minor' and c['site_id'] in decans]
+    agree = all(
+        c['zodiac'] == decans[c['site_id']]['sign']
+        and c['planet'] == decans[c['site_id']]['ruler']
+        for c in numbered
+    )
+    checks = {
+        'count_78': len(cards) == 78,
+        'majors_22': sum(1 for c in cards if c['arcana'] == 'major') == 22,
+        'minors_56': sum(1 for c in cards if c['arcana'] == 'minor') == 56,
+        'unique_ids': len({c['site_id'] for c in cards}) == 78,
+        'decan_crosscheck_56_agree': agree and len(numbered) == 36,
+        'all_have_meanings': all(c['meaning_upright'] and c['meaning_reversed'] for c in cards),
+    }
+    report['tarot_modern_v1'] = {'checks': checks, 'count': len(cards), 'pass': all(checks.values())}
+
+
+def audit_zodiac_facts(report: dict) -> None:
+    d = _load('zodiac_facts_v1.json')
+    signs = d['signs']
+    rulers_raw = json.loads((CLASSICS / 'astro_rulerships_ptolemy.json').read_text(encoding='utf-8'))
+    domicile = {}
+    for r in rulers_raw['rulerships']:
+        for s in r['domicile']:
+            domicile[s] = r['planet']
+    checks = {
+        'signs_12': len(signs) == 12,
+        'longitude_contiguous': sorted(
+            (s['longitude_start'], s['longitude_end']) for s in signs
+        ) == [(i * 30.0, (i + 1) * 30.0) for i in range(12)],
+        'classic_rulers_match_ptolemy': all(
+            s['ruler_classic'] == domicile.get(s['sign']) for s in signs
+        ),
+        'all_have_element': all(s['element'] for s in signs),
+    }
+    report['zodiac_facts_v1'] = {'checks': checks, 'count': len(signs), 'pass': all(checks.values())}
+
+
 def main() -> None:
     report: dict = {'generated': '2026-08-25', 'datasets': {}}
     audit_tarot(report['datasets'])
@@ -126,6 +300,17 @@ def main() -> None:
     audit_runes(report['datasets'])
     audit_tetrabiblos(report['datasets'])
     audit_alignment(report['datasets'])
+    audit_fixed_stars(report['datasets'])
+    audit_dreams(report['datasets'])
+    audit_palmistry(report['datasets'])
+    audit_numerology(report['datasets'])
+    audit_birthstones(report['datasets'])
+    audit_lilly(report['datasets'])
+    audit_leo(report['datasets'])
+    audit_tetrabiblos34(report['datasets'])
+    audit_bookt_decans(report['datasets'])
+    audit_tarot_modern(report['datasets'])
+    audit_zodiac_facts(report['datasets'])
 
     all_pass = all(d['pass'] for d in report['datasets'].values())
     report['all_pass'] = all_pass

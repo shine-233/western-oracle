@@ -9,9 +9,9 @@
 
 对标 `bazi-research` 的方法论：**公版原始文献 → 编号流水线 → 版本化数据集 → 站点消费**。
 
-- 语料：Waite《Pictorial Key to the Tarot》1911 牌意（78张）、《盎格鲁-撒克逊卢恩诗》29节（Dickins 1915 英译）、Ptolemy 体系行星守护表——全部公有领域
-- 流水线：`research/pipeline/01_fetch → 02_mine → 03_clean → 04_audit`，审计含防篡改抽查
-- 消费：塔罗详情弹窗展示「Waite 原文牌意 · 1911」，符文页展示古英语卢恩诗原文
+- 语料：Waite 1911 牌意（78张）、Papus 1892、McElroy 三源塔罗；卢恩三诗；Ptolemy《Tetrabiblos》Book I + Book III/IV 命盘专题；Robson 固定恒星 96 星；Lilly 1647 / Alan Leo 星座宫位语义层源头；Miller 解梦 2250 词条；Kunz 宝石民俗；Cheiro 手相；Sepharial 数字学；Golden Dawn Book T 三十六旬——全部公有领域
+- 流水线：`research/pipeline/01_fetch → 02_mine → 03_clean → 04_audit`，审计覆盖 **14 个数据集**，含防篡改抽查与锚点校验
+- 消费：塔罗详情弹窗展示「Waite 原文牌意 · 1911」，符文页展示古英语卢恩诗原文，占星层引用 Tetrabiblos 庙旺数据
 - 详见 [research/README.md](./research/README.md)
 
 ## 功能
@@ -93,9 +93,10 @@ npm run test:watch  # 测试观察模式
 
 | 语料 | 来源 | 版权状态 |
 |---|---|---|
-| 塔罗牌意 | A.E. Waite, *The Pictorial Key to the Tarot*, 1911 | 公版 |
-| 卢恩诗 | *The Anglo-Saxon Rune Poem*，英译 Bruce Dickins, 1915 | 公版 |
-| 行星守护 | Ptolemy, *Tetrabiblos* 体系 | 公版 |
+| 塔罗牌意 ×3源 | A.E. Waite 1911 / Papus 1892 / Mark McElroy（声明公版） | 公版 |
+| 卢恩诗 | *The Anglo-Saxon Rune Poem* 等，英译 Bruce Dickins 1915 | 公版 |
+| 占星 | Ptolemy《Tetrabiblos》(Ashmand 1822) / Lilly 1647 / Alan Leo / Robson 1923 固定恒星 / Golden Dawn《Book T》 | 公版 |
+| 解梦/水晶/手相/数字学 | Miller 1901 / Kunz 1913 / Cheiro 1916 / Sepharial 约1911 | 公版 |
 - 除「你主动配置的 AI 接口」外，本站不发起任何网络请求；出生信息与占卜历史仅保存在本机 localStorage
 
 ## 免责声明

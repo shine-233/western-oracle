@@ -1,0 +1,332 @@
+{
+ "dataset": "birthstones_and_crystal_lore",
+ "version": "v1",
+ "generated": "2026-08-25",
+ "source": {
+  "work": "George Frederick Kunz, The Curious Lore of Precious Stones",
+  "year": 1913,
+  "publisher": "J.B. Lippincott Company",
+  "rights": "public domain",
+  "origin": "Internet Archive OCR (curiousloreprec00kunz)"
+ },
+ "favored_by_month": {
+  "January": [
+   {
+    "stone": "Garnet",
+    "count": 7
+   },
+   {
+    "stone": "Hyacinth",
+    "count": 2
+   }
+  ],
+  "February": [
+   {
+    "stone": "Amethyst",
+    "count": 8
+   },
+   {
+    "stone": "Hyacinth",
+    "count": 1
+   },
+   {
+    "stone": "Pearl",
+    "count": 1
+   },
+   {
+    "stone": "Jasper",
+    "count": 5
+   },
+   {
+    "stone": "Bloodstone",
+    "count": 4
+   },
+   {
+    "stone": "Sapphire",
+    "count": 7
+   },
+   {
+    "stone": "Diamond",
+    "count": 2
+   },
+   {
+    "stone": "Agate",
+    "count": 5
+   },
+   {
+    "stone": "Emerald",
+    "count": 4
+   },
+   {
+    "stone": "Chalcedony",
+    "count": 1
+   },
+   {
+    "stone": "Carnelian",
+    "count": 1
+   },
+   {
+    "stone": "Emerald",
+    "count": 4
+   },
+   {
+    "stone": "Agate",
+    "count": 4
+   },
+   {
+    "stone": "Chaleedony",
+    "count": 3
+   },
+   {
+    "stone": "Turquoise",
+    "count": 1
+   },
+   {
+    "stone": "S-eye",
+    "count": 1
+   },
+   {
+    "stone": "Onyx",
+    "count": 5
+   },
+   {
+    "stone": "Sardonyx",
+    "count": 1
+   },
+   {
+    "stone": "Carnelian",
+    "count": 1
+   },
+   {
+    "stone": "Ruby",
+    "count": 1
+   },
+   {
+    "stone": "Turquoise",
+    "count": 1
+   },
+   {
+    "stone": "Carnelian",
+    "count": 5
+   },
+   {
+    "stone": "Sardonyx",
+    "count": 3
+   },
+   {
+    "stone": "Moonstone",
+    "count": 1
+   },
+   {
+    "stone": "Topaz",
+    "count": 1
+   },
+   {
+    "stone": "Andrite",
+    "count": 1
+   }
+  ],
+  "September": [
+   {
+    "stone": "Chrysolite",
+    "count": 6
+   },
+   {
+    "stone": "Sardonyx",
+    "count": 2
+   }
+  ],
+  "October": [
+   {
+    "stone": "Aquamarine",
+    "count": 5
+   },
+   {
+    "stone": "Opal",
+    "count": 1
+   }
+  ],
+  "November": [
+   {
+    "stone": "Topaz",
+    "count": 8
+   },
+   {
+    "stone": "Pearl",
+    "count": 1
+   }
+  ],
+  "December": [
+   {
+    "stone": "Ruby",
+    "count": 6
+   },
+   {
+    "stone": "Turquoise",
+    "count": 2
+   },
+   {
+    "stone": "Chrysoprase",
+    "count": 1
+   },
+   {
+    "stone": "Bloodstone",
+    "count": 1
+   }
+  ],
+  "March": [
+   {
+    "stone": "Jasper",
+    "count": 5
+   },
+   {
+    "stone": "Bloodstone",
+    "count": 4
+   }
+  ],
+  "April": [
+   {
+    "stone": "Sapphire",
+    "count": 7
+   },
+   {
+    "stone": "Diamond",
+    "count": 2
+   }
+  ],
+  "May": [
+   {
+    "stone": "Agate",
+    "count": 5
+   },
+   {
+    "stone": "Emerald",
+    "count": 4
+   },
+   {
+    "stone": "Chalcedony",
+    "count": 1
+   },
+   {
+    "stone": "Carnelian",
+    "count": 1
+   }
+  ],
+  "June": [
+   {
+    "stone": "Emerald",
+    "count": 4
+   },
+   {
+    "stone": "Agate",
+    "count": 4
+   },
+   {
+    "stone": "Turquoise",
+    "count": 1
+   }
+  ],
+  "July": [
+   {
+    "stone": "Onyx",
+    "count": 5
+   },
+   {
+    "stone": "Sardonyx",
+    "count": 1
+   }
+  ],
+  "August": [
+   {
+    "stone": "Carnelian",
+    "count": 5
+   },
+   {
+    "stone": "Sardonyx",
+    "count": 3
+   },
+   {
+    "stone": "Moonstone",
+    "count": 1
+   }
+  ]
+ },
+ "breastplate_and_foundation": [
+  {
+   "no": "I",
+   "authorized_version": "Sardius Carnelian Jasper",
+   "later_correction": "",
+   "foundation_stone": ""
+  },
+  {
+   "no": "II",
+   "authorized_version": "Topaz Chrysolite Sapphire",
+   "later_correction": "(peridot)",
+   "foundation_stone": ""
+  },
+  {
+   "no": "III",
+   "authorized_version": "Carbuncle Emerald Chalcedony",
+   "later_correction": "",
+   "foundation_stone": ""
+  },
+  {
+   "no": "IV",
+   "authorized_version": "Emerald Ruby Emerald",
+   "later_correction": "",
+   "foundation_stone": ""
+  },
+  {
+   "no": "V",
+   "authorized_version": "Sapphire Lapis-lazuli Sardonyx",
+   "later_correction": "",
+   "foundation_stone": ""
+  },
+  {
+   "no": "VI",
+   "authorized_version": "Diamond Onyx Sardius",
+   "later_correction": "",
+   "foundation_stone": ""
+  },
+  {
+   "no": "VII",
+   "authorized_version": "Ligure Sapphire Chrysolite",
+   "later_correction": "",
+   "foundation_stone": ""
+  },
+  {
+   "no": "VIII",
+   "authorized_version": "Agate Agate Beryl",
+   "later_correction": "",
+   "foundation_stone": ""
+  },
+  {
+   "no": "IX",
+   "authorized_version": "Amethyst Amethyst Topaz",
+   "later_correction": "",
+   "foundation_stone": ""
+  },
+  {
+   "no": "x",
+   "authorized_version": "Beryl Topaz Chrysoprasus",
+   "later_correction": "",
+   "foundation_stone": ""
+  },
+  {
+   "no": "XI",
+   "authorized_version": "Onyx Beryl Jacinth",
+   "later_correction": "",
+   "foundation_stone": ""
+  },
+  {
+   "no": "XII",
+   "authorized_version": "Jasper Jasper Amethyst",
+   "later_correction": "",
+   "foundation_stone": ""
+  }
+ ],
+ "crystal_gazing": {
+  "chapter_title": "On Crystal Balls and Crystal Gazing",
+  "passage": "The Achaians, as Pausanius relates, frequently used a mirror to divine diseases or to learn whether there was danger of sudden death. Of the Temple of Demeter, or Ceres, at Patras, he writes: ?"
+ }
+}
