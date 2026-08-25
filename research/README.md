@@ -30,13 +30,19 @@ research/
 │   ├── 02_mine/mine_waite.py           # 编码映射（sacred-texts码 → 站点id）+ 文本规范化
 │   ├── 02_mine/mine_papus_mcelroy.py   # Papus 文本解析 + McElroy JSON 挖掘（含牌名变体归一）
 │   ├── 02_mine/mine_fixed_stars.py     # Robson 恒星目录条目挖掘（Influence/With Sun/Moon 分节）[2026-08-25]
+│   ├── 02_mine/mine_fixed_stars_v2.py  # Robson v2：漏星修复+Aldebaran 截断修复+With 行星小节全收 [2026-08-26]
 │   ├── 02_mine/mine_dreams_miller.py   # Miller 词条挖掘（2250 条 term→meanings）[2026-08-25]
 │   ├── 02_mine/mine_cheiro_palmistry.py # Cheiro 章节→结构化 section（主线/副线/星丘/手型）[2026-08-25]
 │   ├── 02_mine/mine_sepharial_numbers.py # Sepharial Minor Key + 合成数释义表 [2026-08-25]
+│   ├── 02_mine/mine_sepharial_numbers_v2.py # Sepharial v2：新增 Ch X 读心 / Ch XII 失物章 [2026-08-26]
 │   ├── 02_mine/mine_kunz_birthstones.py # Kunz 诞生石票数表/胸甲十二石/水晶凝视章 [2026-08-25]
+│   ├── 02_mine/mine_kunz_birthstones_v2.py # Kunz v2：十二月表+双诗+水晶/行星两整章段落库 [2026-08-26]
 │   ├── 02_mine/mine_lilly_signs.py     # Lilly Book I 星座描述章整段收录（OCR 长音 s 噪声）[2026-08-25]
+│   ├── 02_mine/mine_lilly_signs_v2.py  # Lilly v2：逐星座切分+Ch XVII/XVIII+问卦格言+婚姻格言 [2026-08-26]
 │   ├── 02_mine/mine_leo_nativity.py    # Leo 十二宫/太阳十二星座/月亮十二星座三段 [2026-08-25]
+│   ├── 02_mine/mine_leo_nativity_v2.py # Leo v2：五星入星座五章+Centiloquy 百条+逐宫切分 [2026-08-26]
 │   ├── 02_mine/mine_tetrabiblos_books34.py # Tetrabiblos B3/B4 命盘专题十章按主题切分 [2026-08-25]
+│   ├── 02_mine/mine_tetrabiblos_book2.py   # Tetrabiblos B2 政治气象占星十二章（quote+全文）[2026-08-26]
 │   ├── 02_mine/curate_bookt_decans.py  # Golden Dawn Book T 三十六旬对应表（程序化生成+锚点校验）[2026-08-25]
 │   ├── 03_clean/clean_tarot.py         # 清洗：78张结构校验/去重/空值/与站点id集合对齐
 │   ├── 03_clean/clean_tarot_sources.py # 清洗：三源合并对照（waite+papus+mcelroy 78×3）
@@ -57,15 +63,22 @@ research/
     ├── leo_nativity_v1.json             # Leo 十二宫/日座/月座段落（1928 ed.）[2026-08-25]
     ├── book_t_decans_v1.json            # Golden Dawn 三十六旬→小牌/守护/GD称号（curated+程序生成）[2026-08-25]
     ├── dreams_miller_v1.json            # Miller 解梦词条（2250 条）[2026-08-25]
-    ├── kunz_birthstones_v1.json         # Kunz 诞生石月度票数表+胸甲十二石+水晶凝视段 [2026-08-25]
     ├── cheiro_palmistry_v1.json         # Cheiro 手相章节库（18 sections）[2026-08-25]
+    ├── kunz_birthstones_v1.json         # Kunz 诞生石月度票数表+胸甲十二石+水晶凝视段 [2026-08-25]
     ├── sepharial_numbers_v1.json        # Sepharial 数字学（Minor Key 1-9+行星 / 问事9 / 合成数12..84）[2026-08-25]
+    ├── kunz_birthstones_v2.json         # Kunz 扩容：十二月表+双诗+水晶/行星两整章段落库 [2026-08-26]
+    ├── leo_nativity_v1.json             # Leo 十二宫/日座/月座段落（1928 ed.）[2026-08-25]
+    ├── leo_nativity_v2.json             # Leo 扩容：五星入星座+Centiloquy 百条+第二..十二宫逐宫 [2026-08-26]
+    ├── lilly_signs_v2.json              # Lilly 扩容：十二星座逐座+Ch XVII/XVIII+问卦格言+婚姻格言 [2026-08-26]
+    ├── sepharial_numbers_v2.json        # Sepharial 扩容：v1 全量 + Ch X 读心 / Ch XII 失物章 [2026-08-26]
+    ├── tetrabiblos_book2_v2.json        # Tetrabiblos Book II 政治气象占星十二章（quote+全文）[2026-08-26]
+    ├── fixed_stars_robson_v2.json       # Robson v2：99 星 + With Mercury..Fortuna 小节全收（322 节）[2026-08-26]
     ├── tarot_modern_v1.json             # Tarotoo 现代结构化塔罗（78张×love/career/mood/spiritual/yes_no；56数字牌与 Book T 表交叉验证一致）[2026-08-25]
     ├── zodiac_facts_v1.json             # 黄道事实层（12星座：黄经/元素/古典现代守护/日期；古典守护与 Ptolemy 庙宫表互证）[2026-08-25]
     ├── alignment_cn_en_v1.json          # 中文-原文语义对齐（22大牌逐张+小牌规则模板）
     ├── rune_poem_oe_v1.json            # [v1, 已被v2取代] 仅盎格鲁-撒克逊诗
     ├── rune_poems_v2.json              # 清洗后三诗对照（24符文：16个三诗齐全+8个仅OE诗）
-    └── audit_report.json               # 审计报告（all_pass: true, 14 datasets）
+    └── audit_report.json               # 审计报告（all_pass: true, 22 datasets）
 ```
 
 ## 数据字典
@@ -143,7 +156,54 @@ Golden Dawn《Book T》三十六旬对应表：sign/decan/度数区间/Chaldean 
 ### lilly_signs_v1.json / leo_nativity_v1.json
 17-20 世纪公版占星教科书的星座/宫位语义层源头文献：
 Lilly 1647 Book I 星座描述章整章 passage（长音 s OCR 噪声保留原貌）；
-Leo 十二宫、太阳十二星座、月亮十二星座三段（1928 ed.）。逐星座切分与清洗留待 v2。
+Leo 十二宫、太阳十二星座、月亮十二星座三段（1928 ed.）。
+
+### v2 扩容数据集（2026-08-26）
+
+针对 v1 提取率过低（0.7%–22%）的六个源做扩容重挖，`data/` 只增不改，v2 为 v1 超集：
+
+#### kunz_birthstones_v2.json（0.7% → ~17%）
+| 字段 | 说明 |
+|---|---|
+| favored_by_month / breastplate_and_foundation | 同 v1 |
+| sentiments_of_months | 新增「Sentiments of the Months」十二月表：诞生石/守护天使/护符宝石/主保使徒/对应宝石/黄道宫/花 + 每月双诗；表值逐项回查原文核对（防篡改），OCR 拼写替身（Seorpio 等）登记于 VALUE_RAW_ALTS |
+| chapters.crystal_gazing | 水晶凝视整章段落库（149 段，页眉行定位 ≈333611–430772） |
+| chapters.planetary_and_astral_influences | 行星与星辰感应整章段落库（79 段，≈638488–689018） |
+
+#### leo_nativity_v2.json（5.7% → ~45%）
+| 字段 | 说明 |
+|---|---|
+| sections | 同 v1 三大段（十二宫总论/日座/月座） |
+| planets_in_signs | 新增土/木/火/金/水五星「入十二星座」五章整章（星座符号被 OCR 损坏，不逐星座切分） |
+| centiloquy.aphorisms | 新增「A Centiloquy」百条格言逐条解析：罗马数字锚定按期望序列 I.–C. 匹配（OCR 数字噪声 'XXXV1.' 归一），恰 100 条 |
+| houses | 第二..十二宫逐宫切分（运行页眉行定位，边界允许 ≤1 页溢出） |
+
+#### lilly_signs_v2.json（dataset=lilly_christian_astrology）
+| 字段 | 说明 |
+|---|---|
+| signs | 星座描述章按 12 星座逐座切分。OCR 将星座符号损坏，以各座「本质属性句」特征串为有序锚点（如 Aries=`Mafculine, Diurnall Signe`、Pisces=`Watry Triplicicy,Northern`），全部命中且严格递增才通过；每段可能含前一座 ≤160 字符尾迹 |
+| ch17_use_of_signs | Ch XVII「十二星座论述的用法」章段 |
+| essential_dignities | Ch XVIII 行星本质尊贵章（至 Ch XIX），含尊贵表区域（网格噪声行已清除） |
+| horary_aphorisms | 著名问卦格言与考量章（QUESTION. 起 43 条编号格言）：因 OCR 页裂严重不做逐条切分，整章收录并检测序号覆盖（38/43 命中） |
+| albubater_marriage | Albubater 婚姻格言章段 |
+
+#### sepharial_numbers_v2.json
+v1 全量（minor_key/things_thought_of/resultant_meanings）+ 新增
+`chapters.x_thought_reading_by_numbers`（Ch X「以数读心」，21 段）与
+`chapters.xii_of_things_lost`（Ch XII「论失物」，10 段）。
+
+#### tetrabiblos_book2_v2.json（Book II 此前完全未挖）
+政治/气象占星卷十二章：index/heading（检测到的章号行原文，Ch XI/XIII 章号行
+被 OCR 吃掉以标题特征串补锚）/title/quote（首实质段落）/body（整章正文，
+页眉残行清除）。审计要求 ≥12 章且五个必收主题命中。
+
+#### fixed_stars_robson_v2.json（96 → 99 星，+322 个 With-行星小节）
+| 修复 | 说明 |
+|---|---|
+| 漏星 | 星名内噪声字符净化（`59. Has*.`）；正文噪声假匹配（'Hom.' 行）不再切断条目边界 |
+| 截断 | Aldebaran 类条目 Influence 节头丢失不再致命：notes 上限放宽 + 全部小节照收 |
+| aspects | 新增 With Mercury/Venus/Mars/Jupiter/Saturn/Uranus/Neptune/Fortuna 小节全收（322 节，Aldebaran 单星回收 6 节） |
+| 名称归一 | SnARATAN→Sheratan（以条目正文 'Sharatain' 上下文为证断言） |
 
 ## 复现方式
 
@@ -162,17 +222,23 @@ python research/pipeline/02_mine/mine_kunz_birthstones.py  # 诞生石/水晶
 python research/pipeline/02_mine/mine_lilly_signs.py     # Lilly 星座章
 python research/pipeline/02_mine/mine_leo_nativity.py    # Leo 宫位/日座/月座
 python research/pipeline/02_mine/mine_tetrabiblos_books34.py # Tetrabiblos B3/B4 专题
+python research/pipeline/02_mine/mine_tetrabiblos_book2.py   # Tetrabiblos Book II 十二章
+python research/pipeline/02_mine/mine_kunz_birthstones_v2.py  # Kunz 扩容（v2）
+python research/pipeline/02_mine/mine_leo_nativity_v2.py     # Leo 五星/百条格言/逐宫（v2）
+python research/pipeline/02_mine/mine_lilly_signs_v2.py      # Lilly 逐星座+格言章（v2）
+python research/pipeline/02_mine/mine_sepharial_numbers_v2.py # Sepharial Ch X/XII（v2）
+python research/pipeline/02_mine/mine_fixed_stars_v2.py      # Robson 漏星/截断修复（v2）
 python research/pipeline/02_mine/curate_bookt_decans.py  # Book T 三十六旬
-python research/pipeline/04_audit/audit.py               # 审计16数据集（不过则退出码1）
-python research/pipeline/04_audit/fidelity_check.py      # 保真度抽查：196抽样回查原始文献
+python research/pipeline/04_audit/audit.py               # 审计22数据集（不过则退出码1）
+python research/pipeline/04_audit/fidelity_check.py      # 保真度抽查：352抽样回查原始文献
 python research/pipeline/04_audit/qa_scan.py             # 清洗质量扫描（OCR噪声/页眉/编码）
 python research/pipeline/04_audit/export_ts.py           # 导出站点 TS（15个模块）
 ```
 
 ### 验证方法论（三层）
 
-1. **确定性**：全部挖掘脚本重跑后 20 个数据集 SHA256 逐字节一致（无随机性、无顺序依赖）；
-2. **保真度**：`fidelity_check.py` 按 seed=1901 抽样 196 条，词块化回查原始文献，
+1. **确定性**：全部挖掘脚本重跑后数据集 SHA256 逐字节一致（无随机性、无顺序依赖）；
+2. **保真度**：`fidelity_check.py` 按 seed=1901 抽样 352 条，词块化回查原始文献，
    命中率阈值 70%（页眉清除造成的"空洞"允许跨洞，超短字段命中 ≥1 块即通过）——
    防止挖掘过程张冠李戴或凭空造文；
 3. **交叉验证**：Tarotoo 56 数字牌行星/星座 ↔ Book T 三十六旬表逐张互证；
@@ -231,9 +297,13 @@ IA=Internet Archive 公版扫描件 OCR；PG=Project Gutenberg。
 - [x] Lilly《Christian Astrology》1647 + Alan Leo 十二宫/日座/月座语料入库，补星座宫位出处（2026-08-25）
 - [x] 零语料模块补齐：Miller 解梦 / Kunz 水晶诞生石 / Cheiro 手相 / Sepharial 数字学（2026-08-25）
 - [x] Tetrabiblos Book III/IV 命盘专题十章按主题挖掘 + Golden Dawn《Book T》三十六旬对应表（roadmap「Book T 占星对应」落地）（2026-08-25）
+- [x] 清洗程序扩容 v2：六源重挖（kunz 0.7%→~17% / lilly 1.1%→逐座切分+格言章 /
+      sepharial 4.0%→+Ch X·XII / tetrabiblos Book II 零→十二章全文 /
+      leo 5.7%→~45% 五星+百条格言+逐宫 / robson 截断漏星修复+322 小节）；
+      audit 22 数据集全绿、fidelity 352 抽样全绿、qa_scan 无残留（2026-08-26）
 - [ ] 对齐 v2：小牌逐张人工对齐 + 语义相似度评分
-- [ ] fixed_stars v2：与现代星表交叉补齐黄经与星座（候选方案：HYG database RA/Dec + 岁差计算至 J1923 黄经；注意 HYG 为 CC BY-SA，衍生数据需同许可）
-- [ ] lilly/leo v2：逐星座、逐宫切分与 OCR 清洗；站点 corpus.ts 语义层接入研究层引用
+- [ ] fixed_stars v3：与现代星表交叉补齐黄经与星座（候选方案：HYG database RA/Dec + 岁差计算至 J1923 黄经；注意 HYG 为 CC BY-SA，衍生数据需同许可）
+- [ ] 站点 corpus.ts 语义层接入研究层 v2 引用（lilly 逐座/leo 百条格言/kunz 十二月表）
 - [ ] 站点接线第二批：fixedStars（星盘恒星层）/ palmistrySections（手相原文面板）/
       sepharialNumbers（数字学出处）/ kunzBirthstones（水晶页诞生石表）/
       zodiacFacts（占星页事实条）/ tetrabiblosBooks34 + classicalPassages（AI prompt 锚定）

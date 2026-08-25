@@ -1,0 +1,1895 @@
+{
+ "dataset": "fixed_stars_catalog",
+ "version": "v2",
+ "generated": "2026-08-26",
+ "source": {
+  "work": "Vivian E. Robson, The Fixed Stars and Constellations in Astrology",
+  "year": 1923,
+  "publisher": "Cecil Palmer, London",
+  "rights": "public domain",
+  "origin": "Internet Archive OCR (in.ernet.dli.2015.128091)",
+  "note": "v2 修复：漏星（星名噪声净化）、Aldebaran 类 Influence 头丢失截断、新增 With Mercury..Fortuna 各行星小节（aspects）"
+ },
+ "count": 99,
+ "stars": [
+  {
+   "num": null,
+   "name": "Achernar",
+   "name_key": "achernar",
+   "designation": "a Eridani, X 14* 10'",
+   "nature": [],
+   "influence": "In his notes on the stars in Eridanus Ptolemy says \" the last bright one is of the same in- fluence as Jupiter.\" It is symbolized as the Cherub and Sword and gives success in public office, bene- ficence, and religion.",
+   "notes": "A white star situated at the mouth of the River. From A 1 Aliir al Nahr, the End of the River.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 2,
+   "name": "Acrux",
+   "name_key": "acrux",
+   "designation": "a Cruets, rj, io° 46'",
+   "nature": [
+    "Jupiter"
+   ],
+   "influence": "Acrux is of the nature of Jupiter. It gives religious beneficence, ceremonial, justice, magic and mystery, and is frequently prominent in the horoscopes of astrologers and occultists.",
+   "notes": "The brightest star in the Southern Cross. It is triple.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 3,
+   "name": "Acubens",
+   "name_key": "acubens",
+   "designation": "a Cancri, SI I2°3i'",
+   "nature": [
+    "Mercury",
+    "Saturn"
+   ],
+   "influence": "Of the nature of Saturn and Mercury. It has been called \" The sheltering or hiding place, and gives activity, malevolence and poison, making its natives liars and criminals.",
+   "notes": "A double star with white and red compo- nents situated on the southern claw of the Crab. From Al Zubanah, the Claws.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 4,
+   "name": "Aculeos",
+   "name_key": "aculeos",
+   "designation": "6M S cor pit, f 24 0 39'",
+   "nature": [
+    "Mars"
+   ],
+   "influence": "Of the nature of Mars and the Moon. It affects the eyesight and causes blindness of one or both eyes if in conjunction with an afflicted luminary, or in conjunction with a malefic that afflicts the luminaries. The opposition appears to be equally effective. 5. Acumen. 7M Scorpii. f 27° 35'-",
+   "notes": "The so-called Nebula in the sting of Scorpio mentioned by Ptolemy. It is actually a cluster and lies with Acumen a little above the sting.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 6,
+   "name": "Adhafera",
+   "name_key": "adhafera",
+   "designation": "( Leonis, SI 26° 27'",
+   "nature": [
+    "Mercury",
+    "Saturn"
+   ],
+   "influence": "Of the nature of Saturn and Mercury. It is connected with suicide, poison, corrosive acids, liquid explosives, liquid fire, lying, stealing and crime.",
+   "notes": "A double star in the Lion's mane. It has been called A 1 Serpha, the Funeral Pyre.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "gives great military preferment and riches.",
+   "aspects": {}
+  },
+  {
+   "num": 7,
+   "name": "Agena",
+   "name_key": "agena",
+   "designation": "p Centauri, 71^ 22 0 43'",
+   "nature": [
+    "Jupiter",
+    "Venus"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Venus and Jupiter, but Alvidas suggests an influence similar to that of Mars conjunction Mer- cury. It gives position, friendship, refinement, morality, health and honour.",
+   "notes": "On the right foreleg of the Centaur.",
+   "with_sun": "Mental activity, rashness, success, many friendships.",
+   "with_moon": "Sarcasm and bitter speech, strong passions.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Intellectual success, legal and Church authority, professional honour.",
+    "mars": "Legal authority, honour as speaker or writer, gTcat mental and physical powers.",
+    "mercury": "Great mental ability, sarcasm, material gain, speaking, writing and championing the masses.",
+    "neptune": "Sharp, rash, headstrong, original, organizer, poor executive ability, loss through law and speculation, obstacles to success, many false friends and enemies, liable to accidents, death by colds or fevers.",
+    "saturn": "Thoughtful, shrewd, association with medical men, healing powers, abrupt manner, occultism, domestic disharmony through jealousy.",
+    "uranus": "Sarcasm, public work but eventual disfavour of superiors, caustic speaker and writer, violent, coarse, unrefined, strong passions, domestic disharmony, loss of expected wealth, peculiar death.",
+    "venus": "Poetical, strong passions, rash friendships with women."
+   }
+  },
+  {
+   "num": 15,
+   "name": "Al Hecka",
+   "name_key": "alhecka",
+   "designation": "{ Tauri, JJ 23 0 40'",
+   "nature": [
+    "Mars"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Mars, but Alvidas suggests that of Mercury and Saturn conjoined. It gives violence, male- volence and danger of accidents.",
+   "notes": "The Bull’s South or Following Horn, sometimes called 41 The Driver.\"",
+   "with_sun": "Suspicious, reserved, studious, unfavourable for health and especially for the lungs, aptitude for military enterprise and stratagems but danger of deceit and ambushes.",
+   "with_moon": "Quarrels, evil habits and company, depravity.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Hypocrisy, dissipation, business losses and disgrace.",
+    "mars": "Evil companions, bad habits, sex troubles, and afflictions of a Mars-Venus type.-.",
+    "mercury": "Hasty temper, selfishness, ‘greed, dissipation, legal and business troubles^ poor healthy domestic troubles and separation from wife or children, low companions, loss of wealth and poverty.",
+    "neptune": "Accidents, secret enemies, great psychic powers, wife may be sickly or die soon after marriage, favourable for gain but many losses in latter part of life, sudden troubles of a Mars nature.",
+    "saturn": "Uncontrolled passions, drink, debauchery, perverted genius, clever writer of undesirable literature, luxurious surroundings but little wealth, isolated or confined at end of life, domestic unhappiness, accidents if Mars is also afflicting.",
+    "uranus": "Legal difficulties, trouble through occultism, danger of imprisonment but help from friends, unfavourable for love and marriage, paren- tal disharmony, little wealth, death from an acci- dent.",
+    "venus": "Unfortunate, low companions, bad environment."
+   }
+  },
+  {
+   "num": 17,
+   "name": "Al Jabbab",
+   "name_key": "aljabbab",
+   "designation": "ij Leonis, SI 26° 4f",
+   "nature": [
+    "Mercury",
+    "Saturn"
+   ],
+   "influence": "Of the nature of Saturn and Mercury. It gives loss and many dangers, a violent and in- temperate nature, and to a military officer danger of mutiny and minder by his soldiers. These charac- teristics are most marked when the star is rising.",
+   "notes": "From AI JehTia, the Forehead. It 15 situated on the Lion's mane.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 8,
+   "name": "Albireo",
+   "name_key": "albireo",
+   "designation": "(3 Cygni, ts; o° 9'",
+   "nature": [
+    "Mercury",
+    "Venus"
+   ],
+   "influence": "Of the nature of Venus and Mercury. 119 It gives a handsome appearance, neatness, a lovable disposition and beneficence in despair.",
+   "notes": "A topaz yellow and sapphire blue binaiy or double star situated on the head of the Swan. Symbolized as “ The Song of the Dying Swan.\"",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 9,
+   "name": "Alcyone",
+   "name_key": "alcyone",
+   "designation": "n Tauri, B 2S 0 52'",
+   "nature": [
+    "Mars"
+   ],
+   "influence": "Of the nature of Mars and the Moon. It causes love, eminence, blindness from fevers, small-pox, and accidents to the face. For further particulars sec Pleiades.",
+   "notes": "A greenish yellow star and brightest of the Pleiades, situated on the shoulder of the Bull. From early times it has been thought to be the central Sun round which the universe revolves, and was A1 Wasat, the Central One, of the Arabs, and Tcmennu, the Foundation Stone, of the Babylonians, but this idea has now been abandoned by astronomers. Alcyone marked the beginning of the 4th ecliptic constellation of the Babylonians, and as Amba. the Mother, formed the junction star between the Hindu nakshatras Krittika and Roliini. It is frequently called the Hen.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 10,
+   "name": "Aldebaran",
+   "name_key": "aldebaran",
+   "designation": "a Tauri, Q 8° 40'",
+   "nature": [],
+   "influence": "",
+   "notes": "A pale rose star marking the Bull’s South or Left Eye. Its name is from A1 Dabaran, the Follower. It formed one of the four Royal Stars or Watchers of the Heavens among the Persians in about 3000 B.C., when, as the Watcher of the East, it marked the Vernal Equinox, the other stars being Regurus, Antares, and Fomalhaut. Aldebaran is a",
+   "with_sun": "culminating or rising, great honour through violence with difficulties and cas- ualties.",
+   "with_moon": "culminating or rising, great honour through violence with difficulties and cas- ualties.",
+   "culminating": "",
+   "aspects": {
+    "fortuna": "or its depositor, poverty. With a malefic in the 4th, 7th, nth or 12th house and the Moon at the same time with Antarcs, death by a sudden sword thrust, stab or fall.",
+    "jupiter": "Great ecclesiastical honour and high military preferment.",
+    "mars": "Great military' preferment but 'at- tended by much danger ; liable to accidents, fevers and a violent death. If at the same time the Moon is with Antarcs, especially in an angle, death will come through a stab, blow or fall.",
+    "mercury": "Aflects the health and domestic affairs, prominence through mercurial matters, material gain, and many learned friends. IPiM Venus. • Honour through literature, music or art ; creative abilities ; favourable for health and marriage.",
+    "saturn": "Great afflictions, strange mind, gTeat wickedness, sarcasm, eloquence, good memory, studious and retiring nature, legal abilities, domestic and material success, losses through mercurial friends. If at the same time the Moon is with Antares there will be a violent death, probably by hanging.",
+    "uranus": "Scientific, a nature lover, critical, just, domestic and political success, public honours, fond of occultism but may meet with disfavour' through it, lingering death. TPiVA Neptune. Connected with science, art, occultism and mediumship, good intellect, loss through fire, electricity or speculation, but gain through metals, machinery or scientific instruments, especially i! Mars is strong ; many journeys, ob- 1 stacles to domestic happiness, unfavourable for children, danger of accidents and sudden death."
+   }
+  },
+  {
+   "num": 11,
+   "name": "Algenib",
+   "name_key": "algenib",
+   "designation": "y Pegasi, ^ 8° 2'",
+   "nature": [
+    "Mars",
+    "Mercury"
+   ],
+   "influence": "Of the nature of Mars and Mercury It gives notoriety, dishonour, violence, misfortune, and denotes the naked and poor professional beggar.",
+   "notes": "A white star situated at the tip of the wing of Pegasus. From A 1 Janah, the Wing, or AI Janb, the Side, According to Bullinger it means \" Who carries.\"",
+   "with_sun": "Mental disturbances, fevers and ill-' health, some danger of accidents.",
+   "with_moon": "Dishonour, loss by scandal, exiled or forced to flee, ill-health, trouble through writings.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Hypocrisy, financial success, real or pretended religious enthusiasm.",
+    "mars": "Quick mind and body, lying or theft, danger of accidents.",
+    "mercury": "Quick temper, mental distur- bances, success in legal and other disputes. IVtth Venus. Generous, proud, quick temper, bad morals, drink or evil habits, favourable for financial affairs.",
+    "neptune": "Conceited, stubborn, deceptive, cowardly, vacillating, untruthful, envious, super- stitious, strong passions, sex troubles, evil surround- ings, many enemies, mechanical ability, criminal tendencies, may be forger, sudden and violent death.",
+    "saturn": "Many enemies, success, secret help from powerful friends and influential relatives, bad morals.",
+    "uranus": "Active and eccentric mind, re- former or agitator, great influence over the minds of others necessitating journeys, peculiar ideas in ad- vance of the times, mystic and fond of mysteries though frank and open, domestic troubles especially in a woman's map."
+   }
+  },
+  {
+   "num": 12,
+   "name": "Algenubi",
+   "name_key": "algenubi",
+   "designation": "« Leonis, & 19 0 35'",
+   "nature": [
+    "Mars",
+    "Saturn"
+   ],
+   "influence": "n Of the nature of Saturn and Mars, and has been called “ He who rends.” It gives a bold, bombastic, cruel, heartless, brutish and destructive nature, but artistic appreciation and power of ex- pression.",
+   "notes": "A yellow star in the Lion’s mouth.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 13,
+   "name": "Algol",
+   "name_key": "algol",
+   "designation": "8 25 0 3'",
+   "nature": [
+    "Jupiter",
+    "Saturn"
+   ],
+   "influence": "Of the nature of Saturn and Jupiter. It causes misfortune, violence, decapitation, hanging, electrocution and mob violence, and gives a dogged and violent nature that causes death to the native or others. Jt is the most evil star in the heavens.",
+   "notes": "A white binary and variable star marking the Medusa's Head held in the hand of Perseus. Its diameter is 1,060,000 miles, and its density only a little above that of cork. Algol is from Ra’s aJ Ghul, the Demon’s Head, other names in frequent use be- ing Caput Algol and Caput Medusa;. It was known as Lilith by the Hebrews, after the nocturnal vampire said to be Adam’s first wife : and Tseih She, Piled- up Corpses, by the Chinese.",
+   "with_sun": "Violent death or extreme sickness. If also in no aspect to a benefic, or there is no benefic in the 8th house, and the depositor of the Sun in a day nativity or of the Moon in the night one is in square or opposition to Mars, the native will be beheaded ; if the luminary culminate he will- be maimed, mangled, wounded or tom to pieces alive ; and if Mars is at the same time in Gemini or Pisces his hands or feet will be cut off.",
+   "with_moon": "Violent death or extreme sickness.",
+   "culminating": "Murder, sudden death, beheading, prone to murder and mischief. If at the same time in conjunction with Sun, Moon or Jupiter, -gives victory over others in war.",
+   "aspects": {
+    "fortuna": "or its depositor, poverty",
+    "mars": "or if Mars be elevated above the luminaries when Algol is angular, the native win be a murderer who will come to an untimely end. The same is caused by Algol angular or with the hyleg."
+   }
+  },
+  {
+   "num": 14,
+   "name": "Algorab",
+   "name_key": "algorab",
+   "designation": "S Corvi, ^ 12 0 20'",
+   "nature": [],
+   "influence": "Of the nature ot Mars and Saturn. It gives destructiveness, malevolence, fiendishness, repulsiveness and lying, and is connected with scavenging.",
+   "notes": "A double star, pale yellow and purple, situated on the right wing of the Crow. From A1 Ghirab, the Crow.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 16,
+   "name": "Alhena",
+   "name_key": "alhena",
+   "designation": "y Geminorum, £5 7 0 59'",
+   "nature": [],
+   "influence": "According to Ptolemy it is of the nature iE 127 , of Mercury and Venus, but Alvidas gives Moon and Venus. It bestows eminence in art but gives liability to accidents affecting the feet .",
+   "notes": "A brilliant white star in the left foot of the Southern Twin, often called Bright Foot of Gemini. From AlHan’ah, a Brand or Mark burnt in. According to Bullinger it means \"hurt, wounded or afflicted,\" and it has been called \" the wound in the tendon Achilles.'\"",
+   "with_sun": "Pride, love of ease, luxury and pleasure. There may be martial honours but danger of losing them.",
+   "with_moon": "Good health, honour, riches, pleasure and society, domestic benefits.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Social advancement and success, ' v philosophical mind, love of ostentation.",
+    "mars": "Superficial nature, fond of pleasure, ease, luxury, ornament and display. \\",
+    "mercury": "Popularity, benefits from opposite sex, musical and artistic ability but little fame, domestic harmony, business adversely affected by pleasure and society.",
+    "neptune": "Easily influenced, suffers through indiscreet actions, mediumistic, very sympathetic, often domestic disharmony, unfavourable for gain, death brought about by own acts. ' *",
+    "saturn": "Caution, reserve, studiousness, prominence in science or art, some domestic discord, sickness to the children, unexpected losses but possibility of wealth, ill-health at the end of life. With Urantis. Timid, suspicious, selfish, econo- mical over small things and extravagant in large ones, emotional, vacillating, unpractical and much influenced by habits, easily hypnotized, occult interests and secret psychic ability; afflicted with Cancerian ailments; two or more mam ages, one very early and extremely unhappy especially it female ; unfavourable for home and children. If a woman, good-looking and many friends but enemies among women. -12",
+    "venus": "Material concerns, love of dress, pleasure and flattery, artistic and musical ability."
+   }
+  },
+  {
+   "num": 20,
+   "name": "Ali-iiard",
+   "name_key": "ali-iiard",
+   "designation": "a Hydra-, SI = 6 ” io",
+   "nature": [],
+   "influence": "Ftolemy states that it a l of I & is of Saturn and Venus, but according ‘°f Tgi'* similar to the Sun and Jupiter ™ 'knowledge rrisdom, musical and artistic appremt .^ rf ^ of human nature, stron f,. p ^“^ ^,3 a sudden control, immorality, revoltmg < *“*““„* death by drowning, poison or “ pb> d loss in con- 1/ rising, much trouble ;“ d] ^,„. addicted t» ncction with estates and building, women and intemperance. suffering Il'.'tt Sun. Power and position through own acts and fromenem.es, loss V- and honour, overcome by ene ™f ' gipey, faflur' HVrt Moon. Lust, u relative, in projects but financial help often^ ill-fortune to wife or “ otb !L' h ^ at i on . If affi= lrf ruin, danger of dead ■ b V “^S^ing or poi»“ by Mars or Saturn, de: ath } a roa ]efic a a especially if Mars be angu] i • ^ ater or poison, conjunction with Algol, deathy writing* un- IT . ih Mercury. Trouble JStfLugh a pass®: favourable for \"amage, suffering ° f ate attachment that entuely chang the life. ' . , attachments that are",
+   "notes": "A brilliant white star in the 1 ribbon. From A1 Na’ir al Fakkah, the of the Dish.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Strong passions, favourable for gain, attachment to widow or widower, liable to disgrace, legal trouble and judicial sentence.",
+    "mars": "Trouble and scandal through love affairs. Attachment to a married person. Bad for childbirth, if ft woman liable to miscarriage and death, together with death of child, danger of serious accidents ; if afflicting luminaries, danger of death by drowning or poison.",
+    "neptune": "Strong passions, shallow affections, seducer, led astray early in life, bad for gain and marriage, separation from or loss of parents, acci- dents, public death through secret enemies. If cul- minating, death of mother at native’s birth. 21. Alvhecca. a Corona: Borealis. TT",
+    "saturn": "Strong passions but cool, cautious and slow to anger, secret and sorrowful love affairs of short duration, unfavourable for gain, domestic disharmony, danger of death by poison.",
+    "uranus": "Disgrace especially through love affairs, evil habits, unbalanced mind, tendency to great crime, bad for gain and marriage, downfall through love disappointment ; if a woman, early ruin and depraved life.",
+    "venus": "Passionate attacnm IKFUJESCE OF STARS AND NEBUUE xj 1 opposed by relatives, handsome and admired by opposite sex, favourable for gain, sorrow through love affairs if female."
+   }
+  },
+  {
+   "num": 19,
+   "name": "Alnilam",
+   "name_key": "alnilam",
+   "designation": "< Ononis , U 22° 22'",
+   "nature": [
+    "Jupiter",
+    "Saturn"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Jupiter and Saturn ; and to Alvidas of Mercury and Saturn. It gives fleeting public honours.",
+   "notes": "A bright white star occupying the central position in Orion's Belt. From AI Nitham, the String of Pearls.",
+   "with_sun": "Rash, headstrong, surly. If also culminating, military preferment or’^'^un.",
+   "with_moon": "Many sudden and unexpected losses and reverses, much help from friends, ill-health of family.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Legal or Church preferment but danger of disgrace, loss by speculation, trouble through relatives and foreign affairs.",
+    "mars": "Quarrels, loss by lawsuits, domestic disharmony, bad health, violent death.",
+    "mercury": "Hasty, quick temper, quarrels with associates, domestic disharmony through own actions, troubles through writings and opposite sex.",
+    "neptune": "Honest, outspoken, hasty in speech, rash and impulsive, offends others through irreligious speech, business and mercantile pursuits or engaged in science, may be head of learned in- stitution or connected with large companies, fond of speculation, sports and the water, quick and level- hooded in emergencies, many friends but some, dinger of accidenls. domestic harmonj, before old age. (See Cixcoia Orioxis.)",
+    "saturn": "Courageous, domestic disharmony, leaves home early, successful but many unexpected losses, favourable for health.",
+    "uranus": "Scientific ability, critical, enthu- siastic, too many interests, may practise medicine or invent new surgical appliances but reaps no gain from them, many troubles and annoyances, dis- harmony with brothers and sisters who may cheat native out of inheritance, loss through law and in business, several marriages, enmity between native and partner’s relatives, unfavourable for children, sudden death in middle age while travelling, leaving affairs involved in litigation.",
+    "venus": "Trouble through love affairs, scan- dal, enemies among women."
+   }
+  },
+  {
+   "num": 20,
+   "name": "Alphard",
+   "name_key": "alphard",
+   "designation": "a Hydra, ft 26° lo'",
+   "nature": [
+    "Saturn",
+    "Venus"
+   ],
+   "influence": "Ptolemy states that it is of the nature of Saturn and Venus, but according to Alvidas it is similar to the Sun and Jupiter in sextile. It gives wisdom, musical and artistic appreciation, knowledge of human nature, strong passions, lack of self- control, immorality, revolting deeds and a sudden death by drowning, poison or asphyxiation.",
+   "notes": "An orange star in the neck of the Hydra. From AJ Fard al Shuja, the Solitary One in the Ser- pent. Often called the Hydra’s Heart or Cor Hydra.",
+   "with_sun": "Power and authority but suffering through own acts and from enemies, loss of position and honour, overcome by enemies.",
+   "with_moon": "Lust, wantonness, profligacy, failure in projects but financial help often from a relative, ill-fortune to wife or mother, eventual disgrace and ruin, danger of death by asphyxiation. If afflicted by Mars or Saturn, death by drowning or poison especially if Mars be angular. If a malefic is in conjunction with Algol, death by water or poison. TPilft Mercury. Trouble through writings, un- favourable for marriage, suffering through a passion- ate attachment that entirely changes the course of the life. WUh Venus. Passionate attachments that are ! 133 unfavourable for money matters but gain through marriage, domestic disharmony and peculiar fea- tures in connection with marriage, not very favour- able for children, gain through martial occupations, may invent something of value in surgery or chem- istry, writes on occult subjects, many changes, much travel by water in early life, many enemies, liable to heart ailments, sudden or violent death.",
+   "culminating": "much trouble, anxiety and loss in con- nection with estates and budding ; addicted to women and intemperance.",
+   "aspects": {}
+  },
+  {
+   "num": 22,
+   "name": "Alphcratz",
+   "name_key": "alphcratz",
+   "designation": "a Andromeda, <p rj°n'",
+   "nature": [],
+   "influence": "According to Ptolemy it is of the na- ture of Jupiter and Venus, and to these Al vidas adds Mars also. It gives independence, freedom, love, riches, honour and a keen intellect.",
+   "notes": "A double star, white and purplish, in the hair of Andromeda. From A1 Surrat al Faras, The Horse's Navel, as it was formerly located in Pegasus. According to Bullinger, though with less likelihood, it is from Al Phiratz, the Broken Down. Fre- quently called Caput Andromeda; or Andromeda's Head.",
+   "with_sun": "Honour, preferment and favours from others.",
+   "with_moon": "Energetic, persevering, honour, wealth, many good friends and busmess success.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Philosophical or religious mind, benefits from professional men, ecclesiastical honour and dignity, favourable for gain.",
+    "mars": "Sharp mind, energetic, business success through own endeavours.",
+    "mercury": "Active mind, benefits from judges, lawyers or churchmen, pioneer work bringing pro- minence, accused of selfish motives, writes on science, religion or philosophy.",
+    "neptune": "Sincere, earnest, humane, good speaker and writer, engaged in charitable work, religious reform or animal protection, knowledge of human nature, money sought and obtained chiefly for charitable purposes, many friends, domestic harmony, not very favourable for children. With a malefic and the Moon at the same time with Sirius, death by a fiery cutting weapon or from beasts ; if the Moon be with Wega; violent death.",
+    "saturn": "Open and affable but miserly, seeks popularity, pretends to be religious for business ends, favours from clergy and lawyers, likelihood of wealth, domestic harmony, liable to diseases - in the head and tumours that finally cause death.",
+    "uranus": "Just, honourable, good speaker, domestic harmony if male, but not so fortunate for female, benefit from practical application of ideas, interest in occultism, considerable psychic power if female, favourable for gain.",
+    "venus": "Neat and tidy appearance, quiet life, good health, fond of pleasure and society, fortunate in speculation."
+   }
+  },
+  {
+   "num": 22,
+   "name": "Alpiieratz",
+   "name_key": "alpiieratz",
+   "designation": "a Andromeda:, 13° xx'",
+   "nature": [],
+   "influence": "According to Ptolemy it is of the na- ture of Jupiter and Venus, and to these Alvidas adds Mars also. It gives independence, freedom, love, riches, honour and a keen intellect.",
+   "notes": "A double star, white and purplish, in the hair of Andromeda. From A1 Surrat al Faras, The Home's Navel, as it was formerly located in Pegasus. According to Bullinger, though with less likelihood, it is from Al Phiratz, the Broken Down. Fre- quently called Caput Andromeda; or Andromeda's Head.",
+   "with_sun": "Honour, preferment and favours from others",
+   "with_moon": "Energetic, persevering, honour, wealth, many good friends and business success. With M ercury. Active mind, benefits from judges, lawyers or churchmen, pioneer work bringing pro- minence, accused of selfish motives, writes on science, religion or philosophy. With Ventts. Neat and tidy appearance, quiet life, good health, fond of pleasure and society, fortunate in speculation. to be like Mars and Mercury. It gives honour, dignity and poetical and artistic ability.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Honour and dignity, artistic ability, benefit through ecclesiastical matters, fa- vourable for material gain.",
+    "mars": "Active mind, better writer than speaker, unfavourable for gain.",
+    "mercury": "Mind more active than body, somewhat indolent, benefits from friends, extrava- gant but saving in small things, loss by enemies.",
+    "neptune": "Aggressive, abrupt, disagreeable. 133 unfavourable for money matters but gain through marriage, domestic disharmony and peculiar fea- tures in connection with marriage, not very favour- able for children, gain through martial occupations, may invent something of value in surgery or chem- istry, writes on occult subjects, many changes, much travel by water in early life, many enemies, liable to heart ailments, sudden or violent death.",
+    "saturn": "Studious, popular, economical bat poor, benefits from elderly friends, strong but well- controlled passions, poor health, love disappoint- ment but marries above own station, few children but harmonious ties with them.",
+    "uranus": "Selfish, mental affliction and vio- lence at end of life, psychic power, suffering through occultism, deceptive, many false friends, small in- heritance obtained with difficulty, losses by law, enemies and mercurial affairs, sorrow through children or an adopted child, domestic trouble through own acts, danger of a violent death.",
+    "venus": "Favourable for love affairs, benefits * from friends, artistic and musical tastes."
+   }
+  },
+  {
+   "num": null,
+   "name": "Alsiacb",
+   "name_key": "alsiacb",
+   "designation": "y Andromeda, y 13 0 7'",
+   "nature": [
+    "Venus"
+   ],
+   "influence": "Of the nature of Venus. It give* honour, eminence and artistic ability.",
+   "notes": "A binary (or ternary) star, orange, emerald and blue, situated on the left foot of Andro- meda. From Al Anak al Ard, a small Arabian animal like a badger.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 23,
+   "name": "An Pherg",
+   "name_key": "anpherg",
+   "designation": "t] Piscium, SP 25 0 42'",
+   "nature": [
+    "Jupiter",
+    "Saturn"
+   ],
+   "influence": "Of the nature of Saturn and Jupiter. It gives preparedness, steadiness, determination and final success. hypocrisy, trouble through legal and church matters, and with relatives, bad for gain, disappointment over inheritance.",
+   "notes": "A double star in the cord near the tail of the Northern Fish. Associated with the Greek Head of Typhon.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {
+    "neptune": "Over-sensitive, distasteful environment, high ideals, mystic, drifts without personal effort, secret enemies and trouble through occultism, domestic disharmony, sudden and unexpected death.",
+    "saturn": "Sorrow and disappointment, mental disturbance necessitating asylum or hospital treatment and probably death there, separation from family or parents, danger of accident involving inability to work or lifelong affliction.",
+    "uranus": "Cautious, spiritual, sensitive, sympathetic though sometimes abrupt, just, idealistic, interested in occultism but sceptical in religion, reverence for early memories, disappointments throughout life, good mind, considerable gain, faithful literary friends of a Gemini type, some domestic affliction, natural death at a very advanced age."
+   }
+  },
+  {
+   "num": 25,
+   "name": "Antares",
+   "name_key": "antares",
+   "designation": "a Scorpii, f 8° 39'",
+   "nature": [
+    "Jupiter",
+    "Mars"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Mars and Jupiter. AlvxJas give* Jupiter textile Venus, but this w unlikely c~ \"nf the decidedly martial and malefic nature of the star. It causes malevolence, destructiveness, liberality, broad-mindedness, evil presages and danger of fatality, and makes its natives rash, ravenous, headstrong and destructive to themselves by their own obstinacy.",
+   "notes": "A binary star, fiery ml and emerald green, situated on the body of the Scorpion. From Anti Ares, similar to, or the Rival of Mars. It was one of the four Royal stars of Persia in 3000 H.C., when as the Watcher of the \\\\Y*t it marked the Autumnal Equinox. Sometimes called Shiloh and Cor Scorpio, the Scorpion's Heart. *",
+   "with_sun": "Pretended religion, insincere, honour and riches ending in disgrace and ruin, military preferment, danger of treachery, violence committed or suffered, fevers and sickness, injuries to the right eye, violent death.",
+   "with_moon": "Popular, broad-minded, interested in philosophy, science and metaphysics, liable to change religious opinions, influential friends, favour- able for business and domestic matters, active in local affairs, great power, honour and wealth but benefits may not prove lasting, danger of violence, sickness, drowning or assassination. If in 1st or 10th houses, honour and preferment but many dangers and calamities. Liable to blindness or eye injuries especially if at the same time Mars or Saturn be with Rcgulus. If Saturn be with Aldcbaran. danger of a violent death probably by hanging; but if Mars be with Aldcbaran death by a stab, blow or fall especially *f in angles. If a malefic be with Aldcbaran in the 4th. ” th or t 12th , Rouses, death by a sudden sword-thrust, stab or fall. With \"Mercury. Suspicious, wrongfully accuses friends, unpopular, uses ecclesiastical influence in business, money obtained slowly and with much difficulty, danger of sickness to the native and his family, and death of a relative at home or away.",
+   "culminating": "Honour, preferment and good fortune.",
+   "aspects": {
+    "jupiter": ". Great religious zeal real or pre tended, ecclesiastical preferment, tendency to hypocrisy, benefits through relatives.",
+    "mars": "Detrimental habits powerfully affecting the life, quarrels with friends and relatives, fairly favourable for gain.- If at the same time the Moon is with Aldebaran, danger of death by sword or hanging.",
+    "neptune": "Shrewd, cunning, unbalanced and mentally unsound, secretive but apparently candid, dishonest, tendency to theft, economical, untrutliful. strange religions ideas, evil environment, gain through hard work, sudden and unexpected death brought about by treachery or through enemies who will escape retribution. With Fortum, or its depositor, poverty.",
+    "saturn": "Materialistic, dishonest through circumstances created by environment, religious hypocrisy, many disappointments, loss through quarrels and legal affairs, trouble through enemies, many failures, hampered by relatives, unfavourable for domestic matters, much sickness to and sorrow from children. If at the same time the Moon is with Aldebaran, danger of death by sword or hanging.",
+    "uranus": "Abnormal and extreme ideas, hypocritical, lies and exaggerates, extremely socialise tic.'incites to riot, lawlessness and anarcliism and in danger of imprisonment on this account, occasional poverty, disharmony with relatives, more than one marriage, unfavourable for children, violent death.",
+    "venus": "Insincere, dishonest, energetic and able but selfish, unfavourable for gain and health."
+   }
+  },
+  {
+   "num": 26,
+   "name": "Arcturus",
+   "name_key": "arcturus",
+   "designation": "a Boohs, 23 0 7'",
+   "nature": [
+    "Jupiter",
+    "Mars"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Mars and Jupiter, but Alvidas substitutes Venus and Mercury conjoined. It gives riches, honours, high renown, self-determination and prosperity by navigation and voyages.",
+   "notes": "A golden-yellow star situated on the left knee of Bootes. From Arktouros, the Bear Guard. Also called Arctophilax, the Bear Watcher ; and Alchameth, Azimech, and other variants of A 1 Simak, the Lofty One. According to Bullinger Arcturus means He Cometh, and was called Smat, One who rules, and Ban, the Coming One, by the Egyptians.",
+   "with_sun": "Success through slow and patient plodding, friends among dergy, favourable for gain and for dealing with the public and lawyers. Wjth Moon. New friends, business success, good judgment, domestic hanuony. If with Mars also, danger of death by suffocation. Wtth Mercury. Sober, industrious, popular, in- clined to be religious, somewhat extravagant but well-off, help through friends, holds position of trust in large company or corporation, or receives promo- tion under direction, favourable for health and domestic affairs.",
+   "with_moon": "",
+   "culminating": "High office under Government, great profit and reputation. If at the same time with Sun, Moon or Jupiter, ample fortune and great honour.",
+   "aspects": {
+    "jupiter": "Benefits from legal and Church matters, influential position, danger of hypocrisy, gain through foreign affairs or shipping.",
+    "neptune": "Ingenious, business instincts, changeable, and loss through this means, mediuin- istic and rather negative, associated Hath societies as an official, loss and misfortune in middle age which hastens death, favourable for friendship, partnership. marriage and success, greatly dependent upon advice of marriage partner.",
+    "saturn": "Honest, selfish, inclined to be mean, shrewd in business, materialistic, favourable for gain and speculation and for domestic matters, but early difficulty in married life, favour- able for children but disagreement with one of them.",
+    "uranus": "Favourable for work entailing quick buying and selling and for dealing with the public, associated with antiques or ancient matters and given to forming collections, associated with art. science or literature, official position in some club or society, favourable for gain, benefits from friends, favourable for marriage and children and benefit through both, natural death abroad.",
+    "venus": "Popular, gifts and favours from friends, some false friends of own sex. With Mats. Popular, many friends, considerable gain but does not save owing to extravagance. If in 1st, 7th, gth, 10th or nth houses and the Moon is at the same time with Pollux, danger of death by suffocation."
+   }
+  },
+  {
+   "num": 27,
+   "name": "Armus",
+   "name_key": "armus",
+   "designation": "tf Capricorni, ss: n° 37'",
+   "nature": [
+    "Mars",
+    "Mercury"
+   ],
+   "influence": "Of the nature of Mars and Mercury. It gives disagreeablcness, contcmptiblcness, instab- ility, shamelessness, nagging and a troublesome and contentious nature.",
+   "notes": "Situated in the heart of the Goat.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 28,
+   "name": "Ascella",
+   "name_key": "ascella",
+   "designation": "{ Sagittarii, 11 12 0 31'",
+   "nature": [
+    "Jupiter",
+    "Mer"
+   ],
+   "influence": "Of the nature of Jupiter and Mer- cury. It gives good fortune and happiness.",
+   "notes": "A binary star situated in the armpit of Sagittarius.",
+   "with_sun": "Good fortune and lasting happiness.",
+   "with_moon": "New and influential friends, valu- able gifts, love of respectable women. 29. Aselli. 7 and S Cancri. SI 6° 25' and 7 ° 36'.",
+   "culminating": "Disgrace and ruin, often violent death",
+   "aspects": {
+    "jupiter": "Great gain and influential position, favours front churchmen and gain through legal and ecclesiastical matters, benefits from foreign affairs. TPiVA Saturn. Somewhat self-centred and self- seeking, loss through enemies, high public office, but eventual retirement with public censure. Favour- able for gain, unrelenting nature, domestic dishar- mony caused by antipathy between one of the children and the native or partner.",
+    "mars": "Courageous, generous, noble, just, power and authority.",
+    "mercury": "Power and authority after many difficulties, little gain, numerous expenses, losses by writings, mortgages and bonds. 143",
+    "neptune": "Proud, haughty, great self-esteem, occult interests, prominent and influential position in a company concerned with stocks and shares or speculation, connected with schools or places of amusement, early difficulties with parents, favourable for gain but danger of loss by fire or theft, favourable for marriage but sometimes one of convenience.",
+    "saturn": "Untrustworthy, dishonourable, low morality, bad habits formed early in life.",
+    "uranus": "Energetic, reformer, blunt in speech and often bitter, fixed ideas, honest, careless or broad in religion, many friends among the public, some of whom abuse confidence, enemies among the higher classes, governmental position, involved in disputes with corporations owing to socialistic in- terests, favourable for gain and domestic matters, likelihood of unexpected death abroad.",
+    "venus": "Proud, opinionated, help from an influential friend, favourable for gain."
+   }
+  },
+  {
+   "num": 30,
+   "name": "Baten Kaitos",
+   "name_key": "batenkaitos",
+   "designation": "( Ceti, ^20° 50'",
+   "nature": [
+    "Satum"
+   ],
+   "influence": "Of the nature of Satum. It gives compulsory transportation, change or emigration, misfortune by force or accident, shipwreck but also rescue, falls and blows.",
+   "notes": "A topaz-yellow star in the body of the Whale. From A 1 Batn al Kaitos, the Whale's Belly.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 31,
+   "name": "Bellatrix",
+   "name_key": "bellatrix",
+   "designation": "y Ononis, U 19 0 50'",
+   "nature": [],
+   "influence": "According to Ptolemy it is like Mars and Mercury ; and, to Alvidas, Mercury and Mars in good aspect. It gives great civil or military honour but danger of sudden dishonour, renown, wealth, eminent friends and liability to accidents causing blindness and ruin. If prominent in a woman’s map it makes her loquacious and shrewish, and gives a high-pitched, hard and sharp voice. 1J culminating. Quarrels, hatred, fraud committed or suffered, forgery, swindling, coming and perjury.",
+   "notes": "A slightly variable pale-yellow star on the left shoulder of Orion. The name means the Female Warrior, but according to BulUnger it signifies Quickly Coming or Swiftly Destroying.",
+   "with_sun": "Vacillating, changeable, indecisive in business, mechanical ability, riches and honour but final ruin, blindness by accident, disease, extreme sickness, fevers or violent death.",
+   "with_moon": "Luxury, lust, vain ambition,’ waste, ruin, blindness by accidents, great power, honour and wealth, honour in martial matters, as soldier, sur- geon, metal worker ; may attain distinction through courage. . K",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Philosophical and religious mind, hypocrisy, maybe fanatic.legal prominence, andgreat honour but danger of slander.",
+    "mars": "Strength, energy, success as soldier, surgeon or metal worker, liable to accidents.",
+    "mercury": "Honour and preferment in mili- tary matters, favourable for friendship and social affairs.",
+    "neptune": "Keen intellect, extremist, little forethought or balance, many quarrels, ability for mercantile pursuits, associated with companies connected with patents or electrical instruments, bad for marriage or partnership, many unexpected events, fairly good for gain, many narrow escapes but eventual violent death.",
+    "saturn": "Secluded and studious life, re- served, thoughtful, unfavourable for gain owing to lack of interest, poverty at end of life, often single but if married the partner may die young, no children.",
+    "uranus": "Mental disturbance, much activity, occult or unpractical interests, repeatedly suffers through the same mistakes, disharmony with re- latives and neighbours, successful in the occupation of making peculiar machinery but little financial gain ; unfavourable for domestic matters, many minor accidents.",
+    "venus": "Much suffering through love affairs owing to unrestrained feelings."
+   }
+  },
+  {
+   "num": 32,
+   "name": "Betelgeuze",
+   "name_key": "betelgeuze",
+   "designation": "a Ononis, H 27 0 38'",
+   "nature": [
+    "Mars",
+    "Mercury"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Mars and Mercury ; and, to Alvidas, of Mercury, Saturn and Jupiter in good aspect. It gives martial honour, preferment and wealth. 1 f culminating. Great military fortune, command, invention, ingenuity and helps in the perfection of arts and sciences. If at the same time with Sun, Moon or Jupiter, ample fortune and great honour.",
+   "notes": "An irregularly variable orange star situated on the right shoulder of Orion. From Ibt al Jauzah, the Armpit of the Central One or Giant, but mean- ing according to Buliinger the Coming of the Branch.",
+   "with_sun": "Interest in and ability for occult and mystical subjects; acute diseases, feyers, honour and preferment ending in final ruin.",
+   "with_moon": "Active mind, strong will, turbulent, rebellious under restraint, military success but suffering through quarrels with superiors, likelihood of great power, honour and wealth.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Serious and studious mind, shrewd and profitable business dealings, great honour in the Church or law.",
+    "mars": "Cautious, reserved, good leader and organizer, honour and preferment in martial matters.",
+    "mercury": "Serious, studious, scientific and literary ; unfavourable for gain, fame through writings or engravings m metal, favourable for health but liable to accidents.",
+    "neptune": "Ingenious, mechanical ability, may invent mechanical device, spiritualistic interests, some physical ailment or affliction or mental de- rangement, not good for gain but greatest success in partnership, favourable for marriage and children but disharmony with brothers and sisters, liable to some serious or fatal accident in middle age.",
+    "saturn": "Shrewd, cunning, craftily dishonest, treacherous to friends, eventful life with many ups and downs, eventual wealth but little comfort, unfavourable for domestic matters. '",
+    "uranus": "Quick, active and evil mind,\"\" clever criminal, notorious as forger or counterfeiter but rarely caught, quiet pleasant manner, generous and not bad at heart, possesses hypnotic and thought- reading powers.",
+    "venus": "Somewhat retiring and reserved, great ability as a maker of fine ornaments, favourable for gain, some sorrow connected with the family or marriage."
+   }
+  },
+  {
+   "num": 33,
+   "name": "Bos",
+   "name_key": "bos",
+   "designation": "p Capricorni, iss, 4 0 3'",
+   "nature": [
+    "Saturn",
+    "Venus"
+   ],
+   "influence": "Of the nature of Saturn and Venus. It gives a clever and piercing intellect if in conjunc- tion with Mercury.",
+   "notes": "A small star situated in the Goat’s face.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 34,
+   "name": "Bungula",
+   "name_key": "bungula",
+   "designation": "a Ceniauri, 28° 28'",
+   "nature": [
+    "Jupiter",
+    "Venus"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Venus and Jupiter; and, to Alvidas, of Mars with the Moon and Uranus in Scorpio. It gives beneficence, friends, refinement and a position of honour. 149",
+   "notes": "A binary star, white and yellowish, on the left forefoot of the Centaur. According to Bullinger it bore the ancient name Tollman, mean- ing the Heretofore and Hereafter. It is the nearest to our system of all the stars and lies at a distance of about 275,000 times that of the earth from the Sun.",
+   "with_sun": "Envious, self-centred, slow but fairly successful progress, many enemies, loss of inheritance. HV//1 Moon. Popular, many friends, diplomatic, secret bad habits, excessive drinking, involved in disputes but emerges successfully.",
+   "with_moon": "Success in martial matters as a soldier, surgeon, metal worker, etc.",
+   "culminating": "Great glory, fame and wealth, dignity and authority by the help of an old clergy- man or influential person.",
+   "aspects": {
+    "jupiter": "Great ecclesiastical or legal honour and preferment, ritualistic tendencies, success in foreign countries, favourable for gain.",
+    "mars": "Physical endurance, considerable mental power, speaker or writer, little prominence.",
+    "mercury": "Changeable, vacillating, fault- finding, difficult to please, good intellect, business success, trouble in domestic affairs through enemies, family sickness, disappointed ambitions.",
+    "neptune": "Occult interests, psychic or mediumistic, deceitful, dishonest, many journeys and voyages often to the cast of birthplace, rarely long in one place, occupation of a watery nature or connected with places of amusement and small speculations, favourable for gain and domestic ' matters, heavy business losses at end of life, death caused by Scorpio ailment. J 35. CANOPUS.^a Argus. S3 13° 51'.",
+    "saturn": "Studious, well read, materialistic, self-seeking, favourable for gain, accumulation of money and property and legacies, though not without quarrels, favourable for marriage though some domestic disturbance, eldest child may be afflicted in early life.",
+    "uranus": "Selfish, self-seeking, jealous of others’ success, dishonest, determined but indecisive in some things, loss through law, enemies and mercurial affairs, little prominence at home and greater reputation abroad, loss of friends, death through virulent disease.",
+    "venus": "Popular, artistic and musical abilities, benefits from friends, danger from love affairs."
+   }
+  },
+  {
+   "num": 36,
+   "name": "Capella",
+   "name_key": "capella",
+   "designation": "a Auriga;, n 20° 44'",
+   "nature": [
+    "Mars",
+    "Mercury"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Mars and Mercury ; and, to Alvidas, of Mercury and the Moon. It gives honour, wealth, eminence, renown, a public position of trust and eminent friends, and makes its natives careful, timorous, inquisitive, very fond of knowledge and particularly of novelties. 1 J culminating. Military, naval or ecclesiastical connections and preferment, waste, dissipation, envy. and trouble. If at the same time with Sun, Moon or Jupiter, ample fortune and great honour.",
+   "notes": "A white star situated on the body of the Goat in the arms of Auriga. The name means Little She-Goat. Sometimes called Amalthea in honour of the nurse who reared Jupiter upon the milk of the goat.",
+   "with_sun": "Vacillating, changeable, too loqua- cious, quick speech, misunderstood and criticised, martial honour and wealth. '",
+   "with_moon": "Inquisitive, loquacious, indiscreet speech, sarcastic, quarrelsome, many journeys and voyages, domestic disharmony, danger to sight, liable to accidents.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Legal or ecclesiastical connections, slander and criticism, too enthusiastic or zealous, many voyages, trouble with relatives.",
+    "mars": "Intellectual, learned, talents wasted on low subjects.",
+    "mercury": "Disagreeable experiences, legal action over writings and success after much difficulty.",
+    "neptune": "Prominent psychological writer, high ambitions and moderate success, courageous, rash, studious, connected with inventions to do with methods of transit, many journeys, peculiar hygienic ideas, disharmony with brothers, unfavourable for children, accidents in early life, health collapses in middle age necessitating confinement but mental faculties remain active. - 37. Caphir. y Virginis. ^ g° 2'.",
+    "saturn": "Shrewd, tidy, fond of luxury, many detrimental habits, makes much money but does not keep it, trouble from opposite sex and domestic disharmony, bad health at end of life and afflicted in arms, legs or eyes necessitating restricted move- ment",
+    "uranus": "Eccentric, mentally unbalanced or insane, clever inventor especially in connection with electricity, dependent upon others, little gain, pe- culiar religious views, unfavourable for domestic affairs; children, if any, weak in intellect.",
+    "venus": "Literary and poetical ability, un- favourable for gain."
+   }
+  },
+  {
+   "num": null,
+   "name": "Capulus",
+   "name_key": "capulus",
+   "designation": "33 y vi Persei, tf 23 0 5'",
+   "nature": [
+    "Mars",
+    "Mercury"
+   ],
+   "influence": "Of the nature of Mars and Mercury. It causes blindness or defective eyesight.",
+   "notes": "A double cluster situated in the sword hand of Perseus.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 39,
+   "name": "Castor",
+   "name_key": "castor",
+   "designation": "23 19 0 8'",
+   "nature": [
+    "Mercury"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Mercury; to Wilson, Simmonite and Pearce, of Mars, Venus and Saturn ; and, to Alvidas, of the Moon, Mars and Uranus. It gives distinction, a keen intellect, success in law and .publishing. many travels, fondness for horses, sudden fame and honour but often followed by loss of fortune , and disgrace, sickness, trouble and great affliction. Its natives are said to be mischievous and prone to violence.",
+   "notes": "A binary star, bright white and pale white, situated on the head of the Northern Twin. It represents Castor, the mortal one of the twins, famous for his skill in taming and managing horses Sometimes called Apollo, and symbolically named A Ruler yet to Come.",
+   "with_sun": "Prominence in occult matters, government work dealing with foreign affairs, serious accidents, blows, stabs, shooting, shipwreck, injuries to the face, blindness, disease, violent fevers, evil disposition, rape or murder committed or suffered, imprisonment, banishment, decapitation.",
+   "with_moon": "Timid, sensitive, lacks confidence, occult interest and psychic ability, blindness, in- juries to face, disgrace, stabs, wounds, imprisonment.",
+   "culminating": "Blindness, bad eyes, injuries to the face, disgrace, stabs, wounds, imprisonment.",
+   "aspects": {
+    "jupiter": "Philosophical and occult interests, loss through law, speculation or travel, danger of judicial sentence.",
+    "mars": "Evil disposition, much travel, aim- less life, many ups and downs.",
+    "mercury": "Remarkable psychic powers entailing criticism and ridicule but eventual pro- minence, unfavourable for gam.",
+    "neptune": "Emotional, romantic, fond of pleasure and amusement, connected with or notoriety through watery matters, occult interests, theatrical work and acting, especially in parts where no speak- ing is required, many removals and journeys, some domestic disharmony or separation, marries too young especially if female, good for gain but loss through friends and speculation, trouble through one or more of the children, death through some Cancer ailment.",
+    "saturn": "Timid, distrustful, eccentric, original mind but difficulty in expression, better writer than speaker, considerable intellectual powers, fond of detail, prejudiced against popular opinions, unfavourable for marriage, peculiar domestic con- ditions, early sickness of children, gain at end of life through hard work.",
+    "uranus": "Conscientious, sensitive, impres- sionable, great psychic power entailing much public criticism, desirous of pleasing all, favourable for marriage and gain, few, if any, children but har- monious relations with them, loss in early life of the parent of opposite sex to native.",
+    "venus": "Strange and peculiar life, many extreme ups and downs, unfavourable for marriage."
+   }
+  },
+  {
+   "num": 40,
+   "name": "Castra",
+   "name_key": "castra",
+   "designation": "c Caprtcorni, -sz, icfl 5'",
+   "nature": [
+    "Jupiter",
+    "Satum"
+   ],
+   "influence": "Of the nature of Satum and Jupiter. It gives malevolence, destructiveness and an un- controllable temper. 41. Cingula Orionis. S and * Oriotiis. n 21° 16' and 22 0 22'. (See Mintaka and Alnilam.)",
+   "notes": "A small star in the Goat's Belly.",
+   "with_sun": "Notoriety, good fortune, lasting happiness.",
+   "with_moon": "Blindness of at least one eye, new and influential friends, valuable gilts, love of res- pectable women. If a malefic be with Markab, drowning. If the moon is with Saturn also, drown- ing and assassination. With a malefic and the Moon at the same time with Markab, death at human hands.",
+   "culminating": "Legacies, love or dissipation, gravity and austerity. 157",
+   "aspects": {}
+  },
+  {
+   "num": 42,
+   "name": "Copula",
+   "name_key": "copula",
+   "designation": "51 M Cannm Venalicorum, 23 0 58'",
+   "nature": [],
+   "influence": "It is of the nature of the Moon and Venus, and causes blindness, defective eyesight, / strong passions, hindrances and disappointments.",
+   "notes": "The Spiral or Whirlpool Nebula men- tioned by Ptolemy as the nebula under the tail of the Great Bear.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 43,
+   "name": "Dabih",
+   "name_key": "dabih",
+   "designation": "(3 Capricorni, 2° 56'",
+   "nature": [
+    "Saturn",
+    "Venus"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Saturn and Venus ; and, to Alvidas, of Uranus and Saturn conjoined in square to Mercury.",
+   "notes": "A double (but telescopically multiple) star, orange yellow and sky blue situated in the left eye of the Goat.",
+   "with_sun": "Reserved, suspicious and mistrustful, loss through friends, responsible public position of trust and authority.",
+   "with_moon": "Successful in business but retires under a cloud, favourable for wealth, influential position but scarcely realizes ambitions, trouble through opposite sex, deserved criticism and censure.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Hypocrisy, dishonesty, high legal or ecclesiastical preferment but ultimate disgrace.",
+    "mars": "Great ambition, energy, high posi- tion but danger of reversal, domestic disharmony.",
+    "mercury": "Reserved,, suspicious, envious, - self-centred, prominent position in public affairs or companies, favourable for gain, bad for domestic affairs, peculiar home conditions. With Vtnus. Secret Jove affairs, sorrow and disappointment, easily led astray, enmity of women.",
+    "neptune": "Active mind, shrewd and selfish in business, pessimistic, critical, many enemies, occupied with secret undertakings, serious accidents in middle age, disappointing love affairs, unfavour- able for early marriage but favourable for one in middle age, prominence in public affairs, sudden death",
+    "saturn": "Melancholy, studious, recluse, rest- less and nervous, writer, accumulates wealth in miserly fashion, often lives alone but if married danger of separation and divorce, wrapt up in some great sorrow, long life.",
+    "uranus": "Strange and peculiar e.vperiences, many ups and downs, much suffering, loses friends through deception, disappointed ambitions. Josses • of a Mercurial nature, unfavourable for domestic affairs, terror of death, dies after a lingering illness."
+   }
+  },
+  {
+   "num": 44,
+   "name": "Deneb",
+   "name_key": "deneb",
+   "designation": "{ Aquiles, >1 i8° 41'",
+   "nature": [
+    "Jupiter",
+    "Mars"
+   ],
+   "influence": "Of the nature of Mars and Jupiter. It gives ability to command, liberality, success in war and beneficence. 45. Deneb Adige. a Cygni. H 4 0 14'*",
+   "notes": "A green star in the Eagle’s tail. From A1 Dhanab, the Tail.",
+   "with_sun": "and Mars above the earth, and the Moon at the same time with Procyon, death by the bite of a mad dog.",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 46,
+   "name": "Deneb Algedi",
+   "name_key": "denebalgedi",
+   "designation": "^ 22 0 25'",
+   "nature": [
+    "Jupiter",
+    "Saturn"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Saturn and Jupiter ; and, to Alvidas, of Uranus and Mercury in Aquarius in opposition to Saturn in Leo. It is said to cause beneficence and destructiveness, sorrow and happiness, and life and death. 7/ culminating. Great glory, lame, wealth, dig- nity and authority by the help of an old cleTgyman or influential person.",
+   "notes": "A small star in the Goat's tail. From Al Dhanab al Jady, the Tail of the Goat. Symbolically called the Judicial Point of the Goat.",
+   "with_sun": "Loss through false friends, high posi- tion but final disgrace and ruin, loss of money or property, sickness, worry through children. IFiVA Moon. Great difficulties in everything, suc- cess after patient plodding but final loss of position. II’i/A Mercury. Melancholy, quiet, solitary, un- kempt ot Tagged, student of nature, . science or philosophy, engaged in trapping animals or reptiles, snakes or poisonous beetles which do not harm the native. i6o",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Disappointment in secret wishes, false friends, loss through the law. Church and rela- tives.",
+    "mars": "Danger from enemies, accidents, honour and preferment but many quarrels and final disgrace, violent death.",
+    "neptune": "Easily influenced, psychic ability, superstitious, reserved, economical, some gain through speculation, many enemies, bad early environment leaving lasting impression, morose and melancholy at end of life, accidents, death in a fit or by assassi- nation.",
+    "saturn": "Great power over animals and poisonous reptiles, indifferent to study, knowledge of many secrets of nature, feared, unpleasant ap- pearance and life, bad for gain and marriage, death of or separation from parents in youth, secluded end of life. /",
+    "uranus": "Many sorrows, engaged in reform, unbalanced mind, may seek someone's life as a mission, unfavourable for gain and marriage, strange and peculiar or violent death.",
+    "venus": "Some secret desire that is never gratified, domestic or family difficulties."
+   }
+  },
+  {
+   "num": 47,
+   "name": "Denebola",
+   "name_key": "denebola",
+   "designation": "/? Leonis, Tgj 20° 30'",
+   "nature": [
+    "Saturn",
+    "Venus"
+   ],
+   "influence": "According to Ptolemy it is of the 161 nature of Saturn and Venus ; to Wilson and Pearce, of Saturn, Venus and Mercury ; to Simmonite, of Uranus ; and, to Alvidas, of Mercury, Uranus and Mars. It gives swift judgment, despair, regrets, public disgrace, misfortune from the elements of nature, and happiness turned to anger, and makes its natives noble, daring, self-controlled, generous and busy with other people's affairs.",
+   "notes": "A blue star in the Lion’s tail. From Al Dhanab al Asad, the Tail of the Lion, or, according to Bullinger, the Judge, or Lord who Cometh. Fre- quently abbreviated to Deneb and so given in most astrological works, but this title properly belongs^ to another star already described.",
+   "with_sun": "",
+   "with_moon": "Honour and preferment among the vulgar, but final disgrace and ruin, violent disease of vital organ, blindness and injuries to the eyes, accidents, losses through servants, domestic quarrels, temporary separation from marriage partner. Tf at die same time Satum or Mars is with Algol, death by sentence.",
+   "culminating": "Riches, preferment and good fortune attended by many dangers and anxieties through own folly, benefits seldom last, trouble and sickness. Wilh Sun. Honour and preferment with danger, public disgrace and final ruin, disease, fevers and acute ailments, death by suicide.",
+   "aspects": {
+    "jupiter": "Pride, hypocrisy, disappointed life, troubles abroad or through relatives, secret enemies, danger of imprisonment or death by sen- tence. I. 162 fixed stars and constellations",
+    "mars": "Bitter, vindictive, cruel, unpopular, loss of position and public disgrace.",
+    "mercury": "Many losses through agents or servants and through writings, bad for gain, loss of one of the family through malignant or contagious disease.",
+    "neptune": "Disagreeable, ingenious, clever, sarcastic, bitter in speech, domestic quarrels, accidents and sickness in early life, death in middle age by an accident or lingering illness.",
+    "saturn": "Critical, always complaining, many enemies, loss through servants and thieves, un- fortunate life, domestic sorrow, wife afflicted or children mentally unsound or deformed.",
+    "uranus": "Subject to fits, idiotic, insane, and sometimes violent, sharp and cunning, may com- mit murder during insanity, confined in asylum, death often by suicide.",
+    "venus": "Strong passions, led astray early in life, ruined through love affairs."
+   }
+  },
+  {
+   "num": 48,
+   "name": "Difda",
+   "name_key": "difda",
+   "designation": "p Ceti, <p i° 28'",
+   "nature": [
+    "Saturn"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Saturn ; and, to Alvidas, of Mars, Saturn and Mercury. It causes self-destruction by brute Iotcc. sickness, disgrace, misfortune and com- pulsory change.",
+   "notes": "A yellow star on the Whale's tail. From A 1 Difdi al Thani, the Second Frog.",
+   "with_sun": "Mental disturbance, some Joss keenly felt, accidents such as bums, scalds and cuts.",
+   "with_moon": "Pioneer, reckless, headstrong, violent temper, many quarrels, bad for gain and business.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "High legal or ecclesiastical position, but danger of reversal, treachery from secret enemies, loss through speculation. ll’M Saturn. Impure mind, worry, secret wrong- doing, inharmonious environment.",
+    "mars": "Passionate, violent, subject to acci- dents and injuries to the head, fevers, disgrace and ruin through own acts. 163",
+    "mercury": "Active mind, writer or speaker upon subjects of public welfare, seeks to enact laws of benefit to the community, favourable for social affairs.",
+    "neptune": "Disagreeable, fixed opinions, mechanical and inventive ability, but little gain, peculiar religious ideas, very zealous, domestic disagreements, sorrow caused through some secret, trouble through children, disagreement with or separation from parent, harm through anonymous letters, loss through mercurial affairs and fire, death often by fire.",
+    "uranus": "Quick mind, but slow expression, many losses especially in Mercurial matters, restless, much travel, rarely remains long in one place, 'much energy, but accomplishes little, mind tem- porarily unbalanced, bad for love affairs and mar- riage, ailments affecting the kidneys or veins in the small of the back, peculiar death, probably alone in a forest or desert.",
+    "venus": "Reserved, passionate, many secret love affairs."
+   }
+  },
+  {
+   "num": 49,
+   "name": "Diram",
+   "name_key": "diram",
+   "designation": "^ Geminorum, 25 4 0 11'",
+   "nature": [
+    "Mercury",
+    "Venus"
+   ],
+   "influence": "Of the nature of Mercury and Venus. It gives force, energy, power and protection.",
+   "notes": "A double star, crocus yellow and blue, in the left foot of the Northern Twin. From A1 Dirah, the Seed or Branch. Symbolically called the Abused or Beaten One.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 50,
+   "name": "Dorsum",
+   "name_key": "dorsum",
+   "designation": "& Capricomi, sx 12° 43'",
+   "nature": [
+    "Jupiter",
+    "Saturn"
+   ],
+   "influence": "It is of the nature of Saturn and Jupiter and is of unfortunate influence.",
+   "notes": "A small star situated on the back of the Goat.",
+   "with_sun": "or Mars. Danger of bites from venom- ous creatures.",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 51,
+   "name": "El N",
+   "name_key": "eln",
+   "designation": "vrn, (i Tauri, n 21 0 27'",
+   "nature": [
+    "Mars",
+    "Mercury"
+   ],
+   "influence": "Of the nature of Mars and Mercury. It gives fortune, eminence and neutrality for good or evil.",
+   "notes": "A double star, pure brilliant white and pale grey, situated on the tip of the northern horn of the Bull, and commonly known as the Bull's North Hom. From A 1 Natih, the Butting One, or according to Bullinger the Wounded or Slain. Symbolically called the Shepherd. The name El Nath is often erroneously used for Hamal in Aries.",
+   "with_sun": "Ecclesiastical preferment, honour through science, religion or philosophy.",
+   "with_moon": "Quarrels with questionable associ- ates, business success, environment detrimental owing to wife, partner or relative.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Success in legal or ecclesiastical affairs, favourable for gain and inheritance.",
+    "mars": "Good lawyer, speaker, and debater, quick-witted.",
+    "mercury": "Favour of superiors, but enmity of colleagues, rises to high position or changes vocation, favourable for gain, but many small losses, domestic expenses, often obliged to support an invalid.",
+    "neptune": "Active in mind and. body, vacil- lating, some physical defect, occult interests, may make discoveries in medicine, domestic disharmony owing to peculiar matrimonial ideas, may become famous, death in middle age.",
+    "saturn": "_ Cautious, thoughtful, bad-tem- pered, accumulates money, favourable for domestic affairs, gain through relatives, may receive start in life through a legacy r With XJranus. Great mental energy and force of character, weak body, original and practical ideas, occult interests, but material aims, late success, favourable for domestic affairs, death in middle age.",
+    "venus": "Favourable for gain, enemies who are powerless to injure."
+   }
+  },
+  {
+   "num": 52,
+   "name": "Ensis",
+   "name_key": "ensis",
+   "designation": "42 M Ononis, JJ 21 0 55'",
+   "nature": [
+    "Mars"
+   ],
+   "influence": "Of the nature of Mars and the Moon. It causes blindness, defective sight, injuries to the eyes, sickness and a violent death.",
+   "notes": "The Great Nebula m the sword-sheath of Orion.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 53,
+   "name": "Facies",
+   "name_key": "facies",
+   "designation": "22 M Sagittaiii, >1 7 0 12'",
+   "nature": [],
+   "influence": "It is of the nature of the Sun and Mars, and causes blindness, defective sight, sickness, accidents and a violent death.",
+   "notes": "The nebula in the Archer’s Face.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 54,
+   "name": "Fomalhaut",
+   "name_key": "fomalhaut",
+   "designation": "a Piscts Australis, x 2° 44'",
+   "nature": [],
+   "influence": "According to Ptolemy, it is of the natuie of Venus and Mercury ; and, to Alvidas, of Jupiter in square to Saturn from Pisces and Sagit- tarius. It is said to be very fortunate and powerful and yet to cause malevolence of sublime scope and character, and change from a material to a spiritual form of expression. Cardan stated that together with the stars rising with 12 U it gives an immortal name.",
+   "notes": "A reddish star in the mouth of the Southern Fish. From Fum al Hut, the Fish's Month. \\\\ -was one oi the iovvr Royal Stars of Persia in 3000 B. r ., when as the Watcher of the South it marked the winter solstice. -",
+   "with_sun": "Dissipated, easily influenced by low companions, gain through inheritance, but un- productive of good, may suffer for some crime committed, danger of bites from venomous aeatures.",
+   "with_moon": "Secret business causing much trouble and enmity, but eventual gain after many diffi- culties. The separation is more benefic than the application.",
+   "culminating": "or culminating. Great and lasting honours.",
+   "aspects": {
+    "mars": "Malevolent, passionate, revengeful, many secret enemies, liable to disgrace and ruin, danger of bites from venomous creatures. With Jufiter. Sympathetic, charitable, honour in the Church, Freemasonry or secret societies, many voyages.",
+    "mercury": "Many losses and disappointments, unlucky in business, better servant than master, writes or receives secret letters, worry through slander, imprisonment or damaged reputation, domestic difficulties, sickness of a Saturnian nature.",
+    "neptune": "Sharp, shrewd, self-seeking, analy- tical, detective ability, many secret enemies, con- nected with secret affairs or government work, occult interests, somewhat dishonest, influential friends, associated with 9th and 12th house affairs, gain through speculation, death of marriage partner, many narrow escapes, violent death through secret enemies. 55, Foramen. 7 Argus. === 21 0 3'.",
+    "saturn": "Accidents, ailments affecting the lung*!, throat and feet, loss through enemies, friends. Mercurial affairs, bands and companies, wrongfully accused, affairs involved at end of life, sudden death and family cheated out of their rights. 1",
+    "uranus": "Unstable, wasted talents, evil environment, unpractical ideas, loses friends, ad- dicted to drugs or intoxicants, utopian schemes, afflicted marriage partner, brings misfortune to associates, fatally injured by electricity, explosion or accident.",
+    "venus": "Secret and passionate love affairs, some restriction in the life, disappointments, easily led astray."
+   }
+  },
+  {
+   "num": 57,
+   "name": "Graffjas",
+   "name_key": "graffjas",
+   "designation": "p Scorpii, f 2 0 4'",
+   "nature": [],
+   "influence": "According to Ptolemy it is of the na- ture of Mars and Saturn ; and. to Alvidas, o! Jupiter in square to Saturn and the Moon. It causes ex- treme malevolence, mercilessness, fiendishness, re- pulsivcness, malice, theft, crime, pestilence, and con- tagious diseases.",
+   "notes": "A triple star, pale white and lilac, si- tuated on the head of the Scorpion, and frequently called Frons Scorpii.",
+   "with_sun": "Materialistic, too active a mind, ecclesiastical difficulties, bad health. Otherwise similar to the effect if rising.",
+   "with_moon": "Great power, honour, wealth, gilts, difficulty in obtaining legacy, materialistic, inter- ested in unpopular ideas, criticized, success after many difficulties. Otherwise similar to the effect if rising.",
+   "culminating": "Riches and preferment attended by danger, violence, trouble, sickness, benefits seldom last.",
+   "aspects": {
+    "jupiter": "Hypocritical, real or pretended religious zeal, legacies attended by legal diffi- culties.",
+    "mars": "Athletic, suffers from over-exertion goes to extremes, active mind, favourable for money matters but extravagant and has many debts.",
+    "mercury": "Dull mind, difficulty in expression or defect in speech, gifts, difficulty in obtaining legacy but final success.",
+    "neptune": "Connected with science, inven- tions, ‘ companies, or Journalism, breeds horses or cattle, good mind, late but favourable marriage but peculiar domestic conditions, accidents in middle age, death after lingering illness.",
+    "saturn": "Cautious, cunning, self-seeking, deceitful, dishonourable, progressive ideas, religious but hypocritical, proud of home, loss by fire or water, gain through marriage and partnership, few children, long life.",
+    "uranus": "Scientific, religious or philosophical work, difficulties with marriage partner’s relatives, favourable for marriage and children, domestic difficulties finally overcome, trouble with parents in early life, favourable for gain and speculation, loss through Mercurial matters, liable to accidents by fire and electricity, sudden death.",
+    "venus": "Dishonest, self-seeking, energetic, able, favourable for gain."
+   }
+  },
+  {
+   "num": 58,
+   "name": "Hamal",
+   "name_key": "hamal",
+   "designation": "o Arietis, g 6° 32'",
+   "nature": [],
+   "influence": "According to Ptolemy it is of the na- ture of Mars and Saturn ; and, to A 1 Vidas, of Venus and Saturn. It causes violence, brutishness, cruelty and premeditated crime. 171 With Stitt. -Dissipation, evil associates, loss and disgrace.",
+   "notes": "A yellow star situated in the forehead of the Ram and commonly known as the ram's FoI-_ lowing Horn. From A 1 Hamal, the Sheep. Sym- bolically called the Death Wound and often in- correctly named El Nath.",
+   "with_sun": "",
+   "with_moon": "Patient, slow success through hard work, trouble through love affairs but favourable for marriage, marriage partner gains by business or speculation.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Dissipated, hypocritical, legal or ecclesiastical preferment, loss by speculation.",
+    "mercury": "Dull mind, many friends, great determination, tactful, greatly influenced by mar- riage partner.",
+    "neptune": "Strong character, firm, occult interests, mental disturbance at end of life, con- nected with societies, success in business connected with clothing or ornaments, success in dealing with opposite sex, domestic harmony, accumulates u calth, sudden death.",
+    "saturn": "Cautious, thoughtful, critical, sar- castic, materialistic, intcicstcd m geology or agri- culture, some domestic happiness, favourable for gain . '",
+    "uranus": "Pleasant, sympathetic, easily influenced, sensitive, strong passions, weak nature, mediumistic, dnnk or detrimental habits, many friends, love troubles, death under distressing cir- cumstances.",
+    "venus": "Handsome, quiet, envious, jealous, domestic trouble, ill-health to native or family. Wiffr Mars. Violence, criminal tendencies, in- fluential position but final disgrace and ruin."
+   }
+  },
+  {
+   "num": 59,
+   "name": "Has",
+   "name_key": "has",
+   "designation": "{ Ophiuchi, ? 8 s 7'",
+   "nature": [
+    "Saturn",
+    "Venus"
+   ],
+   "influence": "Of the nature of Saturn and Venus. It brings trouble and disgrace.",
+   "notes": "A small star situated near the left knee of Ophiuckus.",
+   "with_sun": "Sickness, disgrace and ruin. '",
+   "with_moon": "Disgrace, ruin, and ailments affect- ing those parts ruled by Sagittarius. ,",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 60,
+   "name": "IsiDIS",
+   "name_key": "isidis",
+   "designation": "2 Scorpii, ? l° 27'",
+   "nature": [],
+   "influence": "According to Ptolemy it is of the na- ture of Mars and Saturn ; and, to AJ vidas, of Jupiter in square to the Moon. It causes sudden^ assaults, malevolence, immorality and shamelessness.",
+   "notes": "Situated near the right claw of the Scor- pion.",
+   "with_sun": "Immoral, dissipated, low associates, many sorrows.",
+   "with_moon": "Reserved, suspicious, bad for busb ness success, disgrace, loss by horses and cattle.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Deceitful, dishonest, dissipated, low companions, danger of imprisonment. »",
+    "mars": "Immoral, criminal, violent, evil en- vironment, sudden or violent death.",
+    "mercury": "Hypocritical, evil mind, low associates, imprisonment, malignant disease but chances of recovery, criminal, secrets in connection with life or parentage, domestic disharmony.",
+    "neptune": "Active mind, weak character, easily led, ruined through opposite sex, organizing ability, high position but subsequent disgrace, ac- cidents from fire, water and electricity, death by accident or by human hands.",
+    "saturn": "Vacillating, strong passions, evil habits, low associates, may be disowned by family, several unhappy marriages, early death of favourite child, death from consumption.",
+    "uranus": "Shrewd, cunning, excellent lin- guist, bad morals, trouble through opposite sex, bad 173 for marriage, many enemies, strange adventures abroad — sometimes as spy, bad for gain, obscure death.",
+    "venus": "Quiet, reserved, jealous, selfish, favourable for gain."
+   }
+  },
+  {
+   "num": 61,
+   "name": "Khambalia",
+   "name_key": "khambalia",
+   "designation": "A Virginis, ^ 5 0 45'",
+   "nature": [
+    "Mars",
+    "Mercury"
+   ],
+   "influence": "Of the nature of Mercury and Mars. It causes swift violence, unreliability, changeability, and an argumentative nature.",
+   "notes": "A small star situated on the left foot of Virgo . From the Coptic meaning Crooked-clawed.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 63,
+   "name": "LESATH",
+   "name_key": "lesath",
+   "designation": "v Scorpii, f 22° 54'",
+   "nature": [
+    "Mars",
+    "Mercury"
+   ],
+   "influence": "Of the nature of Mercury and Mars. It gives danger, desperation, immorality and malevo- lence, and is connected with acid poisons.",
+   "notes": "A small star situated on the sting of the Scorpion. From A 1 Las'ah, the Sting.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 62,
+   "name": "Labkum",
+   "name_key": "labkum",
+   "designation": "8 Crateris, ^ 25 0 35'",
+   "nature": [
+    "Mercury",
+    "Venus"
+   ],
+   "influence": "Of the nature of Venus and Mercury. It gives ideality, psychic power, intelligence, honour and riches in disgrace and purifies to salvation.",
+   "notes": "Situated in the Cup, and symbolically called the Holy Grail.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "Ecclesiastical preferment, or very good fortune.",
+   "aspects": {}
+  },
+  {
+   "num": 66,
+   "name": "Makkeb",
+   "name_key": "makkeb",
+   "designation": "'* Argus, HJJ 27 0 48'",
+   "nature": [
+    "Jupiter",
+    "Saturn"
+   ],
+   "influence": "Of the nature of Saturn and Jupiter, It gives piety, a wide knowledge, educational work and voyages.",
+   "notes": "A small star in the Buckler of the Ship.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "Profitable journeys in company with Jupiterian and Saturnian people wherein native is grave and discreet but suffers much injury which ultimately turns to good.",
+   "aspects": {}
+  },
+  {
+   "num": 1,
+   "name": "Male",
+   "name_key": "male",
+   "designation": "",
+   "nature": [],
+   "influence": "",
+   "notes": "",
+   "with_sun": "Great help from friends, gifts and legacies if not afflicted, military preferment after great struggles and expense.",
+   "with_moon": "Occult interests, restless, never remains long in one place, quarrels with friends, partners and employers. If at the same time the Sun and Mars be with Deneb Adige or Wcga, above the earth, death from the bite of a mad dog.",
+   "culminating": "Artful, crafty, dissembling, wealth by violence and rapine, lust, dissipation, waste and ruin, military preferment, quarrels, loss in trade or by servants.",
+   "aspects": {
+    "jupiter": "Many journeys, trouble through relatives and the Church or law, help from friends.",
+    "mars": "Cruelty, violence, scandal and slan- der, disgrace and ruin, danger of dog bites.",
+    "mercury": "Occult interest, minor position of management under Government, trouble and scandal through opposite sex, favourable for health and gain.",
+    "neptune": "Sensitive and mediumistic, notor- ious through and luck in speculation, political 193 interests, wealthy friends, favourable for domestic matters, death from tumorous growth after unsuc- cessful operation leaving financial affairs involved.",
+    "saturn": "Good judgment, high position of trust often in connection with land, may be adopted by aged couple from whom a good inheritance is obtained, benefits from elderly friends, good health, domestic harmony, marriage to one of higher station.",
+    "uranus": "Broad-minded, liberal, minister or speaker on religious and philosophical subjects, not limited to any definite creed, many friends among the people, favourable for domestic matters.",
+    "venus": "Many benefits from influential friends, associated with the Church, favourable for gain."
+   }
+  },
+  {
+   "num": 64,
+   "name": "Manubrium",
+   "name_key": "manubrium",
+   "designation": "0 Sagillarii, ^ 13 0 52'",
+   "nature": [],
+   "influence": "Of the nature of the Sun and liars. It causes blindness, explosions, fire, flaring heat, heroism, courage, and defiance.",
+   "notes": "Part of the cluster in the Archer’s Face.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 65,
+   "name": "Markab",
+   "name_key": "markab",
+   "designation": "a Pegasi, X 22 0 22'",
+   "nature": [],
+   "influence": "According to Ptolemy it is of the na- ture of Mars and Mercury ; to Simmonite, of Mars and Venus ; and, to Alvidas, of Jupiter in square to Mercury with Saturn from Pisces and Gemini. It gives honour, riches, fortune, danger from fevers, cuts, blows, stabs and fire and a violent death.",
+   "notes": "A white star situated on the wing of Pegasus. From Markab, a Saddle, Ship or Vehicle, or, according to Ballinger, Returning from Afar.",
+   "with_sun": "Energetic, unlucky, impermanent martial honours, disappointed ambitions, accidents, sickness.",
+   "with_moon": "Injuries from enemies, bad for gain and domestic matters, fairly good health but many accidents. If Mars be with Moon, death by wild beasts or soldiers. If a malefic be with Cingula Orionis, death by human hands.",
+   "culminating": "Disgrace, ruin and often a vio- lent death.",
+   "aspects": {
+    "jupiter": "Trouble and loss through legal matters, danger of judicial sentence or banishment and exile.",
+    "mars": "Quarrelsome, violent, many diffi- culties and losses through Mercurial affairs.",
+    "mercury": "Good mind, rash and headstrong, quick in speech, diplomatic, capable writer, criticized, friends become enemies, bad for gain. Wifi Venus. Evil associates, «lrink and other excesses, bad for gain.",
+    "neptune": "Unbalanced or abnormal mind, many disappointments, emotional, romantic, dis- tasteful environment, secret enemies, domestic disharmony, many accidents, violent death in early life. With a malefic and the Moon at the same time with Cingula Orionis, death by drowning.",
+    "saturn": "Bom in poverty, prison or asylum, may be abandoned, hard life, imprisoned for crime, .few friends, unfavourable for domestic matters, death under similar conditions to birth.",
+    "uranus": "Evil habits, mental disturbances, dever, wanderer, unavailing efforts, peculiar life, trouble with parent of opposite sex, bad for gain and domestic matters, many accidents, violent death."
+   }
+  },
+  {
+   "num": 68,
+   "name": "Menkar",
+   "name_key": "menkar",
+   "designation": "a Celt, y 13 0 12'",
+   "nature": [
+    "Saturn"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Saturn ; to Simmonite, of Mars ; and, to Alvidas, of Venus and the Moon. It causes disease, disgrace, ruin, injury from beasts, sickness, and loss of fortune.",
+   "notes": "A bright orange star situated in the jaw of the Whale. From A 1 Minhar, the Nose.",
+   "with_sun": "Great 'trouble, sickness, throat ail- ments, legacies and inheritances attended by much evil, loss of money, failure of crops.",
+   "with_moon": "Mental anxiety, hatred of the vulgar, ill-will of women, danger from thieves, sickness to native and family, loss of marriage partner or near relative, quarrels, legal losses, legacies and inheritances attended by much evil.",
+   "culminating": "Disgrace, ruin, danger from cattle and large beasts.",
+   "aspects": {
+    "jupiter": "Deceitful, dishonest, wandering life, imprisonment, banishment, or judicial sentence. With Sal urn. Self-seeking, selfish, causes un- happiness to others, much sickness, bad for gain.",
+    "mars": "Evil associates, immoral, violent, murderous, violent death.",
+    "mercury": "Difficulties through writings, difficulty in payment of mortgages, bad for gain, ill-health to marriage partner or relative, destruction of crops. '",
+    "uranus": "Active mind, artistic, scientific and mystical interest and ability, troubles through opposite sex, loss through fire and false friends, good fortune and misfortune alternately, severe injuries from animals. I Vith Neptune. Peculiar early life, loss of or separa- tion from parents abroad, may lose identity and be brought up by foreigners in dishonour, learns of parentage too late in life to obtain advantage, brave, organizing ability, high position, wasted talents, many journeys, violent death frequently by assas- sination.",
+    "venus": "Strong and uncontrolled passions, jealousy, domestic disharmony and temporary separation, ill-health of marriage partner."
+   }
+  },
+  {
+   "num": 67,
+   "name": "Menkazinan",
+   "name_key": "menkazinan",
+   "designation": "0 Auriga, n 28 0 48'",
+   "nature": [
+    "Mars",
+    "Mercury"
+   ],
+   "influence": "Of the nature of Mars and Mercury. 'It causes ruin, disgrace, and frequently violent death.",
+   "notes": "",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 69,
+   "name": "Min taka",
+   "name_key": "mintaka",
+   "designation": "n 21 0 16'",
+   "nature": [
+    "Mercury",
+    "Satum"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Satum and Mercury ; and, to Alvidas, of Mercury, Satum and Jupiter. It gives good fortune.",
+   "notes": "A slightly variable double star, brilliant white and pale violet situated in Orion's belt. From A1 Mintakih, the Belt, or Dividing.",
+   "with_sun": "Discreet, cautious, somewhat change- able.",
+   "with_moon": "Active, sharp, alert in business, public position, many enemies, more successful in business. Wffc Mercury. Studious, fond of seclusion, deliberate and fixed mind, little sympathy or dis- agreements with relatives, bad for gain.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "High position in law or Church, studious and philosophical mind, gain through inheritance.",
+    "mars": "Energetic, quick mind, good speaker and debater, quarrelsome, strong passions.",
+    "neptune": "Thoughtful, studious, keeps discoveries to himself, sarcastic writer, generous but not wealthy, rarely marries, death unattended in old age. {See Cingula Orionis).",
+    "saturn": "Far-seeing, studious, good fudge of human nature, psychic, domestic disharmony, sickncss>to family.",
+    "uranus": "Selfish, studious, eccentric, diffi- cult to get on with, losses through lawsuits and business, successful in middle age but poverty at end of life, favourable for domestic matters, death from consumption.",
+    "venus": "Public position, enmity of women, love disappointments, u"
+   }
+  },
+  {
+   "num": 70,
+   "name": "Mirach",
+   "name_key": "mirach",
+   "designation": "fi Andromeda e, qP 29 0 17'",
+   "nature": [
+    "Venus"
+   ],
+   "influence": "According to Ptolemy it is of th® nature of Venus ; and, to Alvidas, of Mars and the Moon. It gives personal beauty, a brilliant mind, a love of home, great devotion, beneficence, for- giveness love, overcoming by kindness, renown, and good fortune in marriage.",
+   "notes": "A yellow star situated in the girdle of Andromeda. From Mirak, the Loins. Often called Zona Andromed*, or Andromeda's Girdle.",
+   "with_sun": "Trouble through opposite sex, disappointments in expectations but otherwise favourable.",
+   "with_moon": "Trouble with opposite sex owing 179 to indiscretions, bad for domestic affairs, honour through martial matters.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Help from women but danger of scandal, much travel, legal or ecclesiastical diffi- culties.",
+    "mars": "Ill-mannered, boisterous, evil associations, may be tramp.",
+    "mercury": "Vacillating, unstable, peculiar events, many travels and changes, little success.",
+    "neptune": "Persevering, ambitious, strong passions, eccentric, dishonest, domestic disharmony and separation, may disinherit children or family, trouble through companies and inventions, success- ful business, many enemies and few friends, painful and lingering death.",
+    "saturn": "Strong passions, debauchery, mechanical genius, misdirected talents.",
+    "uranus": "Unbalanced mind, may commit crime m insanity, occult interests, continual dis- appointments, bad for domestic affairs, peculiar or violent death.",
+    "venus": "Voluptuous, bad morals, scandal, drink or drug-taking late in life."
+   }
+  },
+  {
+   "num": 71,
+   "name": "Nashira",
+   "name_key": "nashira",
+   "designation": "y Caprkorni, 20° 40'",
+   "nature": [
+    "Jupiter",
+    "Saturn"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Saturn and Jupiter ; and, to Simmonite, « of Saturn. It causes overcoming by evil, which is turned to success, and gives danger from beasts. i8o",
+   "notes": "Situated in the tail of the Goat. From A 1 Sa’d al Nashvrah, the Fortunate One or Bringer of Good Tidings ; or, according to Bullinger, the Record of the Cutting Off.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 72,
+   "name": "Oculus",
+   "name_key": "oculus",
+   "designation": "v Capricorni, ts: 3 0 36'",
+   "nature": [
+    "Saturn",
+    "Venus"
+   ],
+   "influence": "Of the nature of Saturn and Venus. It gives a clever and piercing intellect when in conjunction with Mercury.",
+   "notes": "A small star in the right eye of the Goat.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 77,
+   "name": "POUS",
+   "name_key": "pous",
+   "designation": "fx Sagillarii, 1^ 2° 6’",
+   "nature": [
+    "Jupiter",
+    "Mars"
+   ],
+   "influence": "Of the nature of Jupiter and Mars. It gives success, high ambition, martial desires, horsemanship, keen perception and domination.",
+   "notes": "A triple star in the upper part of the bow of Sagittarius. From the Coptic Polts, a Foal.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 73,
+   "name": "Pelagus",
+   "name_key": "pelagus",
+   "designation": "<r Saglllarii, ir° 16'",
+   "nature": [
+    "Jupiter",
+    "Mercury"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Jupiter and Mercury ; and, to Alvidas, of Saturn and Mercury. It gives truthfulness, optim- ism and a religious mind.",
+   "notes": "A small star situated on the vane of the arrow at the Archer’s hand.",
+   "with_sun": "Influential public position, favourable for domestic and family matters.",
+   "with_moon": "Successful writer on science, philo- sophy, education or agriculture, unorthodox in religion, defeats enemies, many friends, illness of a Saturnian nature.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Diplomatic, philosophical mind, writer, ecclesiastical or legal preferment.",
+    "mars": "Reserved, diplomatic, strong mind, courageous, energetic, straightforward, false friends, favourable for gain.",
+    "mercury": "High government position, popu- lar criticism, wealth, anxiety on account of illness to wife or mother.",
+    "neptune": "Practical, occult interests, wealthy, associated with large concerns, some domestic disagreements, defeats enemies, natural death in old age.",
+    "saturn": "Thoughtful, reserved, self-centred, success delayed until after 50, ambition thwarted by enemies, danger of disgrace, wealth at end of life. trouble to parents, favourable marriage late in life, usually at least one child. JTO Uranus. Proud, industrious, aggressive, high government or business position, early disgrace, especially if female, favourable for marriage in x middle age, sudden gains and losses, many friends, natural death.",
+    "venus": "Heart rules head, favours from opposite sex, many friends."
+   }
+  },
+  {
+   "num": 74,
+   "name": "Phact",
+   "name_key": "phact",
+   "designation": "a Coltimba, n 21 0 3'",
+   "nature": [
+    "Mercury",
+    "Venus"
+   ],
+   "influence": "Of the nature of Venus and Mercury. It gives beneficence, hopefulness and good fortune.",
+   "notes": "Situated at the base of the right wing of the Dove. Said to be from Had’ar, Ground, or Fached, the Thigh.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 75,
+   "name": "Pleiades",
+   "name_key": "pleiades",
+   "designation": "In the neighbourhood of 8 28° 52'",
+   "nature": [],
+   "influence": "According to Ptolemy they are of the nature of the Moon and Mars ; and, to Alvidas, of Mars, Moon and Sun in opposition. They are said to make their natives wanton, ambitious, turbulent, op t i mi stic and peaceful ; to give many journeys and voyages, success in agriculture and through active intelligence; and to cause blindness, disgrace and a violent death. Their influence is distinctly evil and there is no astrological warrant for the oft-quoted passage in Job (xxxviii. 31), \"Canst thou bind the sweet influences of Pleiades . . - ? which is probably a mistranslation.",
+   "notes": "The Pleiades form a duster, with Alcyone as the principal star, situated on the shoulder of the Bull. For all practical purposes the longitude of Alcyone may be used for the whole group, as all are contained within about one degree of longi- _ tude.",
+   "with_sun": "Throat ailments, chronic catarrh, blindness, bad eyes, injuries to the face, sickness, disgrace, evil disposition, murderer or murdered, imprisonment, death by pestilence, blows, stabs, shooting, beheading or shipwreck. If in 7th house, blindness, especially if Saturn or Mars be with Regulus. If with Mars and Venus the native will be a potent king obeyed by many people but subject to many infirmities.",
+   "with_moon": "Injuries to the face, sickness, mis- fortune, wounds, stabs, disgrace, imprisonment, blindness, defective sight especially if in the Ascend- ant or one of the other angles, may be cross-eyed, colour-blind or the eyes may be affected by some growth. If in the 7th house, total blindness es- pecially if Saturn or Mars be with Regulus and the Moon be combust.",
+   "culminating": "Blindness, ophthalmia, injuries to the eyes and face, disgrace, wounds, stabs, exile, im- prisonment, sickness, violent fevers, quarrels, violent lust, militar y preferment. If at the same time the iE 183 Sun is in opposition either to the Ascendant or -to Mars, violent death. jf culminating.' Disgrace, ruin, violent death. If with the luminaries it makes its natives military cap- tains, commanders, colonels of horse and emperors.",
+   "aspects": {
+    "jupiter": "Deceit, hypocrisy, legal and ec- clesiastical troubles, loss through relatives, banish- ment or imprisonment.",
+    "mars": "Many accidents to the head, loss and suffering through fires. If at the same time Saturn is with Regulus, violent death in a tumult.",
+    "mercury": "Many disappointments, loss of possessions, much loss from legal affairs, business failure, trouble through children.",
+    "neptune": "Bold, military preferment, hon- our, wealth, help from friends, many serious acci- dents, many travels, somewhat dishonourable oc- cupation involving secrecy, ill-health to marriage partner and peculiar conditions respecting parentage, bad for children, may lose everything at end of life, violent death, often abroad while following occupa- tion.",
+    "saturn": "Cautious, much sickness, tumor- ous ailments, chronic sickness to family, many Josses.",
+    "uranus": "Active mind, deformity from birth or through accident in childhood, many accidents and troubles, many unexpected losses often through fire or enemies, marriage partner proves false es- pecially if female, troubles through women, occult interests, unfavourable for children, if any, and lack of harmony with them, heavy losses at end of life, violent death.",
+    "venus": "Immoral, strong passions, disgrace through women, sickness, loss of fortune."
+   }
+  },
+  {
+   "num": 76,
+   "name": "Polaris",
+   "name_key": "polaris",
+   "designation": "n 27° 27'",
+   "nature": [
+    "Saturn",
+    "Venus"
+   ],
+   "influence": "Of tlic nature of Saturn and Venus. It causes much sickness, trouble, loss of fortune, dis- grace and great affliction, and may give legacies and inheritances attended by much evil. The Arabs were of the opinion that the contemplation of Polaris cured ophthalmia. li’i/Ji Sun. Many troubles and evils. U’i/Ji Moon. Hatred of the vulgar, ill-will of women and danger from thieves.",
+   "notes": "A double star, topaz yellow and pale white, situated in the tail of the Lesser Bear, and marking the celestial pole. Also called A1 Rukka- bah, the Riders ; Cynosura, the Dog's Tail ; and Stella Polaris, the Pole Star. Owing to the pre- cession of the equinoxes the_j>ole jnoves. inatirde among the stars taking about 26,000 years to com- _ plete'omT revolution. At present Polaris is i“„I 4' distant Jrom the pole and will continue to approach It until the.yearl2095 when it wfll reach its nearest distance of 26 ' 3 Q*_an d then reced e. The chief stars that wUFmark the'posffion of the pole are successively as follows : — ' , and a INFLUENCE OF STARS AND XEBUL/& 185 Cephci; • and l Cygn*: - Lyre; » and T Hrrculis; <?, «. and e Draconis; p Urs.T Minoris; . Draconi' 1 and then « Urvar Minoris, our.I’ohris, again. Alxwt the year 12, zoo D.C., . Lyra: (Wega) marked the pole; , DraconU about 4.50",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 78,
+   "name": "Potxux",
+   "name_key": "potxux",
+   "designation": "p Cetninorum, 23 22 0 7'",
+   "nature": [],
+   "influence": "According to Ptolemy it is of the na- . ture of Mars ; and, to A 1 vidas, of the Moon, Mars and Uranus. It gives a subtle, crafty, spirited, brave, audacious, cruel and rash nature, a love of boxing, dignified malevolence, and is connected with poisons. 1J rising. Bad eyes, blindness, injuries to the face, sickness, wounds, imprisonment, ephemeral honour and preferment.",
+   "notes": "",
+   "with_sun": "Occult and philosophical interests, blows, stabs, serious accidents, shooting, shipwreck, murderer or murdered, extreme sickness and di- seases, fevers, ailments affecting the stomach, evil disposition, riches and honour but final ruin, blind- ness, injuries to the head and face, quarrels, rape committed or suffered, banishment, imprisonment for embezzling, violent death, decapitation.",
+   "with_moon": "Hatred of the vulgar, ill-will of women, danger from thieves, violent death, power, pride, sickness, calamity, wounds, imprisonment, injuries to face, defective sight or blindness especi- ally if Mars or the Sun be in square from Aries. If Mars or the Sim be in square from Libra, danger of accidents and legal or matrimonial troubles ; but, if in opposition from Capricorn, danger to the mother’s honour and reputation. If Mars be in conjunction, death by suffocation, drowning of assassination. If Mars be with Arcturus in the ist, 7th, 9th, 10th or nth houses, death by suffocation.",
+   "culminating": "Honour and preferment but danger of disgrace and ruin.",
+   "aspects": {
+    "mercury": "Unbalanced mind, unpopular and peculiar occupation, trouble with father through relatives or enemies, domestic disharmony, anxiety, loss through land, property and mines.",
+    "neptune": "Changeable, many travels, excel- lent linguist, many influential friends, good for partnership, peculiar conditions in marriage and partner often a foreigner, occupation connected with exploration or zoological and botanical work abroad, minor accidents, isolated death through fever or virulent disease.",
+    "saturn": "Bad temper, bitter, sarcastic, loss of arm or leg, loss of parents or trouble through step- parents, much help from a friend, lack of education, sudden death while following occupation through horses or large animals.",
+    "uranus": "Occult interests, psychic ability, selfish, proud, vain of personal appearance, success in connection with the Government, companies or electrical matters, harmonious marriage in middle age, favourable for children, end of life not so favour- able as middle.",
+    "venus": "Strong and irregulatcd passions, danger of seduction if female, loss through women, danger of poison. IVifh Mars. Violent, murderer or murdered, high position but final ruin, violent death by suffocation, drowning or assassination especially if the Moon be there also. Il'itt Jupiter. Legal losses, high position but danger of disgrace, trouble through relatives, banish- ment or imprisonment."
+   }
+  },
+  {
+   "num": 79,
+   "name": "Presspe",
+   "name_key": "presspe",
+   "designation": "44 Af Cancri, SI 6° 7'",
+   "nature": [
+    "Mars"
+   ],
+   "influence": "It is of the nature of Mars and the Moon, and causes disease, disgrace, adventure, insolence, wantonness, brutality, blindness, industry, order and fecundity ; and makes its natives fortun- ate though liable to loss through others, and the founders of large businesses.",
+   "notes": "A coarse extended cluster situated on the head of the Crab. Popularly termed the Beehive, Manger or Crib, and known by the Chinese tinder the name Tseih She Ke, Exhalation of Piled-up Corpses. With the Aselli it was the *' cloudy spot , of Cancer \" mentioned by Ptolemy as causing blind- ness.",
+   "with_sun": "Evil disposition, murderer or murdered, blows, stabs, serious accidents, shooting, shipwreck, execution, banishment, imprisonment, sharp diseases, fevers, luemorrhage, lawsuits, danger of death from fire, iron or stones, injuries to the face, wounds, bad eyes, and if in an angle blindness.",
+   "with_moon": "Wounds, stabs, imprisonment, in- juries to the face, sickness, blindness or eye injuries especially if Saturn or Mars be with Regulus.",
+   "culminating": "Disgrace, ruin and violent death.",
+   "aspects": {}
+  },
+  {
+   "num": null,
+   "name": "Princeps",
+   "name_key": "princeps",
+   "designation": "£ Bodtis, nj, a® a'",
+   "nature": [
+    "Mercury",
+    "Saturn"
+   ],
+   "influence": "Of the nature of Mercury and Saturn. ( It gives a keen, studious and profound mind, with j the ability for research.",
+   "notes": "^ A pale yellow star situated in the spear- shaft of Bofltes.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "Good fortune, but troubles, discontent and fear occasioned by own temerity rather than circumstances.",
+   "aspects": {}
+  },
+  {
+   "num": 82,
+   "name": "Procyon",
+   "name_key": "procyon",
+   "designation": "a Cam's Minor/s, 25 24 0 41*",
+   "nature": [
+    "Mars",
+    "Mercury"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Mercury and Mars ; to Simmonite, of Venus and Mazs, which is probably a misprint ; and, to Alvidas, of the Moon, Jupiter and Uranus. It gives activity, violence, sudden and violent malevolence, sudden preferment by exertion, ele- , vation ending in disaster, danger of dog bites and hydrophobia, and makes its natives petulant, saucy, ‘ giddy, weak-natured, timid, unfortunate, proud, easily angered, careless and violent. Two cases are 1 on record of death or injury by dog bite in which ' Procyon and Sirius are involved.",
+   "notes": "A binary yellowish white and yellow Star situated on the body of the Lesser Dog. From Prokuon, before the Dog, in allusion to its rising before Sirius.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 83,
+   "name": "Propus",
+   "name_key": "propus",
+   "designation": "* Gcminorwn, S 3 1 17 0 50'",
+   "nature": [
+    "Mercury",
+    "Venus"
+   ],
+   "influence": "Of the nature of Mercury and Venus. It gives strength, eminence and success. v/84. Rasalhague. a ophiuchi. t 21° 20'.",
+   "notes": "A sapphire star situated on the head of Ophiuchus. From Ras al Hawwa, the Head of the Serpent Charmer.",
+   "with_sun": "Reserved, thoughtful, studious, sus- picious, solitary, reputation for athletics, little wealth, careless of public opinion.",
+   "with_moon": "Public prominence in religious matters, favourable for gain.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Diplomatic, religious or legal pre- ferment, but some criticism, favourable for gain.",
+    "mercury": "Unpopular attitude and criticism through religion, philosophy or science ; difficulties in marriage and quarrels fostered by others, trouble through opposite sex, not very good for gain. With Ven us. Quick mind, well educated, cautious, secretive, suspicious, unfavourable for gain. HTfft Mars. Trouble through writings, public censure in connection with religion, science ot philosophy, bad for gain. jj",
+    "neptune": "Hypocritical, self-seeking, able speaker or writer, but panders to the public, occult, religious or scientific work, but largely misleading, minor Government position, domestic disharmony, ill-health to marriage partner, disappointment over legacy, peculiar death sometimes through fall but animal and human agency may be suspected.",
+    "saturn": "Selfish, unpopular, determined, fixed opinions, successful, somewhat dishonest, domestic disharmony through jealousy, marriage partner may be invalid, losses of a Mercurial nature.",
+    "uranus": "Strong passions, strong nature but changeable, ambitious, occult interests, seeks popularity, easily swayed though outwardly aggres- sive, reverence for ancestry, benefits through elderly and influential people and public affairs, unfavourable for marriage and children, if any. trouble through opposite sex, sudden death."
+   }
+  },
+  {
+   "num": null,
+   "name": "Prtoa Hyadum",
+   "name_key": "prtoahyadum",
+   "designation": "y Tauri, n 4° 41'",
+   "nature": [
+    "Mercury",
+    "Satum"
+   ],
+   "influence": "According to Ptolemy they are of the nature of Satum and Mercury ; and, to Alvidas, of Mercury and Mars. Simmonite likens them to Mars but this is probably a misinterpretation of Ptolemy’s meaning. They give tears, sudden events, violence, fierceness, poisoning, blindness, wounds or injuries to the head by instruments, weapons or fevers, and contradictions of fortune.",
+   "notes": "The Hyades consist of six stars (a, <?*, <?*> y t S, and «, Tauri) situated on the forehead of the Bull and marking the northern eye. *",
+   "with_sun": "Evil disposition, disturbed mind, failure in study, muddled thinking, misfortune, murderer or murdered, death by blows, stabs, shoot- ing, beheading or shipwreck.",
+   "with_moon": "Tactful, fair ability, difficulties connected with writings, may forge the name -oi employer or friend but finally escape punishment and retain position, liable to sickness and disgrace, danger of blindness or eye injuries.",
+   "culminating": "Disgrace, ruin, violent death. If risitig or culminating with luminaries, make their natives military captains, commanders, colonels of horse and emperors.",
+   "aspects": {
+    "jupiter": "Ambitious, dishonest, legal diffi- culties, quarrels with relatives, judicial sentence.",
+    "mars": "Abrupt, brave, aggressive, courag- eous, lacks concentration.",
+    "mercury": "Quick mind, resentful, hasty tem- per, broods over small troubles, favourable for gain.",
+    "neptune": "Keen intellect, learned, land- hearted, sympathetic, scientific and philosophical interests, some inventive genius often connected with ctheric waves, which will bring fame but not wealth, broad and unorthodox religious views, benefits from companies, favourable for domestic matters, not good for children, brothers or sisters, knowledge gained psychically, sudden death while engaged in important work.",
+    "saturn": "Caution, forethought, omnivorous reader, scientific, success but little prominence, worry and annoyance from relatives.",
+    "uranus": "Scientific, literary, artistic and mys- tical interests, unconsciously psychic, greatly influ- enced by environment, favourable for marriage after 35 and forgain and children, ill-health, seldom long Ufe-",
+    "venus": "Many accomplishments, artistic, ability to write or paint, strong passions which influence work."
+   }
+  },
+  {
+   "num": 85,
+   "name": "Rastaban",
+   "name_key": "rastaban",
+   "designation": "P Draconis, f Xo° 50'",
+   "nature": [
+    "Mars",
+    "Saturn"
+   ],
+   "influence": "Of the nature of Saturn and Mars* It gives loss of property, violence, criminal inclina- tions and accidents.",
+   "notes": "A binary yellow star situated in the head of the Dragon, and anciently called \" The Nebulous Star in the Dragon's Eye.” From A1 Ras al Thuban, the Dragon's Head.",
+   "with_sun": "",
+   "with_moon": "Blindness, wounds, quarrels, bruises, stabs, blows and kicks from horses.",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 86,
+   "name": "Reg ulus",
+   "name_key": "regulus",
+   "designation": "aLeonis, SI 28 0 43'",
+   "nature": [
+    "Jupiter",
+    "Mars"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Mars and Jupiter, but most later authors liken it to Mars only, while Alvidas states that it is similar to the Sun in good aspect to Uranus. It gives violence, destructiveness, military honour of short duration, with ultimate failure, imprisonment, vio- lent death, success, high and lofty ideals and strength of spirit, and makes its natives magnanimous, grandly liberal, generous, ambitious, fond of power, desirous of command, high-spirited and independent.",
+   "notes": "A triple star, flushed white and. ultra- .INFLUENCE OF STARS AND NE^UL/E 195 marine, situated on the body of the Lion. From Regulus, a Little King, and often called Cor Leonis, the Lion's Heart, and symbolically the Crushing Foot. It was one of the four Royal Stars of the Persians in 3,000 B.C., when, as Watcher of the North, it marked the summer solstice.",
+   "with_sun": "Power, authority, great influence over friends, honour and riches, but violence, trouble and ultimate disgrace and ruin, sickness, fevers, benefits seldom last.",
+   "with_moon": "Occult interests, powerful friends, danger from enemies and false friends, gain by speculation, public prominence, great power, honour, wealth, benefits seldom last, violence, trouble and sickness. Makes women high-spirited and in- dependent. If at the same time the Sim is with the Dragon’s Head in Gemini, or Jupiter is in the loth house in trine to Mars and the Sun is with the Dragon's Head, great preferment even from the lowest sphere to high rank.",
+   "culminating": "Honour, preferment, good for- tune, high office under Government, militaiy success. If with Sun, Moon or Jupiter, great honour and ample fortune.",
+   "aspects": {
+    "jupiter": "Fame, high preferment, especially of a military nature, success in the Church. Wifli Saturn. Just, friends among clergy, success in Church or law, scholarly, wealth, gain through speculation, companies and friends, high position, proud of home and family, good health, heart trouble at end of life. If angular and especially if rising or culminating, public honour -and credit. If Mars be with the Pleiades, violent death in a tumult.",
+    "mars": "Honour, fame, strong character, public prominence, high, military command.",
+    "mercury": "Honourable, just, popular, gener- osity abused by opponents, fame, gain through high position.",
+    "neptune": "Prominent leader, law-giver, diplomatic, strong character, control over others, influential friends, few if any enemies, domestic harmony, natural death in old age. With a malefic and the Moon with Antares, Prsesaepe or the Pleiades, blindness or injuries to the eyes. 87. Rigel. p Orionis. U 1 5° 43'*",
+    "saturn": "Benefits from elderly people, clergy - and lawyers, just, discriminative, good for legacy and inheritance, domestic harmony, good health, long life.",
+    "uranus": "Energetic, ambitious, successful, may be unjust or dishonourable, self-aggrandisement, high official position, panders to aristocracy, associ- ated with religion for business purposes, gain through speculation and companies, favourable for marriage, sorrow through death of daughter and disappoint- ment through a son, friends become enemies at end , of life, may retire and live in seclusion, violent death through accident or assassination.",
+    "venus": "Many disappointments, unexpected happenings, violent attachments, trouble through love affairs. ig7"
+   }
+  },
+  {
+   "num": 89,
+   "name": "Sadalmelik",
+   "name_key": "sadalmelik",
+   "designation": "a Aquarii, X 2 0 14'",
+   "nature": [
+    "Mercury",
+    "Saturn"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Saturn and Mercury ; to Simmonite, of Saturn and Jupiter ; and to Alvidas of Jupiter and Uranus in sextile to the Sun from Pisces and Taurus. It causes persecution, lawsuits, extreme and sudden destruction and the death penalty. -E 201",
+   "notes": "A pale yellow star situated on the right shoulder of Aquarius. From A1 Sa'd al Malik, the Lucky One of the King.",
+   "with_sun": "Occult interests, prominence in oc- cultism, gain through companies. -",
+   "with_moon": "Prominence in occult matters, suc- cess in large companies, favourable for gain. If at the same time a malefic be with Algol, death by royal command either by hanging or by decapitation.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Ecclesiastical success, occult interests, criticized, trouble through enemies, loss through lawsuits.",
+    "mars": "Fame through discoveries in science or inventions, benefits do not last.",
+    "mercury": "Occult interests and research, criticized, favourable for friendship, success in large companies, loss through servants.",
+    "neptune": "Psychic, prominence in occult matters, kind, sympathetic, generous, friends among clergy and lawyers, favourable for gain through companies, banks or stocks, domestic harmony but sickness to wife or children entailing the breaking up of home, minor accidents, long life.",
+    "saturn": "Original, inventive, psychic, careful, cautious, practical, good judgment, difficulty in putting ideas or inventions into practice, gam through companies, speculation and matters of an earthy- nature, chronic illness to wife or children, favourable for gain, long lite.",
+    "uranus": "High ideals, philosophical, scientific, good mind, psychic, inventive, successful, gain through business or under Government, in- fluential and learned friends, does much good in purifying creeds and philosophies, sudden but natural death.",
+    "venus": "Favourable for occult investigation, gain through friends."
+   }
+  },
+  {
+   "num": 90,
+   "name": "Sadalsood",
+   "name_key": "sadalsood",
+   "designation": "p Aguarii, ssx 22 0 17'",
+   "nature": [
+    "Mercury",
+    "Saturn"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Saturn and Mercury; to Simmonite, of Uranus ; and, to Alvidas, of Uranus in sextile to the Sun. It is said to cause trouble and disgrace.",
+   "notes": "",
+   "with_sun": "Occult interests, psychic, wealth through opposite sex involving litigation, domestic harmony.",
+   "with_moon": "Reputation through occult matters, respect of friends, favourable for gain, peculiar domestic conditions.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Litigation, material and social success, difficulties in marriage, may marry abroad or a foreigner.",
+    "mars": "Difficulties through occult matters, bad for gain.",
+    "mercury": "Social success, favours from opposite sex but some transitory difficulties, re- tirement owing to abuse of position, sudden loss through speculation, domestic sorrow and trouble.",
+    "neptune": "Mcdiumistic, good-looking, youthful appearance, success in occupations con- ncctcd with amusements or ornament, domestic harmony, many moves and changes, peculiar matrimonial conditions, sudden death.",
+    "saturn": "Sharp, cunning, dishonest, immoral, cold, unsympathetic, hard-hearted, disgraces an 203 honourable father, hypnotic influence over opposite sex, many intrigues wrecking homes, death through female’s revenge.",
+    "uranus": "Occult interest, very unfavour- able lor women, sensitive, emotional, vacillating, weak mind, easily influenced, led astray in early life, indiscreet actions, trouble through opposite sex, bad for gain, bad for marriage before middle age, accidental death.",
+    "venus": "Strange events, romantic and pe- culiar marriage entailing separation for Government or political reasons."
+   }
+  },
+  {
+   "num": 91,
+   "name": "Scale",
+   "name_key": "scale",
+   "designation": "n 18 0 15’",
+   "nature": [
+    "Jupiter",
+    "Mercury"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Jupiter and Mercury, but later writers have considered it similar to Jupiter and Mars, and Alvidas likens it to Mars in sextile to Jupiter. It gives good fortune, high ambition, beneficence, honour, riches, and permanent happiness. If ttsfttg or cidwitwjtfttg. Houa'is, good fortune.",
+   "notes": "A pale emerald star situated in the northern scale of the Balance. Its proper name is Zubeneschamali, from A 1 Zuban al Shamaliyyah, the Northern Claw, a reference to the ancient celestial sphere in which Libra was omitted and Scorpio occupied 6o°. It is symbolically called the Full Price.",
+   "with_sun": "Great good fortune, high position, transitory difficulties eventually proving beneficial.",
+   "with_moon": "Active mind, organizing ability, benefits through new and influential friends, valuable gifts, uses friends' names to obtain money but matter is amicably settled, high position, love of respectable women.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Philosophical mind, ecclesiastical or legal preferment, able writer or speaker, in- fluential friends.",
+    "mars": "High ambitions, success through energy, influential position, forceful writer and speaker. ^ —",
+    "mercury": "Active, alert, favours from influential people, good position, much expenditure, benefits through writings.",
+    "neptune": "Occult writer or speaker, medical or chemical discoveries, practical, kind, sympathetic, alive to self interests, gain through marriage and business, disharmony with parents, grandparents, or relatives, legacy obtained through litigation, suffers from accidents, death resulting from previous injury.",
+    "saturn": "Cautious, reserved, studious, economical, analytical, good chemist or detective, good judge of human nature, early losses never fully recovered, favourable for gain and domestic matters, sickness to children in infancy.",
+    "uranus": "Economical, great self-control, psychic, material instincts, many difficulties, good for gain but much expenditure, loss through law and enemies, help from influential friends, occasional peculiar domestic disharmony, sudden death often from heart trouble.",
+    "venus": "Social success, help from women, favourable for love affairs and marriage."
+   }
+  },
+  {
+   "num": 93,
+   "name": "Screat",
+   "name_key": "screat",
+   "designation": "p Pegasi, X 28° 15'",
+   "nature": [
+    "Mars",
+    "Mercury"
+   ],
+   "influence": "According to Ptolemy it i$ of nature of Mars and Mercury ; to Simraonite, of Saturn ; to other authors, of Saturn and Mercury ; and, to Alvidas, of Neptune in square to Saturn or Mars. It causes extreme misfortune, murder, sui- cide, and drowning.",
+   "notes": "An irregularly variable deep-yellow star situated on the left leg of Pegasus.",
+   "with_sun": "Bad for success, danger through water and engines, liable to accidents or drowning.",
+   "with_moon": "Worry, loss and gain of friends through criticism, danger of accidents and by water, bad for gain.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Many voyages, losses through law, friends and relatives, danger of imprisonment.",
+    "mars": "Many accidents, bad for gain, sick- ness to native and relatives.",
+    "mercury": "Many accidents and narrow es- capes especially by water, many enemies, trouble through writings, bad for health and domestic affairs.",
+    "saturn": "Danger of death in infancy, bad for gain and pleasure, domestic trouble, colds and consumption, death by drowning or accident.",
+    "uranus": "Deceitful, vacillating, little con- centration, psychic, unreliable, bad for gain, in- volved in difficulties due to own acts, many accidents, death through drowning or by water especially if in 1st, 6th, 8th or 10th houses. Neptune. Prominent in inventive, occult or psychic matters, persecuted, peculiar domestic con- ditions, many accidents, danger of drowning. With a malefic and Moon with Sirius, death by fiery cutting weapons or from beasts. If the Moon be with Wega, violent death.",
+    "venus": "Evil environment, suffering through own acts, danger of imprisonment or restraint."
+   }
+  },
+  {
+   "num": 94,
+   "name": "Seginus",
+   "name_key": "seginus",
+   "designation": "y Bodlis, =2: 16 0 32'",
+   "nature": [
+    "Mercury",
+    "Saturn"
+   ],
+   "influence": "Of the nature of Mercury and Saturn. It gives a subtle mind, shamelessness and loss through friends and companies. With Moan. Preferment by indirect means fol- lowed by disgrace and ruin.",
+   "notes": "A small star situated on the left shoulder of Bo 5 tcs.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 95,
+   "name": "Sheratan",
+   "name_key": "sheratan",
+   "designation": "p Arietis, g 2 0 51'",
+   "nature": [
+    "Mars",
+    "Saturn"
+   ],
+   "influence": "Of the nature of Mars and Saturn. It causes bodily injuries, unscrupulous defeat, des- truction by fire, war or earthquake.",
+   "notes": "A pearly white star si tuated on the horn of the Ram. and commonly called the Ram's North Hom. From A 1 Sharatain, the Two Signs. 2oS",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 96,
+   "name": "Sinistra",
+   "name_key": "sinistra",
+   "designation": "* Ophiuchi, $ 28° 38'",
+   "nature": [
+    "Saturn",
+    "Venus"
+   ],
+   "influence": "Of the nature of Saturn and Venus. It gives an immoral, mean and slovenly nature.",
+   "notes": "A small star situated in the left hand of Ophiuchus. __",
+   "with_sun": "",
+   "with_moon": "Lustful, wanton, infamous, scanda- lous, addicted to sorcery and poisoning.",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 97,
+   "name": "Sirius",
+   "name_key": "sirius",
+   "designation": "12 0 59'",
+   "nature": [
+    "Jupiter",
+    "Mars"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Jupiter and Mars ; and, to Alvidas, of the Moon, Jupiter and Mars. It gives honour, renown, wealth, ardour, faithfulness, devotion, passion and resentment, and makes its natives custodians, curators and guardians. It also gives danger of dog bites, and two examples of this effect will be found under Procyon.",
+   "notes": "A binary star, brilliant white and yellow, situated in the mouth of the Greater Dog. From Seirios, Sparkling or Scorching, or according to some authors from the Egyptian god Osiris. Among these people it was also Thoth and Sothis, and formed the basis of the Sothic period of chronology. The Chinese knew it as Tseen Lang, the Heavenly Wolf, and said that when unusually bright it portended attacks from thieves.",
+   "with_sun": "Success in business, occupation con- uected with metals or other martial affairs, domestic harmony. II rising or culminating, kingly prefer- ment.",
+   "with_moon": "Success in . business, influential friends of opposite sex, favourable for the father, good health, beneficial changes in home or business. If a malefic be with Scheat, death by fiery cutting weapons or from beasts. If Saturn be with the Moon, death by wild beasts or soldiers.",
+   "culminating": "High office under Government giving great profit and reputation.",
+   "aspects": {
+    "jupiter": "Business success, journies, help from relatives, ecclesiastical preferment.",
+    "mars": "Courageous, generous, military pre- ferment, work in connection with metals.",
+    "mercury": "Great business success, help through influential people, worries unnecessarily, associated with the Church, physical defect through accident.",
+    "neptune": "Intuitional, occult interests, re- ligious, good organizing ability, success in mercantile pursuits, banks or corporations, many influential friends, favourable for gain and domestic matters, ' natural death.",
+    "saturn": "Steady, reserved, diplomatic, just, persevering, high position 'through friends, favour- able for home, gifts and legacies, domestic har- mony. With LTrrtmis. Gain and prominence in Uranian matters, help from influential friends, gain through haimonious marriage, especially if male; sudden death.",
+    "venus": "Ease, comfort and luxury, ex- travagant, gain by inheritance. '"
+   }
+  },
+  {
+   "num": null,
+   "name": "Skat",
+   "name_key": "skat",
+   "designation": "H 7 0 45'",
+   "nature": [
+    "Jupiter",
+    "Saturn"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Saturn and Jupiter; to Simmonite, of Uranus ; and, to AJridas, of Uranus and Venus in sextile to Mercury. It gives good fortune and lasting happiness.",
+   "notes": "A small star situated on the right leg of Aquarius. From A 1 Shi’at, a Wish, or A 1 Sak, the Shin Bone.",
+   "with_sun": "Sensitive, emotional, psychic; criti- cism and persecution through raediumship, but help from friends.",
+   "with_moon": "New and influential friends, associ- ated with companies, public position, but little prominence, valuable gifts, love of respectable women.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Philosophical, occult or religious mind, social success, prominent in Freemasonry’.",
+    "mars": "Energetic, advancement through exertions, mechanical discoveries or ability.",
+    "mercury": "Peculiar events, occult interests, psychic, many friends.",
+    "neptune": "Abnormal mind, changeable, easily discouraged, idealistic, psychic, many alli- ances, separated from marriage partner and children, accidents, may become insane, death through a fall or by water in middle life.",
+    "saturn": "Trouble through opposite sex, many travels and peculiar adventures, sudden ups and downs, early marriage but may desert wife or be deserted or marriage may be bigamous, separated from children, no help from friends, bad for gain and for health in latter part of life, may die in workhouse, hospital or asylum.",
+    "uranus": "Vacillating, weak character, men- tally far in advance of his time, writer on theories 0! life, suffering from violent attachment or marriage in early life, eccentric, greatly criticized, sudden death.",
+    "venus": "-Psychic, occult interests, friends among opposite sex, favourable for gain."
+   }
+  },
+  {
+   "num": null,
+   "name": "Spica",
+   "name_key": "spica",
+   "designation": "a Virgin**, ^ 22 0 43'",
+   "nature": [
+    "Mars",
+    "Venus"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Venus and Mars; and, to Alvidas, of Venus, Jupiter and Mercury. It gives success, renown, riches, a sweet disposition, love of art and science, unscrupulousness, unfruitfulness and injustice to innocence.",
+   "notes": "A brilliant flushed white binary star in the Wheat Ear of Virgo. Frequently called Arista.",
+   "with_sun": "",
+   "with_moon": "Gain through inventions, success, wealth and honour from Mercury, Venus or Jupiter people. 2i2",
+   "culminating": "Church and State preferment. If with Venus and Mars also the native is a potent king obeyed by many people, but subject to many infirmities.",
+   "aspects": {
+    "fortuna": "Great wealth, voluptuous pro-, pen si ties.",
+    "jupiter": "Popular, social success, wealth, ecclesiastical honour and preferment.",
+    "mars": "Popular, social success, may have good judgment and quick decision or be violent in dispute, rigid, and nearly or quite a fool.",
+    "mercury": "Neat, tidy, clever, ingenious, favour of clergy and people in authority, gain through investment, responsible position.",
+    "neptune": "Well-bom, comfortable surround- - ings, always sufficiently well off, associated with companies, gain through legacies, favourable for domestic matters, somewhat fast and extravagant* does not live to old age.",
+    "saturn": "Apt to be suspicious, sharp or rugged, but does much good, occult interests, good speaker, popular, many friends, gain through legacies but extravagant, good health, favourable for domestic matters.",
+    "uranus": "Medium is tic, popular, business connected with ornaments, gain through marriage, fortunate, sudden natural death.",
+    "venus": "Benefits from friends, social success, false friends of own sex."
+   }
+  },
+  {
+   "num": null,
+   "name": "SricuLUM",
+   "name_key": "sriculum",
+   "designation": "8 M, 20 M, 21 M Sagittarii",
+   "nature": [
+    "Mars"
+   ],
+   "influence": "Of the nature of Mars and the Stood, and specifically mentioned by Ptolemy as productive of blindness. 213",
+   "notes": "Two clusters and a nebula (20 M) situated on the arrow-head of Sagittarius.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 101,
+   "name": "Tejat",
+   "name_key": "tejat",
+   "designation": "Gemitiorum, ss 2° 19'",
+   "nature": [],
+   "influence": "Of the nature oi Mercury and Venus. It causes violence, pride, over-confidencc and shame- lessness. 102. Teredcllum. u Sagittarii. 24 0 43'. ''",
+   "notes": "A binary and variable star situated on the left foot of the northern Twin.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 56,
+   "name": "UlEDi",
+   "name_key": "uledi",
+   "designation": "a Capricorni, ssz 2° 42'",
+   "nature": [
+    "Mars",
+    "Venus"
+   ],
+   "influence": "According to Ptolemy it is of the 1 nature of Venus and Mars ; to Simmonite, of Venus and Mercury ; and, to Alvidas, of Uranus in sextile to Venus. It gives beneficence, sacrifice and offering.",
+   "notes": "A multiple star, yellow, ash and lilac, situated on the south horn of the Goat. From AI Jady, the Goat. Symbolically called the Slain Kid.",
+   "with_sun": "Peculiar events, unexpected losses and gains, sometimes great good fortune. With Moott. Peculiar and unexpected events, eccentric, public criticism, new and influential friends, valuable gifts, love of respectable women but difficulties and sometimes platonic marriage.",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Government position, preferment > in law or Church, marriage abroad, favourable for gain and inheritance.",
+    "mars": "Abrupt, aggressive, much criticism, public position.",
+    "mercury": "Romantic, psychic, vacillating, bad for gain, many love affairs some of which cause notoriety, may elope with married person.",
+    "neptune": "Psychic in childhood, never un- derstood by others, cruelty from a parent, many disappointments, peculiar conditions in domestic life, little success, greatly influenced by others, minor accidents, death in early life or middle age.",
+    "saturn": "Genius but kept down by cir- cumstances, peculiar and occult early environment, birth amidst strange conditions while mother is travelling, many narrow escapes, associated with the . stage, rarely mames, unfavourable for gain.",
+    "uranus": "Peculiar environment, bad morals, strong passions, genial, affectionate, vacillating, small self-confidence, too trusting, peculiar ideas on marriage and religion, ambitious but too weak to rise, bad for domestic affairs and children, if any, though there may be illegitimate ones, violent death. 169",
+    "venus": "Many strange and • unexpected events, peculiar and romantic marriage, may be separated for years from partner through secret government or political reasons of which even native may be ignorant."
+   }
+  },
+  {
+   "num": 103,
+   "name": "Unukauim",
+   "name_key": "unukauim",
+   "designation": "a Serpeniis, \\ 20° 56'",
+   "nature": [
+    "Mars",
+    "Saturn"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Saturn and Mars ; to Simmonite, of Saturn and Venus; to Pearce, of Saturn, Venus and Mars; and, to Alvidas, of Mars and Saturn in opposition to Venus. It gives immorality, acci- dents, violence and danger of poison.",
+   "notes": "A pale yellow star situated on the neck of the Serpent. From Unk al Hayyah, the Neck of the Snake. Sometimes called Cor Serpentis. the Serpent's Heart.",
+   "with_sun": "Many quarrels and disappointments, unfortunate lile, seriously affected by death of family or friends.",
+   "with_moon": "Clever, evil environment, hatred of authority, involved in intrigues and plots, banished, imprisoned or hanged for crime probably by poison- ing. /",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Hypocrisy, deceit, banishment, imprisonment or exile.",
+    "mars": "Violence, quarrels, lying, crime, violent death probably by poison.",
+    "mercury": "Dishonourable, accused of forgery or theft of papers, ill-health, narrow escapes, danger of bites from poisonous animals.",
+    "neptune": "Shrewd, ingenious, courageous, persistent, intuitive, evil environment, often criminal, trouble through opposite sex, bad for gain and marriage, violent death.",
+    "saturn": "Secret insanity, drug taker, secret crime and poisoning often for no reason, shrewd, cunning, intelligent, studious, often physician or nurse, usually unmarried, may commit suicide or be confined in an asylum or prison.",
+    "uranus": "Spasmodic insanity, wealthy and luxurious environment, often fails to obtain inherit- ance, bad for marriage, may commit crime, sudden death often by suicide.",
+    "venus": "Enmity, jealousy of own sex, bad for domestic matters, favourable for gain, secret death probably by poison."
+   }
+  },
+  {
+   "num": 104,
+   "name": "Vertex",
+   "name_key": "vertex",
+   "designation": "31 hi Andromeda, T 26 0 43'",
+   "nature": [
+    "Mars"
+   ],
+   "influence": "Of the nature of Mars and the Moon. It causes blindness, injuries to the eyes, sickness and a violent death. 105. * Vindemiatrix. ,Virginis. = 8° 50'",
+   "notes": "The Great Nebula situated to the north of Andromeda's head.",
+   "with_sun": "Worry, depression, unpopular, failure in business, harassed by creditors.",
+   "with_moon": "Worry, many disappointments, loss through law or writings and theft, bad health, failure in business. W ith Mercury. Impulsive, too hasty, loss through writings and business.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Trouble through law or Church, much criticism, many journeys. W ith Saturn. Cautious, thoughtful, reseiyed, 2x6 materialistic, hypocritical in religion, loss through speculation, success in business, secret difficulty with marriage partner.",
+    "mars": "Rash, headstrong, indiscreet,, ener- getic, trouble through law, business and friends.",
+    "neptune": "Active, critical, mind hovers ' between spiritual and material things, loss through speculation and Mercurial matters, mechanical and inventive ability, temporary domestic separations, death of or separation from a child, death through an accident or Saturnian disease.",
+    "uranus": "Deformity or disease of spine or bach about which native is sensitive and seeks seclusion especially if female, danger of heart trouble, bad for marriage, death through an accident.",
+    "venus": "Trouble through love affairs, loss of friends, danger of scandal."
+   }
+  },
+  {
+   "num": 106,
+   "name": "Wasat",
+   "name_key": "wasat",
+   "designation": "s Geminorum, S3 17 0 24'",
+   "nature": [
+    "Saturn"
+   ],
+   "influence": "Of the nature of Saturn. It gives violence, malevolence, destructiveness as a _ first principle, and is connected with chemicals, poisons and gas.",
+   "notes": "A double star, pale white and purple, situated on the right arm of the northern Twin. From A1 Wasat, the Middle.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 107,
+   "name": "Wega",
+   "name_key": "wega",
+   "designation": "a Lyrce, ft 14 0 12'",
+   "nature": [
+    "Mercury",
+    "Venus"
+   ],
+   "influence": "According to Ptolemy it is of the nature of Venus and Mercury ; and, to Alvidas, of Saturn in trine to Jupiter from the earthy signs especially Capricorn and Taurus. It gives bene- ficence, ideality, hopefulness, refinement and changeability, and makes jts natives grave, sober, outwardly pretentious and usually lascivious.",
+   "notes": "A pale sapphire star situated in the lower part of the Lyre. From A1 Waki, the Falling. ar*d known in the Middle Ages as Vultur Cadens, the Fall- ing Grype or Vulture. Often incorrectly spelt Vega.",
+   "with_sun": "Critical, abrupt, reserved, unpopular, fleeting honours, influential position, insincere friends. If with Mars also, above the earth, and the Moon be with Procyon, death from the bite of a mad dog.",
+   "with_moon": "Public disgrace, probably through forgery, loss through writings, some ill-health, suc- cess in business, gain through an annuity or pension. If a malefic be with Scheat, violent death-",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Loss through legal affairs, favour- able for gam, danger of imprisonment.",
+    "mars": "Scientific interests, unpopular opin- ions, moral courage, favourable for gam.",
+    "mercury": "Suspicious, reserved, bitter, thwarted ambitions, double dealing, secret enemies in influential positions, trouble with the mother, loss in business.",
+    "neptune": "Timifi, Son ii oS music, ' occult interests, practical and scientific mind, associated with occult societies, material success, home may be broken up, liable to accidents, natural death in old age especially when Mars is in favourable aspect.",
+    "saturn": "Strong passions, opinionated, ori- ginal, many Mercurial difficulties, reputation suf- fers through wrongful accusations, trouble with superiors, domestic difficulties, few, if any, children, latter half of life more favourable, sudden death.",
+    "uranus": "Critical, abrupt, reserved, strong passions, materialistic, many disappointments, do- mestic sorrow, much gam and loss, many open and secret enemies, accidental or violent death.",
+    "venus": "Hard-hearted, cold, miserly ; ill- health, ugliness or deformity."
+   }
+  },
+  {
+   "num": 108,
+   "name": "Yed Prior",
+   "name_key": "yedprior",
+   "designation": "S Ophitichi, f 1° Ii'",
+   "nature": [
+    "Saturn",
+    "Venus"
+   ],
+   "influence": "Of the nature of Saturn and Venus. It causes immorality, shamelessness and revolution.",
+   "notes": "A deep yellow star situated on the left hand of Ophiuchus. From Yad, the Hand.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": null,
+   "name": "Za vt java",
+   "name_key": "zavtjava",
+   "designation": "P Virginia, 26° 2'",
+   "nature": [
+    "Mars",
+    "Mercury"
+   ],
+   "influence": "Of the nature of Mercury and Mars. It gives beneficence, force of character, strength, combative movements and destructiveness.",
+   "notes": "A pale yellow star situated below the head of Virgo. From A1 Zawiah, the Angle or Comer (see Za.vzar), but according to Buliingcr the name means the Gloriously Beautiful. Symbolically called Correct Weighing. This star was used for confirming the Einstein theory during the solar eclipse of 21st September, 1922. which fell close to it.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  },
+  {
+   "num": 109,
+   "name": "Zaniah",
+   "name_key": "zaniah",
+   "designation": "v Vtrginis, m 3° 43'",
+   "nature": [],
+   "influence": "According to Ptolemy it is of the na- ture of Mercury and Venus ; and, to Alvidas, of Venus and Mercury in sextile. It gives refinement, honour, congeniality, order and a lovable nature.",
+   "notes": "A variable star situated on the southern wing of Virgo. From A 1 Zawiah, the Angle or Corner which formed part of the Kennel of the Barking Dogs located here by the Arabs.",
+   "with_sun": "Educational and studious interests, popular, social success, much pleasure, favourable for marriage.",
+   "with_moon": "Worry, loss through legal and Venu- sian affairs, trouble through writings, led astray by sympathies.",
+   "culminating": "",
+   "aspects": {
+    "jupiter": "Religious and philosophical mind, social success, many friends.",
+    "mars": "Active, energetic, loss through law- suits, trouble through opposite sex.",
+    "mercury": "Musical or artistic ability, gain through writing short stories, popular, social success, many friends especially among opposite sex.",
+    "saturn": "Sober, industrious, many influential elderly friends, gain through old people, grand- parents, and marriage.",
+    "uranus": "Studious, psychic, retiring, some- what unpractical, uneventful life, many friends, social success, favourable for marriage if male but less so if female, gain through marriage and business, natural death. IJ’i'IA Neptune. Kind. sympathetic, somewhat impatient, good at detail work, peculiar love affairs, gain through marriage and partnership, help from influential friends, uneventful life, danger of death at about 10 years of age or natural death in middle life.",
+    "venus": "Quick in learning, musical and artistic ability, fond of society, many friends, favour- able for gain."
+   }
+  },
+  {
+   "num": null,
+   "name": "Zosma",
+   "name_key": "zosma",
+   "designation": "S Leonis, io° 12'",
+   "nature": [
+    "Saturn",
+    "Ven"
+   ],
+   "influence": "Of the nature of Saturn and Ven us. It causes benefit by disgrace, selfishness, egotism, immorality, meanness, melancholy, unhappiness of mind and fear of poison, and gives an unresonable, shameless and egotistical nature. Very little is known as to the effect of the fixed stars in mundane astrology although there is no doubt that their influence is of supreme importance in this branch of the subject. In matters concerning the fate of nations and cities the movement of the planets is too rapid to cause radical changes They do indeed effect the more ephemeral happenings, but for slow, world-wide changes and epoch-making events it is necessary to take note of influences that are correspondingly great, and we are driven to a consideration of the movement of stars as being the only influence known to us that is capable of pro- ducing effects of the necessary 1 magnitude. Un- ' fortunately circumstances are against any detailed examination of this nature owing to the immense periods of time involved, and therefore our know- ledge is of the smallest, but nevertheless one or two facts are on record and with an increased interest in astrology others will no doubt rapidly come to light. The growth of religions appears to be in some way connected with the passage of the vernal equinox through the zodiac of constellations. Thus its entry into the constellation Taurus is associated with the worship of Baal and the golden calf, and its passage 220 into Aries with the worship of the ram. Christ- tianity arose when the vernal equinox was nearing Pisces and it is significant that the symbo",
+   "notes": "A triple star, pale yellow, blue and violet situated on the Lion’s back. From Zosma, a Girdle.",
+   "with_sun": "",
+   "with_moon": "",
+   "culminating": "",
+   "aspects": {}
+  }
+ ]
+}

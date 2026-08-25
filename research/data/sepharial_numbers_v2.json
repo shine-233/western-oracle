@@ -1,0 +1,163 @@
+{
+ "dataset": "numerology_kabala",
+ "version": "v2",
+ "generated": "2026-08-26",
+ "source": {
+  "work": "Sepharial, The Kabala of Numbers",
+  "year": 1911,
+  "rights": "public domain",
+  "origin": "Internet Archive OCR (TheKabalaOfNumbers)",
+  "note": "v2 扩容：新增 Ch X「以数读心」与 Ch XII「论失物」整章段落库"
+ },
+ "minor_key": {
+  "1": {
+   "meaning": "individuality and possible egotism, self- reliance, affirmation, distinction.",
+   "planet": "Sun"
+  },
+  "2": {
+   "meaning": "Relationship, psychic attraction, emotion, sympathy or antipathy, doubt, vacillation.",
+   "planet": "Moon"
+  },
+  "3": {
+   "meaning": "Expansion, increase, intellectual capacity, riches and success.",
+   "planet": "Jupiter"
+  },
+  "4": {
+   "meaning": "Realisation, property, possession, credit and position, materiality.",
+   "planet": "Earth"
+  },
+  "5": {
+   "meaning": "Reason, logic, ethics, travelling, commerce, utility.",
+   "planet": "Mercury"
+  },
+  "6": {
+   "meaning": "Co-operation, marriage, reciprocity, sympathy, play, art, music, dancing.",
+   "planet": "Venus"
+  },
+  "7": {
+   "meaning": "Equilibrium, contracts, agreements, treaties, bargains, harmony or discord.",
+   "planet": "Moon"
+  },
+  "8": {
+   "meaning": "Reconstruction, death, negation, decay, loss, extinction, going out.",
+   "planet": "Saturn"
+  },
+  "9": {
+   "meaning": "Penetration, strife, energy, enterprise, dividing, anger, keenness.",
+   "planet": "Mars"
+  }
+ },
+ "things_thought_of": {
+  "2": "Of distance, things remote, a journey or a foreign land.",
+  "3": "You think of a personal event, an ailment, probably a fever, heat, or anger.",
+  "4": "Of a domestic affair. The family circle. Love and pleasure; of the heart, or something greatly desired.",
+  "5": "Of marriage; an understanding or agreement; of things in union or harmony.",
+  "6": "Of news, things related, a brother, means of communication, journeys.",
+  "7": "Of a house, of things underground, of land or water in expanse, of the ocean, change, or removal.",
+  "8": "Of antique things or foreign products, a foreign country, of the Orient.",
+  "9": "Of a death or loss, of defective contracts, of means of restitution.",
+  "1": "You think of position, of elevation, things above you, a"
+ },
+ "resultant_meanings": {
+  "10": "Of an unfortunate alliance, troublesome agreement, or disputation. 1 1. Of the value of properly, a mine, or matter relating to real estate.",
+  "12": "Of pleasant surroundings, some festivity, gala, convivial meeting, fine clothes and personal comforts.",
+  "13": "Of money, speculative matters, gain.",
+  "14": "Of a short journey, a cruise, or matters connected with messages across the water; a female relation.",
+  "15": "Of a bereavement or death; funereal vestments, mourning; a loss or misfortune.",
+  "16": "Of a fortunate and happy alliance, a wife, a good understanding or agreement. 112",
+  "17": "Of a servant; or nearer to yourself, of some discomfort, disease, or ailment.",
+  "18": "Of a pleasant journey; a thing of gold; love, domesticity, or joy; a brother, or a message desired.",
+  "19": "Of some restraint, confinement, imprisonment, seclusion; a child.",
+  "20": "Of a journey or letter; something carried; yourself in communication with another; a roadway.",
+  "21": "Of gain, money, some financial advantage, things in possession, of something white and silvery, a rupee.",
+  "22": "Of an unfortunate marriage or a sick partner, a bad contract, difficulties, an enemy or rival.",
+  "23": "Of good living, rich clothes, plentiful food, faithful servants, good health, creature comforts, position.",
+  "24": "Of uncertain position; a family dispute; children; an unfortunate venture; illicit love affairs.",
+  "25": "Of much gain, great wealth, gold, the sun, something shining or brilliant.",
+  "26": "Of peaceful possession, good property, the house, of level ground, foundations. 27.A closed place or room, a short journey by boat; of a brother, or person in relation to yourself; a letter or a messenger. 2 8. Of yourself in imagination; of white linen; a bowl or silver pot; a new moon.",
+  "29": "Of ill-health; a blood disorder; poor fare; a time of poverty and trial. 113",
+  "30": "Of happy children, a pleasant experience, union, a fortunate dowry or legacy.",
+  "31": "Of something underground, a snake in the house, a scorpion or reptile, a foreign land. 3 2. Of a king or rajah, a golden vestment, the sun, your own individuality and character. 3 3. Of a pleasant message, a good position, a brother, some distinction.",
+  "34": "Of financial benefit, a purchase of food or other necessaries, grain, etc., some corporeal benefit. 3 5. Of a female, a birth, a plot or scheme, something secret to yourself; a confinement. 3 6. Of a loss by speculation, a sick child, an unhappy family, misery and trouble. 3 7. Of an unfortunate contract, an unhappy marriage, a house or property, a stable. 3 8. Of a death by malaria or enteric fever; of a journey, a message; of a sister; a neighbouring tank or pool. 3 9. Of a closed place or tem",
+  "40": "Of money, things of value, jewels or apparel, the price of grain.",
+  "41": "Of yourself or your figure, your apparel, investiture, food, position, credit.",
+  "42": "Of a friend, a woman of quality, a patroness or her favour, a gathering of people, a convention.",
+  "43": "Of ancestral property, an old man, an old building, the value of minerals, a cemetery.",
+  "44": "Of a brother, a letter from across the seas or from a great distance, a book of theology, a sastra, of good health, of personal comforts, a luxury. 114",
+  "45": "Of a marriage, of gain or loss, a thing of small value, an anna, tilt, bias, inequality, fraud.",
+  "46": "Of a friend, a man of position and honour; something of gold, of value, a jewel, a ring of gold.",
+  "47": "Of yourself, of justice, of equity, of value, measure, weight, proportion, peace, satisfaction, rest, a death.",
+  "48": "Of a robing-room, a private place, a servant in hiding, a woman's health, of news from a distance.",
+  "49": "Of a change of position, your own mother, a thing of distinction, a capitol, a woman in power, a queen or rani.",
+  "50": "Of a painful journey, a sister in distress, a doleful message, a call to office.",
+  "51": "Of gain and affluence, a stake or bet, of children, money from afar, a profession.",
+  "52": "Of personal disease or death, things lost, hidden, or occult, of a manservant; a red cloth; hot food; a doctor; yama; a reptile.",
+  "53": "Of high office, the rajah or king, a man in power, loss of gold, a dead lion.",
+  "54": "Of a dangerous illness, a woman in distress, of a wife, a girl, a contract or agreement, four walls. 5 5. Of a death, alost paper, a message gone astray, a young girl, a gathering, a friend.",
+  "56": "Of a foreign country beyond the seas, of a sea voyage, a s'akti, a religious gathering, a publication, a ship, a ghost. 5 7. Of acquired wealth, a hoard or store, a pension or inheritance, a male relative. 5 8. Of acquisition, personal influence, a grandee, 115 vakil or lawyer, a judge, guru or prohita, instruction, the Vedas, a Brahmin; personal property, estate.",
+  "59": "Of a death-chamber, a hospital or sick-room, a male child; the household fire, a venture or hazard.",
+  "60": "Of a Parsee; a religious ceremony; a foreign king; a Rishi; samadhi; Brahma; the sun of heaven; I'shvara; time.",
+  "61": "Of food; trading; fine apparel; a male friend; a market-place or exchange; a manservant; a Vaishnavite Brahmin.",
+  "62": "Of a writing or agreement; an undertaking or contract; a legal process; position; mastership; a father.",
+  "63": "Of a dead woman; some lost property; a winding- sheet or death cloth; a waning moon; the wife's dowry; an ablution.",
+  "64": "Of yourself in regard to position; of acquired property; an inheritance; an old man; duration; a bargain or exchange.",
+  "65": "Of a short journey and return; going and coming; a foot journey; a closed room; a fortunate confinement; a sister; a mantram. 6 6. A smashana or burning ground; a rocky place; minerals; a medical adviser; a dead friend; a burning house; dry ground or sand. 67.A dead rajah; the loss of gold; the wife's dowry; a girdle; a sick child. 6 8. Of a female child; the home circle; a position of trust; security.",
+  "69": "Of clothing; a servant; a ship; merchandise; 116 food stuffs; trade; a thing of science; a vedanga.",
+  "70": "Of a wife; an agreement; a public gathering; a full moon.",
+  "71": "A water pot or kumbha; an old association; a friend; yourself with others in company; a private place or room; a warder.",
+  "72": "Of wealth; a princely friend; a Brahmin; a religious meeting; of sandals and things in pairs.",
+  "73": "Of a brother; a position; the death of a ruler; a quick journey; an angry message; honours; succession; a writing.",
+  "74": "Of a brilliant sun; a great shining; eyesight; a proud wife; a powerful enemy; hunting.",
+  "75": "Of a pleasant place; a rich estate; moksha; buried treasure; cattle.",
+  "76": "Of a son; a place of learning; a schoolhouse; a bride; a Bramhachari.",
+  "77": "Of a white turban or dhoti; a serving-maid; medicine; water; drinking.",
+  "78": "Of an aged friend; an institution; an old alliance; a hospital; a man in prison.",
+  "79": "Of oneself; of increase and prosperity, position, power, and affluence; of extremities, the feet; a pair of sandals; an understanding; a judge or advocate.",
+  "80": "Of gain; a risk of loss; a loss by fire; of a foreign land; a far-off death; a pralaya; a voyage.",
+  "81": "Of a rich relative; fine apparel; golden ornaments; personal health; ripe fruit.",
+  "82": "Of a peaceful death; a rich dowry; a 117 pleasant message; an elephant ride; a journey for profit; a sister.",
+  "83": "Of trading; a treaty or agreement; a lease of property; a gateway or passage; a bride or betrothal.",
+  "84": "Of a daughter; a tank or bathing-place; a public festival; Durga; a holiday; clean linen; of one beloved. At this point the enumerations cease, since there are numbers employed and none can be more than 9, so that 9 + 3 = 84 will complete the resolutions. There are, it will be observed, several interpretations to each resultant number, but when the kabala is worked out to its finality, there is little doubt as to which interpretation to use. Thus, from the resultant figures 36 I obtain, by chang"
+ },
+ "chapters": {
+  "x_thought_reading_by_numbers": {
+   "passages": [
+    "What I have previously said in regard to the geometrical relations of thought will have prepared the reader for the following illustration of the process of thought-reading by means of numbers. Thought is of two orders, conscious thought elaborated by the functions of the attentive mind, and unconscious, or what is now called subconscious, thought. This latter function of the mind is abundantly illustrated by the phenomena of spontaneous telepathy. At any moment a person's mind is negative to some others and positive to the rest. Every brain, while functioning, creates definite vibrations or waves in the etheric ambient.",
+    "These waves impinge upon the brains of others, and, if in syntonic relations with them, will cause an apperception of personality, so that the individuals affected will immediately create a mental image of the person whose thought is projected, and whose presence is shortly made apparent to the senses. There is then the proverbial \"talk of angels\". Yet it will be found upon inquiry not only that the transmitter is unconscious of any",
+    "efforts towards self-projection, but wholly oblivious of the vicinity of the percipient. The conclusion based upon a close study of this familiar but little understood phenomena, is that the subconscious, or subliminal, mind of the projector is not only aware of the presence of other minds, but is capable of projecting itself into immediate relations with them. This projection is received by the percipient as a subconscious impression which presently",
+    "wells up in the region of the attentive mind in such way as to create a subject of thought. Extremely sensitive persons not only have an apperception of a presence, but also a vision. By the same or similar functioning of the subconscious mind, we are made aware that certain people are inimical to our interests. We smother the impression in deference to our good taste, or \"the proprieties\", admit them to our confidence, and everlastingly regret the fact that we did not act upon our \"first",
+    "impressions\". There is, as I have said in a former chapter, a part of us which is in touch with the world- soul, and capable of sharing in the universal experiences of that universal principle.",
+    "The world- soul is again in its turn linked to the universal soul. The world-soul is the planetary or earth consciousness; the universal consciousness is centred in the solar sphere, which is the coordinating centre of the system, spiritually, psychically, and physically. That is why the seers and prophets call the Lord of the Universe the \"Day Star\" and the \"Sun of Righteousness\".",
+    "But to get back to our position. The geometrical relations of thought are such that every idea is capable of numerical expression, and this fact appears to have been known to the Orientals, for it was from one of them that I had first illustration of it. It was the occasion of a meeting of friends interested in spiritual and psychic matters. I was invited by a Swami to take in hand or think of any object I might select. I immediately complied, taking special precautions that sight of the object was not obtained by him. In his absence from my room I took a postage-stamp, of value one anna, and placed it in a rather large box, holding this latter in my hand. I then recalled the Swami and bent my thought upon the stamp within the box. The Swami asked me to give him a number, the first that came into my mind, and I gave him one. He then immediately described the subject of my thought. It was of \"square\" form, but longer than",
+    "it was broad; very thin, it had two colours on one side only, its edges were like a saw, and the value of it was one anna. Needless to say, I was much impressed by the experiment, but said at once that the number asked for was only a blind, and that it was a feat of direct thought- reading without contact. The event proved that I was quite wrong, for he presently described things spoken about in letters as yet unopened, and further made prediction of certain events which afterwards transpired. On each occasion he required that I should give him a number. Finally, he convinced me most forcibly by revealing the process to me so that I was myself able to repeat the experiments quite successfully, and have since used the method on many occasions for describing people's thoughts, answering questions, predicting events, and finding lost things. It is a feat for which one may claim no merit, being wholly dependant on the working of the subconscious mind in the consultant himself. The argument is that the subliminal mind knows that concerning which the supraliminal mind exercises itself, but it lacks the means, while the attentive mind is functioning, of impressing itself. In the use of numbers, however, it finds an automatic means of expression.",
+    "It is my intention to give the reader a partial knowledge of the process, sufficient, in fact, to enable him to make experiment of the numerical relations of thought. I remember that one of the earliest opportunities I had of testing my proficiency in this method was when, on a",
+    "certain evening, I was suddenly surprised to see my vis- a-vis at the dinner-table put her hand to her throat with an expression of alarm. I gave her instant attention, and was relieved in some measure when she exclaimed: \"I have lost my coral necklace, with all my keepsake pendants on it\"! I immediately undertook to trace the lost article, and having got a number from her, I announced that the article would be found near an iron railing or partition, and close to where a horse was standing. So much I learned from the number given to me. What followed was merely diplomatic resource, or, as a dramatic artist would say, \"business\". I knew that the lady had just been walking by the riverside, and I also knew that kine and horses were at grass in the fields beyond the hawthorn hedge which ran along one side of the tow-path. I did not, however, recollect any iron gate or railing. The suggestion of a hunt was quickly followed up, and I led the way, keeping an eye open in the gathering gloom for indications of some iron. We had gone about half a mile when the whinny of a horse was heard, and I laughingly remarked that that was half the necklace. Coming up to the place where the horse stood, we found to our immense satisfaction that its nose was resting on a length of iron railing which had been introduced to repair a gap in the hedge. We stopped at that, and on striking a light, found the broken necklace on the towpath where, in another step, we should have crushed it under foot. This was the beginning of a career of usefulness in numerology, which has now been",
+    "under cultivation for many years. We never talk of things being lost nowadays. We say they are \"unnumbered\", or that \"the ticket has come unstuck\". We find them by the aid of numbers. Other incidents connected with the power of thought- reading by numbers will be found in my Manual of Occultism. And now, to dispense with the undesirable personal element, let us see how much of the method can be discreetly communicated.",
+    "On a question arising in the mind of a nature which cannot be answered by reference to the ordinary channels or means of information, let 9 numbers be set down spontaneously as they occur, and to these let there be added always the figure 3, whether that figure has been previously employed or not. Make a sum of the 1 figures, and observe the nature of the figures which are represented in the sum. For the interpretation of the numbers I must refer the reader to succeeding chapters, as the matter is of some length.",
+    "The process employed is based upon the occult fact that, if the mind is concerned about a any matter, the figures that are then automatically delivered by the mind bear a direct relationship to the nature of the thought, and in themselves afford the means of a solution. An instance of this may be cited from the Scripture, which the Kabalists have revealed. In the prophecy of Jacob concerning the future of his sons, Judah is referred to as a lion's whelp. \"The sceptre shall not depart from Judah, nor the law- giver from between his feet, until Shiloh shall come\". The sceptre is Regulus the law-giver is Cepheus,",
+    "and Shiloh or Shuleh is Cor Scorpio, whose rising is the signal for Regulus to depart from the midheaven with its opposition point of Cepheus from the nadir. The last two words of this sentence are given below in Hebrew with their numerical values.",
+    "From this we learn that the spontaneous utterance of the dying patriarch, \"Shiloh shall come\"! contained the numerical revelation of the Messiah.",
+    "When, therefore, we speak of thought-reading by numbers, we do not refer to the conscious thought of the transmitter, nor to any special psychic faculty in the percipient, but to the subconscious thought, or knowledge rather, of the transmitter, whose external or attentive mind is seeking a solution; and to the system of numerology which enables that solution to be found either by oneself or another.",
+    "Thus, they number the years according to a certain sequence, from 1 to 60. The year of the cycle is then multiplied by 2. From the product 3 is subtracted. The result is then divided by 7, and the remainder will indicate the crop conditions of the year according to the following sequence :-",
+    "From this we learn that there is an expectancy of similar conditions every 4 th year, with an intervening period of famine every 7 th year. (B's note; The above is VERY interesting!)",
+    "They have also a numerical system of Arudha by which lost things are found. The number of the asterism occupied by the Moon, the age of the Moon and quarter are added together, and from these, 3 is subtracted. The sum is multiplied by 8 and divided by 7, if",
+    "I have not made experiment of this method, as the losing habit is not upon me, and the Victorian code conduces to honesty among menials; but it appears to me that the possibilities in regard to the whereabouts of a lost article are by no means exhausted in this category of seven places.",
+    "I have, however, seen hidden things exactly located by means of a system of sulyana based upon similar factors, but it was confined to the house in which the divination was made."
+   ]
+  },
+  "xii_of_things_lost": {
+   "passages": [
+    "As will probably be understood when the basis of this kabala is known, the divination may extend to a practically unlimited variety of affairs. Questions concerning the diagnosis of disease, concerning, investments, finance, property, position, occupation, domestic and social affairs, can be readily resolved by an extension of the first part of the divination, i.e. what is thought of. For if, in this system, the number does not answer to the thing or matter in mind, then no resolution can be made, and the consultant must free his mind of all other matters, concentrate on the simple question or object, and then deliver another series of numbers. It generally transpires, however, that the number reveals the matter in question at once, and the number is then dealt with according to rule.",
+    "To deliver a resolution in regard to all the affairs of life would of itself fill a large volume. I shall therefore content myself by a single resolution of things lost. The number being given as before and resolved, if the resultant be",
+    "65. It has gone out of your possession and will be recovered if at all by employing an agent. 66.lt is lost by conspiracy of two servants. It can hardly be recovered. The man with the maimed hand is the one to interrogate.",
+    "68.lt is at the top of the house. A servant will fetch it. 69. A distance away. Your last halting-place. Near to a pyal or entrance to a house of a relative. 70.You have the article. It is where water is kept. 71. The article is not lost, but is in your possrssion. Begin at your feet and you will soon have it in view. 72. It is in your possession, close to a kumbha or water- pot.",
+    "73 .You will recover it by official inquiry. 74.A faithful servant will restore it to you. 75. The article has gone into the hands of young fellows. It will be restored but in a damaged condition or depreciated in value.",
+    "76.lt is in the house, where bread and cereals are kept. 77. A short distance off. It will be brought to the house by a servant.",
+    "It will be seen that many of the foregoing divinations are particularly pointed and explicit. If true and dependable they are undoubtedly very remarkable. They are true in my personal experience, and I have used them for years and on various occasions, so that I am in a position to speak for them. It is remarkable how completely successful they may prove in the hands of a person possessing the power of divination. This, of course, lies at the root of any divination, whether it has a numerical basis or any other form of symbolical foundation. If the divinatory faculty is there, any form or system may be used, but some are capable of yielding a closer result than others, and for this reason are to be preferred. If the divinatory faculty is not present in a person, he must, when consulting another, make use of a proxy or agent in whom such faculty has been proved by experience to exist. If a person void of the faculty shuffles a pack of cards, or uses figures as a means of divination, the most expert Cartomante or",
+    "Kabalist will prove ineffectual, since they can only interpret what lies before them. It is better that they should conduct the divination from first to last. The faculty does not necessarily lie with the Kabalist. His work begins and ends with the interpretation of the numbers submitted to him. Consequently, we frequently find that a person who is in no way a \"sensitive\", nor even possessed of ordinary intuitive powers, but who is nevertheless a good Kabalist, knowing how to interpret the symbolism of numbers, gets credits for being a most remarkable \"medium\", as if nothing in the world that is to be talked about can be accomplished without the aid of disembodied spirits. Let me say at once that one who is an occultist is the very last to be regarded as a medium. Save in the ultimate sense that we are all, from archangel to microbe, \"fulfilling the Word\" in some capacity or other, it cannot be said that we are played upon by the larvae of a morbid and earth-bound humanity. The occultist does not get his information \"through\", as spiritualists and psychic phenomenalists are wont to say, but he gets it direct from Nature, whose symbolism he has learned to read.",
+    "If the \"spirits\" whom the gobe-mouches listen to with such rapt attention were capable of demonstrating their superior condition by the revelation of knowledge transcending that of the average embodied human, they would make such demonstration in such form and at such times as that the whole world would benefit from it. The fact that we have not added one syllable to the",
+    "sum total of human knowledge by this means since the dawn of modern spiritualism, ought to prove the futility of the whole pursuit. There are phenomena without doubt, which prove the existence in Nature of certain unfamiliar forces, but they prove nothing that is spiritual, are most frequently grossly material, and in no instance are they to be compared with the daylight performances of the Indian Yogi. The spiritualist seance has only succeeded in perpetuating the fact of post-mortem existence, of which the world at no time has been seriously in doubt, but it has failed to prove to us immortality. Indeed, it presents only a doubtful case for spirit identity. If its claims were not so foolishly preposterous, its contribution to modern speculative problems would be received with greater respect and consideration. The results of years of patient study and research having recently been described by a certain ignoramus as due to the exercise of a special psychic faculty or to spirit communications, compels this discrimination, in which I trust I have done no hurt to the feelings of any sincere investigator into what are called spiritual phenomena."
+   ]
+  }
+ }
+}

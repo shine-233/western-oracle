@@ -293,8 +293,146 @@ def audit_zodiac_facts(report: dict) -> None:
     report['zodiac_facts_v1'] = {'checks': checks, 'count': len(signs), 'pass': all(checks.values())}
 
 
+# ---------- v2 扩容数据集 ----------
+
+MONTH_NAMES = {'January', 'February', 'March', 'April', 'May', 'June',
+               'July', 'August', 'September', 'October', 'November', 'December'}
+
+
+def audit_kunz_v2(report: dict) -> None:
+    d = _load('kunz_birthstones_v2.json')
+    sent = d['sentiments_of_months']
+    fields = ('birth_stone', 'guardian_angel', 'talismanic_gem',
+              'special_apostle', 'his_gem', 'zodiacal_sign', 'flower')
+    crystal = d['chapters']['crystal_gazing']['passages']
+    planetary = d['chapters']['planetary_and_astral_influences']['passages']
+    checks = {
+        'months_12': set(sent) == MONTH_NAMES,
+        'fields_nonempty': all(all(v[f] for f in fields) for v in sent.values()),
+        'verses_all': all(len(v['verses']) >= 60 for v in sent.values()),
+        'jan_garnet_angel': sent.get('January', {}).get('birth_stone') == 'Garnet'
+        and sent.get('January', {}).get('guardian_angel') == 'Gabriel',
+        'dec_ruby': sent.get('December', {}).get('birth_stone') == 'Ruby',
+        'favored_months_12': len(d['favored_by_month']) == 12,
+        'breastplate_rows_12': len(d['breastplate_and_foundation']) == 12,
+        'crystal_passages': len(crystal) >= 25 and sum(map(len, crystal)) >= 30000,
+        'planetary_passages': len(planetary) >= 15 and sum(map(len, planetary)) >= 20000,
+    }
+    report['kunz_birthstones_v2'] = {
+        'checks': checks,
+        'counts': {
+            'crystal': len(crystal), 'planetary': len(planetary),
+            'crystal_chars': sum(map(len, crystal)),
+            'planetary_chars': sum(map(len, planetary)),
+        },
+        'pass': all(checks.values()),
+    }
+
+
+LEO_PLANETS = {'saturn', 'jupiter', 'mars', 'venus', 'mercury'}
+LEO_HOUSES = {'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh',
+              'eighth', 'ninth', 'tenth', 'eleventh', 'twelfth'}
+
+
+def audit_leo_v2(report: dict) -> None:
+    d = _load('leo_nativity_v2.json')
+    aph = d['centiloquy']['aphorisms']
+    nums = [a['no'] for a in aph]
+    checks = {
+        'planets_5': set(d['planets_in_signs']) == LEO_PLANETS,
+        'planets_min_len': all(len(v['passage']) >= 6000 for v in d['planets_in_signs'].values()),
+        'houses_11': set(d['houses']) == LEO_HOUSES,
+        'houses_min_len': all(len(v['passage']) >= 1200 for v in d['houses'].values()),
+        'aphorisms_100': len(aph) == 100 and nums == list(range(1, 101)),
+        'aphorisms_text': sum(len(a['text']) for a in aph) >= 7000,
+        'first_aphorism_squares': bool(aph) and 'squares' in aph[0]['text'],
+        'sections_3': set(d['sections']) == {'twelve_houses', 'sun_in_signs', 'moon_in_signs'},
+        'sections_min_len': all(len(v['passage']) >= 3000 for v in d['sections'].values()),
+    }
+    report['leo_nativity_v2'] = {'checks': checks, 'pass': all(checks.values())}
+
+
+LILLY_SIGN_KEYS = {'aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo',
+                   'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces'}
+
+
+def audit_lilly_v2(report: dict) -> None:
+    d = _load('lilly_signs_v2.json')
+    ap = d['horary_aphorisms']
+    checks = {
+        'signs_12': set(d['signs']) == LILLY_SIGN_KEYS,
+        'signs_min_len': all(len(v['passage']) >= 700 for v in d['signs'].values()),
+        'taurus_anchor': 'Earthly' in d['signs']['taurus']['passage'],
+        'pisces_anchor': 'Watry' in d['signs']['pisces']['passage'],
+        'ch17_min_len': len(d['ch17_use_of_signs']['passage']) >= 800,
+        'ess_dig_min_len': len(d['essential_dignities']['passage']) >= 4000,
+        'aphorisms_chapter': len(ap['passage']) >= 9000 and 43 in ap['aphorism_numbers_detected'],
+        'marriage_min_len': len(d['albubater_marriage']['passage']) >= 3000,
+    }
+    report['lilly_signs_v2'] = {'checks': checks, 'pass': all(checks.values())}
+
+
+def audit_sepharial_v2(report: dict) -> None:
+    d = _load('sepharial_numbers_v2.json')
+    mk = d['minor_key']
+    covered = [int(k) for k in d['resultant_meanings'] if 12 <= int(k) <= 84]
+    ch_x = d['chapters']['x_thought_reading_by_numbers']['passages']
+    ch_xii = d['chapters']['xii_of_things_lost']['passages']
+    checks = {
+        'minor_key_9': len(mk) == 9,
+        'minor_key_all_text': all(v['meaning'] for v in mk.values()),
+        'thought_of_9': len(d['things_thought_of']) == 9,
+        'resultant_ge_55': len(covered) >= 55,
+        'ch_x_passages': len(ch_x) >= 5 and sum(map(len, ch_x)) >= 2500,
+        'ch_xii_passages': len(ch_xii) >= 8 and sum(map(len, ch_xii)) >= 4000,
+    }
+    report['sepharial_numbers_v2'] = {'checks': checks, 'pass': all(checks.values())}
+
+
+def audit_tetrabiblos_book2(report: dict) -> None:
+    d = _load('tetrabiblos_book2_v2.json')
+    chapters = d['chapters']
+    must = ['General Division', 'particular Prediction in Eclipses',
+            'New Moon of the Year', 'particular Natures of the Signs',
+            'Signification of Meteors']
+    blob = ' '.join(c['title'] + ' ' + c['body'][:300] for c in chapters).lower()
+    checks = {
+        'count_ge_12': len(chapters) >= 12,
+        'indices_contiguous': [c['index'] for c in chapters] == list(range(1, len(chapters) + 1)),
+        'must_topics': all(m.lower() in blob for m in must),
+        'bodies_long': all(len(c['body']) >= 600 for c in chapters),
+        'quotes_present': all(len(c['quote']) >= 80 for c in chapters),
+        'all_cited': all('Ashmand 1822' in c['source'] for c in chapters),
+    }
+    report['tetrabiblos_book2_v2'] = {'checks': checks, 'count': len(chapters), 'pass': all(checks.values())}
+
+
+def audit_fixed_stars_v2(report: dict) -> None:
+    d = _load('fixed_stars_robson_v2.json')
+    stars = d['stars']
+    keys = {s['name_key'] for s in stars}
+    required = ['algol', 'aldebaran', 'regulus', 'antares', 'arcturus', 'spica', 'sirius', 'pleiades']
+    aldebaran = next((s for s in stars if s['name_key'] == 'aldebaran'), {})
+    n_aspects = sum(len(s['aspects']) for s in stars)
+    checks = {
+        'count_ge_96': len(stars) >= 96,
+        'required_stars': all(k in keys for k in required),
+        'sheratan_renamed': 'sheratan' in keys and 'snaratan' not in keys,
+        'aldebaran_truncation_fixed': bool(aldebaran.get('notes'))
+        and bool(aldebaran.get('aspects', {}).get('mercury')),
+        'aspects_captured': n_aspects >= 60,
+        'all_have_text': all(s['influence'] or s['notes'] or s['aspects'] for s in stars),
+        'unique_names': len(keys) == len(stars),
+        'nature_extracted': sum(1 for s in stars if s['nature']) >= 30,
+    }
+    report['fixed_stars_robson_v2'] = {
+        'checks': checks, 'count': len(stars), 'aspects_total': n_aspects,
+        'pass': all(checks.values()),
+    }
+
+
 def main() -> None:
-    report: dict = {'generated': '2026-08-25', 'datasets': {}}
+    report: dict = {'generated': '2026-08-26', 'datasets': {}}
     audit_tarot(report['datasets'])
     audit_tarot_sources(report['datasets'])
     audit_runes(report['datasets'])
@@ -311,6 +449,12 @@ def main() -> None:
     audit_bookt_decans(report['datasets'])
     audit_tarot_modern(report['datasets'])
     audit_zodiac_facts(report['datasets'])
+    audit_kunz_v2(report['datasets'])
+    audit_leo_v2(report['datasets'])
+    audit_lilly_v2(report['datasets'])
+    audit_sepharial_v2(report['datasets'])
+    audit_tetrabiblos_book2(report['datasets'])
+    audit_fixed_stars_v2(report['datasets'])
 
     all_pass = all(d['pass'] for d in report['datasets'].values())
     report['all_pass'] = all_pass

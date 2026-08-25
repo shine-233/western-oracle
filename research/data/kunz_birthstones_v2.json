@@ -1,0 +1,711 @@
+{
+ "dataset": "birthstones_and_crystal_lore",
+ "version": "v2",
+ "generated": "2026-08-26",
+ "source": {
+  "work": "George Frederick Kunz, The Curious Lore of Precious Stones",
+  "year": 1913,
+  "publisher": "J.B. Lippincott Company",
+  "rights": "public domain",
+  "origin": "Internet Archive OCR (curiousloreprec00kunz)",
+  "note": "v2 扩容：新增 Sentiments of the Months 十二月表+双诗、Crystal Gazing 与 Planetary Astral Influences 两整章段落库"
+ },
+ "favored_by_month": {
+  "January": [
+   {
+    "stone": "Garnet",
+    "count": 7
+   },
+   {
+    "stone": "Hyacinth",
+    "count": 2
+   }
+  ],
+  "February": [
+   {
+    "stone": "Amethyst",
+    "count": 8
+   },
+   {
+    "stone": "Hyacinth",
+    "count": 1
+   },
+   {
+    "stone": "Pearl",
+    "count": 1
+   },
+   {
+    "stone": "I",
+    "count": 2
+   },
+   {
+    "stone": "Jasper",
+    "count": 5
+   },
+   {
+    "stone": "Bloodstone",
+    "count": 4
+   },
+   {
+    "stone": "Sapphire",
+    "count": 7
+   },
+   {
+    "stone": "Diamond",
+    "count": 2
+   },
+   {
+    "stone": "Agate",
+    "count": 5
+   },
+   {
+    "stone": "Emerald",
+    "count": 4
+   },
+   {
+    "stone": "Chalcedony",
+    "count": 1
+   },
+   {
+    "stone": "Carnelian",
+    "count": 1
+   },
+   {
+    "stone": "Emerald",
+    "count": 4
+   },
+   {
+    "stone": "Agate",
+    "count": 4
+   },
+   {
+    "stone": "Chalcedony",
+    "count": 3
+   },
+   {
+    "stone": "Turquoise",
+    "count": 1
+   },
+   {
+    "stone": "Pearl",
+    "count": 1
+   },
+   {
+    "stone": "Cat's-eye",
+    "count": 1
+   },
+   {
+    "stone": "Onyx",
+    "count": 5
+   },
+   {
+    "stone": "Sardonyx",
+    "count": 1
+   },
+   {
+    "stone": "Carnelian",
+    "count": 1
+   },
+   {
+    "stone": "Ruby",
+    "count": 1
+   },
+   {
+    "stone": "Turquoise",
+    "count": 1
+   },
+   {
+    "stone": "Carnelian",
+    "count": 5
+   },
+   {
+    "stone": "Sardonyx",
+    "count": 3
+   },
+   {
+    "stone": "Moonstone",
+    "count": 1
+   },
+   {
+    "stone": "Topaz",
+    "count": 1
+   },
+   {
+    "stone": "Andrite",
+    "count": 1
+   }
+  ],
+  "September": [
+   {
+    "stone": "Chrysolite",
+    "count": 6
+   },
+   {
+    "stone": "Sardonyx",
+    "count": 2
+   }
+  ],
+  "October": [
+   {
+    "stone": "Beryl",
+    "count": 8
+   },
+   {
+    "stone": "Aquamarine",
+    "count": 5
+   },
+   {
+    "stone": "Opal",
+    "count": 1
+   }
+  ],
+  "November": [
+   {
+    "stone": "Topaz",
+    "count": 8
+   },
+   {
+    "stone": "Pearl",
+    "count": 1
+   }
+  ],
+  "December": [
+   {
+    "stone": "Ruby",
+    "count": 6
+   },
+   {
+    "stone": "Turquoise",
+    "count": 2
+   },
+   {
+    "stone": "Chrysoprase",
+    "count": 1
+   },
+   {
+    "stone": "Bloodstone",
+    "count": 1
+   }
+  ],
+  "March": [
+   {
+    "stone": "Jasper",
+    "count": 5
+   },
+   {
+    "stone": "Bloodstone",
+    "count": 4
+   }
+  ],
+  "April": [
+   {
+    "stone": "Sapphire",
+    "count": 7
+   },
+   {
+    "stone": "Diamond",
+    "count": 2
+   }
+  ],
+  "May": [
+   {
+    "stone": "Agate",
+    "count": 5
+   },
+   {
+    "stone": "Emerald",
+    "count": 4
+   },
+   {
+    "stone": "Chalcedony",
+    "count": 1
+   },
+   {
+    "stone": "Carnelian",
+    "count": 1
+   }
+  ],
+  "June": [
+   {
+    "stone": "Emerald",
+    "count": 4
+   },
+   {
+    "stone": "Agate",
+    "count": 4
+   },
+   {
+    "stone": "Turquoise",
+    "count": 1
+   },
+   {
+    "stone": "Pearl",
+    "count": 1
+   },
+   {
+    "stone": "Cat's-eye",
+    "count": 1
+   }
+  ],
+  "July": [
+   {
+    "stone": "Onyx",
+    "count": 5
+   },
+   {
+    "stone": "Sardonyx",
+    "count": 1
+   }
+  ],
+  "August": [
+   {
+    "stone": "Carnelian",
+    "count": 5
+   },
+   {
+    "stone": "Sardonyx",
+    "count": 3
+   },
+   {
+    "stone": "Moonstone",
+    "count": 1
+   }
+  ]
+ },
+ "breastplate_and_foundation": [
+  {
+   "no": "I",
+   "authorized_version": "Sardius Carnelian Jasper",
+   "later_correction": "",
+   "foundation_stone": ""
+  },
+  {
+   "no": "II",
+   "authorized_version": "Topaz Chrysolite Sapphire",
+   "later_correction": "(peridot)",
+   "foundation_stone": ""
+  },
+  {
+   "no": "III",
+   "authorized_version": "Carbuncle Emerald Chalcedony",
+   "later_correction": "",
+   "foundation_stone": ""
+  },
+  {
+   "no": "IV",
+   "authorized_version": "Emerald Ruby Emerald",
+   "later_correction": "",
+   "foundation_stone": ""
+  },
+  {
+   "no": "V",
+   "authorized_version": "Sapphire Lapis-lazuli Sardonyx",
+   "later_correction": "",
+   "foundation_stone": ""
+  },
+  {
+   "no": "VI",
+   "authorized_version": "Diamond Onyx Sardius",
+   "later_correction": "",
+   "foundation_stone": ""
+  },
+  {
+   "no": "VII",
+   "authorized_version": "Ligure Sapphire Chrysolite",
+   "later_correction": "",
+   "foundation_stone": ""
+  },
+  {
+   "no": "VIII",
+   "authorized_version": "Agate Agate Beryl",
+   "later_correction": "",
+   "foundation_stone": ""
+  },
+  {
+   "no": "IX",
+   "authorized_version": "Amethyst Amethyst Topaz",
+   "later_correction": "",
+   "foundation_stone": ""
+  },
+  {
+   "no": "x",
+   "authorized_version": "Beryl Topaz Chrysoprasus",
+   "later_correction": "",
+   "foundation_stone": ""
+  },
+  {
+   "no": "XI",
+   "authorized_version": "Onyx Beryl Jacinth",
+   "later_correction": "",
+   "foundation_stone": ""
+  },
+  {
+   "no": "XII",
+   "authorized_version": "Jasper Jasper Amethyst",
+   "later_correction": "",
+   "foundation_stone": ""
+  }
+ ],
+ "sentiments_of_months": {
+  "January": {
+   "birth_stone": "Garnet",
+   "guardian_angel": "Gabriel",
+   "talismanic_gem": "Onyx",
+   "special_apostle": "Simon Peter",
+   "his_gem": "Jasper",
+   "zodiacal_sign": "Aquarius",
+   "flower": "Snowdrop",
+   "verses": "No gems save garnets should be worn\nBy her who in this month is born;\nThey will insure her constancy,\nTrue friendship and fidelity.\nThe gleaming garnet holds within its sway\nFaith, constancy, and truth to one alway."
+  },
+  "February": {
+   "birth_stone": "Amethyst",
+   "guardian_angel": "Barchiel",
+   "talismanic_gem": "Jasper",
+   "special_apostle": "Andrew",
+   "his_gem": "Carbuncle",
+   "zodiacal_sign": "Pisces",
+   "flower": "Primrose",
+   "verses": "The February-born may find\nSincerity and peace of mind,\nFreedom from passion and from care,\nIf she an amethyst will wear.\nLet her an amethyst but cherish well,\nAnd strife and care can never with her dwell."
+  },
+  "March": {
+   "birth_stone": "Jasper, bloodstone",
+   "guardian_angel": "Malchediel",
+   "talismanic_gem": "Ruby",
+   "special_apostle": "James and John",
+   "his_gem": "Emerald",
+   "zodiacal_sign": "Aries",
+   "flower": "Ipomea, violet",
+   "verses": "Who on this world of ours her eyes\nIn March first opens may be wise,\nIn days of peril firm and brave,\nWears she a bloodstone to her grave.\nWho wears a jasper, be life short or long,\nWill meet all dangers brave and wise and strong."
+  },
+  "April": {
+   "birth_stone": "Diamond, sapphire",
+   "guardian_angel": "Ashmodei",
+   "talismanic_gem": "Topaz",
+   "special_apostle": "Philip",
+   "his_gem": "Carnelian",
+   "zodiacal_sign": "Taurus",
+   "flower": "Daisy",
+   "verses": "She who from April dates her years\nDiamonds should wear, lest bitter tears\nFor vain repentance flow. This stone\nEmblem of innocence is known.\nInnocence, repentancee—sun and shower—\nThe diamond or the sapphire is her dower."
+  },
+  "May": {
+   "birth_stone": "Emerald",
+   "guardian_angel": "Amriel",
+   "talismanic_gem": "Carbuncle",
+   "special_apostle": "Bartholomew",
+   "his_gem": "Chrysolite",
+   "zodiacal_sign": "Gemini",
+   "flower": "Hawthorn",
+   "verses": "Who first beholds the light of day\nIn spring’s sweet flow’ry month of May,\nAnd wears an emerald all her life,\nShall be a loved and happy wife.\nNo happier wife and mother in the land\nThan she with emerald shining on her hand."
+  },
+  "June": {
+   "birth_stone": "Agate",
+   "guardian_angel": "Muriel",
+   "talismanic_gem": "Emerald",
+   "special_apostle": "Thomas",
+   "his_gem": "Beryl",
+   "zodiacal_sign": "Cancer",
+   "flower": "Honeysuckle",
+   "verses": "Who comes with summer to this earth,\nAnd owes to June her hour of birth,\nWith ring of agate on her hand\nCan health, long life, and wealth command.\nThro’ the moss-agate’s charm, the happy years\nNe’er see June’s golden sunshine turn to tears."
+  },
+  "July": {
+   "birth_stone": "Turquoise",
+   "guardian_angel": "Verchiel",
+   "talismanic_gem": "Sapphire",
+   "special_apostle": "Matthew",
+   "his_gem": "Topaz",
+   "zodiacal_sign": "Leo",
+   "flower": "Water-lily",
+   "verses": "The heav’n-blue turquoise should adorn\nAll those who in July are born;\nFor those they’ll be exempt and free\nFrom love’s doubts and anxiety.\nNo other gem than turquoise on her breast\nCan to the loving, doubting heart bring rest."
+  },
+  "August": {
+   "birth_stone": "Carnelian",
+   "guardian_angel": "Hamatiel",
+   "talismanic_gem": "Diamond",
+   "special_apostle": "James, the son of Alpheus",
+   "his_gem": "Sardonyx",
+   "zodiacal_sign": "Virgo",
+   "flower": "Poppy",
+   "verses": "Wear a carnelian or for thee\nNo conjugal felicity;\nThe August-born without this stone,\n’Tis said, must live unloved, alone.\nShe, loving once and always, wears, if wise,\nCarnelian—and her home is paradise."
+  },
+  "September": {
+   "birth_stone": "Chrysolite",
+   "guardian_angel": "Tsuriel",
+   "talismanic_gem": "Jacinth",
+   "special_apostle": "Lebbeus Thaddeus",
+   "his_gem": "Chrysoprase",
+   "zodiacal_sign": "Libra",
+   "flower": "Morning-glory",
+   "verses": "A maid born when September leaves\nAre rustling in the autumn breeze,\nA cehrysolite on brow should bind—\n’Twill cure diseases of the mind.\nIf chrysolite upon her brow is laid,\nFollies and dark delusions flee afraid."
+  },
+  "October": {
+   "birth_stone": "Beryl",
+   "guardian_angel": "Bariel",
+   "talismanic_gem": "Agate",
+   "special_apostle": "Simon (Zelotes)",
+   "his_gem": "Jacinth",
+   "zodiacal_sign": "Scorpio",
+   "flower": "Hops",
+   "verses": "October’s child is born for woe,\nAnd life’s vicissitudes must know;\nBut lay a beryl on her breast,\nAnd Hope will lull those woes to rest.\nWhen fair October to her brings the beryl,\nNo longer need she fear misfortune’s peril."
+  },
+  "November": {
+   "birth_stone": "Topaz",
+   "guardian_angel": "Adnachiel",
+   "talismanic_gem": "Amethyst",
+   "special_apostle": "Matthias",
+   "his_gem": "Amethyst",
+   "zodiacal_sign": "Sagittarius",
+   "flower": "Chrysanthemum",
+   "verses": "ate mocha stone. Hindoostan.\nBrazil, S. A.\nWho first comes to this world below\nWith drear November’s fog and snow\nShould prize the topaz’s amber hue—\nEmblem of friends and lovers true.\nFirm friendship is November’s, and she bears\nTrue love beneath the topaz that she wears."
+  },
+  "December": {
+   "birth_stone": "Ruby",
+   "guardian_angel": "Humiel",
+   "talismanic_gem": "Beryl",
+   "special_apostle": "Paul",
+   "his_gem": "Sapphire",
+   "zodiacal_sign": "Capricornus",
+   "flower": "Holly",
+   "verses": "If cold December give you birth—\nThe month of snow and ice and mirth—\nPlace on your hand a ruby true;\nSuccess will bless whate’er you do.\nDecember gives her fortune, love and fame\nIf amulet of rubies bear her name."
+  }
+ },
+ "chapters": {
+  "crystal_gazing": {
+   "chapter_title": "On Crystal Balls and Crystal Gazing (Ch VI)",
+   "passages": [
+    "from the brain centres. It is almost invariably stated that, prior to the appearance of the desired visions, the crystal seems to disappear and a mist rises before the gazer’s eye.",
+    "The Achaians, as Pausanius relates, frequently used a mirror to divine diseases or to learn whether there was danger of sudden death. Of the Temple of Demeter, or Ceres, at Patras, he writes: ?",
+    "In front of the temple of Demeter there is a well. A stone wall separates this well from the temple, but steps lead down to it from the outside. Here there is an infallible oracle, although it does not answer all questions, but only those touching diseases. They attach a slender cord to a mirror and let it down into the well, balancing it carefully so that the water does not cover the face, but only touches the rim. Then, after making’ a prayer to the goddess and burning incense to her, they look into the mirror, and it shows whether the sick person will die or recover. Such is the power of truth in this water.",
+    "Another wonderful thing I saw in the palace. Suspended over a rather shallow well there is a large mirror, and anyone who goes down into this well will hear every word that is spoken on earth, while, if he gazes on the mirror, he will see there every city and every nation just as clearly as though he were looking down upon them from a slight elevation. At the time I was there, I saw my native country and its inhabitants. Whether I myself was seen by them in turn, I am not sure.",
+    "In their religious legends the ancient Mexicans taught that their god Tezcatlipuco had a magic mirror in which he saw everything that happened in the world.2 He was sometimes named Necocyautl, ‘‘sower of discord,’’ be- cause he often stirred up war and strife among men, but he was also lord of riches and prosperity, which he bestowed and took away again at his will. To the in- fluence of this divinity were attributed many omens and certain strange visions, announced by repeated knockings.*",
+    "In the Orphic poem ‘‘Lithica,’’? a magic sphere of stone is described. The substance is called ‘‘sideritis’’ or ‘‘ophitis,’’ and is said to be black, round, and heavy; possibly some metal, rather than a stone, is designated by these names. Helenus, the Trojan soothsayer, is said to have used this sphere to foretell the downfall of his native city. He fasted for twenty-one days and then wrapped the sphere in soft garments, like an infant, and offered sacrifices to it until, by the magic of his prayers, ‘a living soul warmed the precious substance.”’",
+    "A strange variety of divination by means of mirrors placed on the heads of boys, who, with eyes blindfolded, were supposed to perceive forms or signs of some de- scription in the mirrors, is noted by Spartianus in his life of the Emperor Didius Julianus (ca. 133-193). This ruler is said to have resorted to this form of divination, and the boy entrusted with the task is asserted to have",
+    "An indication that the usage of divination by means of a silver cup existed among the primitive Hebrews has been found in the story of Joseph and his brethren. In Genesis xliv, 1-5, we read that Joseph concealed a silver cup in the sack of grain borne away by Benjamin, making of this a pretext for requiring the return of his brethren. He sent messengers to overtake them and directed them to demand the return of the cup, using these words: ‘‘Is not this it in which my lord drinketh, and whereby indeed he divineth?’’",
+    "The Arabic author, Haly Abou Gefar, tells of a golden ball used by ‘‘the Magi, followers of Zoroaster,’’ in their incantations. It was incrusted with celestial symbols and set with a sapphire, and one of these magicians, after attaching it to a strip of bullhide, swung it around, re- citing at the same time various spells and incantations.® Probably the magician, by fixing his gaze upon the bril- liant revolving sphere, gradually fell into a hypnotic trance, during which visions appeared to him. These he eould afterward interpret to those who had sought his aid to read the future, or obtain information regarding things that were happening for away.",
+    "An important side-light on the beliefs of Western Europe, in the fifth century, regarding crystal-gazing, is afforded by one of the canons of the synod held about 450 A.D. by St. Patrick and the bishops Auxilius and Isser- nanus. Here it is decreed that any Christian who believes there is a Lamia (or witch) in the mirror is to be anathe-",
+    "matized, and is not to be again received into the Church unless he shall have renounced this belief and shall have diligently performed the penance imposed upon him.? In this case, as in many others, the vision in the crystal or mirror did not represent some former or contempora- neous happening, but the figure of an evil spirit, who, either by signs or words, imparted to the scryer the in- formation he was seeking.",
+    "The power to see images of evil spirits on the surface of water was claimed by those called hydromantii in the ninth century. This is attested in a work composed about 860 a.p. by Hinemar, Archbishop of Rheims, who charac- terizes the supposed appearances as ‘‘images or decep- tions of the demons.’’ These diviners asserted that they received audible communications from the spirits, and they therefore evidently believed that the appearances were realities.®",
+    "Although, as we have seen, many different materials were used for scrying, the preference was often given to polished spheres of beryl; in modern times, however, the rock-crystal is considered the best adapted for the pur- pose.",
+    "In his introduction to ‘‘Crystal Gazing,’’ by N. W. Thomas,® Andrew Lang writes of what he terms hypna- gogic illusions—images which appear when the eyes are closed and before sleep supervenes. When faces ap- peared to him in this way, they were always unfamiliar ones, with the single exception of having once seen his own face in profile. The same was almost invariably true",
+    "of landscape and inanimate objects. These forms seemed to grow out of the bright points of light which frequently appear when the eyes are closed, and Lang suggests a similar origin for the visions of the ‘‘scryers’’—namely, the development of the images from dark or light points in the glass. |",
+    "In regard to this, we have an interesting passage in the works of Ibn Kaldoun, a Persian writer, born in 1332, who gives the following very acute analysis of the phe- nomena accompanying crystal-gazing.’°",
+    "Some believe that the image perceived in this way takes form on the surface of the mirror, but they are mistaken. The diviner looks at this surface fixedly until it disappears, and a curtain, like a mist, is interposed between him and the mirror. Upon this curtain are de- signed the forms he wishes to see, and this permits him to give indica- tions, either affirmative or negative, concerning the matter on which he is questioned. He then describes his perceptions as he has received them. The diviners, while in this state, do not see what is really to be seen (in the mirror); it is another kind of perception, which is born in them and which is realized not by sight but by the soul.",
+    "Procure of a lapidary a good, clear, pellucid crystal of the bigness of a small orange,—i.e., about one inch and a half in diameter; let it be globular, or round each way alike; then you have got this crystal fair and clear, without any clouds or specks. Get a small plate of pure gold to encompass the crystal round one-half; let this be fitted on an ivory or ebony pedestal. Let there be engraved a circle round the erystal; afterwards the name: Tetragrammaton. On the other side of the plate let there be engraved, Michael, Gabriel, Uriel, Raphael, which are the four principal angels ruling over the Sun, Moon, Venus, and Mercury.",
+    "The four letters constituting the Tetragrammaton are the Hebrew characters yodh, hé, waw and hé, mm. As this divine name was regarded in later Judaism as too sacred to be pronounced, the word lord, adonai, was sub- stituted for it in the reading of the Scriptures. For this reason, when the vowel signs were added to the text to indicate the traditional pronunciation, the consonants Yhwh were provided with the vowels of adonai and the name was therefore read Jehovah by Christian scholars.",
+    "The bosom of All-wise Intelligence, Reflecting in its mystic compass all Within the sev’nfold volume of the World Invol’d; and looking in that Mirror’s face The Shah beheld the face of his Desire.",
+    "Roger Bacon (1214-1292) was probably the most gifted man of the thirteenth century, and his writings testify to an extraordinarily clear perception of the essen- tial principles of scientific research. However, his true greatness was not generally appreciated in his own age, and popular fancy wove about his name a fabric of legend in which he appeared as an arch-necromancer and magician. The curious old work entitled ‘‘The Famous Historie of Fryar Bacon’’ gives a number of the strange recitals which became current in England in regard to Bacon’s wonderful powers.",
+    "were mirrored. On one occasion two young men, be- tween whom the friendliest feelings existed, came to Bacon and requested him to let them see in the mirror what their fathers were doing at the time. The friar con- sented, but the experiment, while successful, was the cause of a terrible misfortune. The story is as follows:",
+    "The Fathers of these two Gentlemen (in their Sonnes absence) were become great foes: this hatred betweene them was growne to that height, that wheresoever they met, they had not onely wordes, but blowes. Just at that time, as it should seeme, that their Sonnes were looking to see how they were in health, they were met, and had drawne, and were together by the eares. Their Sonnes seeing this, and having been alwayes great friends, knew not what to say to one another, but beheld each other with angry lookes. At last one of their Fathers, as they might perceive in the Glasse, had a fall, and the other, taking advantage, stood over him ready to strike him. The Sonne of him that was downe could then containe himselfe no longer, but told the other young man, that his Father had received wrong. He answered againe, that it was faire. At last there grew such foule words betweene them, and their bloods were so heated, that they presently stabbed the one the other with their Daggers, and so fell downe dead.",
+    "The sceptre of the Scottish regalia is surmounted by a crystal globe, two inches and a quarter in diameter, and the mace by a large crystal beryl. In former times these stones were regarded as amulets and their use was traced back to the Druids. Sir Walter Scott tells us that in his time they were still known among the Scottish Highlanders as ‘‘Stones of Power.’’ 1°",
+    "The testimony of John of Salisbury (11202-1180) shows that in the twelfth century, in England, divination by means of the arts of the specularii was often prac- tised. The prelate writes that when a boy, he himself and- a companion a few years older received instruction from",
+    "a priest who was addicted to the use of these magic arts. This priest used to polish the finger-nails of the boys with a consecrated oil or ointment, and then direct them to look upon the polished surface until some figure or form should appear. Sometimes the smooth, polished surface of a basin was used. John of Salisbury regarded it as a mark of divine favor that he himself saw nothing upon the smooth and lustrous surface, but he states that his companion observed certain vague and shadowy forms. Certain names pronounced by the priest on these occasions terrified the boy, for he believed them to be the names of evil spirits; indeed, such was his reluctance to participate in the unholy rites that his presence was be- lieved to interfere with the production of the phe- nomena.'#",
+    "In another part of his ‘‘Policraticus,’’ John of Salis- bury states that the specularii claimed that their gift of seeing visions on polished surfaces was never used to injure any one, but was often useful in the detection of. theft and in counteracting magic spells.",
+    "Under the comprehensive chapter heading: ‘‘How to conjure the crystal so that all things may be seen in it,’’ Paracelsus (1493-1541) declares in that ‘‘to conjure’’ means nothing more than ‘‘to observe anything rightly, to learn and to understand what it is.’’ The crystal was of the nature of the air, and hence all things movable and immovable that could be seen in the air could also be seen in the crystal or speculum.1®",
+    "““The Hermetic and Alchemical writings of Aureolus Philippus Theophrastus Bombast of Hohenheim, called Paracelsus the Great,” trans. by Arthur Edward Waite, London, 1894, vol. i, p. 224.",
+    "Paracelsus showed keen insight, and his conclusions are excellent. One might add, however, that it is a fact that these are images condensed in the double convex lens, forming as it were, an internal crystal sphere. These images are reversed, distorted and twisted, and when they become visible to one who is expecting strange things, they form mental impressions which it is often very difficult to erase. Many crystal gazers are fre- quently very highly wrought, nervous and susceptible, and other influences uniting with the impressions pro- duced, may give the brain for a time the power to evolve kaleidoscopic effects.",
+    "Directions for the use of an Erdenspiegel, or ‘‘earth- mirror,’’ are given in an old German manuscript written in 1658 by a Capuchin priest.17 The mirror is to be set about two inches above a board, and the questions to be answered are to be placed beneath it. The scryer is rec- ommended to place three grams of salt upon his tongue, whereupon he is to repeat a prayer and cross himself. He now takes the mirror in his hand and breathes upon it three times, repeating the words, ‘‘In the name of the Father, of the Son, and of the Holy Spirit. Amen.’’",
+    "O thou holy Archangel N. N., I pray to thee most fervently through the great and unsearchable name of the Lord of all Lords and King of all Kings, Jod, He, Vau, He, Tetragrammaton, Adonay, Schaday, receive my greeting and give ear to the humble petition which T offer in the name of the great and highest God, Elohim, Zebaoth,",
+    "7“ Unterricht vom Gebrauch des Erdspiegels, 1658” (Aus dem Kapuziner-Kloster in Immenstat. Eine Handschrift des Kapuziner- Paters Franziseus Seraph. Heider daselbst); in “Tandsehriftlichen Schitze aus Kloster Bibliotheken,” K6ln am Rhein, 1734-1810 (reprint).",
+    "The strong religious tone of these directions for the use of the mirror and the fact that it is a priest who gives them, shows that there was a disposition to tolerate the employment of such ‘‘white magic.’’",
+    "In medieval times it was believed that the vision in the crystal was produced through the agency of an in- dwelling spirit, and, therefore, it was necessary to use some very potent spell to force this spirit to enter the stone. Many of these ancient spells have been preserved, and they contain a strange and incongruous mixture of religious and magical formulas. In one of these, dating from the end of the fifteenth century, after a recitation of a long and rambling conjuration, we read, ‘‘And y™ ask y® chylde yf h® seethe any thyng, and yf no, let the m\" begin his conjuraty6 agayn.’’ As usual the scrying was done by a child, the conjuration being spoken by the min- ister. An important part of the conjuration consisted in the repetition of a number of divine names, most of them originally Hebrew, but so much corrupted by re- citers who did not know their meaning that it is now exceedingly difficult to interpret them correctly.",
+    "A proof that this form of magic was often regarded as quite compatible with religion is offered us in a pas- sage from a sixteenth century manuscript,’® where we read that the crystal should be laid on the altar ‘‘on the Side that the gospell is read on. And let the priest say a mass on the same Side.’’ If the conjuration is successful, the same manuscript tells us that ‘‘these angells being once appeared will not depart the glasse or stone untill the Sonne be sett except you licence them.’’ It also seems that ‘‘serying’’ was looked upon as a special gift, only granted to a favored few as a peculiar privilege, and we ~",
+    "read that ‘‘Prayer and a good beleefe prevailed much. For faith is the cay to this and all other works, and without it nothing can be effected.’? The child seryer, either maid or boy, should not be more than twelve years old.",
+    "That a certain religious spirit, however mistaken, often animated the ecrystal-gazers of the sixteenth cen- tury, is shown in the case of the ‘‘speculator’’ of John a Windor, who confessed that when he led an impure life the ‘‘demons’’ would not appear to him in his glass. He would then proceed to fumigate the apartment, as though believing that the very air was contaminated by the sins of the operator. We may hope that the seer was not con- tent with this, but also tried to reform his evil ways. Another scryer, a woman named Sarah Skelhorn, de- clared that the spirits that appeared to her in the glass would often follow her about the house from room to room, so that she at last became weary of their presence.’® Both of these seryers had regular employment, for it was quite customary for a gentleman to have a household seer, just as he would have a body-physician, if he could afford it.",
+    "A sixteenth century work on magic, the ‘‘Hollen- zwang’’ of Dr. Faustus, whose name has been immortal- ized for all ages by Goethe, gives very particular and detailed directions for the preparation and consecration of a crystal, whether glass or quartz. Faust asks his ‘‘Mephistophelis’’ whether such crystals can be made, and the spirit replies: ‘‘Yes, indeed, my Faust,’’ and directs Faust to go, on a Tuesday, to a glass-maker, and get the latter to form a glass. It was requisite that this",
+    "work should be done in the hour of Mars, that is, in the first, eighth, fifteenth or twenty-second hour of Tuesday. The crystal when completed must not be accepted as a gift, but a price must be paid for it. When the object had been secured, Mephistopheles directs that it be buried in a grave, where it must be left for the space of three weeks; it was then to be unearthed; if a woman pur- chased it, she must bury it in a woman’s grave. How- ever, these preliminaries only served to prepare the crystal for the final consecration, as the mere material mass was regarded as inert and possessing no virtue until certain spirits were summoned to dwell within it. Mephistopheles confesses that he alone would not be pow- erful enough, and he directs Faust to call upon the spirits Azeruel and Adadiel also. Faust is assured that the three spirits will show him in the crystal whatever he may wish to know. If anything has been stolen, the thief will ap- pear; if any one is suffering from disease, the character of his malady will be revealed, ete.?°",
+    "Another way of preparing a crystal glass or mirror is given in the same work. After the glass has been bought it is to be immersed in baptismal water in which a first-born male child has been baptized, and therein it is to remain for three weeks. The water is then to be poured out over a grave and the sixth chapter of the Revelation of St. John is to be read. Hereupon the fol- lowing conjuration should be pronounced:",
+    "O erystal, thou art a pure and tender virgin, thou standest at one of the gates of heaven, that nothing may be hidden from thee; thou standest under a cloud of heaven that nothing may be hidden from",
+    "The visions seen in erystal gazing were often sup- posed to be the work of evil spirits, seeking to seduce the souls of men by offering the promise of riches or by ac- cording them an unlawful glimpse into the future. Here, as in other magical operations, there was both white and black magic, recourse being had in some cases to good, and in others to evil spirits. As an illustration of the latter practice, a sixteenth century writer relates that in the city of Nuremberg, some time during the year 1530, a ‘‘demon’’ showed to a priest, in a crystal, the vision of a buried treasure. Believing in the truth of this vision, the priest went to the spot indicated, where he found an excavation in the form of a cavern, in the depths of which he could see a chest and a black dog lying alongside it. Hagerly the priest entered the cavern, hoping to possess himself of the treasure, but the top of the excavation eaved in and he was crushed to death.?2",
+    "The famous charlatan, Dr. Dee, who was for a time a prominent figure at the court of Emperor Rudolph II, was highly favored by Queen Elizabeth. The queen vis- ited him several times, and even appears to have con- sulted him on political matters. In his diary the doctor relates that the queen called at his house shortly after his wife’s death, which took place March 16, 1575. Of this visit he gives the following details:",
+    "The Queen’s Majestie, with her most honorable Privy Council, and other the Lords and Nobility, came purposely to have visited my library: but finding that my wife was within four hours before buried",
+    "out of the house, her Majestie refused to come in; but willed to fetch my glass so famous, and to show unto her some of the properties of it, which I did. Her Majestie being taken down from her horse by the Earle of Liecester, Master of the Horse, at the church wall of Mortlake, did see some of the properties of that glass, to her Majestie’s great contentment and delight.”",
+    "It was at Mortlake, on December 22, 1581, that Dr. Dee made his first essay with his crystal ball. The pro- ceedings were conducted with a certain religious cere- monial, and began with a pious invocation to the angel of the stone. This celestial being soon graciously deigned to manifest himself in the stone and—presumably by the voice of the scryer—answered the questions put by those present.",
+    "There can be little doubt that Dee used more than one crystal in the course of his experiments; that now in the British Museum is of cairngorm, or ‘‘smoky-quartz.’? This variety of quartz may have been chosen because of the Scotch superstitions regarding its virtues; for, as a rule, charlatans seek to avail themselves of already exist- ing superstitions in order to make their innovations more acceptable.",
+    "To give assurance to those who consulted such crys- tals that no diabolical agency was involved in the pro- duction of the phenomena, it was customary that a child should be the erystal-gazer. In Dr. Dee’s experiments, however, it was usually the notorious Kelley, his dame damnée, who undertook this task of interpreting the erystal visions. The description given by Dee of a little girl who frequently acted as the intermediary of the higher powers suggests one of the fanciful",
+    "Natural size. British Museum. This sphere of smoky-quartz came to the British Museum in 1700 with the Cottonian Library, donated at that time by the grandson of the original collector, Sir Robert Bruce Cotton (1571-1631).",
+    "Used by Aztecs and ancient Mexicans for various purposes. British Museum. Identical in shape and size with that known as ‘‘Dr. Dee’s Mirror,’’ now in the possession of Prince Alexis Soltykoff, of Russia. This was enclosed in a leather-covered case.",
+    "creations of our great novelist Hawthorne. Her mystic name was Madimi, and she is depicted as a pretty girl about eight years old, and with long flowing hair. To make her appearance more conspicuous, she was attired in a silk dress with chatoyant effects in red and green. At times, during the séances, this gay little figure could be seen flitting about the study, rendered even more whimsical and strange from its contrast with the piles of dusty old books, the curiosities, and the magical instru- ments collected there.?4",
+    "This visionary maiden Madimi, of whom Dee relates so much in his diary, was apparently a child of fancy, a creation of Kelley’s fertile brain. The diary is some- what obscure in this particular and easily misunder- stood; but there can be little doubt that where Madimi is represented as speaking, it is Kelley’s voice that trans- mits to Dee her revelations. One passage, often over- looked, gives evidence of this. Madimi has appeared and is addressing her remarks to Kelley and to Dee by turns; finally, Dee says, ‘‘I know you see me often and I see you only by faith and imagination.’’ To this Madimi quickly retorts, ‘‘pointing to EK. K.’’ (Kelley), ‘‘That sight is perfecter than his.’’ Evidently we must understand this to signify something that Kelley has told Dee, for the latter’s words show that he did not himself see the little fairy pointing to his friend. In many respects little Madimi may recall another ‘‘spiritual’’ maiden of whom we heard muck a few years ago, the sprightly little Indian spirit ‘‘Bright Eyes,’’ whose love for candy and jewelry was so very earthly.",
+    "Not only the quality of the crystal had to be con- sidered, but also its support and surroundings. Of this we have an interesting instance in the case of Dr. Dee’s crystal. In one of his manuscripts is recorded the fact that on the 10th of March, 1582, Kelley saw in the crystal a representation of the form and arrangement of the table on which it should be set; particular instructions on the matter were also directly imparted to the scryer by the angel Uriel. The table was to be square, measuring two cubits each way and two cubits in height; and it was to have four feet. The material was to be ‘‘swete wood’’ and upon it was to be placed the Sigillum Dei (Seal of God) impressed upon the purest, colorless wax, the disk being 114 inches thick and 9 inches in diameter. It bore a cross and the magic letters A. G. L. A., a transliteration into Roman characters of the initials of the Hebrew words signifying ‘‘Thou are great forever, O Lord.”’ Four other and smaller seals were to be provided, one to be placed under each leg of the table; each of these seals being impressd with geometrical figures within or upon which were the seven sacred names of God and the names of the seven angels ruling the seven planetary heavens; Zabothiel, Zedekiel, Madiniel, Semeliel [Semeshiel], Nogabiel, Corabiel [Cocabiel] and Levaniel, the angels, respectively, of Saturn, Jupiter, Mars, the Sun, Venus, Mercury and the Moon. There then appeared to the seryer the figure of the table with the crystal resting upon it. Of this it is said: 7°",
+    "thereof. Uppon the uppermost red silk did seme to be set the stone with the frame, right over and uppon the princi- pal seal, saving that the sayd sylk was betwene the one and the other.”’",
+    "It therefore seems that the prejudice in favor of a black or at least a dark background for the erystal did not appeal to Dr. Dee, and indeed the effect of color may perhaps better serve to neutralize troublesome reflections than does black.",
+    "The personages Kelley pretended to see in or around the magic erystal were described by him to Dr. Dee in the greatest detail, and this undoubtedly served to lend more reality and authority to their communications. As an illustration of Kelley’s inventiveness in this matter, we may take his description of ‘‘Nalvage,’’ a spirit that first appeared while the doctor and his famulus were in Cracow, April 10, 1584, and was subsequently a frequent visitor. The seer introduces his new ‘‘control’’ as follows: 76",
+    "He hath a Gown of white silk, with a Cape with three pendants with tassels on the end of them all green; it is fur, white, and seemeth to shine, with a wavering glittering. On his head is nothing, he hath no berd. His phisiognomy is like the pictures of King Edward the Sixth; his hair hangeth down a quarter of the length of the Cap, somewhat curling, yellow. He hath a rod or wand in his hand, almost as big as my little finger; it is of Gold, and divided into three equal parts, with a brighter Gold than the rest. _He standeth upon his round table of Christal, or rather Mother of Pearl.",
+    "When reading the words spoken by Kelley and so earefully preserved by Dr. Dee, we are reminded, aside from the archaic turn of speech, of the minute descrip- tions so glibly given by modern mediums. It is true that",
+    "Most of the early records of erystal-gazing show con- clusively enough that the images revealed in the stone were produced by the expectations, the hopes, or the fears of the gazer. In many cases, indeed, the vision is only prophetic because it determines the future conduct of the person who consults the stone. Fully persuaded that what has been seen must come to pass, he, or she, proceeds more or less consciously to make it happen, to fulfil the prediction. |",
+    "As an instance of this we may take from an old Ger- man book 27 the tale of a lovelorn maiden who seeks the aid of an enchantress to learn whether she will marry her lover, upon whom her parents look with disfavor. The mystic crystal is brought out wrapped in a yellow handkerchief, and is placed in a green bowl beneath which is spread a blue cloth, the reflections from these different colors being probably calculated to stimulate the optic nerve and favor the appearance cf some pic- ture upon the polished surface of the crystal. The young girl, in rapt attention, looks long and earnestly; at last she cries out that she sees her own form and that of her lover. Both-look pale and sad, and they appear to be about to set forth upon a long and perilous journey, for the lover wears riding-boots and carries a brace of pis- tols. The girl is so terrified at the sight that she faints away. The sequel of this vision is a runaway match, and we can easily understand that when the lover proposed",
+    "The great humorous poem ‘‘Hudibras,’’ wherein all the foibles of the seventeenth century are castigated, does not fail to make mention of Dee and Kelley and their crystal. Of the sorcerer whose aid Hudibras seeks we are told: 78",
+    "In his experiments in crystal-gazing, Dr. Dee evi- dently used more than one crystal, and did not indeed confine the operations of his scryer or scryers to bril- liant spheres. In the collection of Horace Walpole, at Strawberry Hill, was a polished slab of black stone, obsidian, from Mexico. This came into the possession of Mr. Smythe Piggott and later (1853) into that of Lord Londesborough; it is now in the collection of Prince Alexis Soltykoff. Horace Walpole wrote a label for the stone, in which he says that it had long been owned by the Mordaunts, Earls of Peters- borough, and was described in the catalogue of their collection as the black stone into which Dr. Dee used to call his spirits. Later it was owned by John Campbell, Duke of Argyle, who gave it to Horace Wal-",
+    "pole.2® Undoubtedly any polished surface, whether flat or convex, might serve the purpose of the scryer almost equally well; the possible advantage of a convex or a spherical form consists in the multiplying of the reflec- tions and light points so that the sight is induced to wander from point to point, and that forms and even motions are suggested by the superposition and combi- nation of the various reflections. Often, too, a light point visible to one eye will not be so to the other, this some- times provoking the phenomenon of binocular vision, which asserts itself for a moment or two, when the diverse images coalesce again, though imperfectly, giv- ing an impression of movement. For one gifted with imagination and the natural quality of visualizing brain- pictures, these shifting light-points and the more or less definite and repeated reflections of surrounding objects offer abundant material out of which to construct life- like pictures apparently seen in the crystal. That the erystal, may or may not have a peculiar psychic value, brain-pictures thus thrown out, so to speak, upon the other than their value as mere phenomena, depends upon the significance we are inclined to attribute to the pro- cesses of the subconscious intelligence; of its existence, indeed, there can be no doubt, and many of our best thinkers incline to the belief that through it the narrow limits of our personality are occasionally transcended.",
+    "he keeps in his closet at Brampton Bryan in Herefordshire amongst his Cimelia, which I saw there. It came first from Norfolk; a min- ister had it there, and a call was to be made with it. Afterwards a miller had it and he did work great cures with it (if curable), and in the Beryl they did see, either the receipt in writing, or else the herb. To this minister, the spirits or angels would appear openly, and because the miller (who was his familiar friend) one day happened to see them, he gave him the aforesaid Beryl and Call; by these angels the minister was forewarned of his death. This account I had from Mr. Ashmole. Afterwards this Beryl came into somebody’s hand in London who did tell strange things by it; insomuch that at last he was questioned for it, and it was taken away by authority (it was about 1645). This Beryl is a perfect sphere, the diameter of it I guess to be something more than an inch; it is set in a ring, or circle, of silver, resembling the meredian of a globe; the stem of it is about ten inches high, all gilt. At the four quarters of it are the names of four angels, viz: Uriel, Raphael, Michael, Gabriel. On the top is a cross patee.”",
+    "In his ‘‘Sudducismus Triumphatus,’’ Joseph Glanvil writes that ‘‘one Compton of Summersetshire, who prac- tised Physick, and pretends to strange Matters,’’? demon- strated his power to evoke the image of a distant person on the surface of a mirror. Glanvil relates that Comp- ton offered to show to a Mr. Hill any one the latter wished to see. Hill ‘‘had no great confidence in his talk,’’ but replied that he desired to see his wife who was many miles distant. ‘‘Upon this, Compton took up a Looking-glass that was in the Room, and setting it down again, bid my Friend look in it, which he did, and then, as he most solemnly and seriously professeth, he saw the ex- act Image of his Wife, in that Habit which she then wore and working at her Needle in such a part of the Room (then represented also) in which anc. about which time she really was, as he found upon enquiry when he came",
+    "home. The Gentleman himself averred this to me, and he is a very sober, intelligent, and credible Person. Compton had no knowledge of him before, and was an utter stranger to the Person of his Wife. He was by all accounts a very odd Person.’? #1",
+    "A contemporary record recites that when a certain Sir “Marmaduke Langdale (of the seventeenth century) was in Italy, he went to a sorcerer and was shown in a glass his own figure kneeling before a crucifix. Though a Protestant at this time, he shortly after became a Cath- olic.8? If we exclude all idea of trickery, it is likely enough that the idea of becoming a Catholic was already present to the scryer’s mind and called up this picture before him.",
+    "The celebrated Cagliostro, a Sicilian whose real name was Giuseppe Balsamo, among his other arts to excite curiosity and play upon the superstition of his contem- poraries, had recourse to a species of crystal-gazing. In the only authentic biography of this extraordinary im- postor occurs the following passage, which we give in Carlyle’s version: *3",
+    "Cagliostro brought a little Boy into the Lodge, son of a nobleman there. He placed him on his knees before a table, whereon stood a Bottle of pure water, and behind this some lighted candles: he made an exorcism round the boy, put his hand on his head and both, in this attitude, addressed their prayers to God for the happy accomplishment of the work. Having bid the child look into the Bottle, directly the child eried that he saw a garden. Knowing hereby that Heaven as- sisted him, Cagliostro took courage, and bade the child ask of God the . grace to see the angel Michael. At first the child said: “TI see some-",
+    "thing white; I know not what it is.” Then he began jumping, stamp- ing like a possessed creature, and cried: “There now! I see a child like myself, that seems to have something angelical.” All the as- sembly, and Cagliostro himself, remained speechless with emotion.",
+    "The child being anew exorcised with the hand of the Venerable on his head, and the customary prayer addressed to Heaven, he looked into the Bottle, and said he saw his sister at that moment coming down stairs, and embracing one of her brothers. That appeared impossible, the brother in question being then hundreds of miles off; however, Cagliostro felt not disconeerted; said they might send to the country- house where the sister was, and see.",
+    "Taken all in all this experiment does not seem very satisfactory; but we have in it all the essential phases of crystal-gazing. Kxcitement and expectation produced their usual effect upon an impressionable child, and sug- gestion did the rest; the final vision may have been cor- roborated in some way, or, if not, it would be explained so as to convince those present at the experiment that the child had really seen a representation of some actual happening.",
+    "During the Terror, among those upon whom fell the suspicions of the Jacobins was General Marliére. He knew that a trial and quite probably a condemnation awaited him. A few days before the date fixed for his appearance before his judges, he met a colonel in the French army, who had served in the American Revolu- tionary War, and who was a firm believer in the truth of the visions seen in erystal balls. In the course of the conversation this subject was alluded to, and the gen- eral immediately declared that he was eager to put the matter to the test, and learn, if possible, what fate was in store for him. The colonel was at first very unwilling to undertake the experiment, probably he thought that General Marliére’s doom was sealed, and, believing as he did in the revelations of the crystal, he dreaded the re-",
+    "sults; however, the general insisted and the experiment took place. As usual, the medium was an ‘‘innocent child.’’ In the crystal appeared a man wearing a pri- vate’s uniform of the National Guard struggling with one wearing a general’s uniform. The child was much excited and terrified by the sight, exclaiming that the general’s assailant had thrown him down and was beheading him. That the vision portended the general’s execution was clear enough, but the peculiar dress of the executioner was a mystery to those present at the test, for the official garb bore no resemblance whatever to a soldier’s uniform. The prediction was, however, fulfilled to the letter. General Marliére was tried, found guilty, and guillotined. This in itself did not mean much in view of the innumerable executions in the time of the Terror; but, on the day of this execution, Samson, the official executioner, desiring to gratify his personal vanity and to attract the gaze of the spectators, dressed himself in the uniform of a national guardsman.*+ That this alto- gether unusual circumstance, which could scarcely have been known to any of those who assisted at the erystal- gazing, should have been revealed in the crystal, is cer- tainly very mysterious. If we had positive assurance that the events narrated happened exactly in the way they are said to have happened, this would be one of the few instances in which the vision seen in the erystal re- produced something entirely unknown to the scryer. Many extraordinary visions are said to have been seen in crystal balls by a French scryer whose grand- mother had clairvoyant powers and was sometimes con- sulted by Napoleon I. It is claimed that the grandson",
+    "has enjoyed the patronage of many royal personages, and had predicted, in a more or less definite way, the assassination of King Humbert of Italy, and the at- tempted assassination of Alfonso XIII and of his young bride, when they were returning to the palace after the conclusion of the marriage ceremony. This French scryer has stated that he is powerfully affected when he is consulted by any one destined to die a violent death; on such occasions he feels, in his own organism, a modi- fied form of the particular kind of suffering they are fated to experience. This exceptional sensitiveness to occult influences was also shown when the crystal- gazer went to the Boulaq Museum in Cairo, and gazed upon the rows of mummies exhibited there; he immedi- ately felt, as intensely as though it were a personal ex- perience, the mingled sorrow and rage of the disembodied spirits at seeing their embalmed bodies exposed to the view of the idle crowd, when they should have been per- mitted to rest in their tombs until the hour of the Resur- rection.",
+    "In England all those who attempted, with a greater or less degree of success, to reveal the hidden secrets of the future, were expressly designated as rogues and vaga- bonds according to the terms of an act passed June 21, 1824.35 Such offenders, on being duly convicted before the Justice of the Peace, could be committed to the House of Correction, ‘‘there to be kept at hard Labour for any time not exceeding Three Calendar Months.’’ This class of undesirable citizens comprised all using ‘‘any subtle Craft, Means, or Device, by Palmistry or otherwise’’ for the deception of his Majesty’s subjects.",
+    "liance upon his zaztun, or ‘‘clear stone.’’ This may be a quartz crystal, or else some other translucent stone; but in order to serve for divining purposes it must be sanctified according to special rites, gum-copal being burned before it, and certain magic formulas recited, which have been transmitted from generation to genera- tion in an archaic dialect. When thus rendered fit for use, the diviner claims to be able to see in the depths of the erystal the whereabouts of lost articles, and also what absent persons are doing at the time he makes his obser- vation. Not only this, but the future is also laid bare before his eyes. As these stones are supposed to possess such miraculous powers we need not be surprised that one of them should be found in almost every village in Yucatan.*°",
+    "The Apache medicine-men are also fully persuaded that crystals possess the virtue of inducing visions, and they have used them for the purpose of finding lost prop- erty. To aid in the recovery of stolen ponies is one of the most important tasks of the Apache medicine-man, and to this end his crystal offers great assistance. Capt. John G. Burke relates that he made a great friend of a medicine-man named Na-a-che by giving him a large erystal of denticulated spar, much superior to the crystal he had been in the habit of using for his visions. That this was thoroughly satisfactory to the medicine-man at least, is shown by his statement to Capt. Burke that by looking into his crystal he could see everything he wanted to see. Of the way this came about he did not attempt any explanation.**",
+    "*° Brinton, “ Essays of an Americanist,” Philadelphia, 1890, p. 165. * Burke, “ The Medicine-men of the Apache,” Ninth Annual Report of the Bureau of Ethnology, 1887-1888, Washington, 1892, p. 461.",
+    "The magic power supposed to dwell within rock-crys- tal has been recognized in a peculiar way by some natives of New South Wales. They have the barbarous custom of knocking out one or more of the front teeth of their boys at the obligatory initiation ceremonies, and on one occasion Dr. Howitt was entrusted with the care of a number of these teeth, which are believed to preserve a certain undefined connection with the health and fortunes of their former possessors, and on this account great fear was expressed lest the custodian should place the precious teeth in the same bag with some rock-crystals, for the natives thought that the magic power of these erystals would injuriously affect the teeth, and through them the boys, from whose jaws they had been broken.**",
+    "Australians and tribes of New Guinea use crystals for rain-making, although they cannot bore them, and this stone is a powerful amulet in Uganda when fastened into leather. Sorcerers in Africa carry a small bag of pebbles as an important part of their equipment. So it was in Greece. The crystal was used to light the sacrificial fire and was so employed in the church down to the fifteenth century. Egyp- tians used it largely under the XII Dynasty, piercing it along its axis after rubbing off the pyramid points of the erystal, sometimes leaving the natural six sides, or else grinding it into a complete cylinder. From this bead came the artificial cylindrical glass beads made later by the Egyptians.",
+    "Professor Ridgeley believes that the primary use of all these objects was because of their supposed magic powers. He holds the same view in regard to cylinders and rings, considering that the use of these as signets",
+    "only became habitual at a later time, and he finds a proof of this theory in the fact that unengraved Babylonian cylinders and Mycenean gems have been discovered. This is, of course, perfectly true, but does not in the least prove that such ornaments may not have been orig- inally worn simply for purposes of adornment; unques- tionably, the custom of engraving them so as to render them signets must have arisen at a much later date.",
+    "Flacourt stated that the natives of Madagascar used erystals to aid them in divining. These stones, which were said to have fallen from heaven, were attached to the corners of the boards whereon the sorcerers produced their geomantic figures.?® Here, however, the crystals were not directly used, but were only supposed to attract influences propitious to the diviner’s efforts.",
+    "In the notes to the 1888 edition of the Chinese crim- inal code, some curious details are given of a practice ealled Yuan-kuang-fuchou (the magic of the round glit- tering). While this designation certainly seems to indi- eate the use of a polished sphere of some description, the details given refer to a different practice. We are told that when anything was stolen appeal was sometimes made to a certain Sun-Yuan Sheng, who would then hang up a piece of white paper and utter a spell, while a boy gazed upon the paper until he saw the figure of the thief. This magician was punished for carrying on an unlawful practice.*",
+    "The Mexicans made images of their god Tezeatlipoca of obsidian, and the name of this divinity is interpreted as signifying ‘‘shining mirror.’’ This is supposed to refer to, or to have been expressed by, the brilliant effect",
+    "of the polished surface of the obsidian. Mirrors of this material are said to have been used for divination in an- cient Mexico and the neighboring countries.*! One of these Mexican mirrors seems to have been employed by Dr. Dee in his experiments in crystal vision.",
+    "A remarkable series of tests in the art of scrying, given in the presence of Lane, the great Arabic scholar, and translator of the Arabian Nights, illustrates the falli- bility of most of the evidence adduced in such matters, for, at first, Lane was strongly impressed by the exhibi- tion. Although no crystal was used, the process of sery- ing was precisely the same as in crystal-gazing,—that is to say, the vision called for by the visitors was seen by the seryer on a polished surface. The master of cere- monies was an Arab magician, though, of course, he did not do the serying himself, but employed a boy for this purpose, for it is generally thought that half-grown boys or girls are more receptive. Although Lane himself was perfectly familiar with Arabic, an interpreter was always present in the interest of the other Europeans who as- sisted at the experiments.",
+    "After invoking many mysterious geniuses and burn- ing incense and scraps of paper inscribed with magic for- mulas, the magician drew a magic square on a large sheet of paper and dropped a quantity of ink in the centre. On this the boy was directed to fix his gaze, and after he had shown that he was thoroughly under the magician’s in- fluence, by describing the images suggested to him, the visitors were permitted to ask him questions. The an- swers were successful in most cases; a single instance will suffice. When the boy was asked to describe Admiral",
+    "Nelson, he replied: ‘‘I see a man clothed in a dark garb; there is something strange about him, he has but one arm.’’ Then, quickly correcting himself, he added: ‘‘ No, I was mistaken, he has one of his arms across his breast.’’ This correction impressed those present more than the first statement, for it was well known that Nelson usually had the empty sleeve of his coat pinned to his breast. It also seemed as though there could be no collusion, for both the magician and the boy were ignorant of every- thing English and evidently knew nothing of Nelson. Unfortunately, however, for those who would fain believe that there is something supernatural in scrying, it was later discovered that the interpreter was a renegade Scotchman, masquerading as an Arab, and there can be little doubt that he managed to suggest the boy’s answer. The fact that no satisfactory results were obtained when this interpreter was absent, makes this explanation almost certainly the correct one.",
+    "The Armenians sometimes practised divination by watching the images that appeared, or were supposed to appear, on the smooth surface of the waters of a well, and the person who saw such images was called hor- naiogh, ‘‘he who looks into a well.’? An Arab woman living in the neighborhood of Constantinople enjoyed a great reputation for her power in this respect, and was frequently consulted by Armenians and by other dwellers in the Turkish capital. Whoever wished to question this woman regarding the cause of an illness, the where- abouts of stolen objects, etc., usually took along a child of the household, and the actual serying was generally performed by this child, who would describe or identify the forms it saw on the water’s surface. If, however, for one reason or another, no child was brought, the witch herself did the scrying. In regard to illness, a distinction",
+    "was made between ‘‘natural’’ maladies and those di- rectly caused by some spirit. Should the spirit (pert) supposed to cause the dire malady known as drsévé, a kind of consumption, be seen to glide over the surface of the water, the sorceress would find it necessary to in- voke the whole race of peris to come to the aid of the patient, who was expected to pay more than the usual fee for this very special service.‘2",
+    "The peris of Armenian legend were sometimes good and sometimes evil spirits; in the former case these were supposed to perform the functions of guardian angels, and every one was said to have a peri especially dele-. gated to watch over him. This found expression in the fact that when one Armenian felt at first sight an in- stinctive sympathy for another, he would say, ‘‘My peri loves you dearly (peris chad siretz kezt).’’ In the con- trary case, the feeling of antipathy was also attributed to the attitude assumed by the guardian spirit toward the new acquaintance.*? These spirits were therefore supposed to encourage or discourage greater intimacy with newcomers in accord with the true interests of those over whom they watched.",
+    "The power to see images in a crystal does not appear to depend to any great extent upon a morbid nervous condition of the seer, for many of the most successful experimenters have been of good and even of exception- ally vigorous physique. Indeed, illness seems to diminish or destroy this power, at least in the case of those who are habitually healthy.44 This does not imply that some highly nervous and even hysterical individuals have not",
+    "been favored with ‘‘crystal visions.’’ Very probably the rule here is the same as in ordinary hypnotism. Those persons who have a strong will and sound nerves are able to hypnotize themselves, while those whose nerves are disordered are subject to the hypnotic influence of others.",
+    "A well-known lady in New York City, in conversation with the writer, a few years ago, on the subject of crystal balls, was advised by him to try a ball herself and see what results she obtained. At the end of two years she found that by concentration she had been able to better her understanding of herself; and this effect is not only obtainable now by means of a crystal ball, but by fixing her gaze upon any bright object. This visual fixation has centred her whole being in such a way that her health has notably improved.",
+    "What are the laws that govern the production of these phenomena? That the ‘‘visions’’ are real enough has been proven time and again, but it seems almost certain that they do not offer anything but the ideas or impres- sions existing in the minds or optic nerves of the gazers. One of the most painstaking students of the subject, Miss Goodrich-F reer, gives many instances in proof of this, which show how easy it would be for a less critical ob- server to suppose that the crystal revealed something unknown to the gazer. On one occasion this lady was at a loss to remember the correct address of a friend whose letter, received a few days before, she had torn up. She resorted to her crystal, and after a few minutes saw in it, in gray letters on a white ground, the address she had forgotten. She mailed her answer to this address, and the reply came duly to hand, with the address stamped in gray upon the white paper of the note, which was",
+    "identical with that she had first received.t® The visual impression had been stirred up and ‘‘externalized’’ itself when she gazed upon the crystal. We believe that this explains the larger number of such visions, and that the rest are only inexplicable because the scryer has for- gotten the source of the impression that is projected on the surface of the crystal.",
+    "It is true that both Miss Goodrich-Freer and many other crystal-gazers note instances in which the vision appears to represent something the scryer does not and cannot know. However, even in these cases, when care- fully examined, there is little difficulty in finding an ex- planation. Coincidence accounts for much, and imagina- tion for more, since it is not the vision itself, but the memory of the vision, that is later brought into compari- son with actual facts. We all know how exceedingly hard it is to repeat, after a short lapse of time, all the circum- stances and details of any occurrence. There is a natural growth and modification of mental impressions, due to association of ideas, and where there exists the least wish to make the prophecy accord with the event, or the vision with the coincident happening, this growth and modi- fication will be in the direction of agreement. This takes place quite unconsciously, and the informant will be fully persuaded that all the circumstances are related exactly as they occurred.",
+    "The attempt to identify either persons or scenes ob- served by the scryer with real persons and real scenes unknown to him, must always be open to the objection that the one who makes the identification has no photo- graphic impression upon which to base his judgment, but merely the words of the scryer. When we remember",
+    "what mistakes have been made in identifying individuals from photographs, we can easily appreciate the great chances of error entailed by the use of a verbal descrip- tion of a visionary experience, even when the person giving the description is both willing and able to make it as exact and adequate as possible.",
+    "A very impartial witness, Andrew Lang, states that, in the course of a series of experiments he made in crys- tal-gazing, he saw nothing himself, but found that a sur- prisingly large proportion of those who tried were suc- cessful in seeing pictures of some sort on the polished surface. Almost invariably, when the gazer fixed his eyes upon the sphere, it appeared to grow milky-hued and then became black; upon this dark background the pic- tures showed themselves. One of the scryers, a lady, said that asa child she had seen pictures in ink that she had spilled for the purpose. This method has been much favored by Orientals. While Lang does not quite venture to assert that all the ‘‘visions’’ reported to him were genuine ones, he inclines to the belief that this was the case with many of them. Experience has shown, how- ever, that not all of those who see pictures in, or on, a glass or crystal sphere, can also see them in ink.47 Never- theless, in view of the fact that the crystal sphere is said to appear black to the eye before the pictures are seen, it would seem that some naturally black surface would be particularly adapted for the purpose.",
+    "this matter there is considerable difference of opinion, for, while some experimenters assert that the interposi- tion of a magnifying-glass enlarges the image, others have not remarked any difference in its size under these conditions. Indeed, one of the most critical witnesses, Mrs. A. W. Verrall, declares that her vision entirely disappeared when she held a magnifying-glass before her eyes. On the other hand, we have the case of a subject who had been told, while in the hypnotic state, that he would see a play-bill on the erystal. When he was awak- ened and the crystal ball was placed before him, he said that he could see only detached letters, but when he looked through a magnifying-glass he saw all the letters distinctly and read the name of the play, in perfect accord with the suggestion.*®",
+    "This image may have been reflected from some part of the room where the gazer had not noticed it, and may have been either before or behind the operator. The magnifying-glass would naturally make the small, con- densed letters legible, as a play-bill would be many times larger than a crystal ball, and its minute image natu- rally too small to read, being reduced by the circular surface.",
+    "Usually, however, the image is not on the surface of the crystal, but in the beholder’s eye; therefore when this image appears more clearly under magnification, the result is due to the expectation of the gazer based upon his experience of an invariable rule. This acts as a stimulus upon the visual function, which must be in an exceedingly sensitive state to produce visions at all. When, however, no result or a negative result fol- lows the use of the glass, then we can safely assume that",
+    "the gazer was naturally of a critical turn of mind, and was disposed to distrust sensual impressions; hence the glass became a disturbing influence, interfering with or even completely obliterating the eye-picture.",
+    "Many attempts have been made to establish distinc- tions between the different materials used for crystals, proceeding on the theory that subtle emanations from them affected the gazer and played an important part in producing the desired vision. That the beryl produced a greater number of these visions than any other mineral was the old belief which is still upheld in some quarters to-day; one scryer, indeed, asserts that his clearest and most satisfactory visions were seen in a cube of blue beryl, the beautiful color appearing to dispose the soul to a harmonious unfolding of its latent aptitudes.*®",
+    "Among the instructions given to a would-be crystal gazer, the question of a proper and wholesome diet is not overlooked, as anything which tends to disturb the serenity of the organism will also interfere with the due exercise of the special clairvoyant faculty that expresses itself in crystal visions. A curious special recommen- dation made by one of the exponents of the art is that good results can be had by drinking an infusion of mug- wort (Artemisia vulgaris), or of chicory (Cichorium intybus), because of their tonic and antibilious qualities. Moreover, we are told that these herbs are under the influence of the zodiacal sign Libra, the sign controlling the virtues of the beryl.°° Above all the portion of the lunar month when the moon is on the increase is said to be far the best season for scrying, as the old astrolo- gers recognized an affinity between the moon and rock- erystal.",
+    "The claim is made that the adept at crystal-gazing can determine by the apparent difference in proximity of the visions whether they refer to the present or to a more or less remote past or future, that is to say, are nearer or farther removed in time from the period when the vision appears. The distinction between past and future is admitted to offer greater difficulty and a decision as to this point must depend upon a kind of intuitive and unde- fined impression on the part of the seryer.",
+    "Those who have made a sympathetic study of erystal- gazing recognize that the ‘‘visions’’ seen in or on the crystal differ according to the mental and psychic tem- perament of the seryer. Two broad distinctions are sometimes established, the one class comprising those whose mental attitude is a ‘‘positive’’ one while the sec- ond class includes the ‘‘passive’’ subjects. In the former case the crystal visions are more apt to be symbols denot- ing some past or future event than a clear picture of the event itself, the mentality of the ‘‘positive’’ subject be- ing, perhaps, too strong merely to mirror the image cast upon it. Instead of so doing it transforms the impression received from this image into some symbolic form. This process is not, however, consciously done, but the scryer of this type is supposed nevertheless to have an instinc- tive appreciation of the fact that what he sees is purely and simply a symbol, and he proceeds to interpret this in accord with certain generally received rules, or in accord with his own personal experience.",
+    "The passive subject on the other hand is more apt to see a clear and definite picture of the persons or events revealed to him.. Sometimes that picture is distinctly perceptible on or about the surface of the crystal, while at other times the visual perception will be rather indefi- nite and clouded, although accompanied by a strong men-",
+    "The proper use of the crystal is the prime factor in the art of scrying and great attention is paid to this point by all those who treat seriously of the subject. Among other things they recognize that freedom from pain, or even from a sense of physical discomfort, is quite essen- tial, for the mind must assume a purely passive and receptive attitude, and not be forced to take cognizance of bodily discomfort. Moreover the nervous system must be in repose, for which reason a reasonable time should be allowed to lapse after taking a meal, before trying for crystal visions.®?",
+    "An author on ‘‘psychomancy’’ affirms that fixing the gaze upon a crystal ball is one of the very best means of bringing out the latent faculty of astral vision, and he finds a reason for this in the atomic structure, the molecu- lar arrangement of the material. He does not, however, impart any definite information as to what special struc- tural characteristics render glass or rock-crystal particu- larly efficient in this direction.** The help that may be derived from crystal-gazing by those who are striving to pierce the veil that separates the ‘‘real life’? about us from that spiritual life which is so much more real for those who believe in it, is also admitted by many.**",
+    "affirming his conviction, as a result of scientific investiga- tion of occult phenomena, ‘‘that memory and affection are not limited to that association with matter by which alone they can manifest themselves here and now, and that personality persists beyond bodily death.’’",
+    "One of the latest types of glass balls for crystal-gaz- ing has a small, circular, flat surface on the sphere. This may possibly be of service in furnishing a better field for the expected vision, and may also lessen the troublesome and baffling reflections which interfere so seriously with the projection of the mental picture.",
+    ".A method that has been recommended to crystal- gazers is to place the crystal on a table, protect it from the reflections of surrounding objects by means of a velvet screen, and set seven candlesticks with wax tapers in front of the screen. The tapers are then to be lighted, the room being otherwise in perfect darkness, and the would-be scryer is to seat himself comfortably before the table, laying his hands flat upon it, and to gaze fixedly upon the crystal for half an hour or longer. The light from the tapers will certainly ensure a multitude of light points in the crystal. That the molecules forming the sphere may always remain en rapport with the gazer, he is advised to put it beneath his pillow when retiring to rest.°°",
+    "The crystal gazer is strongly advised by some to limit the duration of his experiment at first to five minutes, during which he is to avoid thinking of anything in par- ticular while keeping his eyes fixed intently upon the ball, but without any undue straining of attention. Should the eyes ‘‘water’’ after the test is concluded, this is to be regarded as an indication that the gazer has persisted",
+    "too long; for brain-fag is to be strictly avoided, as such a state depresses instead of arousing the hidden and higher psychic faculties. Even after considerable prac- tice, the scrying should not be carried on for more than a few minutes ata time. The faculty of visualization plays a most important part in crystal-gazing. The image thought to be seen on, before, or behind the surface of the crystal, is in its essence a fancied projection of a purely mental image conceived in the brain; such an image as is present to the consciousness of many when they call to mind a scene of some vivid past experience, or the face of someone they have known, and see it as an element of consciousness. When it is possible to exter- nalize this interior vision, then we have at least a begin- ning of successful scrying. That it may go far beyond this, that it may reveal to the gazer events happening in some distant place, or even events yet to transpire in the dim future, is often claimed. An acceptance of this claim must depend largely upon our attitude toward premonitions and prophecies in general. Here, as in the simple picture evolved by an image of the past, the crys- tal is merely the background upon which are cast the mind-pictures or soul-pictures arising within our being.**",
+    "A use of crystal gazing to aid literary composition has been reported in the case of an English authoress of note, who, if she lost the thread of the story she was writing, would resort to her crystal, and would see mir- rored therein the scenes and personages of her tale, the latter carrying on the plot in dramatic action. Aided by this suggestion she was able to resume her composi- tion and successfully terminate her story.",
+    "In Japan the smaller rock-crystals were believed to be the congealed breath of the White Dragon, while the larger and more brilliant ones were said to be the saliva of the Violet Dragon. As the dragon was emblematic of the highest powers of creation, this indicates the es- teem in which the substance was held by the Japanese, who probably derived their appreciation of it from the Chinese. The name suisho, used both in China and Japan to designate rock-crystal, reflects the idea current in ancient times, and repeated even by seventeenth century writers, that rock-ecrystal was ice which had been so long congealed that it could not be liquefied.",
+    "For the Japanese, rock-crystal is the ‘‘ perfect jewel,’’ tama; it is at once a symbol of purity and of the infinity of space, and also of patience and perseverance. This latter significance probably originating from an obser- vation of the patience and skill shown by the accurate and painstaking Japanese cutters and polishers of rock- erystal.",
+    "A crystal ball, one of the largest perfect spheres ever produced, has been made from rock-crystal of Madagas- ear. Itisavery perfect sphere and of faultless material. The diameter is 614 inches and the ball was held at about $20,000.",
+    "Many fine crystal balls are made in Japan, the mate- rials being found in large, clear masses in the mountains on the islands of Nippon and Fusiyama and also in the granitic rocks of Central Japan. It is stated, however, that much of the Japanese material really comes from China. The Japanese methods of working rock-crystals are extremely simple and depend more upon the skill and patience of the workers than upon the tools at their com- mand. Our illustration, taken from a sketch made by an Oriental traveller, shows the process of manufacturing",
+    "erystal balls. The rough mass of crystal is gradually rounded by careful chipping with a small steel hammer. With the aid of this tool alone a perfect sphere is formed. The Japanese workmen thoroughly understand the frac- ture of the mineral, and know just when to apply chipping and when hammering. The crystal, having been reduced to a spherical form, is handed to a grinder, whose tools consist of cylindrical pieces of cast iron, about a foot in length, and full of perforations. These cylinders are of different curvatures, according to the size of the erystal to be ground. Powdered emery and garnet are used for the first polishing. Plenty of water is supplied during the process, and the balls are kept constantly turning, in order to secure a true spherical surface. Sometimes they are fixed on the end of a hollow tube and kept dexterously turning in the hand until smooth. The final polishing is effected with crocus or rouge (finely divided hematite), giving a splendid lustrous surface. As hand labor is exclusively used, the manufacture of crystal objects according to the Japanese methods is ex- tremely laborious and slow.**",
+    "In Germany and France and in the United States, the fabrication of rock-crystal is accomplished almost en- tirely by machinery. The crystal to be shaped into a ball is placed against a semicircular groove worn in huge grindstones. The accompanying illustration shows the method practised in Oberstein, Germany. The workman has his feet firmly braced against a support, and, resting upon his chest, presses the crystal against the revolving grindstone. It is unnecessary to add that the practice is",
+    "extremely unwholesome and develops early consumption among the workers. A constant stream of water is kept flowing over the stone so that the crystal shall always be moist, as the friction would otherwise hurt it, and the subsequent addition of water would be liable to cause a fracture. The final polishing is done on a wooden wheel with tripoli, or by means of a leather buffer with tripoli or rouge.°®",
+    "There are three fine crystal balls in the collection of the American Museum of Natural History. One, appar- ently perfect, measures 51% inches in diameter and was cut from a crystal found in Mokolumne, Calaveras Co., California; the second is 614 inches in diameter‘ and is from the same locality, but not entirely perfect. . These were shown in the department of the Tiffany Collection prepared by the author, and were exhibited at the Paris Exposition of 1900 as part of the J. Pierpont Morgan gift to the American Museum of Natural History. An- other fine crystal ball is now to be seen in the American Museum of Natural History, New York; this was donated to the institution. It measures 411/,, inches in diameter, is of wonderful purity, and the cutting has been executed with such a high degree of precision that an ideally per- fect sphere has been produced.”",
+    "Crystal balls have been found occasionally in tombs or in funerary urns, and their presence in sepulchres may perhaps be considered to have been due to a belief that they possessed certain magic properties. In the tomb of Childeric (ca. 436-481 a.p.), the father of Clovis, a rock-crystal sphere was found which was for a time preserved in the Bibliothéque Royale, Paris, and later in + 8 LUNE eet AER ie ER INTs a oc BE SPER IE",
+    "tne Louvre Museum; it measures 1% inches in diameter.®° The chance discovery of a number of crystal balls is re- lated by Montfaucon. Towards the end of the sixteenth century, the canons of San Giovanni in Laterano, Rome, wished to have some repairs made to a house they owned, just outside of the city walls, and sent thither some work- men with the order to break up or remove two large, superimposed stones, which were much in the way. The workmen proceeded to break the upper stone, but were much astonished to find embedded within it an alabaster funerary urn with its cover. This had been hidden be- tween the two stones, a space for its reception having been hollowed out in the upper and lower stones, so that it fitted within them. Opening the urn there were found inside, mingled with the ashes, twenty crystal balls, a gold ring with a stone setting, a needle, an ivory comb, and some bits of gold wire. The presence of the needle was taken to indicate conclusively that the ashes were those of a woman.*?",
+    "The discovery of the tomb of Childeric was made, May 27, 1653, by a deaf-mute mason, named Adrien Quinquin, while he was excavating for the restoration of one of the dependencies of the church of Saint Brice de Tournai. One of the most interesting objects found in the tomb was the golden signet of Childeric bearing his head and the legend Childerici regis. The earliest description is given in a work by Chiflet entitled ‘‘ Anas- tasis Childerici,’? ‘‘Resurrection of Childeric,’’ pub- lished by Plantin of Antwerp in 1655. The various orna- ments were sent by the Spanish Governor-General of the Netherlands to the Austrian treasury in Vienna, and were not long afterward, in 1664, graciously donated by",
+    "In Paris the various ornaments were preserved in the Bibliothéque Royale until the night of November 5-6, 1831, when many of them, with other valuables, were stolen by an ex-convict. Closely pursued by the police, the thief threw his booty into the Seine; much of the plun- der was subsequently recovered, but the signet of Chil- deric was lost for ever. The crystal ball had not seemed of sufficient value to tempt the thief and was left undis- turbed; it was later, in 1852, deposited in the Louvre Museum.®?",
+    "In a personal communication to Abbe Cochet made in 1858 by Mr. Thomas Wright, the latter stated that he had seen at Downing in Flintshire with Lord Fielding five crystal balls, bearing labels declaring that they came from the sepulchres of the kings of France violated at the time of the French Revolution. They had been pur- chased about 1810 at the sale of the Duchess of Portland’s effects.®",
+    "Among the crystal balls found in French sepulchres may be noted one discovered by Rigollot in 1853 at Arras, and preserved in the Museum of that city; this still has the original gold mounting serving to attach it to the necklace from which it had been worn suspended. An- other found at or near Levas was in the possession of M. Dancoise, a notary of Hénin-Liétard, dept. Pas de Calais.°¢ In the Bibliothéque at Dieppe there is a crystal ball, 32 mm. in diameter, found at Douvrend, dept. Seine- Inferieure, in 1838, in a Merovingian tomb; this is pierced",
+    "through.®* The department of Moselle supplied three discoveries of this kind, crystal balls having been found in a tomb at St. Preux-la-Montagne, Sablon and Moine- ville near Briey, the latter measuring 36 mm. in diameter.*®",
+    "The Saxon tombs of England have also furnished a contingent of erystal balls, for example at Chatham, at Chassel Down on the Isle of Wight, where four were dis- covered, at Breach Down, Barham, near Canterbury, at Fairford, Gloucestershire, and also in Kent.*?",
+    "We should also note a erystal ball found in a funer- ary urn at Hinsbury Hill, Northamptonshire; ®* this as well as the one found at Fairford was facetted.°° From St. Nicholas, Worcestershire, is reported a crystal ball 1% inches in diameter.”°",
+    "In his ‘‘Hydrotaphia, or Urn Burial,’’ published in 1658, Sir Thomas Browne (1605-1682), author of the ‘‘Religio Medici,’’ relates that there was at that time in the possession of Cardinal Farnese, an urn in which, besides a number of antique engraved gems, an ape of agate, and an elephant of amber, there had been found a crystal ball and six ‘‘nuts’’ of crystal.™",
+    "* See Wylie’s Fairford Graves,” pl. iv, fig. 1, pl. v, fig 2; Akerman’s “Remains of Pagan Saxondom,” Roach Smith’s “ Collectanea antiqua ” ; Douglas’ “Nenia Brittanica,” and Hillier’s “Antiquities of the Isle of Wight.”",
+    "One of the largest and most perfect crystal balls is in the Dresden ‘‘Griine Gewolbe’’ (Green Vaults). This weighs 15 German pounds and measures 6 2/3 inches in diameter; it was undoubtedly used for purposes of augury. ‘Ten thousand dollars was the price paid for it in 1780.",
+    "A erystal ball known as the Currahmore Crystal, be- cause it is kept at the seat of that name belonging to the Marquis of Waterford, has long enjoyed and still enjoys the repute of possessing magical powers. It is of rock- crystal, and the legend runs that one of the Le Poers brought it from the Holy Land, where it had been given him by the great crusader Godefroy de Bouillon (1058- 1100). The ball is a trifle larger than an orange and a silver ring encircles it at the middle. The chief and much-prized virtue of this crystal is its power to cure eattle of any one of the many distempers to which they are subject. Its application for this purpose is rather peculiar, for the cattle are not touched with it, but driven up and down a stream in which it has been laid. Not only in the immediate neighborhood of Currahmore is resort had to this magic stone by the peasants, but re- quests for its loan are often made from far distant parts of Ireland. The privilege is almost always accorded and has never been abused, the crystal being in every case conscientiously returned to its rightful owner.”2",
+    "The names ‘‘ghost-crystals,’’ ‘‘phantom-crystals,”’’ ‘“snectre-crystals,’’ ‘‘shadow-crystals,’’ etc., are applied to a form of quartz in which the crystallization was in- terrupted from time to time, so that in the transparent successive layers there is an occasional opaque layer,",
+    "often no thicker than the finest possible dusting of a whiter material. Sometimes as many as fifteen or twenty of these successive growths are observable, one over the other. When these crystals are in the natural form, they show beautifully from the sides and ends. Sometimes such crystals are found after they have been rolled in the beds of mountain torrents until they have become entirely opaque, but when the surfaces are polished, the ‘‘phan- tom,’’ ‘‘spectre,’’ or ‘‘ghost,’’? appears with wonderful beauty. Occasionally the entire crystal has been worn down to a small part of the original prism, in which case it is cut into a ball. The ball may seem to be absolutely pure, but when held in certain lights little tent-like mark- ings can often be observed; sometimes only one marking is visible, but there may be as many as twenty. These are occasionally due to a layer of smoky material, and, though they add a charm to the ball, they detract from its value. Nevertheless, crystal-gazers may find an addi- tional interest when the ‘‘ghostly’’ or. ‘‘spectral’’ inte- rior exists in a crystal ball. This growth is similar in kind to that seen at times in opaque quartz, forming what is known as cap-quartz; here the crystallizations can fre- quently be broken apart so that they fit one over the other in many successive layers. Occasionally the reg- ular crystalline development will be interrupted, as it were, and in place of the original crystal continuing its growth harmoniously, a larger crystal will form on a smaller one, forming a sort of mushroom, or ‘‘cap,’’ or ‘‘stilt’’ quartz, as it is termed.",
+    "HE use of stones for the decoration of images of the gods, and in religious ceremonies, more especially in those connected with the burial of the dead, can be traced back to a remote antiquity. Indeed, we may re- gard this religious use of precious or peculiar stones as the natural development of the original idea of their talismanic virtue. If a certain supernatural essence man- ifested itself in the stone, what more fit object could be imagined for the decoration of statues of the gods, or to bear engraved texts from the sacred writings, and to be placed with the bodies of the dead as ‘‘passports’’ to ensure the safe entry of the souls of the departed into the better land?",
+    "While this employment of mineral substances for religious purposes is practically universal, the earliest recorded instances come from Egypt, and concern the Egyptian custom of engraving texts from a very ancient ritual composition, called the Book of the Dead, upon certain semi-precious stones which had been cut into various symbolical forms. This ‘‘Book of the Dead,’’ composed of a number of distinct chapters, each com- plete in itself, describes the passage of the soul of the deceased through the realm of the dead (Amenti). Here the soul addresses the gods and other beings who receive it, and the prayers and invocations recited in the chap- ters are supposed to procure a safe passage and protec- tion from all evil influences or impediments.",
+    "One of the most usual of the engraved amulets is the buckle or tie (thet). This was generally of red jasper, carnelian, or red porphyry, or else of red glass or faience or of sycamore wood. The wood was symbolical of the blood of Isis, and the amulets were sometimes en- graved with the 156th chapter of the Book of the Dead; they were placed on the mummy’s neck. The formula engraved reads:",
+    "Another amulet is the tet. The hieroglyph represents a mason’s table and the word signifies ‘‘firmness, stabil- ity, preservation.’’ These figures, made of faience, gold, carnelian, lapis-lazuli, and other materials, were placed on the neck of the mummy to afford protection.?",
+    "The ‘‘papyrus scepter,’’ wat, is usually cut from matrix-emerald or made of faience of similar hue. Uat means ‘‘verdure, flourishing, greenness’’; placed on the neck of the mummy it was regarded as emblematic of the",
+    "*Life Work of Sir Peter le Page Renouf, Paris, 1907, vol. iv, p. 342. In the vignette to chapter 93, to illustrate the protection afforded, a buckle with human hands seizes the arm of the deceased and prevents him from going toward the East, the inauspicious direction for departed souls, pl. xxv (Papyrus, Louvre iii, 93)."
+   ]
+  },
+  "planetary_and_astral_influences": {
+   "chapter_title": "Planetary and Astral Influences (Ch X)",
+   "passages": [
+    "and the stars, since these influence them most potently and produce their peculiar qualities, for they are enduring and unchangeable and show therein their concordance [with the stars and the planets].*",
+    "Hence it is that the influence over human fortunes ascribed by astrology to the heavenly bodies is conceived to be strengthened by wearing the gem appropriate to certain planets or signs, for a subtle emanation has passed into the stone and radiates from it. A combina- tion of several different stones, each partaking of this special quality, was believed to have an influence similar to that exercised by several planets in conjunction,— that is, grouped in the same ‘‘house”’ or division of the heavens.",
+    "The same is true of the stones dedicated to the guar- dian angels; the color and appearance of the stone was not merely emblematic of the angel, but, by its sympa- thetic quality, it was supposed to attract his influence and to provide a medium for the transmission of his beneficent force to the wearer. The whole theory, whether consciously or unconsciously, rested on the idea of harmony, of the accord of certain ethereal vibrations, either those of the visible light of the stars and planets or the purely psychic emanations from the spiritual ‘‘pnowers and principalities.’’",
+    "The wearing of the appropriate zodiacal gem was always believed to strengthen the influence of the zodiacal sign upon those born under it, and to afford a sympa- thetic medium for the transmission of the stellar influ- ences. The gem was thus something more than a mere symbol of the sign. The same was true of the stone of the saint who ruled the month and that of the holy guar-",
+    "dian angel set over those born in the month. In each and every case the material form and color of the stone was believed to attract the favor and grace of the saint or angel, who would see in the selection of the appropriate gem an act of respect and veneration on the part of the wearer.",
+    "The old writers are never tired of insisting upon the idea that, while the image graven upon a stone was in itself dead and inactive, the influence of the stars during whose ascendancy the work had been executed commu- nicated to the inert material talismanic qualities and virtues which it before lacked. In these instances the images could be regarded as outward and visible signs of the planetary or zodiacal influence. Even in the case of the bezoar stone, a generally recognized antidote for all sorts of poisons, it was held that the scorpion’s bite could be most effectually healed by a bezoar upon which this creature’s figure had been cut during the time when the constellation Scorpio was in the ascendancy.?",
+    "In the production of engraved stones to serve as amu- lets, the influence of the respective planet was made to enter the stone by casting upon the latter, during the process of engraving, reflections from a mirror which had been exposed to the planet’s rays. In addition to this, the work was executed while the planet was in the ascendant, and the design was emblematic of it. With these combined influences the gem was believed to be thoroughly impregnated with the planetary virtue.® |",
+    "tues persist in them and they keep ‘‘the traces and gifts of mundane life which they possessed while clinging to the earth These ‘‘gifts of mundane life’’ signify the stored-up energy derived from the stars and planets, which penetrates the matter of the stone, and each stone is peculiarly sensitive to the emanations from a certain planet, star, or group of stars.",
+    "A fine carnelian gem engraved with a design consist- ing of a star surrounded by the images of a goat, a bull, and a lion, is described by M. Mairan.® He sees in the star the emblem of the splendid comet which appeared shortly after the assassination of Cesar, and which, ac- cording to Suetonius, was believed to be the soul of Cesar newly received into the sky; the goat, bull, and lion are the symbols of the zodiacal signs Aries, Taurus, and Leo, the first-named sign referring perhaps to the death of Cesar on the Ides, or fifteenth of March; while the other two signs may allude to the position of the comet at different dates.",
+    "In the Cabinet du Roi, in Paris, there was an en- graved carnelian, the design showing Jupiter enthroned, with thunderbolt and sceptre, and Mars and Mercury standing on either side of the central figure. Separated from the gods of the upper air by a bow, probably repre- senting the arch of the sky, appears the bust of Neptune, emerging from the sea. The border of the design is formed by the twelve signs of the zodiac, Virgo being of an unusual type,—the virgin and a unicorn,—said to have been used only during the reign of Domitian (81-96 A.D.).°",
+    "Some choice examples of astrological gems may be seen in the Metropolitan Museum of Art, New York; among these is a green jasper bearing symbols of Luna, Capricorn, and Taurus. This gem is from the collection of the late Rev. C. W. King, which has been acquired for the Museum, and is described as figuring the horoscope of the owner. In the same collection is a banded agate engraved with Sagittarius as a centaur, surrounded by the stars of this constellation in their proper order. King states that this was the earliest horoscopical gem known to him. Still another gem of this collection is a sard bearing the symbol of Aries carrying a long cadu- ceus; this type appears on the coins of Antioch, because that city was founded in the month over which the sign Aries presides.’",
+    "The Austrian Imperial Collection.in Vienna contains the celebrated Gemma Augustea, sometimes called the Apotheosis of Augustus. This commemorates the Pan- nonian triumph of Tiberius, 13 a.p., and above the figure of Augustus appears the sign of Capricornus, the con- stellation of his nativity; beneath the figure of Tiberius is engraved the sign of Scorpio, under which that em- peror was born. This celebrated cameo, the work of the famous gem-engraver Dioskorides, is mentioned in an inventory of the treasury of St. Sernin, in Toulouse, dated 1246. It is said to have been offered by Francis I of France to Pope Clement VII, on the occasion of their meeting in Marseilles in 1535; however, as the gem only reached Marseilles two days after the pope’s de- parture, Francis decided to retain possession of it. The",
+    "Old print illustrating the influence believed to be exerted on the different parts of the body by the respective zodiacal signs, and through their power by the stones associated with them. This belief often determined the administration of special precious-stone remedies by physicians of the",
+    "A ruby called sandastros is described by Pliny as containing stellated bodies which he compares to the Hyades; hence, says he, they are the objects of great de- votion with the Chaldewi or Assyrian Magi. Accord- ing to Morales (De las piedras preciosas), the ruby and the diamond were both under the influence of the sign of Taurus; the same writer informs us that the Hyades and the sun were supposed to have a potent effect upon the ruby or carbuncle. In ancient Babylonia the sign of Taurus was regarded as the most important, and Winckler believes that the presence in this sign of the five stars of the Hyades and the seven of the Pleiades was brought into connection with the twelve-fold division of the zodiac. The Hyades signified the five signs visible in Babylonia at the summer solstice, while the Pleiades typified the seven invisible signs. It seems probable that the Pleiades were associated with the diamond, although Morales, who was very familiar with the Moorish astrology current among the Spaniards of his time, attributed the crystal to this group. His attribu- tion proves at least that the stone of the Pleiades was a colorless one.",
+    "In Sanskrit the diamond is called vajra, ‘‘thunder- bolt,’? and also indrajudha, ‘‘Indra’s weapon’’; another name is acira, ‘‘fire,’”’ or ‘‘the Sun.’’& All these desig- nations are probably suggested by the brilliant flashes of",
+    "light emitted by this stone. It is not easy to determine the reason that induced the Hindus to dedicate the dia- mond to the planet Venus rather than to the Sun or to the Moon. However, as the most brilliant of the planets, Venus was not unworthy of the honor, and if we sub- stitute the Goddess of Love for her planet, it seems quite appropriate that she should be adorned with the most brilliant of precious stones. Certainly these sparkling gems are often enough offered at the shrine of Venus in our own day, and they often serve to win tne good graces of the divinity to whom they are presented.",
+    "The Sanskrit name for the sapphire, nila, signifies ‘‘blue,’’ so that, as the topaz is the ‘‘yellow stone’’ par excellence, the sapphire is the blue stone (nilagman). In both cases the name indicates a variety of corundum, dis- tinguished merely by the coloring matter. As a talisman the Hindus believed that the sapphire rendered the planet Saturn favorable to the wearer, an important con- sideration from the astrological point of view, for Saturn’s influence was generally supposed to be unfav- orable. The Hindus distinguished four classes of sapphires, corresponding to the four castes: Brahmins, Kshatriyas, Vaisyas, and Sudras. The respective sap- phires were light blue, reddish blue, yellowish blue, and dark blue. The same distinction is made in the case of the diamond, and a like rule applies to both stones, namely, that only the appropriate stone should be worn by the members of each caste, in order to profit by the virtues inherent in the sapphire or diamond.®",
+    "cause of the periodic eclipses of the Sun and Moon.!° As the stone was sacred to this malevolent influence, we need not be surprised that it was believed to avert mis- fortune, for nothing was so effective against the lesser spirits of evil as an evil genius of great power.",
+    "According to the Hindu mystics it was very lucky to have a turquoise at hand at the time of the new moon, for whoever, after first looking at the moon on the pratipada (the first day after new-moon), should cast his eyes upon a turquoise, was destined to enjoy immeas- urable wealth.",
+    "ZODIACAL GEMS Aquarius. January 21 to February 21. The Garnet. If you would cherish friendship true, In Aquarius well you’ll do To wear this gem of warmest hue— The garnet. Pisces. February 21 to March 21. The Amethyst. From passion and from care kept free Shall Pisces’ children ever be Who wear so all the world may see The amethyst. Aries. March 21 to April 20. The Bloodstone. Who on this world of ours his eyes In Aries opens shall be wise If always on his hand there lies A bloodstone.",
+    "Taurus, April 20 to May 21. The Sapphire. If on your hand this stone you bind, You in Taurus born will find *T will cure diseases of the mind, Conia The sapphire. May 21 to June 21. The Agate. Gemini’s children health and wealth command, And all the ills of age withstand, Who wear their rings on either hand Of agate. Cancer. June 21 to July 22. The Emerald. If born in Cancer’s sign, they say, Your life will joyful be alway, If you take with you on your way Leo. An emerald. July 22 to August 22. The Onyx. When youth to manhood shall have grown, Under Leo lorn and lone ’T will have lived but for this stone, The onyx. Virgo. August 22 to September 22. Carnelian. Success will bless whate’er you do, Through Virgo’s sign, if only you Place on your hand her own gem true, Libra. Carnelian. September 22 to October 23. The Chrysolite. Through Libra’s sign it is quite well To free yourself from evil spell, For in her gem surcease doth dwell, The chrysolite.",
+    "1. A necklace of banded and variegated agates, onyx, carnelians and sards. First Century a.p. 2. Keads of carnelian artificially marked for ‘‘good luck.’’ The marking is produced by an application of potash and soda. Ancient Persian.",
+    "Scorpio. . October 23 to November 21. The Beryl. Through Scorpio this gem so fair Is that which every one should wear, Or tears of sad repentance bear,— The beryl. Sagittarius. November 21 to December 21. The Topaz. Who first comes to this world below Under Sagittarius should know That their true gem should ever show A topaz. Capricorn. December 21 to January 21. The Ruby. Those who live in Capricorn No trouble shall their brows adorn If they this glowing gem have worn, The ruby.",
+    "Aries—Crystal Libra—Jasper Taurus—Ruby and diamond Scorpio—Garnet Gemini—Sapphire Sagittarius—Emerald Cancer—Agate and beryl Capricorn—Chalcedony Leo—Topaz Aquarius—A methyst Virgo—Magnet Pisces—",
+    "was applied to the yellow Brazilian chrysoberyl, while the moon controls the beryl, the rock-crystal and also the pearl. To the share of Venus fall the sapphire and car- buncle as well as coral and pearl; usually the emerald is the stone of Venus. Mars lays claim to the diamond, jacinth, and ruby, the last-named stone according with the ruddy hue of our neighbor planet. Under the con- trol of Jupiter are placed the emerald, sapphire, ame- thyst, and turquoise, so that the planet has the richest assortment of gems; it will be remarked that the celes- tial sapphire unites the influence of Venus and Jupiter, the two especially propitious planets. Lastly, far-away Saturn must be content with all dark, black, and brittle stones; there was, indeed, little inducement to wear a Saturnian stone, for the influence of this cold and dis- tant planet was always regarded as baleful.",
+    "The planetary controls of precious stones as given in the Lapidario of Alfonso X, according to ‘‘Chaldaic’’ tradition, show that the same stone was influenced in many or most cases by more than one of the ‘‘seven planets’’ (including the Sun and Moon). Thus the dia- mond, belonging to the first degree of the sign Taurus, was dominated by both Saturn and the Sun; the emerald was controlled by Jupiter, and also by Mercury and by Venus. The red jargoon was influenced by Mars, the yellow variety by Jupiter and the white jargoon by Venus. The carnelian received virtue from the Sun and from Venus. The ruby, although more especially a sun- stone, came as well under the influence of the Planet of Love. Coral belonged both to Venus and to the moon, while lapis-lazuli and chaleedony only owed allegiance to Venus; this planet also lent virtue to the beryl.\"",
+    "Among the Mohammedans, six of the seven heavens were supposed to be made of precious substances: the first was of emerald; the second, of white silver; the third, of large white pearls; the fourth, of ruby; the fifth, of red gold; and the sixth, of jacinth. The seventh and highest heaven, however, was of shining light.?° Here we have the three precious colored stones, emerald, ruby, and sapphire (jacinth), to which is added the pearl.",
+    "The scarcity of the diamond in early times, and its comparative lack of brilliancy before the invention of rose and brilliant cutting, account for the absence of this king of gems.",
+    "Rabelais,!® describing the temple of the oracle of the ‘‘Dive Bouteille,’’? says that of its seven columns the first was of sapphire; the second, of jacinth; the third, of ‘‘dyamant’’; the fourth, of the ‘‘male’’ balas-ruby ; the fifth, of emerald, ‘‘more brilliant and glistening than were those which were set in place of eyes in the marble lion stretched before the tomb of King Hermias’’; the sixth column was of agate, and the seventh of trans- parent selenite,’’ with a splendor like that of Hymettian honey, and within appeared the moon in form and motion such as she is in the heavens, full and new, waxing and waning.’’ We are then told that these stones were at- tributed to the seven planets by the Chaldeans, as follows:",
+    "SAB MIN TEE s rd eee hr wera g sae Re = oie a Saturn SPT he Pes OTA POMC LOR wer ee Be Jupiter TUE A Yi CHADS Vere ats a ntyry AOE ards ere Bev A ek ae Sun RUDY Vian so cuhida ah one: gt tae PaDO BI uee sree’ Mars",
+    "TOT SLC: eae Sam cate hig tglais, erestary gEaconee Ree eye Venus URPALE® 957 ead ens Pie ds we tbe te y Oe cag SRE Mercury Se ler COs pet cir taie th es eee ene lyon eens 1325 Ria aR ROPES Moon",
+    "DRS ci Me etntx a vile kad RARE 2 Venus and Mercury. PUD PSULINS. Melos i ie tetris aa Beet ete Telit, dane Jupiter and Mercury. PHOTOS We os ene hick Mee Es ete PSPS Venus and Mercury. CHaseROHy Lite. see ih ede ea ees Jupiter, Mercury, and Saturn. APACHE. le elenalalg Pie tees mide we ge BO cae Saturn and Mars. RR VHOUTON Ue Hex y «cSt n UH a 6 be Mercury and Venus. BEV E229 YOice tats sk gaa ce ner eatene Venus and Mars. ODA Gn slgotes sles Was «tn ee Bea aD Saturn and Mars. CHEVSODEERO: nhs Teer rpe se halve vei p74 Mereury and Venus. EROTOSTE Bee Cedi tnt Pe Vie eae tee Pes Mars and Jupiter. PATHOU RPS AE 0p 57) aulta=t 9 yc Sy aearte wee aye Mars and Jupiter. REL © 6 52a. or4ic ale peeve w ew 24cn hd inate Bindes Sek Venus and Mercury. Carhatie, Al aiastcntes wee ee aes Mars and Venus. Disinenid | Paso tts ee os eS Jupiter.",
+    "RSTO cha to 4a dF. 9d 9 ele RE OE Moon. LE ects Sa ee See Warley ene Mars. Judaica, PPO ANE os aces fk % 9a pO SS Mercury. Cogolite | is a a ae SE re The, Seer ee Sami 2 Jupiter. CEE ONS Eyes a PFs tats Ratha we ee Saturn and Mars. Pac Cutates chat lt. Saar cL de sins etree a ae Saturn. SHEE LIMA IAG 5. Spee 'n Soin 36-= scat ocs vatead Se Moon. PREANIAR WHILG® oh. Gi soe aS Moon. rAION, SPOON VCs hae law os: t5 08s Jupiter fbi) iar ear, Oey ae ern are Sun. PDO BOMRINAG 45 Fo 4 Norge. are ve Aly os Moon. Pyrites: Copper-Colored 944/00 .d see's es Sun, Venus. old-colored sx... 4 Ss sy: suis Me Sun. DLV OUCOLOLER 2. Val Ns Nhe loa s Moon. PinCOlrER” aca kh Boal eae ow Moon, Saturn. TASUECOIOFOE! yids oe hae ses Jupiter. TORI) ols! as FiO se TW RS Alba h foes Moon. PUTCO S IE ha oe vane isn Le va Venus. Pironaveus 4.11 tas es Sehr se se Sun. See) cana ee et ae are Tox aly Jupiter, Mars, Venus. BOYNE a pel ye Fhs Maal 9 Ne te ost vw ake Sun, Mercury.",
+    "Ursa Magsor, Ursa Minor, AND Draco. Both bears are represented in the folds of a serpent, the Great Bear in the upper and the Lesser Bear in the lower folds. In almost all the signs. Nature: Ursa Major, Mars and Venus. Ursa Minor; Saturn. Draco: Saturn and Mars. Renders the wearer wise, cautious, versatile, and powerful.",
+    "The boundary lines of the various signs are carried up to the pole, and any constellation that is within these lines is considered to belong to the respective sign; thus, every constellation belongs to one or more signs.",
+    "Corona Boreauis. A royal crown, with many stars; sometimes the crowned head of a king. Sign: Sagit- tarius. Nature: Venus and Mercury. Engraved on the stone of one who is fitted for honors and knowledge, it gives him great favor with kings.",
+    "Hercutes. A man with’knees bent, holding a club in his hand and killing a lion; sometimes a man with a lion’s skin in his hand or on his shoulder and hold- ing a club. Sign: Scorpio. Nature: Venus and Mereury. Engraved on a stone that brings victory, like the agate, it. renders the wearer victorious in all conflicts in the field.",
+    "Cyenus. A swan with outstretched wings and curved neck. In the North. Nature: Venus and Mercury. Renders the wearer popular, increases knowledge, and augments wealth. Cures gout, paralysis, and fever.",
+    "CrePpHEus. A man girt with a sword and holding his hands and arms extended. Sign: Aries. Nature: Saturn and Jupiter. Causes pleasant visions if placed beneath the head of a sleeping person.",
+    "Cassiopeia. A woman seated in a chair and with hands extended in the form of a cross; sometimes with a tri- angle on her head. Sign: Taurus. Nature: Saturn and Venus. Restores the sickly, worn body to health, gives quiet and calm after labor and procures pleas- ant and tranquil sleep.",
+    "ANDROMEDA. A young girl with dishevelled hair, and hands hanging down. Sign: Taurus. Nature: Venus. Reconciles husband and wife, strengthens love, and protects the human body from many dis- eases.",
+    "Perseus. A man holding a sword in his right hand and the Gorgon’s head in his left. Sign: Taurus. Nature: Saturn and Venus. Guards the wearer from mis- fortune and protects, not only the wearer but the place where it may be, from lightning and tempest. Dissolves enchantments. j",
+    "Srerpens. A man in the folds of a serpent and hold- ing its head in his right hand and its tail in his left. Sign: Taurus. Nature: Saturn and Venus. Antidote to poisons and to the bites of venomous creatures. :",
+    "Aqua. A flying eagie with an arrow beneath his feet. Sign: Cancer. Nature: Jupiter and Mercury; the arrow, however, is of Mars and Venus. Preserves former honors, adds new ones, and helps to victory.",
+    "Pisces or Detpuinus. Figured in relief (?) Sign: Aquarius. Nature: Saturn and Mars. If this en- graved gem be attached to nets it causes them to be filled with fish, and it renders the wearer for- tunate in fishing.",
+    "Prcaasus. Some represent the half of a winged horse; others the whole figure and without a bridle. Sign: Aries. Nature: Mars and Jupiter. Gives victory in the field, and makes the wearer swift, cautious, and bold.",
+    "Cerus. Figure of a large fish with curved tail and ea- pacious gullet. Sign: Taurus. Nature: Saturn. Renders the wearer fortunate on the sea and makes him prudent and agreeable. It also restores lost articles.",
+    "Navis. A ship with prow curved back and spread sails; sometimes with and sometimes without oars. Sign: Leo. Nature: Saturn and Jupiter. Renders the wearer fortunate in his undertakings; he runs no risk on sea or water, neither can he be injured by water.",
+    "Lrepus. Figure of a hare with ears pricked up and the feet represented as though in swift motion. Sign: Gemini. Nature: Saturn and Mercury. Cures frenzy and protects from the wiles of demons. The wearer cannot be hurt by a malignant spirit.",
+    "Centaur. Half-figure of a bull, bearing a man on whose left shoulder rests a lance, from which depends a hare. In his right hand the man holds a small, supine animal with a vessel attached to it. Sign: Libra. Nature: Jupiter and Mars. Gives con- staney and perpetual health.",
+    "SacraRius TuruBuLus (ArA). An altar with burning in- cense. Sign: Sagittarius. Nature: Venus and Mer- cury. Gives the wearer power to recognize spirits, to converse with them, and to command them; also confers chastity.",
+    "Hypra. A serpent, having an urn at its head and a raven at its tail, Sign: Cancer. Nature: Saturn and Venus. Gives riches and all good gifts to the wearer and makes him cautious and prudent.",
+    "An old man holding a curved scythe in his hand and with a not very heavy beard. Engraved on a stone of the nature of Saturn, it renders the wearer powerful and augments his power continually.",
+    "A seated figure, sometimes in a chariot, holding a staff in one hand and a spear in the other. It renders the wearer fortunate, especially if engraved on a Kabratis stone, and he easily gains what he wishes, especially from priests. He will be raised to honors and dignities.",
+    "Represented sometimes with a banner and _ sometimes with a lance or other weapon. He is, indeed, always armed and at times mounted on a horse. Gives victory, boldness in war, and success in everything, especially if engraved on an appropriate stone.",
+    "Sometimes as the solar disk with rays, sometimes as a man in a chariot, and this occasionally is surrounded by the signs of the zodiac. Renders the wearer powerful and a victor; this gem is prized by hunters.",
+    "Many forms, among them that of a woman with a volumi- nous dress and a stole, holding a laurel in her hand. Gives skill in handling affairs and usually brings them to a suc- cessful issue; removes the fear of drowning.",
+    "Moon. Various forms. Sometimes as a crescent, sometimes as a young woman in a chariot and holding a quiver, and at others as a woman with a quiver and following the chase with dogs. Aids the fortunes of those who are sent on an embassy, and enables them to acquire wealth and honor thereby. Is said to confer speed and facility in under- takings and a happy issue.”",
+    "Several constellation stones, Engraved in planetary hours, That over mortals had strange powers, To make them thrive in law or trade, And stab or poison to evade, In wit and wisdom to improve, And be victorious in love.”",
+    "These manifold influences exerted by the stars and planets through the medium of the gems, not only con- cerned those actually present in a material form, but also those that were seen in dreams, and interpretations of such dreams are given by old writers.",
+    "Many Oneirocritica, or ‘‘dream-books,’’ were written or compiled in the early centuries of our era, one of the most noted being the work of Artemidorus, who flour- | ished in the second century a.v. Every object seen in a dream was given a special meaning, and it is interest- ing to note that Artemidorus believed dreams of rings or other ornaments, as well as of precious stones, to be of favorable significance only for women. Such dreams indicated marriage for unmarried women, and the birth",
+    "It is studded with precious and semi-precious stones and engraved gems, dating from various epochs, the pious offerings of those whose prayers have been answered. The figure is 85 em. (333 inches) high and is of gold in a core of wood. Probably of the tenth century. Two of the four crystal balls adorning thé seat are said to replace golden doves. Rock- crystal was especially dedicated to the moon.",
+    "of children for those already married. If a woman was both wife and mother when she saw sparkling jewels in her dream, then the vision portended the acquisition of great wealth. Artemidorus here sagely remarks that women are by nature devoted to riches and passionately fond of ornaments. For men, on the other hand, to dream of jewels was an ill omen; probably because it foreshadowed the necessity of buying them for a good friend or a faithful wife.**",
+    "Another of these dream-books, probably composed in the eighth century a.p., appears under the name of Acha- metis and is of Arabic origin. Many of the interpreta- tions in this book are referred to a Hindu source, and among these are visions of crowns that appear to kings. Such a dream, in itself, usually portended increased power and success for the sovereign, but this depended upon the color and character of the jewels which adorned the crown. For example, we read that if the gems were red and of the kind known as lychnites (carbuncles or rubies), the dream indicated that the king would have great joy and good fortune and would be more feared by his enemies than before; but if he saw blue gems in the crown, it was a bad omen, foreshadowing the loss of part of his kingdom. If the stones were of a light green hue (the color of the leek), the king would gain a great name in the world, both by his good faith and by the greatness of his kingdom; for, the writer adds, ‘‘this color in precious stones is universally accepted as signi- fying good-faith and religious devotion to God.’? 8",
+    "arabl Secon i beko <a Tunis eS Recovery from illness. ep et Qe iane | as Sirgen meat one Freedom from enemies. Dyker EP cece at are « Victory over enemies. BANOPAI seca Cd ee aK S Much to look forward to. Carneta”’ key mead eta tye eee The solution of a mystery. Helietropes. 4.5.2. cites as ase ee Long life.",
+    "MOOT StGhes ee meer ose ties seaprecsi Impending danger. MOBREAS ATER: liek ate ace tin nas An unsuccessful journey. ROTI BF oa nin 5 i ae See ae eer ns A happy marriage. | Opals «site ty sis Salto ee nate eed Great possessions. Pearls. agin Se Se PSG Faithful friends. PORUNE Ys son sa eae es AF eee Death.",
+    "significant of a tender sentiment or implying good for- tune, or else the name of someone dear to the giver of the jewel, this is also supposed to strengthen their astral or planetary influence and to render them more potent charms. In the following examples the gems in the first column are the more expensive, those in the second column being comparatively inexpensive ones.",
+    "In France and England, during the 18th century, rings, bracelets, brooches, ete., were often set with gems the first letters of which, combined, formed a motto or expressed a sentiment. The following is a list of those that may be used in this way. The gems in the first column are the more expensive ones, those in the second column the inexpensive ones.",
+    "LOVE ME Lapis-lazuli. Labrador spar. Opal. Onyx. Vermeille. Verd antique. Emerald. Essonite. Moonstone. Moonstone. Essonite. Epidote. AEI Greek, meaning ‘‘forever,” “eternity.” Alexandrite. Almandine. Emerald. Essonite. Indicolite. Idocrase.",
+    "An attractive engagement ring can be formed of a central diamond from which extend the rays of a five- pointed star. Between the rays are set the stones em- blematic of the zodiacal sign, of the guardian angel of the month, of the planet control of the hour and also the two stones indicating the initial letter of the two Chris- tian names. This ring is in the form of the mystic Pentagon, the grand symbol of constancy and durability, since the number five is composed of three, which sig- nifies creative power, and two, which typifies the balance, that is, stability.",
+    "As, according to the old fancy, the influences due to the light emanations from the planets or fixed stars, or from the combination of the stars in a zodiacal sign, would have a peculiar and more or less intimate connection with the fate of one country rather than of another, an attempt is here made to give a charcteristic stone for each coun- try. In the case of the United States the various gem- stones found within the boundaries of each of the States of the Union are given. That this special influence was exceptionally potent in regard to those born in the coun- tries in question was also taught and hence a national",
+    "gem would have a greater talismanic power than any other for the natives of each separate country. For those who may feel a certain degree of sympathy for time-honored fancies, and who may perhaps also have a trace of superstition hidden away in some part of their consciousness, one of our State gems would have a simi- lar significance,",
+    "PATER, CD50 0, bale ban Rae es FES Garnet SEEIOPS UL Spee i Seas sce ab ae Coral PAPAIN sic) Fins ons Be DA aes a o's Pearl AGED TUNGary “sa ci bes Big to ee Opal PROUT ea this uate aia 6 os oy Crystal TSG | 0's Bh een fl a Aron te oe a Garnet UT Gow sot Na ate ts oe EY gies Lapis-lazuli RS OLEV ER: Peas talk sce dis Hatsune se te oe Lapis-lazuli PSEA oe Pn ess sy vee eee es ee Tourmaline (Brazilian emerald) SPREE ooo lsc3h ald © A ace bp Ruby URGED ste Sg) Sain ee G4 os eas Sodalite",
+    "| tay 4 3) Oe ere eee eer ae Peridot PAMPIANE 0b Pies crcce oie Fo op od 9 aS Sete Diamond et eee Sr ge ears UT eee re Rees Pearl GOTANY, 9 ost wae sb ass ale oa Amber German West Africa ............+6: Diamond AERC Sy valk heb cae es te eae Sapphire PIGAa: cs Pinks ale. shake bend pg eee ora Diamond PERT OALY: iy Seek eV ola oe woes oo ee Opal",
+    "NEW LOE Soe ease es kay en sees Jade Norway-Swedert. 50055 Jessie oe eee Carnelian AMAIA. 5} wan eatin: Wieoasn a Wa ANSE Agate POPUL Moncas vs, er utaatear tir dens wiake ten os 5k Turquoise PET ihe 18 ears Pele typ Si eM eae Emerald PDA Paes yl ys as ee hy ee Se ove els Pearl BREE. sed ities « «tee ear Chrysoberyl HOUMARIG, Sn MeN eee. « Chale Pate Amber Peviesinn Bey oie eos, Todo P TS eyes Rhodonite Sane Islands 20h e ee 25 Olivine CORI Nis tee Soca eee eee yh aek we Cairngorm (smoky quartz) SEO TEG Gia AG. 4\" el. « 8 hy ata Fis eae ate Coral",
+    "PTE E yd aoe clei d biecana: 5 ore koe egg Sey Ruby lit 8 2 eee at ey GL eA Peae Sree Amber POUL ALTICR: oy Sa0 Weve Peep es ees Diamond PREY cy Sg 5 aac agen ee hee eee Emerald WALZOKIANAL wie an Le tesielenrew ere eee Rock-erystal De Piematat et nice CLAN sek he tenn way Jade PURKEY oy Hae hag Fo alr eee eel ag O4 Turquoise WRICOSSTALEE Fy ee os eh AE Sapphire Uruguay ..... ited ik Ct FOP TEER . Amethyst",
+    "HE medicinal use of precious stones may be traced back to very ancient times. It has been conjectured that their employment for such purposes was introduced to Kurope from India, whence many of the stones were derived. Nevertheless, the earliest evidence we have rather points to Egypt as the source, and, indeed, it ap- pears that in early Egyptian times the chemical constit- uents of the stones were much more rationally considered than at a later period in Europe. The Ebers Papyrus, for instance, recommends the use of certain astringent substances, such as lapis-lazuli, as ingredients of eye- salves, and hematite, an iron oxide, was used for checking hemorrhages and for reducing inflammations. Little by little, however, superstition associated certain special virtues with the color and quality of precious stones, and their virtues were thought to be greatly enhanced by engraving on them the image of some god, or of some object symbolizing certain of the activities of nature. Later still, the science of astrology, most highly devel- oped in Assyria and Babylonia, was brought into combi- nation with the various superstitions above indicated, so that the image was believed to have much greater efficacy if the engraving were executed when the sun was in a certain constellation or when the moon or some one of the planets was in the ascendant at the time. If we exclude certain fragmentary notices in Egyp-",
+    "tian literature—notably the statements in the Hbers Papyrus—and the very uncertain sources in Hindu liter- ature, the earliest authority for this branch of the subject is the Natural History of Pliny. In this connection, how- ever, it is only just to call attention to a fact which has been often ignored—namely, that Pliny himself had very little faith in the teachings of the ‘‘magi,’’ as he calls them, in regard to the superstitious use of gems for the prevention or cure of diseases; indeed, he seems to have been almost as sceptical in his attitude as many modern writers, for certain quite recent authorities still credit amber and a few other mineral substances with thera- peutic effects other than those which can be explained by the known action of their chemical constituents. Still, Pliny yielded so far to the taste of his time as to preserve for us many of the statements of earlier writers on the subject, naming them in most cases and so enabling us to _form some idea of the character of this pseudo-science in the Roman world in the first century of our era. With the gradual decay of ancient learning, the less valuable - elements of popular belief came more and more into the foreground, and the old superstitions were freely copied by successive authors, each of whom felt called upon to add something new on his own account. This explains much of the confusion that reigns in regard to the attri- bution of special virtues to the different stones, for the wider the reading of the author the greater became the number of virtues attributed to each separate stone, until, at last, we might almost say that each and every precious stone could be used for the cure of all diseases. Never- theless, it is comparatively easy to see that either the color or constitution of the stone originally indicated its use for this or that disease.",
+    "It dates from about 1600 B.c., the period of the Ebers Papyrus, and gives directions for preparing certain remedies from precious stones. While the interpretation of this text offers considerable difficulty, one version finds in it the statement that lapis-lazuli—the ‘*sapphire’’ of the ancients—was used for the wealthy, and malachite for those of limited means. Professor Oefele conjectures that the disease to be treated was hysteria. Munch Collection, Metropolitan Museum of Art, New York."
+   ]
+  }
+ }
+}
