@@ -5,10 +5,14 @@
  * - 无数据 → 程序化占位：罗马数字 + 星阵（后续逐张补绘）
  */
 import { computed } from 'vue'
-import { ARCANA_PALETTE, getArcanaArt } from '../data/arcanaArt'
+import { ARCANA_PALETTE, getArcanaArt, type ArcanaArt } from '../data/arcanaArt'
+import { getMinorArt } from '../data/minorArcanaArt'
 
 const props = defineProps<{
-  id: number
+  /** 大阿卡纳编号 0-21 */
+  id?: number
+  /** 或小阿卡纳牌 id（如 'wands-7'、'cups-queen'） */
+  cardId?: string
   nameCn: string
   nameEn: string
   /** 显示宽度 px */
@@ -17,8 +21,15 @@ const props = defineProps<{
 
 const ROMAN = ['0', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX', 'XXI']
 
-const art = computed(() => getArcanaArt(props.id))
-const numeral = computed(() => ROMAN[props.id] ?? String(props.id))
+const art = computed<ArcanaArt | null>(() => {
+  if (props.cardId) return getMinorArt(props.cardId)
+  if (typeof props.id === 'number') return getArcanaArt(props.id)
+  return null
+})
+const numeral = computed(() => {
+  if (props.cardId) return ''
+  return ROMAN[props.id ?? -1] ?? ''
+})
 
 interface Pixel {
   x: number
@@ -48,7 +59,7 @@ const gridW = computed(() => (art.value ? Math.max(...art.value.rows.map((r) => 
 const fallbackStars = computed<Pixel[]>(() => {
   if (art.value) return []
   const pts: Pixel[] = []
-  let seed = props.id * 2654435761
+  let seed = (props.cardId ? props.cardId.length * 31 : (props.id ?? 0)) * 2654435761
   const rnd = (): number => {
     seed = (seed ^ (seed << 13)) >>> 0
     seed = (seed ^ (seed >>> 17)) >>> 0

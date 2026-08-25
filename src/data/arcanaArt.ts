@@ -20,6 +20,11 @@ export const ARCANA_PALETTE: Record<string, string> = {
   R: '#e05a4e', // 玫瑰红
   C: '#a9c4e8', // 云蓝
   E: '#453a72', // 夜空底
+  /* ---------- 小阿卡纳四花色 ---------- */
+  F: '#ff9f6e', // 权杖 · 火焰橙
+  U: '#7db8ff', // 圣杯 · 水蓝
+  I: '#cfd6ff', // 宝剑 · 钢辉白紫
+  A: '#d9b24a', // 星币 · 铸金
 }
 
 export interface ArcanaArt {

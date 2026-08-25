@@ -17,6 +17,7 @@ import PalmistryView from '../views/PalmistryView.vue'
 import MusicBoxView from '../views/MusicBoxView.vue'
 import PendulumView from '../views/PendulumView.vue'
 import OrreryView from '../views/OrreryView.vue'
+import MoonBreathView from '../views/MoonBreathView.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -37,6 +38,7 @@ const router = createRouter({
     { path: '/musicbox', component: MusicBoxView },
     { path: '/pendulum', component: PendulumView },
     { path: '/orrery', component: OrreryView },
+    { path: '/moonbreath', component: MoonBreathView },
     { path: '/history', component: HistoryView },
     { path: '/settings', component: SettingsView },
     { path: '/:pathMatch(.*)*', redirect: '/' },

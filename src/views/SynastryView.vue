@@ -11,6 +11,7 @@ import AstroWheel from '../components/AstroWheel.vue'
 import BirthForm from '../components/BirthForm.vue'
 import { vTilt } from '../lib/tilt'
 import AiChat from '../components/AiChat.vue'
+import ApprenticeReact from '../components/ApprenticeReact.vue'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
 const MascotCard = defineAsyncComponent(() => import('../components/MascotCard.vue'))
@@ -114,6 +115,8 @@ const aiContext = (): string => {
           <p class="reading">{{ reading.overview }}</p>
         </div>
       </section>
+
+      <ApprenticeReact module="synastry" :score="reading.score" />
 
       <section class="astro-layout" style="margin-top: 18px;">
         <div v-tilt="5">

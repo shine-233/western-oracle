@@ -20,6 +20,7 @@ import { SIGNS } from '../data/corpus'
 import AstroWheel from '../components/AstroWheel.vue'
 import BirthForm from '../components/BirthForm.vue'
 import AiChat from '../components/AiChat.vue'
+import ApprenticeReact from '../components/ApprenticeReact.vue'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
 const MascotCard = defineAsyncComponent(() => import('../components/MascotCard.vue'))
@@ -176,6 +177,7 @@ const aiContext = (): string => {
       <section class="panel reading-panel stagger-in" style="margin-top: 18px;">
         <h3 style="margin-top: 0;">{{ t('tr.list') }}<span class="tag">{{ t('tr.listTag', { n: aspects.length }) }}</span></h3>
         <p class="hint" style="margin-top: 0;">{{ reading.overview }}</p>
+        <ApprenticeReact module="transits" :score="Math.max(20, 85 - aspects.length * 4)" />
         <div class="transit-list">
           <div
             v-for="(item, i) in reading.items"

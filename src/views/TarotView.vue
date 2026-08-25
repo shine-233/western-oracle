@@ -13,9 +13,11 @@ import { downloadShareCard } from '../lib/share'
 import { t, locale } from '../lib/i18n'
 import TarotCardItem from '../components/TarotCardItem.vue'
 import AiChat from '../components/AiChat.vue'
+import ApprenticeReact from '../components/ApprenticeReact.vue'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
 const MascotCard = defineAsyncComponent(() => import('../components/MascotCard.vue'))
+import { reflectionFor } from '../data/tarotReflections'
 
 interface DrawnCard {
   card: TarotCard
@@ -358,6 +360,8 @@ watch(allFlipped, (done) => {
           <button class="btn ghost small share-btn" @click="shareReading">{{ t('tarot.share') }}</button>
         </section>
 
+        <ApprenticeReact module="tarot" :score="Math.round(100 - (drawn.filter((d) => d.reversed).length / Math.max(drawn.length, 1)) * 50)" />
+
         <MascotCard ref="pet" id="cat" />
         <AiChat :context="aiContext" :title="t('ai.tarot.title')" :intro="t('ai.tarot.intro')" />
       </template>
@@ -399,6 +403,10 @@ watch(allFlipped, (done) => {
                     <p v-for="f in TAROT_SOURCES[detail.card.id]!.fortuneTelling" :key="f" class="reading en-quote">✦ {{ f }}</p>
                   </div>
                 </details>
+                <div class="reflect-box">
+                  <strong>🪞 {{ t('tarot.reflect') }}</strong>
+                  <p>{{ reflectionFor(detail.card.id) }}</p>
+                </div>
                 <p class="hint" style="font-style: italic;">{{ t('tarot.modalTip') }}</p>
               </div>
             </div>
@@ -661,6 +669,15 @@ watch(allFlipped, (done) => {
 }
 .src-block.src-papus { border-left-color: var(--pink); }
 .src-block.src-fortune { border-left-color: var(--mint); }
+.reflect-box {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(124, 107, 214, 0.14);
+  border-left: 3px solid var(--lavender);
+}
+.reflect-box strong { color: var(--lavender-soft); font-family: var(--cute); font-weight: 400; }
+.reflect-box p { margin: 6px 0 0; line-height: 1.9; color: var(--ink); }
 .en-quote { font-style: italic; color: var(--ink-dim); font-size: 0.88rem; margin: 4px 0 0; white-space: normal; }
 .modal-enter-active { transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
 .modal-leave-active { transition: all 0.18s ease; }

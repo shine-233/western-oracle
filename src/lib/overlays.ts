@@ -190,6 +190,67 @@ function installScrollReveal(): void {
   window.setInterval(observe, 1200)
 }
 
+/* ---------- 5. 离开彩蛋：切走标签页时标题喊你回来 + favicon 跟随月相 ---------- */
+function installTabWitch(): void {
+  const BASE_TITLE = document.title
+  let swapped = false
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      document.title = ['✧ 牌还在桌上呢…', '✧ 星星等你回来', '✧ 别走呀，水晶球还亮着'][Math.floor(Math.random() * 3)]
+    } else {
+      document.title = BASE_TITLE
+      sfx.blip()
+    }
+  })
+
+  // favicon：按今日月相换一枚小月亮（8 相位）
+  const applyFavicon = async (): Promise<void> => {
+    if (swapped) return
+    swapped = true
+    try {
+      const { moonPhase } = await import('./astrology')
+      const idx = moonPhase().index
+      // 用 emoji 绘制成 svg data-uri，无需美术资源
+      const faces = ['🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘']
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><text x="32" y="42" font-size="40" text-anchor="middle">${faces[idx] ?? '🌙'}</text></svg>`
+      const link = document.querySelector<HTMLLinkElement>("link[rel*='icon']")
+      if (link) link.href = `data:image/svg+xml,${encodeURIComponent(svg)}`
+    } catch { /* 静默 */ }
+  }
+  applyFavicon()
+}
+
+/* ---------- 6. 主题切换涟漪 + 导航转场音效 ---------- */
+let lastMouseX = innerWidth / 2
+let lastMouseY = innerHeight / 2
+
+function installThemeRipple(): void {
+  if (REDUCED) return
+  window.addEventListener('mousemove', (e) => {
+    lastMouseX = e.clientX
+    lastMouseY = e.clientY
+  }, { passive: true })
+
+  const mo = new MutationObserver(() => {
+    const el = document.createElement('div')
+    el.className = 'wo-theme-ripple'
+    el.style.left = `${lastMouseX}px`
+    el.style.top = `${lastMouseY}px`
+    document.body.appendChild(el)
+    window.setTimeout(() => el.remove(), 1000)
+    sfx.whoosh()
+  })
+  mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+}
+
+function installNavSfx(): void {
+  document.addEventListener('click', (e) => {
+    const target = e.target as Element | null
+    if (target?.closest?.('.site-nav a')) sfx.whoosh()
+  }, { passive: true })
+}
+
 /** main.ts 里调用一次 */
 export function installOverlays(): void {
   if (typeof document === 'undefined') return
@@ -197,4 +258,7 @@ export function installOverlays(): void {
   installCursor()
   installClickFeedback()
   installScrollReveal()
+  installTabWitch()
+  installThemeRipple()
+  installNavSfx()
 }

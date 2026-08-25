@@ -702,3 +702,28 @@ input:focus, select:focus, textarea:focus {
   border-color: var(--pink);
   box-shadow: 0 0 14px color-mix(in srgb, var(--pink) 28%, transparent);
 }
+
+/* ---------- 主题切换涟漪 ---------- */
+.wo-theme-ripple {
+  position: fixed;
+  z-index: 99950;
+  width: 120px;
+  height: 120px;
+  margin: -60px 0 0 -60px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--gold-bright) 30%, transparent) 0%,
+    color-mix(in srgb, var(--lavender) 18%, transparent) 45%,
+    transparent 70%
+  );
+  animation: wo-ripple 0.95s cubic-bezier(0.16, 0.84, 0.44, 1) forwards;
+}
+@keyframes wo-ripple {
+  from { transform: scale(0.3); opacity: 1; }
+  to { transform: scale(9); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wo-theme-ripple { display: none; }
+}

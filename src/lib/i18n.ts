@@ -54,6 +54,7 @@ const messages: Record<string, Pair> = {
   'nav.musicbox': ['八音盒', 'Music Box'],
   'nav.pendulum': ['灵摆', 'Pendulum'],
   'nav.orrery': ['天象仪', 'Orrery'],
+  'nav.moonbreath': ['呼吸房', 'Breath'],
   'nav.history': ['历史', 'Grimoire'],
   'nav.settings': ['设置', 'Settings'],
   'app.soundOff': ['关闭音效', 'Mute'],
@@ -118,6 +119,7 @@ const messages: Record<string, Pair> = {
   'mod.musicbox.desc': ['北斗七星八音盒：点星演奏，或让作曲骰子写一首十六步小曲。', 'The Big Dipper as a music box: play the stars or roll a 16-step tune.'],
   'mod.pendulum.desc': ['按住蓄力、松手发问的灵摆：前后为是，左右为否，画圈再等等。', 'Charge the pendulum, release, and read the swing: yes, no, or not yet.'],
   'mod.orrery.desc': ['真实天文历算驱动的太阳系轨道仪：加速时间，点行星看今日星座。', 'A real-ephemeris solar system: fast-forward time, tap planets for today\'s signs.'],
+  'mod.moonbreath.desc': ['跟着今夜月相做 4-4-6 呼吸：星环随呼吸胀缩，三轮点亮满天小星星。', 'Breathe 4-4-6 with tonight\'s moon: the ring swells and shrinks; stars light per round.'],
   'mod.history.desc': ['每一次占卜都被记进魔法书，随时回看、生成星空分享图。', 'Every reading logged in your grimoire — revisit anytime, export starry share cards.'],
 
   /* ---------- 塔罗 ---------- */
@@ -139,6 +141,7 @@ const messages: Record<string, Pair> = {
   'tarot.share': ['✦ 生成分享图', '✦ Share Image'],
   'tarot.flipHint': ['点击翻开 ✧', 'Tap to flip ✧'],
   'tarot.modalTip': ['小提示：再点一下可以收起弹窗～', 'Psst — click anywhere to close~'],
+  'tarot.reflect': ['问自己', 'Ask yourself'],
   'ai.tarot.title': ['AI 综合解读', 'AI Reading'],
   'ai.tarot.intro': ['填好 Key 后，AI 会把这几张牌串成一个故事讲给你听，还能接着追问。', 'Add a key and AI will weave your cards into one story — keep asking if you like.'],
 

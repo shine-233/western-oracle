@@ -7,6 +7,7 @@ import { addHistory } from '../lib/history'
 import { sfx } from '../lib/sfx'
 import { t } from '../lib/i18n'
 import AiChat from '../components/AiChat.vue'
+import ApprenticeReact from '../components/ApprenticeReact.vue'
 
 const MascotCard = defineAsyncComponent(() => import('../components/MascotCard.vue'))
 
@@ -186,6 +187,8 @@ watch(allRevealed, (done) => {
       <h3 style="margin-top: 0;">{{ t('rune.local') }}<span class="tag">{{ t('c.localTag') }}</span></h3>
       <div class="reading">{{ ruleReading }}</div>
     </section>
+
+    <ApprenticeReact module="runes" :score="Math.round(100 - (drawn.filter((d) => d.reversed).length / Math.max(drawn.length, 1)) * 55)" />
 
     <MascotCard ref="pet" id="golem" />
     <AiChat :context="aiContext" :title="t('ai.rune.title')" :intro="t('ai.rune.intro')" />

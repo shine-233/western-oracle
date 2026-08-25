@@ -35,6 +35,21 @@ const LAB_CARDS = [
   { id: 21, cn: '世界', en: 'The World' },
 ]
 
+const LAB_MINORS = [
+  { id: 'wands-ace', cn: '权杖王牌', en: 'Ace of Wands' },
+  { id: 'wands-7', cn: '权杖七', en: 'Seven of Wands' },
+  { id: 'wands-queen', cn: '权杖王后', en: 'Queen of Wands' },
+  { id: 'cups-ace', cn: '圣杯王牌', en: 'Ace of Cups' },
+  { id: 'cups-10', cn: '圣杯十', en: 'Ten of Cups' },
+  { id: 'cups-knight', cn: '圣杯骑士', en: 'Knight of Cups' },
+  { id: 'swords-ace', cn: '宝剑王牌', en: 'Ace of Swords' },
+  { id: 'swords-5', cn: '宝剑五', en: 'Five of Swords' },
+  { id: 'swords-page', cn: '宝剑侍从', en: 'Page of Swords' },
+  { id: 'pentacles-ace', cn: '星币王牌', en: 'Ace of Pentacles' },
+  { id: 'pentacles-9', cn: '星币九', en: 'Nine of Pentacles' },
+  { id: 'pentacles-king', cn: '星币国王', en: 'King of Pentacles' },
+]
+
 const baseUrl = ref(getAiConfig().baseUrl)
 const apiKey = ref(getAiConfig().apiKey)
 const model = ref(getAiConfig().model)
@@ -159,6 +174,24 @@ function onClearHistory(): void {
           :id="c.id"
           :name-cn="c.cn"
           :name-en="c.en"
+          :size="86"
+        />
+      </div>
+
+      <p class="hint" style="margin: 18px 0 10px;">
+        {{
+          locale === 'zh'
+            ? '小阿卡纳 56 张已开工：数字牌为经典 pip 阵型，宫廷牌四套人形模板随花色换装。样张：'
+            : 'Minors underway (56): number cards use classic pip layouts; courts are four humanoid templates re-tinted per suit. Samples:'
+        }}
+      </p>
+      <div class="arcana-lab">
+        <PixelArcanaCard
+          v-for="m in LAB_MINORS"
+          :key="m.id"
+          :card-id="m.id"
+          :name-cn="m.cn"
+          :name-en="m.en"
           :size="86"
         />
       </div>

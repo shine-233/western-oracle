@@ -113,6 +113,10 @@ export const OMENS: Pair[] = [
   ['那扇你觉得关死的门，其实只是没装把手——推推侧面看看。', 'The door you think is locked just has no handle. Try pushing from the side.'],
   ['适合删掉通讯录里那个名字。你懂的。', 'Time to delete that one contact. You know the one.'],
   ['明天穿得比平时正式一点，会有人对你多说一句话。', 'Dress one notch sharper tomorrow; someone will give you an extra sentence.'],
+  ['今天绕远路走走，你缺的不是时间是一个新视角。', 'Take the long way today. You don\'t lack time — you lack a new angle.'],
+  ['那件「以后再说」的事，就定在后天吧。别再拖第三次。', 'That "later" thing? Schedule it for the day after tomorrow. Third delay breaks the streak.'],
+  ['有人会还你一笔小钱或一个小人情，收下，别说不用。', 'Someone repays a small favor. Take it — don\'t wave it off.'],
+  ['今晚的月亮适合许一个具体的小愿，越具体越灵。', 'Tonight\'s moon takes one specific small wish. Specificity is the magic.'],
 ]
 
 /* ---------- 行星时活动宜忌 ---------- */

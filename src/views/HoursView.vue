@@ -114,12 +114,36 @@ onBeforeUnmount(() => {
   if (timer !== null) window.clearInterval(timer)
 })
 
-const dayHours = computed(() => hours.value.filter((h) => h.daytime))
-const nightHours = computed(() => hours.value.filter((h) => !h.daytime))
-
 function rangeText(h: PlanetaryHour): string {
   const f = (d: Date): string => d.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
   return `${f(h.start)} – ${f(h.end)}`
+}
+
+/* ---------- 环形行星钟几何 ---------- */
+const CX = 170
+const CY = 170
+const R_OUT = 156
+const R_IN = 122
+
+function pol(r: number, deg: number): [number, number] {
+  const rad = ((deg - 90) * Math.PI) / 180
+  return [CX + r * Math.cos(rad), CY + r * Math.sin(rad)]
+}
+
+/** 第 i（0-23）个 15° 扇环的路径 */
+function segPath(i: number): string {
+  const a1 = i * 15
+  const a2 = a1 + 15
+  const [x1, y1] = pol(R_IN, a1)
+  const [x2, y2] = pol(R_OUT, a1)
+  const [x3, y3] = pol(R_OUT, a2)
+  const [x4, y4] = pol(R_IN, a2)
+  return `M${x1.toFixed(1)},${y1.toFixed(1)} L${x2.toFixed(1)},${y2.toFixed(1)} A${R_OUT},${R_OUT} 0 0 1 ${x3.toFixed(1)},${y3.toFixed(1)} L${x4.toFixed(1)},${y4.toFixed(1)} A${R_IN},${R_IN} 0 0 0 ${x1.toFixed(1)},${y1.toFixed(1)} Z`
+}
+
+function glyphPos(i: number): { x: number; y: number } {
+  const [x, y] = pol((R_IN + R_OUT) / 2, i * 15 + 7.5)
+  return { x, y }
 }
 </script>
 
@@ -149,32 +173,39 @@ function rangeText(h: PlanetaryHour): string {
       </p>
 
       <template v-if="!polar">
-        <h4 class="seg-label">☀ {{ tt('hours.daySeg') }}</h4>
-        <div class="hour-strip">
-          <button
-            v-for="h in dayHours"
-            :key="'d' + h.index"
-            class="hour-cell day"
-            :class="{ now: currentH?.index === h.index, sel: selected?.index === h.index }"
-            @click="pick(h, $event)"
-          >
-            <i class="hc-glyph">{{ glyphOf(h.ruler) }}</i>
-            <small>{{ h.index }}</small>
-          </button>
-        </div>
+        <div class="clock-wrap">
+          <svg class="clock" viewBox="0 0 340 340" role="img" :aria-label="tt('hours.title')">
+            <!-- 刻度环底 -->
+            <circle :cx="CX" :cy="CY" :r="(R_IN + R_OUT) / 2" fill="none" stroke="transparent" />
+            <g v-for="h in hours" :key="'s' + h.index">
+              <path
+                :d="segPath(h.index - 1)"
+                class="seg"
+                :class="[h.daytime ? 'day' : 'night', { now: currentH?.index === h.index, sel: selected?.index === h.index }]"
+                @click="pick(h, $event)"
+              >
+                <title>{{ zhName(h.ruler) }} · {{ rangeText(h) }}</title>
+              </path>
+              <text
+                class="seg-glyph"
+                :class="{ dim: !(currentH?.index === h.index || selected?.index === h.index) }"
+                :x="glyphPos(h.index - 1).x"
+                :y="glyphPos(h.index - 1).y + 5"
+                @click="pick(h, $event)"
+              >{{ glyphOf(h.ruler) }}</text>
+            </g>
+            <!-- 日出/日落方位标 -->
+            <text :x="CX - 10" y="16" class="sun-mark">☀ {{ sunInfo.rise }}</text>
+            <text :x="CX + 6" y="332" class="moon-mark">🌙 {{ sunInfo.set }}</text>
+          </svg>
 
-        <h4 class="seg-label">🌙 {{ tt('hours.nightSeg') }}</h4>
-        <div class="hour-strip">
-          <button
-            v-for="h in nightHours"
-            :key="'n' + h.index"
-            class="hour-cell night"
-            :class="{ now: currentH?.index === h.index, sel: selected?.index === h.index }"
-            @click="pick(h, $event)"
-          >
-            <i class="hc-glyph">{{ glyphOf(h.ruler) }}</i>
-            <small>{{ h.index }}</small>
-          </button>
+          <div class="clock-center">
+            <template v-if="selected || currentH">
+              <i class="cc-glyph">{{ glyphOf((selected ?? currentH)!.ruler) }}</i>
+              <strong>{{ zhName((selected ?? currentH)!.ruler) }}</strong>
+              <small>{{ rangeText((selected ?? currentH)!) }}</small>
+            </template>
+          </div>
         </div>
 
         <Transition name="omen-pop">
@@ -207,38 +238,52 @@ function rangeText(h: PlanetaryHour): string {
   font-weight: 400;
   letter-spacing: 0.08em;
 }
-.hour-strip {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 7px;
+/* ---------- 环形行星钟 ---------- */
+.clock-wrap { position: relative; max-width: 460px; margin: 6px auto 0; }
+.clock { display: block; width: 100%; height: auto; user-select: none; }
+.seg {
+  cursor: pointer;
+  transition: filter 0.2s, opacity 0.2s;
+  transform-box: fill-box;
+  transform-origin: center;
 }
-@media (max-width: 700px) {
-  .hour-strip { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.seg.day { fill: color-mix(in srgb, var(--gold) 17%, var(--void-0)); stroke: color-mix(in srgb, var(--gold) 30%, transparent); stroke-width: 1; }
+.seg.night { fill: color-mix(in srgb, var(--lavender) 14%, var(--void-1)); stroke: color-mix(in srgb, var(--lavender) 26%, transparent); stroke-width: 1; }
+.seg:hover { filter: brightness(1.5); }
+.seg.sel { fill: color-mix(in srgb, var(--mint) 24%, var(--void-0)); stroke: var(--mint); }
+.seg.now {
+  animation: seg-now 2.2s ease-in-out infinite;
+  stroke: var(--pink);
+  fill: color-mix(in srgb, var(--pink) 26%, var(--void-0));
 }
-.hour-cell {
-  position: relative;
+@keyframes seg-now {
+  0%, 100% { filter: drop-shadow(0 0 3px color-mix(in srgb, var(--pink) 45%, transparent)); }
+  50% { filter: drop-shadow(0 0 12px color-mix(in srgb, var(--pink) 90%, transparent)); }
+}
+.seg-glyph {
+  font-size: 15px;
+  text-anchor: middle;
+  pointer-events: none;
+  fill: var(--gold-bright);
+  transition: opacity 0.25s;
+}
+.seg-glyph.dim { opacity: 0.55; }
+.sun-mark, .moon-mark { font-size: 13px; fill: var(--ink-dim); text-anchor: middle; }
+
+.clock-center {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
-  padding: 9px 2px 6px;
-  border-radius: 10px;
-  cursor: pointer;
-  border: 2px solid transparent;
-  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s, box-shadow 0.2s;
-  color: var(--ink);
+  justify-content: center;
+  gap: 4px;
+  pointer-events: none;
+  text-align: center;
 }
-.hour-cell.day { background: color-mix(in srgb, var(--gold) 13%, var(--void-0)); }
-.hour-cell.night { background: color-mix(in srgb, var(--lavender) 12%, var(--void-0)); }
-.hour-cell:hover { transform: translateY(-3px); border-color: var(--pink); }
-.hour-cell.sel { border-color: var(--mint); box-shadow: 0 0 12px color-mix(in srgb, var(--mint) 45%, transparent); }
-.hour-cell.now { animation: now-pulse 2s ease-in-out infinite; border-color: var(--pink); background: color-mix(in srgb, var(--pink) 22%, var(--void-0)); }
-@keyframes now-pulse {
-  0%, 100% { box-shadow: 0 0 4px color-mix(in srgb, var(--pink) 35%, transparent); }
-  50% { box-shadow: 0 0 16px color-mix(in srgb, var(--pink) 75%, transparent); }
-}
-.hc-glyph { font-style: normal; font-size: 1.25rem; line-height: 1; color: var(--gold-bright); }
-.hour-cell small { font-family: var(--pixel); font-size: 0.42rem; opacity: 0.65; }
+.cc-glyph { font-style: normal; font-size: 2.6rem; line-height: 1; color: var(--gold-bright); filter: drop-shadow(0 0 10px color-mix(in srgb, var(--gold) 55%, transparent)); }
+.clock-center strong { font-family: var(--cute); color: var(--gold-bright); font-weight: 400; font-size: 1.05rem; letter-spacing: 0.08em; }
+.clock-center small { color: var(--ink-dim); font-size: 0.78rem; }
 
 .detail-box {
   margin-top: 18px;
@@ -265,6 +310,6 @@ function rangeText(h: PlanetaryHour): string {
 .omen-pop-enter-active { transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
 .omen-pop-enter-from { opacity: 0; transform: translateY(12px) scale(0.95); }
 @media (prefers-reduced-motion: reduce) {
-  .hour-cell.now { animation: none; }
+  .seg.now { animation: none; }
 }
 </style>

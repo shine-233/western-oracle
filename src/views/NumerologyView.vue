@@ -7,6 +7,7 @@ import { addHistory } from '../lib/history'
 import { sfx } from '../lib/sfx'
 import { t } from '../lib/i18n'
 import AiChat from '../components/AiChat.vue'
+import ApprenticeReact from '../components/ApprenticeReact.vue'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
 const MascotCard = defineAsyncComponent(() => import('../components/MascotCard.vue'))
@@ -159,6 +160,7 @@ function replayChain(e?: MouseEvent): void {
     <div class="divider-star">✦ ✦ ✦</div>
 
     <section class="num-hero panel">
+      <ApprenticeReact module="numerology" :mood="[11, 22, 33].includes(result.lifePath) ? 'great' : 'good'" style="display: flex; justify-content: center;" />
       <p class="nh-label">{{ t('num.lifePath') }}</p>
       <p class="nh-value">{{ displayLifePath }}</p>
       <p class="nh-title">{{ NUMBER_MEANINGS[result.lifePath]?.title }}</p>

@@ -156,7 +156,7 @@ async function initThree(): Promise<void> {
   keyLight.position.set(3, 4, 5)
   scene.add(keyLight, new THREE.AmbientLight(0xffffff, 0.35))
 
-  // 交互：拖拽旋转整团星尘 + 滚轮推拉
+  // 交互：拖拽旋转整团星尘 + 滚轮/双指推拉 + 双击换姿态
   const group = new THREE.Group()
   scene.add(group)
   group.add(dust)
@@ -170,13 +170,37 @@ async function initThree(): Promise<void> {
   const el = renderer.domElement
   el.style.touchAction = 'none'
 
+  const pointers = new Map<number, { x: number; y: number }>()
+  let pinchDist = 0
+
+  function twoFingerDist(): number {
+    const [a, b] = [...pointers.values()]
+    return a && b ? Math.hypot(a.x - b.x, a.y - b.y) : 0
+  }
+
   const onDown = (e: PointerEvent): void => {
-    dragging = true
-    lastX = e.clientX
-    lastY = e.clientY
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
     el.setPointerCapture(e.pointerId)
+    if (pointers.size === 1) {
+      dragging = true
+      lastX = e.clientX
+      lastY = e.clientY
+    } else if (pointers.size === 2) {
+      dragging = false
+      pinchDist = twoFingerDist()
+    }
   }
   const onMove = (e: PointerEvent): void => {
+    if (!pointers.has(e.pointerId)) return
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+    if (pointers.size === 2) {
+      const d = twoFingerDist()
+      if (pinchDist > 0) {
+        camZ = Math.min(10.5, Math.max(4.6, camZ - (d - pinchDist) * 0.012))
+      }
+      pinchDist = d
+      return
+    }
     if (!dragging) return
     velY = (e.clientX - lastX) * 0.0045
     velX = (e.clientY - lastY) * 0.0045
@@ -186,17 +210,35 @@ async function initThree(): Promise<void> {
     lastY = e.clientY
   }
   const onUp = (e: PointerEvent): void => {
-    dragging = false
-    el.releasePointerCapture(e.pointerId)
+    pointers.delete(e.pointerId)
+    if (pointers.size < 2) pinchDist = 0
+    if (pointers.size === 1) {
+      const p = [...pointers.values()][0]!
+      lastX = p.x
+      lastY = p.y
+      dragging = true
+    } else {
+      dragging = false
+    }
+    if (el.hasPointerCapture?.(e.pointerId)) el.releasePointerCapture(e.pointerId)
   }
   const onWheel = (e: WheelEvent): void => {
     e.preventDefault()
     camZ = Math.min(10.5, Math.max(4.6, camZ + e.deltaY * 0.004))
   }
+  /** 双击：随机换个姿态 */
+  const onDbl = (): void => {
+    group.rotation.y += Math.PI * (0.6 + Math.random())
+    group.rotation.x = (Math.random() - 0.5) * 0.9
+    velY = 0.06 * (Math.random() < 0.5 ? -1 : 1)
+    sfx.pop()
+  }
   el.addEventListener('pointerdown', onDown)
   el.addEventListener('pointermove', onMove)
   el.addEventListener('pointerup', onUp)
+  el.addEventListener('pointercancel', onUp)
   el.addEventListener('wheel', onWheel, { passive: false })
+  el.addEventListener('dblclick', onDbl)
 
   // 换肤联动：监听 <html data-theme> 变化重取色
   const mo = new MutationObserver(() => {
@@ -253,7 +295,9 @@ async function initThree(): Promise<void> {
     el.removeEventListener('pointerdown', onDown)
     el.removeEventListener('pointermove', onMove)
     el.removeEventListener('pointerup', onUp)
+    el.removeEventListener('pointercancel', onUp)
     el.removeEventListener('wheel', onWheel)
+    el.removeEventListener('dblclick', onDbl)
     shellGeo.dispose()
     baseGeo.dispose()
     ringGeo.dispose()

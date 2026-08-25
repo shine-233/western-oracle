@@ -9,6 +9,7 @@ import { vMagnetic } from './lib/magnetic'
 import { installKonami } from './lib/konami'
 import { installOverlays } from './lib/overlays'
 import { initThemes } from './lib/themes'
+import { installMotionGlobal } from './lib/motionGlobal'
 
 const app = createApp(App).use(router)
 app.directive('reveal', vReveal)
@@ -17,3 +18,4 @@ initThemes()
 app.mount('#app')
 installKonami()
 installOverlays()
+installMotionGlobal()

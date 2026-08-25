@@ -42,6 +42,7 @@ const modules = [
   { to: '/musicbox', glyph: '✦', title: 'nav.musicbox', desc: 'mod.musicbox.desc' },
   { to: '/pendulum', glyph: '🜨', title: 'nav.pendulum', desc: 'mod.pendulum.desc' },
   { to: '/orrery', glyph: '🪐', title: 'nav.orrery', desc: 'mod.orrery.desc' },
+  { to: '/moonbreath', glyph: '🌕', title: 'nav.moonbreath', desc: 'mod.moonbreath.desc' },
   { to: '/history', glyph: '📜', title: 'nav.history', desc: 'mod.history.desc' },
 ]
 
