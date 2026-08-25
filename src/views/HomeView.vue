@@ -9,6 +9,7 @@ import { PLANETS } from '../data/corpus'
 import { loadJSON } from '../lib/storage'
 import { vTilt } from '../lib/tilt'
 import { t, locale } from '../lib/i18n'
+import StreakBadge from '../components/StreakBadge.vue'
 
 const VoxelWitch3D = defineAsyncComponent(() => import('../components/VoxelWitch3D.vue'))
 
@@ -89,6 +90,10 @@ const greeting = computed(() => {
       <p class="dc-sub"><RouterLink to="/tarot" class="mini-link">{{ t('home.luna.go') }}</RouterLink></p>
     </div>
   </section>
+
+  <div style="display: flex; justify-content: center; margin: 16px 0 4px;">
+    <StreakBadge />
+  </div>
 
   <!-- 今日星历 -->
   <section class="panel almanac stagger-in">

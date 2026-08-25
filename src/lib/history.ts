@@ -1,5 +1,6 @@
 /** 占卜历史：localStorage 持久化，上限 200 条（新的在前） */
 import { loadJSON, removeKey, saveJSON } from './storage'
+import { recordDivination } from './streak'
 
 export type HistoryType = 'tarot' | 'rune' | 'numerology' | 'astrology' | 'synastry' | 'transit'
 
@@ -24,6 +25,7 @@ export function getHistory(): HistoryEntry[] {
 }
 
 export function addHistory(entry: Omit<HistoryEntry, 'id' | 'createdAt'>): void {
+  recordDivination()
   const list = getHistory()
   list.unshift({
     ...entry,
