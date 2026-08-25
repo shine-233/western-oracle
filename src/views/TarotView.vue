@@ -8,6 +8,8 @@ import { useEscClose } from '../lib/useEsc'
 import { cardImageUrl } from '../data/tarot'
 import { WAITE_MEANINGS } from '../data/waiteMeanings'
 import { TAROT_SOURCES } from '../data/tarotSources'
+import { TAROT_MODERN } from '../data/tarotModern'
+import { BOOK_T_DECANS } from '../data/bookTDecans'
 import { addHistory } from '../lib/history'
 import { downloadShareCard } from '../lib/share'
 import { t, locale } from '../lib/i18n'
@@ -402,6 +404,29 @@ watch(allFlipped, (done) => {
                     <strong>Fortune Telling · McElroy</strong>
                     <p v-for="f in TAROT_SOURCES[detail.card.id]!.fortuneTelling" :key="f" class="reading en-quote">✦ {{ f }}</p>
                   </div>
+                  <div v-if="BOOK_T_DECANS[detail.card.id]" class="src-block src-decan">
+                    <strong>Golden Dawn 十度分金 · Book T</strong>
+                    <p class="reading en-quote">
+                      {{ BOOK_T_DECANS[detail.card.id]!.sign }} {{ BOOK_T_DECANS[detail.card.id]!.fromDegree }}°–{{ BOOK_T_DECANS[detail.card.id]!.toDegree }}°
+                      · 守护 {{ BOOK_T_DECANS[detail.card.id]!.ruler }} · “{{ BOOK_T_DECANS[detail.card.id]!.gdTitle }}”
+                    </p>
+                  </div>
+                  <div v-if="TAROT_MODERN[detail.card.id]" class="src-block src-modern">
+                    <strong>现代语境四域 · Tarotoo (MIT)</strong>
+                    <template v-if="!detail.reversed">
+                      <p class="reading">♥ 恋爱：{{ TAROT_MODERN[detail.card.id]!.love }}</p>
+                      <p class="reading">💼 事业：{{ TAROT_MODERN[detail.card.id]!.career }}</p>
+                      <p class="reading">🌙 情绪：{{ TAROT_MODERN[detail.card.id]!.mood }}</p>
+                      <p class="reading">✨ 灵性：{{ TAROT_MODERN[detail.card.id]!.spiritual }}</p>
+                    </template>
+                    <template v-else>
+                      <p class="reading">♥ 恋爱：{{ TAROT_MODERN[detail.card.id]!.loveReversed }}</p>
+                      <p class="reading">💼 事业：{{ TAROT_MODERN[detail.card.id]!.careerReversed }}</p>
+                      <p class="reading">🌙 情绪：{{ TAROT_MODERN[detail.card.id]!.moodReversed }}</p>
+                      <p class="reading">✨ 灵性：{{ TAROT_MODERN[detail.card.id]!.spiritualReversed }}</p>
+                    </template>
+                    <p class="reading en-quote">Yes/No: {{ detail.reversed ? TAROT_MODERN[detail.card.id]!.yesNoReversed : TAROT_MODERN[detail.card.id]!.yesNo }}</p>
+                  </div>
                 </details>
                 <div class="reflect-box">
                   <strong>🪞 {{ t('tarot.reflect') }}</strong>
@@ -669,6 +694,8 @@ watch(allFlipped, (done) => {
 }
 .src-block.src-papus { border-left-color: var(--pink); }
 .src-block.src-fortune { border-left-color: var(--mint); }
+.src-block.src-decan { border-left-color: var(--gold); }
+.src-block.src-modern { border-left-color: var(--pink-soft); }
 .reflect-box {
   margin-top: 14px;
   padding: 12px 14px;

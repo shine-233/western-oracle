@@ -63,10 +63,12 @@ INLINE_HEADER_RE = re.compile(r"(?<=[a-z,;.])\s+[A-Z][A-Z&\x27\s]{7,60}\s\d{1,3}
 INLINE_HEADER_NUM_FIRST_RE = re.compile(r"(?<=[a-z,;.])\s+\d{1,3}\s+[A-Z][A-Z&\x27\s]{5,55}(?=\s+[a-z])")
 
 
-# 已知书名页眉的兜底清除（OCR 页码可被损坏为 'XI'/'xf>4' 等任意噪声）
+# 已知书名页眉的兜底清除。
+# 前缀只允许「短噪声 token + 页码」（如 'XI 8'、'xf>4'），不允许长字母串，
+# 避免吞掉紧邻页眉的正文单词（如 'preferment. 124 FIXED...'）。
 KNOWN_HEADER_RES = [
-    re.compile(r"[A-Za-z>&\./\d\s]{0,18}FIXED STARS AND CONSTELLATIONS\.?[ \t]*"),
-    re.compile(r"[A-Za-z>&\./\d\s]{0,18}INFLUENCE OF STARS AND NEBUL[AE/.X\s]{0,8}"),
+    re.compile(r"(?:^|\s)[A-Za-z>&\.]{0,4}[ \t]?\d{0,3}[ \t]?FIXED STARS AND CONSTELLATIONS\.?[ \t]*"),
+    re.compile(r"(?:^|\s)[A-Za-z>&\.]{0,4}[ \t]?\d{0,3}[ \t]?INFLUENCE OF STARS AND NEBUL[AE/.X\s]{0,8}"),
 ]
 
 

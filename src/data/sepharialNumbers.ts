@@ -1,0 +1,95 @@
+/**
+ * Sepharial《The Kabala of Numbers》(约1911, 公版)：
+ * Minor Key 数字 1-9 含义与对应行星、问事所思、合成数释义表。
+ * 由 research/pipeline 自动生成，请勿手改。
+ */
+export interface NumberMeaning {
+  meaning: string
+  planet?: string
+}
+
+export const KABALA_MINOR_KEY: Record<string, NumberMeaning> = {
+  '1': { meaning: 'individuality and possible egotism, self- reliance, affirmation, distinction.', planet: 'Sun' },
+  '2': { meaning: 'Relationship, psychic attraction, emotion, sympathy or antipathy, doubt, vacillation.', planet: 'Moon' },
+  '3': { meaning: 'Expansion, increase, intellectual capacity, riches and success.', planet: 'Jupiter' },
+  '4': { meaning: 'Realisation, property, possession, credit and position, materiality.', planet: 'Earth' },
+  '5': { meaning: 'Reason, logic, ethics, travelling, commerce, utility.', planet: 'Mercury' },
+  '6': { meaning: 'Co-operation, marriage, reciprocity, sympathy, play, art, music, dancing.', planet: 'Venus' },
+  '7': { meaning: 'Equilibrium, contracts, agreements, treaties, bargains, harmony or discord.', planet: 'Moon' },
+  '8': { meaning: 'Reconstruction, death, negation, decay, loss, extinction, going out.', planet: 'Saturn' },
+  '9': { meaning: 'Penetration, strife, energy, enterprise, dividing, anger, keenness.', planet: 'Mars' },
+}
+
+export const KABALA_THINGS_THOUGHT: Record<string, string> = {
+  '1': 'You think of position, of elevation, things above you, a',
+  '2': 'Of distance, things remote, a journey or a foreign land.',
+  '3': 'You think of a personal event, an ailment, probably a fever, heat, or anger.',
+  '4': 'Of a domestic affair. The family circle. Love and pleasure; of the heart, or something greatly desired.',
+  '5': 'Of marriage; an understanding or agreement; of things in union or harmony.',
+  '6': 'Of news, things related, a brother, means of communication, journeys.',
+  '7': 'Of a house, of things underground, of land or water in expanse, of the ocean, change, or removal.',
+  '8': 'Of antique things or foreign products, a foreign country, of the Orient.',
+  '9': 'Of a death or loss, of defective contracts, of means of restitution.',
+}
+
+export const KABALA_RESULTANTS: Record<string, string> = {
+  '10': 'Of an unfortunate alliance, troublesome agreement, or disputation. 1 1. Of the value of properly, a mine, or matter relating to real estate.',
+  '12': 'Of pleasant surroundings, some festivity, gala, convivial meeting, fine clothes and personal comforts.',
+  '13': 'Of money, speculative matters, gain.',
+  '14': 'Of a short journey, a cruise, or matters connected with messages across the water; a female relation.',
+  '15': 'Of a bereavement or death; funereal vestments, mourning; a loss or misfortune.',
+  '16': 'Of a fortunate and happy alliance, a wife, a good understanding or agreement. 112',
+  '17': 'Of a servant; or nearer to yourself, of some discomfort, disease, or ailment.',
+  '18': 'Of a pleasant journey; a thing of gold; love, domesticity, or joy; a brother, or a message desired.',
+  '19': 'Of some restraint, confinement, imprisonment, seclusion; a child.',
+  '20': 'Of a journey or letter; something carried; yourself in communication with another; a roadway.',
+  '21': 'Of gain, money, some financial advantage, things in possession, of something white and silvery, a rupee.',
+  '22': 'Of an unfortunate marriage or a sick partner, a bad contract, difficulties, an enemy or rival.',
+  '23': 'Of good living, rich clothes, plentiful food, faithful servants, good health, creature comforts, position.',
+  '24': 'Of uncertain position; a family dispute; children; an unfortunate venture; illicit love affairs.',
+  '25': 'Of much gain, great wealth, gold, the sun, something shining or brilliant.',
+  '26': 'Of peaceful possession, good property, the house, of level ground, foundations. 27.A closed place or room, a short journey by boat; of a brother, or person in relation to yourself; a letter or a messenger. 2 8. Of yourself in imagination; of white linen; a bowl or silver pot; a new moon.',
+  '29': 'Of ill-health; a blood disorder; poor fare; a time of poverty and trial. 113',
+  '30': 'Of happy children, a pleasant experience, union, a fortunate dowry or legacy.',
+  '31': 'Of something underground, a snake in the house, a scorpion or reptile, a foreign land. 3 2. Of a king or rajah, a golden vestment, the sun, your own individuality and character. 3 3. Of a pleasant message, a good position, a brother, some distinction.',
+  '34': 'Of financial benefit, a purchase of food or other necessaries, grain, etc., some corporeal benefit. 3 5. Of a female, a birth, a plot or scheme, something secret to yourself; a confinement. 3 6. Of a loss by speculation, a sick child, an unhappy family, misery and trouble. 3 7. Of an unfortunate contract, an unhappy marriage, a house or property, a stable. 3 8. Of a death by malaria or enteric fever; of a journey, a message; of a sister; a neighbouring tank or pool. 3 9. Of a closed place or tem',
+  '40': 'Of money, things of value, jewels or apparel, the price of grain.',
+  '41': 'Of yourself or your figure, your apparel, investiture, food, position, credit.',
+  '42': 'Of a friend, a woman of quality, a patroness or her favour, a gathering of people, a convention.',
+  '43': 'Of ancestral property, an old man, an old building, the value of minerals, a cemetery.',
+  '44': 'Of a brother, a letter from across the seas or from a great distance, a book of theology, a sastra, of good health, of personal comforts, a luxury. 114',
+  '45': 'Of a marriage, of gain or loss, a thing of small value, an anna, tilt, bias, inequality, fraud.',
+  '46': 'Of a friend, a man of position and honour; something of gold, of value, a jewel, a ring of gold.',
+  '47': 'Of yourself, of justice, of equity, of value, measure, weight, proportion, peace, satisfaction, rest, a death.',
+  '48': 'Of a robing-room, a private place, a servant in hiding, a woman\'s health, of news from a distance.',
+  '49': 'Of a change of position, your own mother, a thing of distinction, a capitol, a woman in power, a queen or rani.',
+  '50': 'Of a painful journey, a sister in distress, a doleful message, a call to office.',
+  '51': 'Of gain and affluence, a stake or bet, of children, money from afar, a profession.',
+  '52': 'Of personal disease or death, things lost, hidden, or occult, of a manservant; a red cloth; hot food; a doctor; yama; a reptile.',
+  '53': 'Of high office, the rajah or king, a man in power, loss of gold, a dead lion.',
+  '54': 'Of a dangerous illness, a woman in distress, of a wife, a girl, a contract or agreement, four walls. 5 5. Of a death, alost paper, a message gone astray, a young girl, a gathering, a friend.',
+  '56': 'Of a foreign country beyond the seas, of a sea voyage, a s\'akti, a religious gathering, a publication, a ship, a ghost. 5 7. Of acquired wealth, a hoard or store, a pension or inheritance, a male relative. 5 8. Of acquisition, personal influence, a grandee, 115 vakil or lawyer, a judge, guru or prohita, instruction, the Vedas, a Brahmin; personal property, estate.',
+  '59': 'Of a death-chamber, a hospital or sick-room, a male child; the household fire, a venture or hazard.',
+  '60': 'Of a Parsee; a religious ceremony; a foreign king; a Rishi; samadhi; Brahma; the sun of heaven; I\'shvara; time.',
+  '61': 'Of food; trading; fine apparel; a male friend; a market-place or exchange; a manservant; a Vaishnavite Brahmin.',
+  '62': 'Of a writing or agreement; an undertaking or contract; a legal process; position; mastership; a father.',
+  '63': 'Of a dead woman; some lost property; a winding- sheet or death cloth; a waning moon; the wife\'s dowry; an ablution.',
+  '64': 'Of yourself in regard to position; of acquired property; an inheritance; an old man; duration; a bargain or exchange.',
+  '65': 'Of a short journey and return; going and coming; a foot journey; a closed room; a fortunate confinement; a sister; a mantram. 6 6. A smashana or burning ground; a rocky place; minerals; a medical adviser; a dead friend; a burning house; dry ground or sand. 67.A dead rajah; the loss of gold; the wife\'s dowry; a girdle; a sick child. 6 8. Of a female child; the home circle; a position of trust; security.',
+  '69': 'Of clothing; a servant; a ship; merchandise; 116 food stuffs; trade; a thing of science; a vedanga.',
+  '70': 'Of a wife; an agreement; a public gathering; a full moon.',
+  '71': 'A water pot or kumbha; an old association; a friend; yourself with others in company; a private place or room; a warder.',
+  '72': 'Of wealth; a princely friend; a Brahmin; a religious meeting; of sandals and things in pairs.',
+  '73': 'Of a brother; a position; the death of a ruler; a quick journey; an angry message; honours; succession; a writing.',
+  '74': 'Of a brilliant sun; a great shining; eyesight; a proud wife; a powerful enemy; hunting.',
+  '75': 'Of a pleasant place; a rich estate; moksha; buried treasure; cattle.',
+  '76': 'Of a son; a place of learning; a schoolhouse; a bride; a Bramhachari.',
+  '77': 'Of a white turban or dhoti; a serving-maid; medicine; water; drinking.',
+  '78': 'Of an aged friend; an institution; an old alliance; a hospital; a man in prison.',
+  '79': 'Of oneself; of increase and prosperity, position, power, and affluence; of extremities, the feet; a pair of sandals; an understanding; a judge or advocate.',
+  '80': 'Of gain; a risk of loss; a loss by fire; of a foreign land; a far-off death; a pralaya; a voyage.',
+  '81': 'Of a rich relative; fine apparel; golden ornaments; personal health; ripe fruit.',
+  '82': 'Of a peaceful death; a rich dowry; a 117 pleasant message; an elephant ride; a journey for profit; a sister.',
+  '83': 'Of trading; a treaty or agreement; a lease of property; a gateway or passage; a bride or betrothal.',
+  '84': 'Of a daughter; a tank or bathing-place; a public festival; Durga; a holiday; clean linen; of one beloved. At this point the enumerations cease, since there are numbers employed and none can be more than 9, so that 9 + 3 = 84 will complete the resolutions. There are, it will be observed, several interpretations to each resultant number, but when the kabala is worked out to its finality, there is little doubt as to which interpretation to use. Thus, from the resultant figures 36 I obtain, by chang',
+}

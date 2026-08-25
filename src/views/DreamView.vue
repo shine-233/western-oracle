@@ -1,6 +1,6 @@
 <script setup lang="ts">
-/** 解梦词典：搜索 + 分类浏览 + 挑三个元素组合解梦 */
-import { computed, ref } from 'vue'
+/** 解梦词典：搜索 + 分类浏览 + 挑三个元素组合解梦 + Miller 公版扩展词典（懒加载） */
+import { computed, ref, watch } from 'vue'
 import {
   DREAM_CATEGORY_CN,
   VIBE_CN,
@@ -17,6 +17,34 @@ const zh = computed(() => locale.value === 'zh')
 
 const keyword = ref('')
 const category = ref<DreamCategory | 'all'>('all')
+
+/* ---------- Miller 扩展词典（1901 公版，2250 词条，动态 import 懒加载） ---------- */
+interface MillerEntry { term: string; meanings: string[] }
+const miller = ref<MillerEntry[] | null>(null)
+const millerLoading = ref(false)
+let millerRequested = false
+
+async function loadMiller(): Promise<void> {
+  millerRequested = true
+  millerLoading.value = true
+  try {
+    const mod = await import('../data/dreamsMiller')
+    miller.value = mod.MILLER_DREAMS
+  } finally {
+    millerLoading.value = false
+  }
+}
+
+watch(keyword, (kw) => {
+  if (!millerRequested && kw.trim().length >= 2) void loadMiller()
+})
+
+const millerMatches = computed<MillerEntry[]>(() => {
+  const kw = keyword.value.trim().toLowerCase()
+  if (!miller.value || kw.length < 2) return []
+  const hits = miller.value.filter((e) => e.term.toLowerCase().includes(kw))
+  return hits.slice(0, 12)
+})
 
 const filtered = computed(() => {
   const list = searchDreams(keyword.value)
@@ -141,6 +169,29 @@ const reading = computed(() => {
       </Transition>
     </section>
 
+    <!-- Miller 扩展词典（1901 公版，懒加载） -->
+    <section
+      v-if="millerLoading || millerMatches.length > 0 || (millerRequested && !millerLoading && keyword.trim().length >= 2 && millerMatches.length === 0)"
+      class="panel miller-panel"
+    >
+      <div class="mixer-head">
+        <h3 style="margin: 0;">
+          📜 {{ zh ? 'Miller 扩展词典 · 1901' : 'Miller Extended Dictionary · 1901' }}
+          <span class="tag">公版 · 英文检索</span>
+        </h3>
+        <small v-if="miller" class="hint" style="margin: 0;">{{ miller.length }} entries</small>
+      </div>
+      <p v-if="millerLoading" class="hint" style="margin: 10px 0 0;">{{ zh ? '正在召唤 125 年前的梦…' : 'Summoning dreams from 1901…' }}</p>
+      <ul v-else-if="millerMatches.length" class="miller-list">
+        <li v-for="m in millerMatches" :key="m.term">
+          <strong>{{ m.term }}</strong>
+          <p>{{ m.meanings[0] }}</p>
+          <p v-if="m.meanings[1]" class="miller-more">{{ m.meanings[1] }}</p>
+        </li>
+      </ul>
+      <p v-else class="hint" style="margin: 10px 0 0;">{{ zh ? 'Miller 词典里没有匹配的英文词条——试试 snake、water、teeth 这类词。' : 'No match in Miller — try English words like snake, water, teeth.' }}</p>
+    </section>
+
     <!-- 词条网格 -->
     <div class="dream-grid">
       <article
@@ -236,4 +287,24 @@ const reading = computed(() => {
 .pop-enter-from { opacity: 0; transform: translateY(10px) scale(0.96); }
 .pop-leave-active { transition: all 0.15s ease; }
 .pop-leave-to { opacity: 0; }
+
+/* ---------- Miller 扩展词典 ---------- */
+.miller-panel { margin-top: 16px; border-color: color-mix(in srgb, var(--gold) 35%, transparent); }
+.miller-list {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
+}
+.miller-list li {
+  padding: 10px 12px;
+  background: rgba(13, 11, 32, 0.6);
+  border-left: 3px solid var(--gold);
+  border-radius: 8px;
+}
+.miller-list strong { color: var(--gold-bright); font-family: var(--cute); font-weight: 400; }
+.miller-list p { margin: 4px 0 0; font-size: 0.82rem; line-height: 1.75; color: var(--ink); }
+.miller-list p.miller-more { opacity: 0.72; font-size: 0.76rem; }
 </style>
