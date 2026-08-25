@@ -5,9 +5,25 @@
  */
 import { computed, ref } from 'vue'
 import { APPRENTICES, type MoodKey } from '../data/apprenticeProfiles'
+import { MASCOTS, mascotVoxels } from '../data/mascots'
 import { locale } from '../lib/i18n'
 import { sfx } from '../lib/sfx'
 import { sparkleFromEvent } from '../lib/sparkle'
+
+/** 当前角色的像素预览块（与体素模型同一份精灵数据） */
+const spritePixels = computed(() => {
+  const def = MASCOTS[who.value.id]
+  if (!def) return []
+  return mascotVoxels(def)
+})
+const spriteW = computed(() => {
+  const def = MASCOTS[who.value.id]
+  return def ? Math.max(...def.sprite.map((r) => r.length)) : 20
+})
+const spriteH = computed(() => {
+  const def = MASCOTS[who.value.id]
+  return def ? def.sprite.length : 22
+})
 
 const activeId = ref(APPRENTICES[0]!.id)
 const moodFilter = ref<MoodKey | null>(null)
@@ -60,16 +76,32 @@ function toggleMood(k: MoodKey): void {
       </button>
     </div>
 
-    <!-- 档案卡 -->
-    <Transition name="ap-swap" mode="out-in">
-      <article :key="who.id" class="ap-card">
-        <header class="ap-head">
-          <span class="ap-big" :style="{ color: who.color }">{{ who.glyph }}</span>
-          <div>
-            <strong class="ap-name">{{ zh ? who.nameZh : who.nameEn }}</strong>
-            <small>{{ zh ? who.roleZh : who.roleEn }}</small>
-          </div>
-        </header>
+        <!-- 档案卡 -->
+        <Transition name="ap-swap" mode="out-in">
+          <article :key="who.id" class="ap-card">
+            <header class="ap-head">
+              <svg
+                class="ap-sprite"
+                :viewBox="`0 0 ${spriteW} ${spriteH}`"
+                role="img"
+                :aria-label="zh ? who.nameZh : who.nameEn"
+              >
+                <rect
+                  v-for="(p, i) in spritePixels"
+                  :key="i"
+                  :x="p.x + 0.02"
+                  :y="p.y + 0.02"
+                  width="0.96"
+                  height="0.96"
+                  :fill="p.color"
+                />
+              </svg>
+              <div>
+                <strong class="ap-name">{{ zh ? who.nameZh : who.nameEn }}</strong>
+                <small>{{ zh ? who.roleZh : who.roleEn }}</small>
+                <span class="ap-glyph-note">{{ who.glyph }} · {{ zh ? '露娜同门' : 'Luna\'s coven' }}</span>
+              </div>
+            </header>
 
         <p class="ap-trait">✧ {{ zh ? who.traitZh : who.traitEn }}</p>
         <p class="ap-story">{{ zh ? who.storyZh : who.storyEn }}</p>
@@ -125,8 +157,21 @@ function toggleMood(k: MoodKey): void {
 .ap-tab.on { border-color: var(--ac); background: rgba(124, 107, 214, 0.22); color: var(--gold-bright); }
 .ap-glyph { font-size: 1.05rem; }
 
-.ap-head { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
-.ap-big { font-size: 2.3rem; filter: drop-shadow(0 0 12px currentColor); }
+.ap-head { display: flex; align-items: center; gap: 16px; margin-bottom: 10px; }
+.ap-sprite {
+  width: 74px;
+  flex-shrink: 0;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.4));
+}
+.ap-glyph-note {
+  display: inline-block;
+  margin-top: 4px;
+  font-family: var(--pixel);
+  font-size: 0.5rem;
+  letter-spacing: 0.12em;
+  color: var(--ac, var(--lavender-soft));
+}
 .ap-name {
   display: block;
   font-family: var(--cute);

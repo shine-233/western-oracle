@@ -40,6 +40,8 @@ const modules = [
   { to: '/dreams', glyph: '🌙', title: 'nav.dreams', desc: 'mod.dreams.desc' },
   { to: '/palmistry', glyph: '🖐', title: 'nav.palmistry', desc: 'mod.palmistry.desc' },
   { to: '/musicbox', glyph: '✦', title: 'nav.musicbox', desc: 'mod.musicbox.desc' },
+  { to: '/pendulum', glyph: '🜨', title: 'nav.pendulum', desc: 'mod.pendulum.desc' },
+  { to: '/orrery', glyph: '🪐', title: 'nav.orrery', desc: 'mod.orrery.desc' },
   { to: '/history', glyph: '📜', title: 'nav.history', desc: 'mod.history.desc' },
 ]
 

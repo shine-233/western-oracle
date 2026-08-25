@@ -13,6 +13,8 @@ import { sfx } from '../lib/sfx'
 import { sparkleFromEvent } from '../lib/sparkle'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
+import type * as THREE_NS from 'three'
+
 const question = ref('')
 const gazing = ref(false)
 const asked = ref(false)
@@ -115,10 +117,10 @@ async function initThree(): Promise<void> {
   const cubeMat = new THREE.MeshBasicMaterial({ vertexColors: false })
   const dust = new THREE.InstancedMesh(cubeGeo, cubeMat, COUNT)
 
-  interface Star { pos: THREE.Vector3; axis: THREE.Vector3; speed: number }
+  interface Star { pos: THREE_NS.Vector3; axis: THREE_NS.Vector3; speed: number }
   const dummy = new THREE.Object3D()
   const stars: Star[] = []
-  const palette = (): THREE.Color[] => [
+  const palette = (): THREE_NS.Color[] => [
     new THREE.Color(cssVar('--pink', '#ff9fce')),
     new THREE.Color(cssVar('--gold', '#f5c86e')),
     new THREE.Color(cssVar('--mint', '#7de8c3')),
@@ -216,13 +218,11 @@ async function initThree(): Promise<void> {
   const tick = (): void => {
     if (disposed) return
     if (!dragging && !reducedMotion) {
-      group.rotation.y += velX === 0 ? 0 : velY * 0.9
-      group.rotation.y += 0.0035 * spinBoost
-      group.rotation.x += velX * 0.9
+      group.rotation.y += 0.0035 * spinBoost + velY
+      group.rotation.x = Math.min(1.1, Math.max(-1.1, group.rotation.x + velX))
       // 惯性衰减回默认自转
       velY *= 0.94
       velX *= 0.9
-      if (Math.abs(velX) < 0.0015) velX = 0
     }
     camera.position.z += (camZ - camera.position.z) * 0.08
     // 呼吸缩放

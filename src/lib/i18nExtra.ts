@@ -53,6 +53,8 @@ const M: Record<string, Pair> = {
   'sr.vsNatal': ['回归 × 本命 主要相位', 'SR × natal key aspects'],
   'sr.ascInHouse': ['回归上升落在你本命第 {n} 宫', 'SR Ascendant falls in your natal house {n}'],
   'sr.done': ['已排好今年回归盘。', 'This year\'s return chart is ready.'],
+  'sr.until': ['距离你的年度重启还有', 'Your yearly reboot arrives in'],
+  'sr.since': ['本次年度重启已过去', 'Your yearly reboot was'],
 }
 export function tt(key: string, params?: Record<string, string | number>): string {
   const pair = M[key]
@@ -104,6 +106,13 @@ export const OMENS: Pair[] = [
   ['今天适合把想说的话发出去，对方正等着。', 'Send the message you\'ve drafted. They\'re waiting.'],
   ['旧物里藏着线索，翻翻抽屉和相册。', 'Clues hide in old things — check drawers and albums.'],
   ['你的对手也在熬夜，但你可以不用熬，赢在效率不在时长。', 'Your rival stays up late too. You don\'t have to — win on efficiency, not hours.'],
+  ['想学的那个东西今晚就打开看十分钟，别收藏了就当学会了。', 'Open that thing you want to learn tonight — ten minutes. Stop bookmarking as if it counts.'],
+  ['最近总遇到的那只猫/狗/小孩，是提醒你生活还有点甜。', 'That cat/dog/kid keeps crossing your path — a reminder life still has sugar in it.'],
+  ['这周把欠人家的那句谢谢说了，运气喜欢有来有回。', 'Say the thank-you you owe this week. Luck likes reciprocity.'],
+  ['手机少刷一小时，你会突然想起来自己原来喜欢什么。', 'One hour less scrolling, and you\'ll suddenly remember what you actually enjoy.'],
+  ['那扇你觉得关死的门，其实只是没装把手——推推侧面看看。', 'The door you think is locked just has no handle. Try pushing from the side.'],
+  ['适合删掉通讯录里那个名字。你懂的。', 'Time to delete that one contact. You know the one.'],
+  ['明天穿得比平时正式一点，会有人对你多说一句话。', 'Dress one notch sharper tomorrow; someone will give you an extra sentence.'],
 ]
 
 /* ---------- 行星时活动宜忌 ---------- */
@@ -112,36 +121,43 @@ export const PLANET_GOOD: Record<string, Pair[]> = {
     ['还债、理账', 'Paying debts, bookkeeping'],
     ['定规矩、立边界', 'Setting rules and boundaries'],
     ['清理旧物、告别过去', 'Decluttering, letting go'],
+    ['做长期计划', 'Long-term planning'],
   ],
   Jupiter: [
     ['签约、谈合作', 'Signing, partnerships'],
     ['学习、考证、请教前辈', 'Studying, asking a mentor'],
     ['理财规划', 'Financial planning'],
+    ['出门远行、订机票', 'Travel booking'],
   ],
   Mars: [
     ['运动、比赛、硬仗', 'Workouts, contests, hard pushes'],
     ['断舍离下狠手', 'Ruthless decluttering'],
     ['修理东西', 'Fixing and repairing'],
+    ['当面把话说明白', 'Saying hard things face to face'],
   ],
   Sun: [
     ['汇报、演讲、露脸', 'Presentations, showing up'],
     ['见长辈或上级', 'Meeting seniors or bosses'],
     ['拍形象照、更新简介', 'Photos, updating profiles'],
+    ['给自己定个奖赏', 'Rewarding yourself'],
   ],
   Venus: [
     ['约会、表白、和好', 'Dates, confessions, making up'],
     ['打扮、买衣服、护肤', 'Grooming, shopping'],
     ['看展、听音乐', 'Art shows, music'],
+    ['下厨做道好菜', 'Cooking something lovely'],
   ],
   Mercury: [
     ['写方案、回邮件', 'Writing, replying to emails'],
     ['谈判、面试、考试', 'Negotiations, interviews, exams'],
     ['短途出行、取快递', 'Short trips, errands'],
+    ['整理文件和桌面', 'Organizing files and desks'],
   ],
   Moon: [
     ['做饭、收拾屋子', 'Cooking, tidying home'],
     ['陪家人、照顾情绪', 'Family time, self-care'],
     ['睡觉补觉', 'Catching up on sleep'],
+    ['泡个热水澡', 'A long hot bath'],
   ],
 }
 
@@ -166,6 +182,12 @@ export const CRYSTAL_GOODFOR: Pair[] = [
   ['动手做手工', 'Making things by hand'],
   ['给旧友发消息', 'Messaging an old friend'],
   ['把钱放定存', 'Parking money safely'],
+  ['翻出相册看一晚', 'An evening with old photos'],
+  ['把计划写下来再睡', 'Writing plans before bed'],
+  ['去菜市场逛一圈', 'Wandering a market'],
+  ['认真吃一顿早饭', 'A proper breakfast'],
+  ['删掉一个坏习惯的入口', 'Deleting one bad habit trigger'],
+  ['给自己买束花', 'Buying yourself flowers'],
 ]
 
 /* ---------- 水晶球内部用：按日期+问题稳定取签 ---------- */

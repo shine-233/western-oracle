@@ -190,6 +190,20 @@ const srMomentText = computed(() => {
   })
 })
 
+/** 距回归时刻的天数：未来为「还有」，过去为「已过」 */
+const srCountdown = computed(() => {
+  const d = srMoment.value
+  if (!d) return null
+  const diffMs = d.getTime() - Date.now()
+  const days = Math.abs(diffMs) / 86400000
+  return { past: diffMs < 0, days: days.toFixed(1) }
+})
+
+function zhDay(): string {
+  if (locale.value === 'zh') return '天'
+  return Number(srCountdown.value?.days ?? 0) === 1 ? 'day' : 'days'
+}
+
 /** 黄经落在第几宫（按本命宫头数组，含跨双鱼回绕） */
 function houseOfLon(lon: number, cusps: number[]): number {
   for (let i = 0; i < cusps.length; i++) {
@@ -408,6 +422,10 @@ export default {}
         </button>
         <template v-else>
           <p class="sr-moment">⏱ {{ tt('sr.moment') }}：{{ srMomentText }}</p>
+          <p v-if="srCountdown" class="sr-count" :class="{ past: srCountdown.past }">
+            {{ srCountdown.past ? tt('sr.since') : tt('sr.until') }}
+            <strong>{{ srCountdown.days }}</strong> {{ zhDay() }}
+          </p>
           <p v-if="srAscHouse" class="sr-asc">↑ {{ tt('sr.ascInHouse', { n: srAscHouse }) }}</p>
           <div class="astro-layout" style="margin-top: 14px;">
             <div v-tilt="5">
@@ -480,6 +498,17 @@ export default {}
 
 <style scoped>
 .sr-moment { margin: 12px 0 4px; color: var(--gold-bright); font-family: var(--cute); letter-spacing: 0.04em; }
+.sr-count { margin: 2px 0 8px; color: var(--ink); font-size: 0.95rem; }
+.sr-count strong {
+  display: inline-block;
+  color: var(--pink);
+  font-family: var(--pixel);
+  font-size: 1rem;
+  margin: 0 4px;
+  animation: sr-tick 2.6s ease-in-out infinite;
+}
+.sr-count.past strong { color: var(--mint); animation: none; }
+@keyframes sr-tick { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 .sr-asc { margin: 0 0 10px; color: var(--mint); font-size: 0.92rem; }
 .sr-chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .sr-chip {

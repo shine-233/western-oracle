@@ -665,3 +665,40 @@ html.wo-cursor-on textarea,
 html.wo-cursor-on select {
   cursor: auto !important;
 }
+
+/* ---------- 按钮 / 输入框微互动（全局） ---------- */
+.btn { position: relative; overflow: hidden; }
+.btn::after {
+  content: '';
+  position: absolute;
+  top: -60%;
+  left: -80%;
+  width: 45%;
+  height: 220%;
+  transform: rotate(24deg);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  transition: left 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
+  pointer-events: none;
+}
+.btn:hover::after { left: 135%; }
+
+.btn:focus-visible,
+.site-nav a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+}
+.btn:focus-visible {
+  box-shadow:
+    drop-shadow(4px 4px 0 color-mix(in srgb, var(--btn-line) 85%, transparent)),
+    0 0 0 3px color-mix(in srgb, var(--gold-bright) 80%, transparent);
+}
+.site-nav a:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pink) 70%, transparent);
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--pink);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--pink) 28%, transparent);
+}

@@ -3,6 +3,7 @@ import type { TarotCard } from '../data/tarot'
 import { cardImageUrl } from '../data/tarot'
 import { vTilt } from '../lib/tilt'
 import { t } from '../lib/i18n'
+import CardBackArt from './CardBackArt.vue'
 
 defineProps<{
   card: TarotCard
@@ -16,12 +17,9 @@ defineEmits<{ flip: [e: MouseEvent] }>()
 <template>
   <div v-tilt="12" class="tci-wrap" :class="{ revealed }" @click="$emit('flip', $event)">
     <div class="tci-inner" :class="{ flipped: revealed, rev: reversed }">
-      <!-- 牌背 -->
+      <!-- 牌背：像素小巫女望月 -->
       <div class="tci-face tci-back">
-        <div class="tci-back-pattern">
-          <span class="star-big">✦</span>
-          <span class="star-small">✧</span>
-        </div>
+        <CardBackArt />
       </div>
       <!-- 牌面：1909 公版 RWS 插图 -->
       <div class="tci-face tci-front">

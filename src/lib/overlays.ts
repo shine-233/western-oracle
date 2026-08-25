@@ -144,10 +144,57 @@ function installClickFeedback(): void {
   }, { passive: true })
 }
 
+/* ---------- 4. 滚动编排：面板进入视口时自动浮现 ---------- */
+function installScrollReveal(): void {
+  if (REDUCED || !('IntersectionObserver' in window)) return
+
+  const style = document.createElement('style')
+  style.id = 'wo-reveal-style'
+  style.textContent = `
+    .panel[data-wo-reveal]:not(.wo-in) { opacity: 0; transform: translateY(22px); }
+    .panel[data-wo-reveal].wo-in {
+      opacity: 1; transform: none;
+      transition: opacity 0.55s ease, transform 0.6s cubic-bezier(0.34, 1.3, 0.64, 1);
+      transition-delay: var(--wo-d, 0ms);
+    }`
+  document.head.appendChild(style)
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      let i = 0
+      for (const en of entries) {
+        if (!en.isIntersecting) continue
+        const el = en.target as HTMLElement
+        // 同批进入的面板做 60ms 级联
+        el.style.setProperty('--wo-d', `${i * 60}ms`)
+        el.classList.add('wo-in')
+        io.unobserve(el)
+        i++
+      }
+    },
+    { threshold: 0.08, rootMargin: '0px 0px -30px 0px' },
+  )
+
+  const observe = (): void => {
+    document.querySelectorAll('.panel:not([data-wo-reveal])').forEach((el) => {
+      // 已在首屏内的直接放行，避免开场闪隐
+      const r = el.getBoundingClientRect()
+      if (r.top < innerHeight && r.bottom > 0) return
+      el.setAttribute('data-wo-reveal', '')
+      io.observe(el)
+    })
+  }
+
+  observe()
+  // 兜底：动态插入的面板（占卜结果等）每 1.2s 补录一次
+  window.setInterval(observe, 1200)
+}
+
 /** main.ts 里调用一次 */
 export function installOverlays(): void {
   if (typeof document === 'undefined') return
   installPreloader()
   installCursor()
   installClickFeedback()
+  installScrollReveal()
 }
