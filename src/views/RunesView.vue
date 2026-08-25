@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import { drawRunes, type Rune } from '../data/runes'
 import { RUNE_POEMS, type PoemLang } from '../data/runePoems'
 import { sparkle, sparkleFromEvent } from '../lib/sparkle'
@@ -7,6 +7,8 @@ import { addHistory } from '../lib/history'
 import { sfx } from '../lib/sfx'
 import { t } from '../lib/i18n'
 import AiChat from '../components/AiChat.vue'
+
+const MascotCard = defineAsyncComponent(() => import('../components/MascotCard.vue'))
 
 interface DrawnRune {
   rune: Rune
@@ -89,8 +91,11 @@ const aiContext = computed(() => {
   ].join('\n')
 })
 
+const pet = ref<InstanceType<typeof MascotCard> | null>(null)
+
 watch(allRevealed, (done) => {
   if (!done) return
+  pet.value?.celebrate()
   addHistory({
     type: 'rune',
     label: `符文 · ${count.value === 1 ? '单颗' : '三颗牌位'}`,
@@ -169,6 +174,7 @@ watch(allRevealed, (done) => {
       <div class="reading">{{ ruleReading }}</div>
     </section>
 
+    <MascotCard ref="pet" id="golem" />
     <AiChat :context="aiContext" :title="t('ai.rune.title')" :intro="t('ai.rune.intro')" />
   </template>
   </div>

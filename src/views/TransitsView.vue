@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import {
   ASPECT_CN,
   ELEMENT_CN,
@@ -22,11 +22,14 @@ import BirthForm from '../components/BirthForm.vue'
 import AiChat from '../components/AiChat.vue'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
+const MascotCard = defineAsyncComponent(() => import('../components/MascotCard.vue'))
+
 const natal = ref<NatalChart | null>(null)
 const sky = ref<NatalChart | null>(null)
 const aspects = ref<ReturnType<typeof crossAspects>>([])
 const reading = ref<TransitReading | null>(null)
 const lastRefresh = ref('')
+const pet = ref<InstanceType<typeof MascotCard> | null>(null)
 
 const phase = moonPhase()
 const moonName = computed(() => t(`moon.${phase.index}.name`))
@@ -77,6 +80,7 @@ function refresh(first = false): void {
   reading.value = readTransits(natal.value, sky.value, aspects.value)
   lastRefresh.value = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
   if (!first) sfx.whoosh()
+  pet.value?.celebrate()
 
   if (first && reading.value) {
     const cn = (k: string): string => PLANETS[k]?.cn ?? k
@@ -189,6 +193,8 @@ const aiContext = (): string => {
         <p v-if="reading.items.length === 0" class="hint">{{ t('tr.none') }}</p>
       </section>
 
+      <MascotCard ref="pet" id="comet" />
+      <MascotCard ref="pet" id="comet" />
       <AiChat :context="aiContext()" :title="t('ai.tr.title')" :intro="t('ai.tr.intro')" />
     </template>
   </div>

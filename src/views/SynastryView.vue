@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, ref, watch } from 'vue'
+import { defineAsyncComponent, nextTick, ref, watch } from 'vue'
 import { computeNatalChart, crossAspects, type BirthInput, type ChartPlanet, type CrossAspect, type NatalChart } from '../lib/astrology'
 import { PLANETS } from '../data/corpus'
 import { readSynastry, type SynastryReading } from '../lib/interpret'
@@ -13,10 +13,13 @@ import { vTilt } from '../lib/tilt'
 import AiChat from '../components/AiChat.vue'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
+const MascotCard = defineAsyncComponent(() => import('../components/MascotCard.vue'))
+
 const chartA = ref<NatalChart | null>(null)
 const chartB = ref<NatalChart | null>(null)
 const aspects = ref<CrossAspect[]>([])
 const reading = ref<SynastryReading | null>(null)
+const pet = ref<InstanceType<typeof MascotCard> | null>(null)
 
 function onSubmitA(input: BirthInput): void {
   chartA.value = computeNatalChart(input)
@@ -33,6 +36,7 @@ function tryPair(): void {
     aspects.value = crossAspects(chartA.value.planets, chartB.value.planets)
     reading.value = readSynastry(chartA.value, chartB.value, aspects.value)
     sfx.ding()
+    pet.value?.celebrate()
 
     const cn = (k: string): string => PLANETS[k]?.cn ?? k
     const top = aspects.value.slice(0, 6).map((a) => `A方${cn(a.body1)}${a.type}B方${cn(a.body2)}`).join('、')
@@ -156,6 +160,7 @@ const aiContext = (): string => {
         <div class="advice-box">✧ {{ reading.advice }}</div>
       </section>
 
+      <MascotCard ref="pet" id="twins" />
       <AiChat :context="aiContext()" :title="t('ai.syn.title')" :intro="t('ai.syn.intro')" />
     </template>
   </div>

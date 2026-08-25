@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, defineAsyncComponent, ref } from 'vue'
 import {
   CITY_PRESETS,
   ELEMENT_CN,
@@ -19,6 +19,8 @@ import { t, locale } from '../lib/i18n'
 import AstroWheel from '../components/AstroWheel.vue'
 import AiChat from '../components/AiChat.vue'
 import DecryptTitle from '../components/DecryptTitle.vue'
+
+const MascotCard = defineAsyncComponent(() => import('../components/MascotCard.vue'))
 
 interface ProfileForm {
   date: string
@@ -43,6 +45,7 @@ const chart = ref<NatalChart | null>(null)
 const errorText = ref('')
 const expandedPlanet = ref<string | null>(null)
 const signModal = ref<number | null>(null)
+const pet = ref<InstanceType<typeof MascotCard> | null>(null)
 const houseModal = ref<number | null>(null)
 
 useEscClose(() => {
@@ -163,6 +166,7 @@ function submit(): void {
       detail: localReading.value,
     })
     sfx.ding()
+    pet.value?.celebrate()
   } catch (e) {
     errorText.value = t('err.calc', { msg: e instanceof Error ? e.message : String(e) })
   }
@@ -354,6 +358,7 @@ export default {}
         </div>
       </section>
 
+      <MascotCard ref="pet" id="owl" />
       <AiChat :context="aiContext" :title="t('ai.astro.title')" :intro="t('ai.astro.intro')" />
     </template>
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, defineAsyncComponent, ref } from 'vue'
 import { NUMBER_MEANINGS, PERSONAL_YEAR_MEANINGS, calculateNumerology, lifePathChain, personalDay, personalMonth, personalYear, type NumerologyResult } from '../lib/numerology'
 import { loadJSON, saveJSON } from '../lib/storage'
 import { sparkleFromEvent } from '../lib/sparkle'
@@ -9,11 +9,14 @@ import { t } from '../lib/i18n'
 import AiChat from '../components/AiChat.vue'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
+const MascotCard = defineAsyncComponent(() => import('../components/MascotCard.vue'))
+
 const birthDate = ref(loadJSON<{ date?: string }>('num-profile', {}).date ?? '')
 const fullName = ref(loadJSON<{ name?: string }>('num-profile', {}).name ?? '')
 
 const result = ref<NumerologyResult | null>(null)
 const displayLifePath = ref(0)
+const pet = ref<InstanceType<typeof MascotCard> | null>(null)
 let lastRecordedKey = ''
 
 function countUp(target: number): void {
@@ -35,6 +38,7 @@ function submit(e?: MouseEvent): void {
   saveJSON('num-profile', { date: birthDate.value, name: fullName.value })
   countUp(result.value.lifePath)
   sfx.pop()
+  pet.value?.celebrate()
   if (e) sparkleFromEvent(e, 10)
 
   const r = result.value
@@ -205,6 +209,7 @@ function replayChain(e?: MouseEvent): void {
       </div>
     </section>
 
+    <MascotCard ref="pet" id="numi" />
     <AiChat :context="aiContext" :title="t('ai.num.title')" :intro="t('ai.num.intro')" />
   </template>
   </div>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import { ALL_CARDS, SPREADS, dailyCard, type SpreadDef, type TarotCard } from '../data/tarot'
 import { randInt, shuffle } from '../lib/random'
 import { sparkle, sparkleFromEvent } from '../lib/sparkle'
@@ -14,6 +14,8 @@ import { t, locale } from '../lib/i18n'
 import TarotCardItem from '../components/TarotCardItem.vue'
 import AiChat from '../components/AiChat.vue'
 import DecryptTitle from '../components/DecryptTitle.vue'
+
+const MascotCard = defineAsyncComponent(() => import('../components/MascotCard.vue'))
 
 interface DrawnCard {
   card: TarotCard
@@ -178,8 +180,11 @@ const aiContext = computed(() => {
 
 /* ---------- 历史 ---------- */
 
+const pet = ref<InstanceType<typeof MascotCard> | null>(null)
+
 watch(allFlipped, (done) => {
   if (!done) return
+  pet.value?.celebrate()
   addHistory({
     type: 'tarot',
     label: `塔罗 · ${spread.value.name}`,
@@ -311,6 +316,7 @@ watch(allFlipped, (done) => {
           <button class="btn ghost small share-btn" @click="shareReading">{{ t('tarot.share') }}</button>
         </section>
 
+        <MascotCard ref="pet" id="cat" />
         <AiChat :context="aiContext" :title="t('ai.tarot.title')" :intro="t('ai.tarot.intro')" />
       </template>
     </template>
