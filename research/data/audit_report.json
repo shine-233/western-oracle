@@ -35,6 +35,16 @@
    ],
    "pass": true
   },
+  "tarot_sources_v2": {
+   "checks": {
+    "count_78": true,
+    "all_have_waite": true,
+    "all_have_papus": true,
+    "all_have_mcelroy": true,
+    "fortune_telling_coverage": 78
+   },
+   "pass": true
+  },
   "rune_poems_v2": {
    "checks": {
     "count_24": true,

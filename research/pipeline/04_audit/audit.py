@@ -75,9 +75,24 @@ def audit_runes(report: dict) -> None:
     }
 
 
+def audit_tarot_sources(report: dict) -> None:
+    merged = json.loads((DATA / 'tarot_sources_v2.json').read_text(encoding='utf-8'))
+    checks = {
+        'count_78': len(merged) == 78,
+        'all_have_waite': all(c['waite']['meaning_up'].strip() for c in merged),
+        'all_have_papus': all(c['papus']['meaning'].strip() for c in merged),
+        'all_have_mcelroy': all(
+            c['mcelroy']['keywords'] or c['mcelroy']['fortune_telling'] for c in merged
+        ),
+        'fortune_telling_coverage': sum(1 for c in merged if c['mcelroy']['fortune_telling']),
+    }
+    report['tarot_sources_v2'] = {'checks': checks, 'pass': all(v for k, v in checks.items() if k != 'fortune_telling_coverage')}
+
+
 def main() -> None:
     report: dict = {'generated': '2026-08-25', 'datasets': {}}
     audit_tarot(report['datasets'])
+    audit_tarot_sources(report['datasets'])
     audit_runes(report['datasets'])
 
     all_pass = all(d['pass'] for d in report['datasets'].values())

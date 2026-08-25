@@ -82,6 +82,37 @@ def export_runes() -> None:
     print(f'exported {len(runes)} -> {outp}')
 
 
+def export_sources() -> None:
+    merged = json.loads((DATA / 'tarot_sources_v2.json').read_text(encoding='utf-8'))
+    lines = [
+        '/**',
+        ' * 塔罗三源对照数据集：',
+        ' * 1. Waite《The Pictorial Key to the Tarot》1911（公版）',
+        ' * 2. Papus《The Tarot of the Bohemians》1892（公版，A.P. Morton 英译）',
+        ' * 3. Mark McElroy《A Guide to Tarot Meanings》（作者声明公版，dariusk/corpora）',
+        ' * 由 research/pipeline 自动生成，请勿手改。',
+        ' */',
+        'export interface TarotSourceEntry {',
+        "  papus: string",
+        "  keywords: string[]",
+        "  fortuneTelling: string[]",
+        '}',
+        '',
+        'export const TAROT_SOURCES: Record<string, TarotSourceEntry> = {',
+    ]
+    for c in merged:
+        kw = ', '.join(f"'{ts_str(k)}'" for k in c['mcelroy']['keywords'])
+        ft = ', '.join(f"'{ts_str(f)}'" for f in c['mcelroy']['fortune_telling'])
+        lines.append(
+            f"  '{c['site_id']}': {{ papus: '{ts_str(c['papus']['meaning'])}', keywords: [{kw}], fortuneTelling: [{ft}] }},"
+        )
+    lines.append('}')
+    outp = SRC_DATA / 'tarotSources.ts'
+    outp.write_text('\n'.join(lines) + '\n', encoding='utf-8')
+    print(f'exported {len(merged)} -> {outp}')
+
+
 if __name__ == '__main__':
     export_tarot()
     export_runes()
+    export_sources()

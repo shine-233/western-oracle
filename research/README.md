@@ -9,20 +9,27 @@
 research/
 ├── classics/                  # 原始文献层（raw，不手改内容）
 │   ├── waite_card_data_raw.json        # Waite《The Pictorial Key to the Tarot》1911 牌意（78张）
+│   ├── papus_tob_divinatory_raw.txt    # Papus《Tarot of the Bohemians》1892 占卜释义（78张，第二独立来源）
+│   ├── mcelroy_tarot_raw.json          # Mark McElroy《A Guide to Tarot Meanings》（作者声明公版，78张）
 │   ├── rune_poem_anglosaxon_raw.txt    # 盎格鲁-撒克逊卢恩诗（29节，OE原文+Dickins 1915英译）
 │   ├── rune_poems_norwegian_icelandic_raw.txt  # 挪威诗16节+冰岛诗16节（同上英译）
 │   └── astro_rulerships_ptolemy.json   # 传统行星守护表（源自 Ptolemy《Tetrabiblos》体系，curated）
 ├── pipeline/
 │   ├── 01_fetch/dl_sources.py          # 拉取/校验原始文献
 │   ├── 02_mine/mine_waite.py           # 编码映射（sacred-texts码 → 站点id）+ 文本规范化
+│   ├── 02_mine/mine_papus_mcelroy.py   # Papus 文本解析 + McElroy JSON 挖掘（含牌名变体归一）
 │   ├── 03_clean/clean_tarot.py         # 清洗：78张结构校验/去重/空值/与站点id集合对齐
+│   ├── 03_clean/clean_tarot_sources.py # 清洗：三源合并对照（waite+papus+mcelroy 78×3）
 │   ├── 03_clean/clean_runes.py         # 清洗：三诗合并 → 24老弗萨克（16符文三诗齐全）
 │   └── 04_audit/
 │       ├── audit.py                    # 审计：覆盖率/完整性/防篡改抽查(5张与原始JSON比对)
 │       └── export_ts.py                # 导出站点 TS 模块（研究数据喂给网站）
 └── data/                      # 版本化数据集（v1, v2, ... 只增不改）
     ├── waite_candidates_v1.json        # 挖掘候选
+    ├── papus_candidates_v1.json        # Papus 挖掘候选（78）
+    ├── mcelroy_candidates_v1.json      # McElroy 挖掘候选（78）
     ├── tarot_waite_v1.json             # 清洗后 Waite 牌意（78张）
+    ├── tarot_sources_v2.json           # 三源合并对照（78张 × 3来源）
     ├── rune_poem_oe_v1.json            # [v1, 已被v2取代] 仅盎格鲁-撒克逊诗
     ├── rune_poems_v2.json              # 清洗后三诗对照（24符文：16个三诗齐全+8个仅OE诗）
     └── audit_report.json               # 审计报告
@@ -40,6 +47,17 @@ research/
 | meaning_up | string | 正位牌意（Waite 原文，规范化空白） |
 | meaning_rev | string | 逆位牌意（Waite 原文） |
 | description | string | 牌面描述（Waite 原文） |
+
+### tarot_sources_v2.json（三源对照）
+每张牌同时携带三个独立来源的释义：
+| 字段 | 说明 |
+|---|---|
+| waite | 1911《Pictorial Key》原书牌意（name/meaning_up/meaning_rev/description） |
+| papus | 1892《Tarot of the Bohemians》占卜释义（第二独立历史来源） |
+| mcelroy | keywords / fortune_telling[] / light[] / shadow[]（现代公版结构化释义） |
+
+三来源相互独立（不同作者、不同年代、不同体系），清洗器强制三源 78×3 对齐，
+任何一张牌缺任一来源都会导致审计失败。
 
 ### rune_poems_v2.json
 | 字段 | 类型 | 说明 |
@@ -77,7 +95,9 @@ python research/pipeline/04_audit/export_ts.py    # 导出站点 TS
 
 | 语料 | 来源 | 版权状态 |
 |---|---|---|
-| 塔罗牌意 | A.E. Waite, *The Pictorial Key to the Tarot*, 1911（经 sacred-texts 版本与 ekelen/tarot-api 挖掘） | 公版（美国，1911年出版） |
+| 塔罗牌意（来源1） | A.E. Waite, *The Pictorial Key to the Tarot*, 1911（经 sacred-texts 版本与 ekelen/tarot-api 挖掘） | 公版（美国，1911年出版） |
+| 塔罗牌意（来源2） | Papus, *The Tarot of the Bohemians*, 1892, A.P. Morton 英译，取自 sacred-texts | 公版 |
+| 塔罗释义（来源3） | Mark McElroy, *A Guide to Tarot Meanings*（作者声明公版），取自 dariusk/corpora | 公版 |
 | 盎格鲁-撒克逊卢恩诗 | 8-9世纪佚名，英译 Bruce Dickins 1915，取自 Wikisource | 原诗与译本均公版 |
 | 挪威/冰岛卢恩诗 | 约13/15世纪佚名，英译 Bruce Dickins 1915，取自 Wikisource | 同上 |
 | 行星守护 | Ptolemy, *Tetrabiblos*（约2世纪）体系 | 公版 |
@@ -85,6 +105,8 @@ python research/pipeline/04_audit/export_ts.py    # 导出站点 TS
 ## 路线图（Roadmap）
 
 - [x] 挪威卢恩诗 / 冰岛卢恩诗对照（v2，2026-08-25）
+- [x] 第二独立塔罗牌意来源：Papus 1892（三源对照 v2，2026-08-25）
+- [x] McElroy 公版结构化释义（fortune-telling/light/shadow，2026-08-25）
 - [ ] Ptolemy《Tetrabiblos》行星 significations 全量挖掘（sacred-texts 公版英译 Ashmand 1822）
-- [ ] Waite《The Tarot of the Bohemians》(Papus) 牌意——第二独立塔罗牌意来源，用于交叉验证
 - [ ] 中文牌意与 Waite 原文的语义对齐标注（用于 AI 解读 prompt 增强）
+- [ ] Golden Dawn《Book T》占星对应（Tarotoo 数据集已含 GD 归属，可作参考实现）
