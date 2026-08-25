@@ -163,17 +163,30 @@ python research/pipeline/02_mine/mine_lilly_signs.py     # Lilly 星座章
 python research/pipeline/02_mine/mine_leo_nativity.py    # Leo 宫位/日座/月座
 python research/pipeline/02_mine/mine_tetrabiblos_books34.py # Tetrabiblos B3/B4 专题
 python research/pipeline/02_mine/curate_bookt_decans.py  # Book T 三十六旬
-python research/pipeline/04_audit/audit.py               # 审计14数据集（不过则退出码1）
-python research/pipeline/04_audit/export_ts.py           # 导出站点 TS
+python research/pipeline/04_audit/audit.py               # 审计16数据集（不过则退出码1）
+python research/pipeline/04_audit/fidelity_check.py      # 保真度抽查：196抽样回查原始文献
+python research/pipeline/04_audit/qa_scan.py             # 清洗质量扫描（OCR噪声/页眉/编码）
+python research/pipeline/04_audit/export_ts.py           # 导出站点 TS（15个模块）
 ```
+
+### 验证方法论（三层）
+
+1. **确定性**：全部挖掘脚本重跑后 20 个数据集 SHA256 逐字节一致（无随机性、无顺序依赖）；
+2. **保真度**：`fidelity_check.py` 按 seed=1901 抽样 196 条，词块化回查原始文献，
+   命中率阈值 70%（页眉清除造成的"空洞"允许跨洞，超短字段命中 ≥1 块即通过）——
+   防止挖掘过程张冠李戴或凭空造文；
+3. **交叉验证**：Tarotoo 56 数字牌行星/星座 ↔ Book T 三十六旬表逐张互证；
+   corpora 古典守护 ↔ Ptolemy 庙宫表 12/12 互证；Book T 表内置 11 个通行锚点。
 
 ## 站点消费位置
 
 - 塔罗详情弹窗 → 「Waite 原文牌意 · 1911」（`src/data/waiteMeanings.ts`）
 - 符文揭晓卡 → 三首卢恩诗原文+英译对照（`src/data/runePoems.ts`）
 - 占星语义层 → Tetrabiblos 行星性质/庙旺（`src/data/tetrabiblosPlanets.ts`）
-- 待接线：fixed_stars / book_t_decans / dreams_miller / kunz_birthstones /
-  cheiro_palmistry / sepharial_numbers（见 Roadmap export_ts 扩展项）
+- 塔罗弹窗 → GD 十度分金归属（`src/data/bookTDecans.ts`）+ 现代四域解读/是非占卜（`src/data/tarotModern.ts`）
+- 解梦页 → Miller 扩展词典 2250 词条，搜索时动态 import 懒加载（`src/data/dreamsMiller.ts`，独立 chunk ~265KB gzip）
+- 已导出待接线：fixedStars / palmistrySections / sepharialNumbers / kunzBirthstones /
+  zodiacFacts / tetrabiblosBooks34 / classicalPassages
 
 ## 来源与版权
 
@@ -219,6 +232,8 @@ IA=Internet Archive 公版扫描件 OCR；PG=Project Gutenberg。
 - [x] 零语料模块补齐：Miller 解梦 / Kunz 水晶诞生石 / Cheiro 手相 / Sepharial 数字学（2026-08-25）
 - [x] Tetrabiblos Book III/IV 命盘专题十章按主题挖掘 + Golden Dawn《Book T》三十六旬对应表（roadmap「Book T 占星对应」落地）（2026-08-25）
 - [ ] 对齐 v2：小牌逐张人工对齐 + 语义相似度评分
-- [ ] fixed_stars v2：与现代星表（如 Yale Bright Star / HYG）交叉补齐黄经与星座
+- [ ] fixed_stars v2：与现代星表交叉补齐黄经与星座（候选方案：HYG database RA/Dec + 岁差计算至 J1923 黄经；注意 HYG 为 CC BY-SA，衍生数据需同许可）
 - [ ] lilly/leo v2：逐星座、逐宫切分与 OCR 清洗；站点 corpus.ts 语义层接入研究层引用
-- [ ] export_ts.py 扩展：新数据集导出站点 TS 模块并接线消费
+- [ ] 站点接线第二批：fixedStars（星盘恒星层）/ palmistrySections（手相原文面板）/
+      sepharialNumbers（数字学出处）/ kunzBirthstones（水晶页诞生石表）/
+      zodiacFacts（占星页事实条）/ tetrabiblosBooks34 + classicalPassages（AI prompt 锚定）

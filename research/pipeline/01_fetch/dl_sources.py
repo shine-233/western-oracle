@@ -92,6 +92,9 @@ MANUAL_FILES = {
 
 def dl_tarot() -> None:
     out = CLASSICS / 'waite_card_data_raw.json'
+    if out.exists() and out.stat().st_size >= 50_000:
+        print(f'SKIP {out.name} (exists, {out.stat().st_size} bytes)')
+        return
     print(f'fetching {TAROT_URL}')
     req = urllib.request.Request(TAROT_URL, headers=UA)
     with urllib.request.urlopen(req, timeout=60) as r:
