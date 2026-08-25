@@ -5,6 +5,7 @@ import { randInt, shuffle } from '../lib/random'
 import { sparkle, sparkleFromEvent } from '../lib/sparkle'
 import { sfx } from '../lib/sfx'
 import { cardImageUrl } from '../data/tarot'
+import { WAITE_MEANINGS } from '../data/waiteMeanings'
 import { addHistory } from '../lib/history'
 import { downloadShareCard } from '../lib/share'
 import { t, locale } from '../lib/i18n'
@@ -326,6 +327,11 @@ watch(allFlipped, (done) => {
                   <strong>{{ t('c.reversed') }}</strong>
                   <p class="reading">{{ detail.card.reversed }}</p>
                 </div>
+                <div v-if="WAITE_MEANINGS[detail.card.id]" class="modal-sec waite">
+                  <strong>Waite 原文牌意 · 1911<span class="tag">研究数据</span></strong>
+                  <p class="reading en-quote">“{{ WAITE_MEANINGS[detail.card.id]!.up }}”</p>
+                  <p class="reading en-quote">“{{ WAITE_MEANINGS[detail.card.id]!.rev }}”</p>
+                </div>
                 <p class="hint" style="font-style: italic;">{{ t('tarot.modalTip') }}</p>
               </div>
             </div>
@@ -530,6 +536,8 @@ watch(allFlipped, (done) => {
   border-left: 3px solid var(--pink);
 }
 .modal-sec strong { color: var(--gold-bright); font-family: var(--cute); font-weight: 400; }
+.modal-sec.waite { border-left-color: var(--gold); }
+.en-quote { font-style: italic; color: var(--ink-dim); font-size: 0.88rem; margin: 4px 0 0; white-space: normal; }
 .modal-enter-active { transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
 .modal-leave-active { transition: all 0.18s ease; }
 .modal-enter-from { opacity: 0; }

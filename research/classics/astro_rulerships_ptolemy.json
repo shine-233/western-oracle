@@ -1,0 +1,20 @@
+{
+  "dataset": "traditional_planetary_rulerships",
+  "version": "v1",
+  "curated": "2026-08-25",
+  "provenance": {
+    "system": "Traditional (classical) planetary rulerships, 7 classical planets",
+    "source_work": "Claudius Ptolemy, Tetrabiblos, Book I (c. 2nd century CE), trans. via public domain editions",
+    "note": "日月各守护一星座行星守护体系在希腊化时期定型；此表为 Ptolemy 体系之通行整理，人工核对。三王星(天王/海王/冥王)为现代扩展，不在本表。"
+  },
+  "rulerships": [
+    { "planet": "Sun", "domicile": ["Leo"], "exaltation": "Aries", "detriments": ["Aquarius"], "fall": "Libra" },
+    { "planet": "Moon", "domicile": ["Cancer"], "exaltation": "Taurus", "detriments": ["Capricorn"], "fall": "Scorpio" },
+    { "planet": "Mercury", "domicile": ["Gemini", "Virgo"], "exaltation": "Virgo", "detriments": ["Sagittarius", "Pisces"], "fall": "Pisces" },
+    { "planet": "Venus", "domicile": ["Taurus", "Libra"], "exaltation": "Pisces", "detriments": ["Scorpio", "Aries"], "fall": "Virgo" },
+    { "planet": "Mars", "domicile": ["Aries", "Scorpio"], "exaltation": "Capricorn", "detriments": ["Libra", "Taurus"], "fall": "Cancer" },
+    { "planet": "Jupiter", "domicile": ["Sagittarius", "Pisces"], "exaltation": "Cancer", "detriments": ["Gemini", "Virgo"], "fall": "Capricorn" },
+    { "planet": "Saturn", "domicile": ["Capricorn", "Aquarius"], "exaltation": "Libra", "detriments": ["Cancer", "Leo"], "fall": "Aries" }
+  ],
+  "todo": "v2: 与 Tetrabiblos 原文逐条核对并引用章节；补旺/衰度数"
+}

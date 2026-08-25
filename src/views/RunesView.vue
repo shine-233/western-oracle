@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { drawRunes, type Rune } from '../data/runes'
+import { RUNE_POEMS, type PoemLang } from '../data/runePoems'
 import { sparkle, sparkleFromEvent } from '../lib/sparkle'
 import { addHistory } from '../lib/history'
 import { sfx } from '../lib/sfx'
@@ -10,6 +11,23 @@ import AiChat from '../components/AiChat.vue'
 interface DrawnRune {
   rune: Rune
   reversed: boolean
+}
+
+const POEM_LANG_CN: Record<PoemLang, string> = {
+  anglo_saxon: '盎格鲁-撒克逊卢恩诗 · 8-9世纪',
+  norwegian: '挪威卢恩诗 · 13世纪',
+  icelandic: '冰岛卢恩诗 · 15世纪',
+}
+
+function poemsOf(rune: Rune): Array<{ lang: PoemLang; title: string; original: string; translation: string }> {
+  const entry = RUNE_POEMS.find((x) => x.rune === rune.name)
+  if (!entry) return []
+  return (Object.keys(entry.poems) as PoemLang[]).map((lang) => ({
+    lang,
+    title: POEM_LANG_CN[lang],
+    original: entry.poems[lang]!.original,
+    translation: entry.poems[lang]!.translation,
+  }))
 }
 
 const count = ref(3)
@@ -129,6 +147,14 @@ watch(allRevealed, (done) => {
           <strong>{{ d.rune.nameCn }}</strong>
           <small>{{ d.rune.name }} · {{ d.reversed ? t('c.inverted') : t('c.upright') }}</small>
           <p>{{ meaningOf(d) }}</p>
+          <div v-if="poemsOf(d.rune).length" class="poem-block">
+            <div v-for="p in poemsOf(d.rune)" :key="p.lang" class="poem-quote">
+              <span class="poem-title">{{ p.title }}</span>
+              「{{ p.translation }}」<br />
+              <span class="poem-oe">{{ p.original }}</span>
+            </div>
+            <span class="poem-src">—— 英译 Bruce Dickins 1915（公版），经 research/ 流水线清洗</span>
+          </div>
         </figcaption>
         <figcaption v-else class="tap-hint">{{ t('rune.tap') }}</figcaption>
       </figure>
@@ -190,5 +216,19 @@ watch(allRevealed, (done) => {
 .rune-stone small { display: block; color: var(--ink-dim); font-size: 0.78rem; margin: 3px 0 8px; }
 .rune-stone p { font-size: 0.88rem; line-height: 1.75; color: var(--ink); margin: 0; }
 .tap-hint { color: var(--ink-dim); opacity: 0.65; font-size: 0.8rem; }
+.poem-block { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
+.poem-quote {
+  padding: 10px 12px;
+  background: rgba(13, 11, 32, 0.6);
+  border-left: 3px solid var(--gold);
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--ink-dim);
+  line-height: 1.8;
+  text-align: left;
+}
+.poem-title { display: block; font-style: normal; color: var(--mint); font-size: 0.72rem; letter-spacing: 0.1em; margin-bottom: 4px; }
+.poem-oe { font-style: normal; opacity: 0.8; font-size: 0.75rem; }
+.poem-src { display: block; margin-top: 2px; font-size: 0.7rem; opacity: 0.6; font-style: normal; }
 .reading-panel { margin-top: 26px; }
 </style>

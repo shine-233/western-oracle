@@ -5,6 +5,15 @@
 无后端、无账号、无埋点——所有计算与解读在你的浏览器内完成，数据不出本机。
 全站 8-bit 像素画风：78 张牌面经像素化重绘，与像素小巫女「露娜」同一画风——点她可以听星星的悄悄话。
 
+## 研究层（research/）
+
+对标 `bazi-research` 的方法论：**公版原始文献 → 编号流水线 → 版本化数据集 → 站点消费**。
+
+- 语料：Waite《Pictorial Key to the Tarot》1911 牌意（78张）、《盎格鲁-撒克逊卢恩诗》29节（Dickins 1915 英译）、Ptolemy 体系行星守护表——全部公有领域
+- 流水线：`research/pipeline/01_fetch → 02_mine → 03_clean → 04_audit`，审计含防篡改抽查
+- 消费：塔罗详情弹窗展示「Waite 原文牌意 · 1911」，符文页展示古英语卢恩诗原文
+- 详见 [research/README.md](./research/README.md)
+
 ## 功能
 
 | 模块 | 说明 |
@@ -79,7 +88,11 @@ npm run test:watch  # 测试观察模式
 
 ## 版权与隐私
 
-- 塔罗牌面基于 1909 年 Rider-Waite-Smith 插图（Pamela Colman Smith 绘，公有领域），经像素化重绘（缩块 + 调色板量化 + 最近邻放大）以统一 8-bit 画风
+| 语料 | 来源 | 版权状态 |
+|---|---|---|
+| 塔罗牌意 | A.E. Waite, *The Pictorial Key to the Tarot*, 1911 | 公版 |
+| 卢恩诗 | *The Anglo-Saxon Rune Poem*，英译 Bruce Dickins, 1915 | 公版 |
+| 行星守护 | Ptolemy, *Tetrabiblos* 体系 | 公版 |
 - 除「你主动配置的 AI 接口」外，本站不发起任何网络请求；出生信息与占卜历史仅保存在本机 localStorage
 
 ## 免责声明
