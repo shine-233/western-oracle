@@ -117,13 +117,19 @@ def main() -> None:
     for topic, v in d['topics'].items():
         f.check(f'tetrabiblos34[{topic}]', v['quote'], raw, min_len=100)
 
-    # --- kunz（票数表逐月核对原文存在 "Stone N" 形式）---
+    # --- kunz（票数表逐月核对原文存在 "Stone N" 形式，含已知 OCR 拼写替身）---
     raw = load_raw('kunz_curious_lore_precious_stones_1913_raw.txt')
     d = json.loads((DATA / 'kunz_birthstones_v1.json').read_text(encoding='utf-8'))
     flat = norm(raw)
+    RAW_SPELLING = {
+        'Pearl': r"pear\]?",
+        "Cat's-eye": r"eat[\u2019']s-eye",
+        'Chalcedony': r"chal[ce]edony",
+    }
     for month, stones in d['favored_by_month'].items():
-        for x in stones[:2]:
-            if not re.search(rf"{re.escape(x['stone'])}\s*,?\s*{x['count']}\b", flat, re.IGNORECASE):
+        for x in stones[:3]:
+            pat = RAW_SPELLING.get(x['stone'], re.escape(x['stone']))
+            if not re.search(rf"{pat}\s*,?\s*{x['count']}\b", flat, re.IGNORECASE):
                 f.problems.append(f"kunz[{month}]: '{x['stone']} {x['count']}' 未在原文命中")
 
     print(f'fidelity checked: {f.checked} samples')

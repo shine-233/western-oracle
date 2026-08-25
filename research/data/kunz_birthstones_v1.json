@@ -34,6 +34,10 @@
     "count": 1
    },
    {
+    "stone": "I",
+    "count": 2
+   },
+   {
     "stone": "Jasper",
     "count": 5
    },
@@ -74,7 +78,7 @@
     "count": 4
    },
    {
-    "stone": "Chaleedony",
+    "stone": "Chalcedony",
     "count": 3
    },
    {
@@ -82,7 +86,11 @@
     "count": 1
    },
    {
-    "stone": "S-eye",
+    "stone": "Pearl",
+    "count": 1
+   },
+   {
+    "stone": "Cat's-eye",
     "count": 1
    },
    {
@@ -137,6 +145,10 @@
    }
   ],
   "October": [
+   {
+    "stone": "Beryl",
+    "count": 8
+   },
    {
     "stone": "Aquamarine",
     "count": 5
@@ -223,6 +235,14 @@
    },
    {
     "stone": "Turquoise",
+    "count": 1
+   },
+   {
+    "stone": "Pearl",
+    "count": 1
+   },
+   {
+    "stone": "Cat's-eye",
     "count": 1
    }
   ],

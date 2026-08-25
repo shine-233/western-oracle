@@ -23,25 +23,42 @@ DATA = ROOT / 'data'
 MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
           'July', 'August', 'September', 'October', 'November', 'December']
 
+# 本页已知 OCR 错拼归一（证据见 raw 原文）：pear]/eat’s-eye/chaleedony
+STONE_OCR_FIXES = {
+    'Chaleedony': 'Chalcedony',
+    'Pear': 'Pearl',
+    'Eat\u2019s-eye': "Cat's-eye",
+    "Eat's-eye": "Cat's-eye",
+}
+# 核对原文时的替身拼写（OCR 原貌）
+RAW_SPELLING = {
+    'Pearl': r"pear\]?",
+    "Cat's-eye": r"eat[\u2019']s-eye",
+    'Chalcedony': r"chal[ce]edony",
+}
+
 
 def norm(s: str) -> str:
     return re.sub(r'\s+', ' ', s).strip()
 
 
 def parse_tally(seg: str) -> dict[str, list[dict]]:
-    """'January..... Garnet 7, hyacinth 2.' → month -> [{stone,count}]"""
+    """'January..... Garnet 7, hyacinth 2.' / 'Beryl, 8'（名字与数字间可有逗号/句点/括号）。"""
     out: dict[str, list[dict]] = {}
     cur = None
+    pair_re = re.compile(r'([A-Za-z\x27\u2019\-]+)[,.\]]?\s+(\d+)')
     for ln in seg.splitlines():
         ln = ln.strip()
         m = re.match(r'^([A-Z][a-z]+)\D{0,20}(.*)$', ln)
-        cont = re.match(r'^([a-z\x27\-]+(?:\x27s-eye)?)\s+(\d+)\.?$', ln)
-        pairs = re.findall(r'([A-Za-z\x27\-]+)\s+(\d+)', ln)
+        pairs = [
+            (STONE_OCR_FIXES.get(s.capitalize(), s.capitalize()), int(c))
+            for s, c in pair_re.findall(ln)
+        ]
         if m and m.group(1) in MONTHS:
             cur = m.group(1)
-            out[cur] = [{'stone': s.capitalize(), 'count': int(c)} for s, c in pairs]
+            out[cur] = [{'stone': s, 'count': c} for s, c in pairs]
         elif cur and pairs:
-            out[cur].extend({'stone': s.capitalize(), 'count': int(c)} for s, c in pairs)
+            out[cur].extend({'stone': s, 'count': c} for s, c in pairs)
     return out
 
 
@@ -73,14 +90,17 @@ def main() -> None:
         'March': [('Jasper', 5), ('Bloodstone', 4)],
         'April': [('Sapphire', 7), ('Diamond', 2)],
         'May': [('Agate', 5), ('Emerald', 4), ('Chalcedony', 1), ('Carnelian', 1)],
-        # June 行含 OCR 错拼 chaleedony，核对子集（emerald/agate/turquoise 均清晰可读）
-        'June': [('Emerald', 4), ('Agate', 4), ('Turquoise', 1)],
+        # June 行含 OCR 错拼（chaleedony/pear]/eat's-eye），核对子集并经 STONE_OCR_FIXES 归一
+        'June': [('Emerald', 4), ('Agate', 4), ('Turquoise', 1), ('Pearl', 1), ("Cat's-eye", 1)],
         'July': [('Onyx', 5), ('Sardonyx', 1)],
         'August': [('Carnelian', 5), ('Sardonyx', 3), ('Moonstone', 1)],
     }
     flat = re.sub(r'\s+', ' ', tally_seg)
     for mth, pairs in expected_middle.items():
-        ok = all(re.search(rf'{re.escape(s)}\s*{c}\b', flat, re.IGNORECASE) for s, c in pairs)
+        ok = all(
+            re.search(rf"{RAW_SPELLING.get(s, re.escape(s))}\s*,?\s*{c}\b", flat, re.IGNORECASE)
+            for s, c in pairs
+        )
         if ok:
             favored[mth] = [{'stone': s.capitalize(), 'count': c} for s, c in pairs]
         else:
@@ -98,6 +118,9 @@ def main() -> None:
         'feb_amethyst': top('February') == 'Amethyst',
         'sep_chrysolite': top('September') == 'Chrysolite',
         'nov_topaz': top('November') == 'Topaz',
+        # 回归测试：'Beryl, 8' 的逗号曾导致十月首选整条丢失
+        'october_beryl_top': top('October') == 'Beryl',
+        'october_has_3': len(favored.get('October', [])) >= 3,
     }
     for k, v in checks.items():
         if not v:
