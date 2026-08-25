@@ -7,6 +7,8 @@ import TransitsView from '../views/TransitsView.vue'
 import NumerologyView from '../views/NumerologyView.vue'
 import RunesView from '../views/RunesView.vue'
 import SettingsView from '../views/SettingsView.vue'
+import HistoryView from '../views/HistoryView.vue'
+import LibraryView from '../views/LibraryView.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -18,6 +20,8 @@ const router = createRouter({
     { path: '/transits', component: TransitsView },
     { path: '/numerology', component: NumerologyView },
     { path: '/runes', component: RunesView },
+    { path: '/library', component: LibraryView },
+    { path: '/history', component: HistoryView },
     { path: '/settings', component: SettingsView },
     { path: '/:pathMatch(.*)*', redirect: '/' },
   ],

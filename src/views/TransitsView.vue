@@ -1,19 +1,34 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { ASPECT_CN, ELEMENT_CN, PLANET_CN, computeNatalChart, crossAspects, moonPhase, type BirthInput, type NatalChart } from '../lib/astrology'
-import { askAI, isAiEnabled, oracleSystemPrompt } from '../lib/ai'
+import {
+  ASPECT_CN,
+  ELEMENT_CN,
+  computeNatalChart,
+  crossAspects,
+  moonPhase,
+  type BirthInput,
+  type NatalChart,
+} from '../lib/astrology'
+import { PLANETS } from '../data/corpus'
+import { readTransits, type TransitReading } from '../lib/interpret'
+import { addHistory } from '../lib/history'
+import { sfx } from '../lib/sfx'
+import { t, locale } from '../lib/i18n'
+import { SIGNS } from '../data/corpus'
 import AstroWheel from '../components/AstroWheel.vue'
 import BirthForm from '../components/BirthForm.vue'
+import AiChat from '../components/AiChat.vue'
+import DecryptTitle from '../components/DecryptTitle.vue'
 
 const natal = ref<NatalChart | null>(null)
 const sky = ref<NatalChart | null>(null)
 const aspects = ref<ReturnType<typeof crossAspects>>([])
+const reading = ref<TransitReading | null>(null)
 const lastRefresh = ref('')
-const aiText = ref<string | null>(null)
-const aiLoading = ref(false)
-const aiFailed = ref(false)
 
 const phase = moonPhase()
+const moonName = computed(() => t(`moon.${phase.index}.name`))
+const moonDesc = computed(() => t(`moon.${phase.index}.desc`))
 
 /** 当前时刻天象盘（用浏览器本地时区；宫位无意义，仅取行星） */
 function computeSky(): NatalChart {
@@ -32,16 +47,30 @@ function computeSky(): NatalChart {
 
 function onSubmit(input: BirthInput): void {
   natal.value = computeNatalChart(input)
-  refresh()
+  refresh(true)
 }
 
-function refresh(): void {
+function refresh(first = false): void {
   if (!natal.value) return
   sky.value = computeSky()
   aspects.value = crossAspects(sky.value.planets, natal.value.planets)
+  reading.value = readTransits(natal.value, sky.value, aspects.value)
   lastRefresh.value = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
-  aiText.value = null
-  aiFailed.value = false
+  if (!first) sfx.whoosh()
+
+  if (first && reading.value) {
+    const cn = (k: string): string => PLANETS[k]?.cn ?? k
+    addHistory({
+      type: 'transit',
+      label: `行运 · ${lastRefresh.value}`,
+      summary: `${reading.value.overview.split('。')[0]}。重点相位：${aspects.value.slice(0, 5).map((a) => `行运${cn(a.body1)}${ASPECT_CN[a.type]}本命${cn(a.body2)}`).join('、') || '无紧密行运'}`,
+      detail: [
+        reading.value.overview,
+        ...(reading.value.highlight ? [reading.value.highlight] : []),
+        ...reading.value.items.map((it) => `${it.title}\n${it.text}`),
+      ].join('\n\n'),
+    })
+  }
 }
 
 const skySunSign = computed(() => sky.value?.planets.find((p) => p.name === 'Sun')?.signCn ?? '')
@@ -52,102 +81,93 @@ const elementLine = computed(() => {
   return Object.entries(natal.value.elements).map(([k, v]) => `${ELEMENT_CN[k]} ${v.length}`).join(' · ')
 })
 
-function aspectLabel(a: { body1: string; body2: string; type: string; orb: number }): string {
-  const sym = a.type === 'conjunction' ? '☌' : a.type === 'opposition' ? '☍' : a.type === 'trine' ? '△' : a.type === 'square' ? '□' : '⚹'
-  return `行运${PLANET_CN[a.body1]} ${sym} 本命${PLANET_CN[a.body2]}（${ASPECT_CN[a.type]}，偏差 ${a.orb}°）`
-}
-
-async function askAiInterpretation(): Promise<void> {
-  if (!natal.value || !sky.value || !isAiEnabled() || aiLoading.value) return
-  aiLoading.value = true
-  aiFailed.value = false
-  aiText.value = null
-
-  const transits = sky.value.planets.map((p) => `行运${PLANET_CN[p.name]} ${p.signCn}${p.degText}${p.retro ? '逆行' : ''}`).join('；')
-  const natalLine = natal.value.planets.map((p) => `本命${PLANET_CN[p.name]} ${p.signCn}${p.degText}`).join('；')
-  const payload = [
+const aiContext = (): string => {
+  if (!natal.value || !sky.value || !reading.value) return ''
+  const transits = sky.value.planets.map((p) => `行运${PLANETS[p.name]?.cn ?? p.name} ${p.signCn}${p.degText}${p.retro ? '逆行' : ''}`).join('；')
+  const natalLine = natal.value.planets.map((p) => `本命${p.cn} ${p.signCn}${p.degText}`).join('；')
+  return [
     '请解读当下行运对这个人本命盘的影响，给出未来两三周的行动建议：',
+    `本地引擎结论：${reading.value.overview}${reading.value.highlight ? '\n重点：' + reading.value.highlight : ''}。请在此基础上深化，不要重复罗列。`,
     natalLine,
     `当前天象：${transits}`,
-    `当前主要行运相位：${aspects.value.slice(0, 12).map(aspectLabel).join('、')}`,
+    `当前主要行运相位：${aspects.value.slice(0, 12).map((a) => `行运${PLANETS[a.body1]?.cn ?? a.body1} ${a.type} 本命${PLANETS[a.body2]?.cn ?? a.body2}（偏差 ${a.orb}°）`).join('、')}`,
   ].join('\n')
-
-  const res = await askAI(oracleSystemPrompt(), payload)
-  if (res === null) aiFailed.value = true
-  else aiText.value = res
-  aiLoading.value = false
 }
 </script>
 
 <template>
   <div class="page-root">
-    <h2>行运 · Transits</h2>
-  <p class="hint">天上的星星此刻正跑到的位置，与你本命盘产生的共振。外环是你的本命盘，内环是此刻的天空。</p>
-
-  <section class="panel" style="margin-top: 18px;">
-    <BirthForm use-saved button-label="生成我的行运盘" @submit="onSubmit" />
-  </section>
-
-  <template v-if="natal && sky">
-    <div class="divider-star">✦ ✦ ✦</div>
-
-    <section class="sky-strip panel bounce-in">
-      <div class="sky-item"><span class="dc-label">太阳此刻</span><strong>{{ skySunSign }}</strong></div>
-      <div class="sky-item"><span class="dc-label">月亮此刻</span><strong>{{ skyMoonSign }}</strong></div>
-      <div class="sky-item"><span class="dc-label">今日月相</span><strong>{{ phase.emoji }} {{ phase.name }}</strong><small>{{ phase.desc }}</small></div>
-      <div class="sky-item"><span class="dc-label">刷新于</span><strong>{{ lastRefresh }}</strong><button class="btn ghost small" style="margin-top: 6px;" @click="refresh">刷新天象</button></div>
-    </section>
-
-    <section class="astro-layout" style="margin-top: 18px;">
-      <AstroWheel
-        :planets="natal.planets"
-        :cusps="natal.cusps"
-        :asc-lon="natal.ascendant.lon"
-        :aspects="natal.aspects"
-        :inner-planets="sky.planets"
-        :synastry-aspects="aspects"
-      />
-
-      <section class="panel">
-        <h3 style="margin-top: 0;">此刻的天空</h3>
-        <table class="planet-table">
-          <tbody>
-            <tr v-for="p in sky.planets" :key="'sky-' + p.name">
-              <td class="pg mint">{{ p.glyph }}</td>
-              <td>行运{{ PLANET_CN[p.name] }}<span v-if="p.retro" class="retro">℞</span></td>
-              <td>{{ p.signCn }} {{ p.degText }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <h3 style="margin-top: 18px;">你的本命格局</h3>
-        <p class="hint">元素分布：{{ elementLine }}；上升 {{ natal.ascendant.text }}，天顶 {{ natal.midheaven.text }}。</p>
-      </section>
-    </section>
+    <h2><DecryptTitle :text="t('tr.title')" /></h2>
+    <p class="hint">{{ t('tr.hint') }}</p>
 
     <section class="panel" style="margin-top: 18px;">
-      <h3 style="margin-top: 0;">正在发生的行运相位（{{ aspects.length }} 条，按紧密排序）</h3>
-      <div class="transit-list">
-        <div v-for="(a, i) in aspects" :key="i" class="transit-item" :class="'t-' + a.type">
-          <span class="sym">{{ a.type === 'conjunction' ? '☌' : a.type === 'opposition' ? '☍' : a.type === 'trine' ? '△' : a.type === 'square' ? '□' : '⚹' }}</span>
-          <span class="txt">行运{{ PLANET_CN[a.body1] }} × 本命{{ PLANET_CN[a.body2] }}</span>
-          <span class="meta">{{ ASPECT_CN[a.type] }} · {{ a.orb }}°</span>
-        </div>
-      </div>
-      <p v-if="aspects.length === 0" class="hint">此刻没有紧密行运相位——享受平静的一天吧！</p>
+      <BirthForm use-saved :button-label="t('transits.submit')" @submit="onSubmit" />
     </section>
 
-    <section class="panel reading-panel" style="margin-top: 18px;">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h3 style="margin: 0;">AI 行运解读</h3>
-        <button v-if="!aiText" class="btn small" :disabled="aiLoading" @click="askAiInterpretation">
-          {{ aiLoading ? '推演星轨中…' : '开始解读' }}
-        </button>
-      </div>
-      <div v-if="aiText" class="reading ai" style="margin-top: 14px;">{{ aiText }}</div>
-      <p v-else-if="aiFailed" class="error-text" style="margin-bottom: 0;">AI 解读失败：请检查设置中的接口地址与密钥。</p>
-      <p v-else-if="!isAiEnabled()" class="hint" style="margin-bottom: 0;">在「设置」中配置 API Key 即可启用 AI 行运解读。</p>
-    </section>
-  </template>
+    <template v-if="natal && sky && reading">
+      <div class="divider-star">✦ ✦ ✦</div>
+
+      <section class="sky-strip panel bounce-in">
+        <div class="sky-item"><span class="dc-label">{{ t('tr.sunNow') }}</span><strong>{{ skySunSign }}</strong></div>
+        <div class="sky-item"><span class="dc-label">{{ t('tr.moonNow') }}</span><strong>{{ skyMoonSign }}</strong></div>
+        <div class="sky-item"><span class="dc-label">{{ t('tr.phase') }}</span><strong>{{ phase.emoji }} {{ moonName }}</strong><small>{{ moonDesc }}</small></div>
+        <div class="sky-item"><span class="dc-label">{{ t('tr.refreshed') }}</span><strong>{{ lastRefresh }}</strong><button class="btn ghost small" style="margin-top: 6px;" @click="refresh()">{{ t('tr.refresh') }}</button></div>
+      </section>
+
+      <!-- 今日主线 -->
+      <section v-if="reading.highlight" class="panel highlight-card bounce-in" style="margin-top: 18px;">
+        <h3 style="margin: 0 0 8px;">{{ t('tr.headline') }}<span class="tag">{{ t('c.localTag') }}</span></h3>
+        <p style="margin: 0; line-height: 1.9;">{{ reading.highlight }}</p>
+      </section>
+
+      <section class="astro-layout" style="margin-top: 18px;">
+        <AstroWheel
+          :planets="natal.planets"
+          :cusps="natal.cusps"
+          :asc-lon="natal.ascendant.lon"
+          :aspects="natal.aspects"
+          :inner-planets="sky.planets"
+          :synastry-aspects="aspects"
+        />
+
+        <section class="panel">
+          <h3 style="margin-top: 0;">{{ t('tr.sky') }}</h3>
+          <table class="planet-table">
+            <tbody>
+              <tr v-for="p in sky.planets" :key="'sky-' + p.name">
+                <td class="pg mint">{{ p.glyph }}</td>
+                <td>{{ p.cn }}<span v-if="p.retro" class="retro">℞</span></td>
+                <td>{{ locale === 'zh' ? p.signCn : SIGNS[p.signIndex]?.en }} {{ p.degText }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <h3 style="margin-top: 18px;">{{ t('tr.natalTitle') }}</h3>
+          <p class="hint">{{ t('astro.elements') }}：{{ elementLine }}；{{ t('astro.asc') }} {{ natal.ascendant.text }}，{{ t('astro.mc') }} {{ natal.midheaven.text }}。</p>
+        </section>
+      </section>
+
+      <section class="panel reading-panel stagger-in" style="margin-top: 18px;">
+        <h3 style="margin-top: 0;">{{ t('tr.list') }}<span class="tag">{{ t('tr.listTag', { n: aspects.length }) }}</span></h3>
+        <p class="hint" style="margin-top: 0;">{{ reading.overview }}</p>
+        <div class="transit-list">
+          <div
+            v-for="(item, i) in reading.items"
+            :key="i"
+            class="transit-item"
+            :class="'lv-' + item.level"
+          >
+            <span class="lvl-dot" />
+            <span class="txt">
+              <strong>{{ item.title }}</strong>
+              <em>{{ item.text }}</em>
+            </span>
+          </div>
+        </div>
+        <p v-if="reading.items.length === 0" class="hint">{{ t('tr.none') }}</p>
+      </section>
+
+      <AiChat :context="aiContext()" :title="t('ai.tr.title')" :intro="t('ai.tr.intro')" />
+    </template>
   </div>
 </template>
 
@@ -161,6 +181,13 @@ async function askAiInterpretation(): Promise<void> {
 .sky-item { display: flex; flex-direction: column; gap: 4px; }
 .sky-item strong { font-family: var(--cute); color: var(--gold-bright); font-size: 1.15rem; font-weight: 400; }
 .sky-item small { color: var(--ink-dim); font-size: 0.78rem; line-height: 1.5; }
+
+.highlight-card {
+  border-color: rgba(245, 200, 110, 0.55);
+  background:
+    radial-gradient(ellipse at 90% 10%, rgba(245, 200, 110, 0.12), transparent 55%),
+    var(--void-1);
+}
 
 .astro-layout {
   display: grid;
@@ -176,26 +203,27 @@ async function askAiInterpretation(): Promise<void> {
 .planet-table .pg.mint { color: var(--mint); }
 .retro { color: var(--danger); font-size: 0.75rem; margin-left: 4px; }
 
-.transit-list { display: flex; flex-direction: column; gap: 8px; }
+.reading-panel { margin-top: 26px; }
+.transit-list { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
 .transit-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
-  padding: 9px 14px;
+  padding: 11px 15px;
   border-radius: 12px;
   background: rgba(30, 26, 69, 0.6);
   border: 1px solid rgba(179, 166, 247, 0.2);
   font-size: 0.92rem;
-  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s;
 }
-.transit-item:hover { transform: translateX(6px); }
-.transit-item .sym { font-size: 1.1rem; width: 24px; text-align: center; }
-.transit-item .txt { flex: 1; }
-.transit-item .meta { color: var(--ink-dim); font-size: 0.8rem; }
-.t-conjunction .sym { color: #f5c86e; }
-.t-sextile .sym { color: #7de8c3; }
-.t-square .sym { color: #ff8a8a; }
-.t-trine .sym { color: #b3a6f7; }
-.t-opposition .sym { color: #ffb37a; }
-.reading-panel { margin-top: 26px; }
+.transit-item:hover { transform: translateX(6px); border-color: rgba(179, 166, 247, 0.55); }
+.lvl-dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+.lv-high .lvl-dot { background: var(--pink); box-shadow: 0 0 10px var(--pink); animation: dot-pulse 1.6s ease-in-out infinite; }
+.lv-mid .lvl-dot { background: var(--gold); box-shadow: 0 0 8px rgba(245, 200, 110, 0.7); }
+.lv-low .lvl-dot { background: var(--lavender); opacity: 0.6; }
+@keyframes dot-pulse { 50% { transform: scale(1.35); opacity: 0.75; } }
+.transit-item .txt { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+.transit-item strong { color: var(--lavender-soft); font-weight: 400; }
+.transit-item em { font-style: normal; color: var(--ink-dim); font-size: 0.86rem; line-height: 1.75; }
+.dc-label { font-family: var(--pixel); font-size: 0.55rem; letter-spacing: 0.15em; color: var(--pink-soft); }
 </style>

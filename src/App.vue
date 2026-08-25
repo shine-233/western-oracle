@@ -2,12 +2,18 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import PixelWitch from './components/PixelWitch.vue'
-import { isSoundOn, toggleSound } from './lib/sfx'
+import { isSoundOn, toggleSound, sfx } from './lib/sfx'
+import { t, toggleLocale, locale } from './lib/i18n'
 
 const soundOn = ref(isSoundOn())
 
 function onToggleSound(): void {
   soundOn.value = toggleSound()
+}
+
+function onToggleLocale(): void {
+  toggleLocale()
+  sfx.blip()
 }
 
 let lastTrail = 0
@@ -32,6 +38,12 @@ function onMouseMove(e: MouseEvent): void {
       trailCount--
     }, 620)
   })
+
+  // 星野视差：三层星星以不同深度跟随鼠标
+  const px = (e.clientX / window.innerWidth - 0.5).toFixed(3)
+  const py = (e.clientY / window.innerHeight - 0.5).toFixed(3)
+  document.documentElement.style.setProperty('--par-x', px)
+  document.documentElement.style.setProperty('--par-y', py)
 }
 
 onMounted(() => {
@@ -68,17 +80,31 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
+  <!-- 全屏星野背景（三层视差） -->
+  <div class="starfield" aria-hidden="true">
+    <div class="star-layer l1" />
+    <div class="star-layer l2" />
+    <div class="star-layer l3" />
+    <div class="nebula n1" />
+    <div class="nebula n2" />
+  </div>
+
   <header class="site-header">
-    <RouterLink to="/" class="brand">🧙‍♀️ 神谕<span class="en">WESTERN ORACLE</span></RouterLink>
+    <RouterLink to="/" class="brand">🧙‍♀️ {{ t('app.brand') }}<span class="en">WESTERN ORACLE</span></RouterLink>
     <nav class="site-nav">
-      <RouterLink to="/tarot">塔罗</RouterLink>
-      <RouterLink to="/astrology">占星</RouterLink>
-      <RouterLink to="/synastry">合盘</RouterLink>
-      <RouterLink to="/transits">行运</RouterLink>
-      <RouterLink to="/numerology">灵数</RouterLink>
-      <RouterLink to="/runes">符文</RouterLink>
-      <RouterLink to="/settings">设置</RouterLink>
-      <button class="sound-toggle" :title="soundOn ? '关闭音效' : '开启音效'" @click="onToggleSound">
+      <RouterLink to="/tarot">{{ t('nav.tarot') }}</RouterLink>
+      <RouterLink to="/astrology">{{ t('nav.astrology') }}</RouterLink>
+      <RouterLink to="/synastry">{{ t('nav.synastry') }}</RouterLink>
+      <RouterLink to="/transits">{{ t('nav.transits') }}</RouterLink>
+      <RouterLink to="/numerology">{{ t('nav.numerology') }}</RouterLink>
+      <RouterLink to="/runes">{{ t('nav.runes') }}</RouterLink>
+      <RouterLink to="/library">{{ t('nav.library') }}</RouterLink>
+      <RouterLink to="/history">{{ t('nav.history') }}</RouterLink>
+      <RouterLink to="/settings">{{ t('nav.settings') }}</RouterLink>
+      <button class="lang-toggle" :title="locale === 'zh' ? 'Switch to English' : '切换到中文'" @click="onToggleLocale">
+        {{ locale === 'zh' ? 'EN' : '中' }}
+      </button>
+      <button class="sound-toggle" :title="soundOn ? t('app.soundOff') : t('app.soundOn')" @click="onToggleSound">
         {{ soundOn ? '🔊' : '🔇' }}
       </button>
     </nav>
@@ -93,8 +119,8 @@ onBeforeUnmount(() => {
   </main>
 
   <footer class="site-footer">
-    <p>✦ 所有计算均在你的浏览器本地完成，不上传任何数据 ✦</p>
-    <p>本站内容用于文化与娱乐目的，请理性看待占卜结果。牌面为 1909 年公版 Rider-Waite-Smith 插图。</p>
+    <p>{{ t('footer.l1') }}</p>
+    <p>{{ t('footer.l2') }}</p>
   </footer>
 
   <PixelWitch />
@@ -112,4 +138,17 @@ onBeforeUnmount(() => {
   transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s;
 }
 .sound-toggle:hover { transform: scale(1.12) rotate(-6deg); border-color: var(--pink); }
+.lang-toggle {
+  background: var(--void-2);
+  border: 2px solid rgba(245, 200, 110, 0.55);
+  border-radius: 0;
+  color: var(--gold-bright);
+  cursor: pointer;
+  font-family: var(--pixel);
+  font-size: 0.6rem;
+  padding: 6px 8px;
+  letter-spacing: 0.08em;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s;
+}
+.lang-toggle:hover { transform: scale(1.1); border-color: var(--gold-bright); }
 </style>

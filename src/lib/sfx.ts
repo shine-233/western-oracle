@@ -91,4 +91,19 @@ export const sfx = {
   toggle(): void {
     tone(440, 0.06, 'square', 0.035, 330)
   },
+  /** 打字机滴答（AI 流式输出） */
+  tick(): void {
+    tone(1400 + Math.random() * 500, 0.018, 'square', 0.008)
+  },
+  /** 洗牌：连续的纸牌摩擦声 */
+  riffle(): void {
+    noise(0.09, 0.04)
+    tone(180 + Math.random() * 120, 0.07, 'triangle', 0.02, 90)
+    window.setTimeout(() => noise(0.07, 0.03), 70)
+    window.setTimeout(() => {
+      noise(0.1, 0.035)
+      tone(150 + Math.random() * 100, 0.08, 'triangle', 0.02, 80)
+    }, 150)
+    window.setTimeout(() => noise(0.12, 0.03), 240)
+  },
 }

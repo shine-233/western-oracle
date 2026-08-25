@@ -2,6 +2,7 @@
 import type { TarotCard } from '../data/tarot'
 import { cardImageUrl } from '../data/tarot'
 import { vTilt } from '../lib/tilt'
+import { t } from '../lib/i18n'
 
 defineProps<{
   card: TarotCard
@@ -35,9 +36,9 @@ defineEmits<{ flip: [e: MouseEvent] }>()
       </div>
     </div>
     <p v-if="revealed" class="tci-caption">
-      {{ card.nameCn }}<template v-if="reversed">（逆位）</template>
+      {{ card.nameCn }}<template v-if="reversed">（{{ t('c.reversed') }}）</template>
     </p>
-    <p v-else class="tci-caption dim">点击翻开 ✧</p>
+    <p v-else class="tci-caption dim">{{ t('tarot.flipHint') }}</p>
   </div>
 </template>
 

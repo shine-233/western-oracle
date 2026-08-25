@@ -1,11 +1,18 @@
 <script setup lang="ts">
 /**
  * 露娜的 3D 体素模型：由 2D 像素画数据拉伸成体素。
- * 互动：拖拽旋转 / 滚轮缩放 / 闲置自动旋转 / 环绕星尘粒子。
+ * 互动：拖拽旋转 / 滚轮缩放 / 闲置自转 / 环绕星尘粒子
+ *      + 眨眼与 wink 表情 / 点击触发跳跃·旋转·害羞动作 / UnrealBloom 辉光后处理。
  */
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import * as THREE from 'three'
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
+import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js'
 import { witchVoxels } from '../data/witchSprite'
+import { sfx } from '../lib/sfx'
+import { t } from '../lib/i18n'
 
 const container = ref<HTMLDivElement | null>(null)
 const hint = ref(true)
@@ -15,15 +22,36 @@ let scene: THREE.Scene | null = null
 let camera: THREE.PerspectiveCamera | null = null
 let witchGroup: THREE.Group | null = null
 let starField: THREE.Points | null = null
+let composer: EffectComposer | null = null
 let raf = 0
 let disposed = false
 
 let dragging = false
 let lastX = 0
 let lastY = 0
+let downX = 0
+let downY = 0
+let downTime = 0
 let targetRotY = 0.5
 let targetRotX = 0.12
 let idleTimer: number | null = null
+
+/** 眨眼状态 */
+let eyeIndices: number[] = []
+let eyeBaseY: number[] = []
+let blinkUntil = 0
+let nextBlinkAt = 0
+/** 跳跃冲量 */
+let jumpVel = 0
+/** 动作气泡 */
+const moodText = ref('')
+let moodTimer: number | null = null
+
+function showMood(text: string): void {
+  moodText.value = text
+  if (moodTimer !== null) window.clearTimeout(moodTimer)
+  moodTimer = window.setTimeout(() => (moodText.value = ''), 1600)
+}
 
 function build(): void {
   const el = container.value
@@ -70,6 +98,11 @@ function build(): void {
       m.setPosition(px, py, (layer - 0.5) * S * 1.1)
       mesh.setMatrixAt(idx, m)
       mesh.setColorAt(idx, color.set(v.color).multiplyScalar(layer === 0 ? 1 : 0.72))
+      // 记录眼睛体素（E 色），用于眨眼动画
+      if (v.color.toLowerCase() === '#3a2e5c') {
+        eyeIndices.push(idx)
+        eyeBaseY.push(py)
+      }
     }
   })
   mesh.instanceMatrix.needsUpdate = true
@@ -102,13 +135,74 @@ function build(): void {
   glow.position.y = -ROWS * S * 0.5 - 0.4
   scene.add(glow)
 
+  // ---- 辉光后处理（尊重 reduced-motion）----
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    composer = new EffectComposer(renderer)
+    composer.addPass(new RenderPass(scene, camera))
+    const bloom = new UnrealBloomPass(new THREE.Vector2(el.clientWidth, el.clientHeight), 0.5, 0.65, 0.78)
+    composer.addPass(bloom)
+    composer.addPass(new OutputPass())
+    composer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    composer.setSize(el.clientWidth, el.clientHeight)
+  }
+
+  nextBlinkAt = clock.getElapsedTime() + 2 + Math.random() * 3
   bindEvents(el)
   animate()
+}
+
+/** 把眼睛实例按给定缩放写入矩阵 */
+function setEyeScale(scaleY: number): void {
+  if (!witchGroup) return
+  const mesh = witchGroup.children[0] as THREE.InstancedMesh | undefined
+  if (!mesh) return
+  const m = new THREE.Matrix4()
+  const q = new THREE.Quaternion()
+  const pos = new THREE.Vector3()
+  const scl = new THREE.Vector3(1, 1, 1)
+  eyeIndices.forEach((idx, k) => {
+    mesh.getMatrixAt(idx, m)
+    m.decompose(pos, q, scl)
+    scl.y = scaleY
+    pos.y = eyeBaseY[k]! * (scaleY < 1 ? 0.985 : 1)
+    m.compose(pos, q, scl)
+    mesh.setMatrixAt(idx, m)
+  })
+  mesh.instanceMatrix.needsUpdate = true
+}
+
+/** 点击动作 */
+function doAction(): void {
+  const actions = ['jump', 'spin', 'wink', 'shy'] as const
+  const action = actions[Math.floor(Math.random() * actions.length)]!
+  sfx.pop()
+
+  switch (action) {
+    case 'jump':
+      jumpVel = 0.16
+      showMood(t('mood.jump'))
+      break
+    case 'spin':
+      targetRotY += Math.PI * 2
+      showMood(t('mood.spin'))
+      break
+    case 'wink':
+      setEyeScale(0.08)
+      window.setTimeout(() => setEyeScale(1), 420)
+      showMood(t('mood.wink'))
+      break
+    case 'shy':
+      showMood(t('mood.shy'))
+      break
+  }
 }
 
 function bindEvents(el: HTMLElement): void {
   el.addEventListener('pointerdown', (e) => {
     dragging = true
+    downX = e.clientX
+    downY = e.clientY
+    downTime = performance.now()
     lastX = e.clientX
     lastY = e.clientY
     hint.value = false
@@ -123,6 +217,9 @@ function bindEvents(el: HTMLElement): void {
     lastY = e.clientY
   })
   const endDrag = (): void => {
+    if (dragging && performance.now() - downTime < 320 && Math.hypot(lastX - downX, lastY - downY) < 7) {
+      doAction()
+    }
     dragging = false
     if (idleTimer !== null) window.clearTimeout(idleTimer)
     idleTimer = window.setTimeout(() => hint.value = true, 4000)
@@ -148,6 +245,7 @@ function onResize(): void {
   camera.aspect = el.clientWidth / el.clientHeight
   camera.updateProjectionMatrix()
   renderer.setSize(el.clientWidth, el.clientHeight)
+  composer?.setSize(el.clientWidth, el.clientHeight)
 }
 
 const clock = new THREE.Clock()
@@ -156,14 +254,37 @@ function animate(): void {
   raf = requestAnimationFrame(animate)
   const t = clock.getElapsedTime()
 
+  // 自动眨眼
+  if (t > nextBlinkAt && t > blinkUntil) {
+    blinkUntil = t + 0.16
+    nextBlinkAt = t + 2.2 + Math.random() * 3.4
+  }
+  const eyesClosed = t < blinkUntil
+  setEyeScaleLive(eyesClosed ? 0.1 : 1)
+
   if (witchGroup) {
     if (!dragging) targetRotY += 0.0045
     witchGroup.rotation.y += (targetRotY - witchGroup.rotation.y) * 0.12
     witchGroup.rotation.x += (targetRotX - witchGroup.rotation.x) * 0.12
-    witchGroup.position.y = Math.sin(t * 1.4) * 0.22
+    // 悬浮 + 跳跃物理
+    jumpVel -= 0.012
+    if (jumpVel < 0) jumpVel = Math.max(jumpVel, -0.3)
+    jumpOffset = Math.max(0, jumpOffset + jumpVel)
+    witchGroup.position.y = Math.sin(t * 1.4) * 0.22 + jumpOffset
   }
   if (starField) starField.rotation.y = t * 0.12
-  if (renderer && scene && camera) renderer.render(scene, camera)
+
+  if (composer) composer.render()
+  else if (renderer && scene && camera) renderer.render(scene, camera)
+}
+
+let jumpOffset = 0
+let lastEyeScale = 1
+function setEyeScaleLive(s: number): void {
+  if (s !== lastEyeScale) {
+    setEyeScale(s)
+    lastEyeScale = s
+  }
 }
 
 onMounted(build)
@@ -172,6 +293,7 @@ onBeforeUnmount(() => {
   disposed = true
   cancelAnimationFrame(raf)
   window.removeEventListener('resize', onResize)
+  if (moodTimer !== null) window.clearTimeout(moodTimer)
   renderer?.dispose()
   renderer?.domElement.remove()
 })
@@ -181,7 +303,10 @@ onBeforeUnmount(() => {
   <div class="voxel-wrap">
     <div ref="container" class="voxel-canvas" />
     <Transition name="fade">
-      <span v-if="hint" class="drag-hint">✧ 拖拽旋转 · 滚轮缩放 ✧</span>
+      <span v-if="hint" class="drag-hint">{{ t('voxel.hint') }}</span>
+    </Transition>
+    <Transition name="pop">
+      <span v-if="moodText" class="mood-bubble">{{ moodText }}</span>
     </Transition>
   </div>
 </template>
@@ -216,8 +341,28 @@ onBeforeUnmount(() => {
   0%, 100% { transform: translate(-50%, 0); }
   50% { transform: translate(-50%, -5px); }
 }
+.mood-bubble {
+  position: absolute;
+  top: 26px;
+  right: 22px;
+  background: #fff6ec;
+  color: #2e2650;
+  font-family: var(--cute);
+  font-size: 0.95rem;
+  padding: 8px 14px;
+  border-radius: 14px 14px 14px 3px;
+  border: 2px solid var(--gold);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  animation: bubble-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+@keyframes bubble-in {
+  from { opacity: 0; transform: translateY(-8px) scale(0.8); }
+}
 .fade-enter-active, .fade-leave-active { transition: opacity 0.4s; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
+.pop-enter-active, .pop-leave-active { transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.pop-enter-from, .pop-leave-to { opacity: 0; transform: translateY(-8px) scale(0.85); }
 @media (max-width: 600px) {
   .voxel-canvas { height: 300px; }
 }

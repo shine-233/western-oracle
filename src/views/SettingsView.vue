@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { askAI, getAiConfig, saveAiConfig } from '../lib/ai'
+import { clearHistory, getHistory } from '../lib/history'
+import { sfx, toggleSound, isSoundOn } from '../lib/sfx'
+import { t } from '../lib/i18n'
+import DecryptTitle from '../components/DecryptTitle.vue'
 
 const baseUrl = ref(getAiConfig().baseUrl)
 const apiKey = ref(getAiConfig().apiKey)
@@ -9,17 +13,21 @@ const model = ref(getAiConfig().model)
 const saved = ref(false)
 const testing = ref(false)
 const testResult = ref<string | null>(null)
+const soundOn = ref(isSoundOn())
+const historyCount = ref(0)
 
 onMounted(() => {
   const cfg = getAiConfig()
   baseUrl.value = cfg.baseUrl
   apiKey.value = cfg.apiKey
   model.value = cfg.model
+  historyCount.value = getHistory().length
 })
 
 function save(): void {
   saveAiConfig({ baseUrl: baseUrl.value.trim(), apiKey: apiKey.value.trim(), model: model.value.trim() })
   saved.value = true
+  sfx.blip()
   setTimeout(() => (saved.value = false), 2000)
 }
 
@@ -29,52 +37,149 @@ async function test(): Promise<void> {
   testing.value = true
   testResult.value = null
   const res = await askAI('你是连通性测试助手。', '收到请只回复两个字：畅通')
-  testResult.value = res === null ? '连接失败：请检查地址、密钥、模型名，或浏览器到该接口的网络/CORS。' : `连接成功，模型回复：${res}`
+  testResult.value = res === null ? t('set.testFail') : t('set.testOk', { r: res })
   testing.value = false
+  res === null ? sfx.toggle() : sfx.ding()
+}
+
+function onToggleSound(): void {
+  soundOn.value = toggleSound()
+}
+
+function onClearHistory(): void {
+  if (!window.confirm(t('set.histConfirm'))) return
+  clearHistory()
+  historyCount.value = 0
+  sfx.whoosh()
 }
 </script>
 
 <template>
   <div class="page-root">
-    <h2>设置 · AI 解读</h2>
-  <p class="hint">
-    本站默认使用内置的本地规则文案进行解读。若想获得更个性化的 AI 解读，可配置任意 OpenAI 兼容接口
-    （OpenAI、DeepSeek、Moonshot、本地 Ollama 等）。密钥只保存在你浏览器的 localStorage 中，
-    请求从你的设备直接发往你填写的服务商，本站不经手任何数据。
-  </p>
+    <h2><DecryptTitle :text="t('set.title')" /></h2>
+    <p class="hint">{{ t('set.hint') }}</p>
 
-  <section class="panel" style="margin-top: 18px; max-width: 640px;">
-    <label class="field">
-      <span>接口地址（Base URL）</span>
-      <input v-model="baseUrl" type="text" placeholder="https://api.openai.com/v1" />
-    </label>
-    <label class="field">
-      <span>API Key</span>
-      <input v-model="apiKey" type="password" placeholder="sk-..." autocomplete="off" />
-    </label>
-    <label class="field">
-      <span>模型名称</span>
-      <input v-model="model" type="text" placeholder="gpt-4o-mini / deepseek-chat / qwen-plus ..." />
-    </label>
-    <div style="display: flex; gap: 12px; align-items: center;">
-      <button class="btn small" @click="save">保存配置</button>
-      <button class="btn ghost small" :disabled="testing || apiKey.trim() === ''" @click="test">
-        {{ testing ? '测试中…' : '测试连接' }}
+    <section class="panel stagger-in" style="margin-top: 18px; max-width: 640px;">
+      <label class="field">
+        <span>{{ t('set.base') }}</span>
+        <input v-model="baseUrl" type="text" :placeholder="t('set.basePh')" />
+      </label>
+      <label class="field">
+        <span>{{ t('set.key') }}</span>
+        <input v-model="apiKey" type="password" :placeholder="t('set.keyPh')" autocomplete="off" />
+      </label>
+      <label class="field">
+        <span>{{ t('set.model') }}</span>
+        <input v-model="model" type="text" :placeholder="t('set.modelPh')" />
+      </label>
+      <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+        <button class="btn small" @click="save">{{ t('set.save') }}</button>
+        <button class="btn ghost small" :disabled="testing || apiKey.trim() === ''" @click="test">
+          {{ testing ? t('set.testing') : t('set.test') }}
+        </button>
+        <Transition name="pop-saved">
+          <span v-if="saved" class="saved-flash">{{ t('set.saved') }}</span>
+        </Transition>
+      </div>
+      <p v-if="testing" class="testing-wave"><i /><i /><i /></p>
+      <p v-if="testResult" class="hint" :class="{ 'error-text': testResult.startsWith(t('set.testFail').slice(0, 4)) }">{{ testResult }}</p>
+      <p class="hint" style="margin-top: 18px; font-style: italic;">{{ t('set.cors') }}</p>
+    </section>
+
+    <!-- 偏好设置 -->
+    <section class="panel stagger-in" style="margin-top: 20px; max-width: 640px;">
+      <h3 style="margin-top: 0;">{{ t('set.prefs') }}</h3>
+      <button class="pref-row" @click="onToggleSound">
+        <span class="pref-icon">{{ soundOn ? '🔊' : '🔇' }}</span>
+        <span class="pref-text">
+          <strong>{{ t('set.sound') }}</strong>
+          <small>{{ soundOn ? t('set.soundOnSmall') : t('set.soundOffSmall') }}</small>
+        </span>
+        <span class="switch" :class="{ on: soundOn }"><i /></span>
       </button>
-      <span v-if="saved" class="hint" style="color: var(--gold-bright);">已保存 ✓</span>
-    </div>
-    <p v-if="testResult" class="hint" :class="{ 'error-text': testResult.startsWith('连接失败') }">{{ testResult }}</p>
-    <p class="hint" style="margin-top: 18px; font-style: italic;">
-      提示：浏览器直连第三方 API 需要对方允许跨域（CORS）。若测试失败但配置无误，通常是该服务商不支持浏览器端调用。
-    </p>
-  </section>
+      <button class="pref-row" @click="onClearHistory">
+        <span class="pref-icon">🗑️</span>
+        <span class="pref-text">
+          <strong>{{ t('set.hist') }}</strong>
+          <small>{{ t('set.histSmall', { n: historyCount }) }}</small>
+        </span>
+        <span class="switch danger-sw"><i>✕</i></span>
+      </button>
+    </section>
 
-  <section class="panel" style="margin-top: 20px; max-width: 640px;">
-    <h3 style="margin-top: 0;">隐私说明</h3>
-    <p class="hint">
-      除「你主动配置并使用的 AI 接口」外，本站不发起任何网络请求：没有统计、没有埋点、没有账号系统。
-      你的出生信息与抽牌历史仅存在于本机。
-    </p>
-  </section>
+    <section class="panel stagger-in" style="margin-top: 20px; max-width: 640px;">
+      <h3 style="margin-top: 0;">{{ t('set.privacy') }}</h3>
+      <p class="hint">{{ t('set.privacyBody') }}</p>
+    </section>
   </div>
 </template>
+
+<style scoped>
+.saved-flash {
+  color: var(--gold-bright);
+  animation: saved-bounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes saved-bounce {
+  from { transform: scale(0.4) rotate(-10deg); opacity: 0; }
+}
+.pop-saved-leave-active { transition: opacity 0.3s; }
+.pop-saved-leave-to { opacity: 0; }
+
+.testing-wave { display: inline-flex; gap: 5px; margin: 8px 0 0; }
+.testing-wave i {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--mint);
+  animation: wave-jump 0.9s ease-in-out infinite;
+}
+.testing-wave i:nth-child(2) { animation-delay: 0.14s; background: var(--gold); }
+.testing-wave i:nth-child(3) { animation-delay: 0.28s; background: var(--pink); }
+@keyframes wave-jump {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(-7px); opacity: 1; }
+}
+
+.pref-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(30, 26, 69, 0.55);
+  border: 2px solid rgba(179, 166, 247, 0.25);
+  border-radius: 14px;
+  padding: 13px 18px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  color: var(--ink);
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-align: left;
+}
+.pref-row:hover { transform: translateX(5px); border-color: var(--pink-soft); }
+.pref-row:last-child { margin-bottom: 0; }
+.pref-icon { font-size: 1.5rem; }
+.pref-text { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+.pref-text strong { color: var(--gold-bright); font-family: var(--cute); font-weight: 400; letter-spacing: 0.06em; }
+.pref-text small { color: var(--ink-dim); font-size: 0.78rem; }
+
+.switch {
+  width: 46px; height: 24px;
+  border-radius: 999px;
+  background: rgba(13, 11, 32, 0.9);
+  border: 2px solid rgba(179, 166, 247, 0.4);
+  position: relative;
+  transition: background 0.25s, border-color 0.25s;
+  flex-shrink: 0;
+}
+.switch i {
+  position: absolute;
+  top: 2px; left: 3px;
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  background: var(--ink-dim);
+  transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-size: 0;
+}
+.switch.on { background: rgba(125, 232, 195, 0.25); border-color: var(--mint); }
+.switch.on i { left: 23px; background: var(--mint); box-shadow: 0 0 10px var(--mint); }
+.danger-sw i { color: #ff8a8a; font-style: normal; font-weight: bold; line-height: 15px; text-align: center; font-size: 10px !important; }
+</style>

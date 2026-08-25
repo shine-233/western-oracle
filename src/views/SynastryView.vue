@@ -1,140 +1,147 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { PLANET_CN, computeNatalChart, crossAspects, type BirthInput, type ChartPlanet, type CrossAspect, type NatalChart } from '../lib/astrology'
-import { askAI, isAiEnabled, oracleSystemPrompt } from '../lib/ai'
+import { computeNatalChart, crossAspects, type BirthInput, type ChartPlanet, type CrossAspect, type NatalChart } from '../lib/astrology'
+import { PLANETS } from '../data/corpus'
+import { readSynastry, type SynastryReading } from '../lib/interpret'
+import { addHistory } from '../lib/history'
+import { sfx } from '../lib/sfx'
+import { t } from '../lib/i18n'
 import AstroWheel from '../components/AstroWheel.vue'
 import BirthForm from '../components/BirthForm.vue'
+import AiChat from '../components/AiChat.vue'
+import DecryptTitle from '../components/DecryptTitle.vue'
 
 const chartA = ref<NatalChart | null>(null)
 const chartB = ref<NatalChart | null>(null)
 const aspects = ref<CrossAspect[]>([])
-const aiText = ref<string | null>(null)
-const aiLoading = ref(false)
-const aiFailed = ref(false)
+const reading = ref<SynastryReading | null>(null)
 
 function onSubmitA(input: BirthInput): void {
-  chartA.value = computeChartOf(input)
+  chartA.value = computeNatalChart(input)
   tryPair()
 }
 
 function onSubmitB(input: BirthInput): void {
-  chartB.value = computeChartOf(input)
+  chartB.value = computeNatalChart(input)
   tryPair()
-}
-
-function computeChartOf(input: BirthInput): NatalChart {
-  return computeNatalChart(input)
 }
 
 function tryPair(): void {
   if (chartA.value && chartB.value) {
     aspects.value = crossAspects(chartA.value.planets, chartB.value.planets)
-    aiText.value = null
-    aiFailed.value = false
+    reading.value = readSynastry(chartA.value, chartB.value, aspects.value)
+    sfx.ding()
+
+    const cn = (k: string): string => PLANETS[k]?.cn ?? k
+    const top = aspects.value.slice(0, 6).map((a) => `A方${cn(a.body1)}${a.type}B方${cn(a.body2)}`).join('、')
+    addHistory({
+      type: 'synastry',
+      label: '合盘 · 双人比较盘',
+      summary: `${reading.value.tags.join(' / ')}；缘分指数 ${reading.value.score}；交叉相位 ${aspects.value.length} 条：${top}`,
+      detail: [reading.value.overview, ...reading.value.items.map((it) => `${it.title}\n${it.text}`), reading.value.advice].join('\n\n'),
+    })
   }
 }
 
 function planetLine(p: ChartPlanet): string {
-  return `${PLANET_CN[p.name]} ${p.signCn}${p.degText}${p.retro ? '℞' : ''}（第${p.house}宫）`
+  return `${p.cn} ${p.signCn}${p.degText}${p.retro ? '℞' : ''}（第${p.house}宫）`
 }
 
-async function askAiInterpretation(): Promise<void> {
-  if (!chartA.value || !chartB.value || !isAiEnabled() || aiLoading.value) return
-  aiLoading.value = true
-  aiFailed.value = false
-  aiText.value = null
-
+const aiContext = (): string => {
+  if (!chartA.value || !chartB.value || !reading.value) return ''
   const top = aspects.value.slice(0, 15)
-  const payload = [
+  return [
     '请解读两人合盘（比较盘）的缘分与相处课题，语气温柔有趣：',
+    `本地规则引擎结论：${reading.value.overview} 缘分指数 ${reading.value.score}/100（${reading.value.tags.join('、')}）。请在此基础上深化，不要重复罗列。`,
     `A 方：${chartA.value.planets.map(planetLine).join('；')}`,
     `B 方：${chartB.value.planets.map(planetLine).join('；')}`,
-    `交叉相位（按紧密程度排序）：${top.map((a) => `A方${PLANET_CN[a.body1]} ${a.type} B方${PLANET_CN[a.body2]}（偏差${a.orb}°）`).join('、')}`,
+    `交叉相位（按紧密程度排序）：${top.map((a) => `A方${PLANETS[a.body1]?.cn ?? a.body1} ${a.type} B方${PLANETS[a.body2]?.cn ?? a.body2}（偏差${a.orb}°）`).join('、')}`,
   ].join('\n')
-
-  const res = await askAI(oracleSystemPrompt(), payload)
-  if (res === null) aiFailed.value = true
-  else aiText.value = res
-  aiLoading.value = false
 }
 </script>
 
 <template>
   <div class="page-root">
-    <h2>合盘 · Synastry</h2>
-  <p class="hint">两盘对照：外环是 A 方，内环是 B 方；虚线是两人星体之间的交叉相位，越紧的缘分越"吵"（也越深）。</p>
+    <h2><DecryptTitle :text="t('syn.title')" /></h2>
+    <p class="hint">{{ t('syn.hint') }}</p>
 
-  <div class="pair-forms">
-    <section class="panel">
-      <h3 style="margin-top: 0;">✦ A 方（默认读取本机档案）</h3>
-      <BirthForm use-saved button-label="录入 A 方星盘" @submit="onSubmitA" />
-    </section>
-    <section class="panel">
-      <h3 style="margin-top: 0;">✧ B 方</h3>
-      <BirthForm button-label="录入 B 方星盘" @submit="onSubmitB" />
-    </section>
-  </div>
-
-  <template v-if="chartA && chartB">
-    <div class="divider-star">✦ ✦ ✦</div>
-
-    <section class="astro-layout">
-      <AstroWheel
-        :planets="chartA.planets"
-        :cusps="chartA.cusps"
-        :asc-lon="chartA.ascendant.lon"
-        :aspects="chartA.aspects"
-        :inner-planets="chartB.planets"
-        :synastry-aspects="aspects"
-      />
-
+    <div class="pair-forms">
       <section class="panel">
-        <h3 style="margin-top: 0;">双方速览</h3>
-        <div class="side-by-side">
-          <div>
-            <p class="who">A 方</p>
-            <ul class="fact-list">
-              <li>上升 {{ chartA.ascendant.text }}</li>
-              <li v-for="p in chartA.planets.slice(0, 5)" :key="p.name">{{ planetLine(p) }}</li>
-            </ul>
+        <h3 style="margin-top: 0;">{{ t('syn.personA') }}</h3>
+        <BirthForm use-saved :button-label="t('synastry.aSubmit')" @submit="onSubmitA" />
+      </section>
+      <section class="panel">
+        <h3 style="margin-top: 0;">{{ t('syn.personB') }}</h3>
+        <BirthForm :button-label="t('synastry.bSubmit')" @submit="onSubmitB" />
+      </section>
+    </div>
+
+    <template v-if="chartA && chartB && reading">
+      <div class="divider-star">✦ ✦ ✦</div>
+
+      <!-- 缘分指数卡 -->
+      <section class="panel score-panel bounce-in">
+        <div class="score-ring-wrap">
+          <svg viewBox="0 0 120 120" class="score-ring">
+            <circle cx="60" cy="60" r="52" class="ring-bg" />
+            <circle cx="60" cy="60" r="52" class="ring-fg" :stroke-dasharray="`${(reading.score / 100) * 327} 327`" />
+            <text x="60" y="57" text-anchor="middle" class="score-num">{{ reading.score }}</text>
+            <text x="60" y="76" text-anchor="middle" class="score-label">{{ t('syn.score') }}</text>
+          </svg>
+        </div>
+        <div class="score-info">
+          <div class="tag-row">
+            <span v-for="t in reading.tags" :key="t" class="love-tag">{{ t }}</span>
           </div>
-          <div>
-            <p class="who b">B 方</p>
-            <ul class="fact-list">
-              <li>上升 {{ chartB.ascendant.text }}</li>
-              <li v-for="p in chartB.planets.slice(0, 5)" :key="p.name">{{ planetLine(p) }}</li>
-            </ul>
-          </div>
+          <p class="reading">{{ reading.overview }}</p>
         </div>
       </section>
-    </section>
 
-    <section class="panel" style="margin-top: 18px;">
-      <h3 style="margin-top: 0;">交叉相位（{{ aspects.length }} 条，按紧密排序）</h3>
-      <div class="aspect-chips">
-        <span
-          v-for="(a, i) in aspects"
-          :key="i"
-          class="aspect-chip"
-          :class="'t-' + a.type"
-          :title="`偏差 ${a.orb}°`"
-        >A{{ PLANET_CN[a.body1] }} {{ a.type === 'conjunction' ? '☌' : a.type === 'opposition' ? '☍' : a.type === 'trine' ? '△' : a.type === 'square' ? '□' : '⚹' }} B{{ PLANET_CN[a.body2] }}</span>
-      </div>
-      <p v-if="aspects.length === 0" class="hint">没有紧密交叉相位——你们是细水长流型（或者八竿子打不着，看 AI 怎么说）。</p>
-    </section>
+      <section class="astro-layout" style="margin-top: 18px;">
+        <AstroWheel
+          :planets="chartA.planets"
+          :cusps="chartA.cusps"
+          :asc-lon="chartA.ascendant.lon"
+          :aspects="chartA.aspects"
+          :inner-planets="chartB.planets"
+          :synastry-aspects="aspects"
+        />
 
-    <section class="panel reading-panel" style="margin-top: 18px;">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h3 style="margin: 0;">AI 缘分解读</h3>
-        <button v-if="!aiText" class="btn small" :disabled="aiLoading" @click="askAiInterpretation">
-          {{ aiLoading ? '红线测算中…' : '开始解读' }}
-        </button>
-      </div>
-      <div v-if="aiText" class="reading ai" style="margin-top: 14px;">{{ aiText }}</div>
-      <p v-else-if="aiFailed" class="error-text" style="margin-bottom: 0;">AI 解读失败：请检查设置中的接口地址与密钥。</p>
-      <p v-else-if="!isAiEnabled()" class="hint" style="margin-bottom: 0;">在「设置」中配置 API Key 即可启用 AI 缘分解读。</p>
-    </section>
-  </template>
+        <section class="panel">
+          <h3 style="margin-top: 0;">{{ t('syn.overview') }}</h3>
+          <div class="side-by-side">
+            <div>
+              <p class="who">{{ t('syn.sideA') }}</p>
+              <ul class="fact-list">
+                <li>{{ t('astro.asc') }} {{ chartA.ascendant.text }}</li>
+                <li v-for="p in chartA.planets.slice(0, 6)" :key="'a' + p.name">{{ planetLine(p) }}</li>
+              </ul>
+            </div>
+            <div>
+              <p class="who b">{{ t('syn.sideB') }}</p>
+              <ul class="fact-list">
+                <li>{{ t('astro.asc') }} {{ chartB.ascendant.text }}</li>
+                <li v-for="p in chartB.planets.slice(0, 6)" :key="'b' + p.name">{{ planetLine(p) }}</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section class="panel reading-panel stagger-in" style="margin-top: 18px;">
+        <h3 style="margin-top: 0;">{{ t('syn.local') }}<span class="tag">{{ t('syn.localTag', { n: aspects.length }) }}</span></h3>
+        <ol class="interp-list">
+          <li v-for="(item, i) in reading.items" :key="i" class="interp-item">
+            <strong class="interp-title">{{ item.title }}</strong>
+            <p>{{ item.text }}</p>
+          </li>
+        </ol>
+        <p v-if="reading.items.length === 0" class="hint">{{ t('syn.none') }}</p>
+        <div class="advice-box">✧ {{ reading.advice }}</div>
+      </section>
+
+      <AiChat :context="aiContext()" :title="t('ai.syn.title')" :intro="t('ai.syn.intro')" />
+    </template>
   </div>
 </template>
 
@@ -146,6 +153,54 @@ async function askAiInterpretation(): Promise<void> {
   margin-top: 18px;
 }
 @media (max-width: 860px) { .pair-forms { grid-template-columns: 1fr; } }
+
+/* 缘分指数卡 */
+.score-panel {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.score-ring { width: 150px; height: 150px; }
+.ring-bg {
+  fill: none;
+  stroke: rgba(179, 166, 247, 0.18);
+  stroke-width: 9;
+}
+.ring-fg {
+  fill: none;
+  stroke: var(--pink);
+  stroke-width: 9;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 60px 60px;
+  filter: drop-shadow(0 0 8px rgba(255, 159, 206, 0.7));
+  animation: ring-fill 1.4s cubic-bezier(0.34, 1.3, 0.64, 1) both;
+}
+@keyframes ring-fill {
+  from { stroke-dashoffset: 330; }
+}
+.score-num {
+  fill: var(--gold-bright);
+  font-size: 34px;
+  font-family: var(--cute);
+}
+.score-label { fill: var(--ink-dim); font-size: 10px; letter-spacing: 0.2em; }
+.score-info { flex: 1 1 300px; }
+.tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.love-tag {
+  border: 1.5px solid var(--pink);
+  color: var(--pink);
+  font-size: 0.82rem;
+  padding: 3px 12px;
+  border-radius: 999px;
+  animation: tag-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.love-tag:nth-child(2) { animation-delay: 0.1s; border-color: var(--gold); color: var(--gold); }
+.love-tag:nth-child(3) { animation-delay: 0.2s; border-color: var(--mint); color: var(--mint); }
+@keyframes tag-pop {
+  from { opacity: 0; transform: scale(0.6) rotate(-6deg); }
+}
 
 .astro-layout {
   display: grid;
@@ -160,20 +215,17 @@ async function askAiInterpretation(): Promise<void> {
 .who.b { color: var(--mint); }
 .fact-list { margin: 0; padding-left: 16px; line-height: 1.9; font-size: 0.88rem; color: var(--ink); }
 
-.aspect-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.aspect-chip {
-  font-size: 0.82rem;
-  padding: 5px 12px;
-  border-radius: 999px;
-  border: 1.5px solid;
-  cursor: default;
-  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.aspect-chip:hover { transform: scale(1.08) rotate(-2deg); }
-.t-conjunction { color: #f5c86e; border-color: #f5c86e; }
-.t-sextile { color: #7de8c3; border-color: #7de8c3; }
-.t-square { color: #ff8a8a; border-color: #ff8a8a; }
-.t-trine { color: #b3a6f7; border-color: #b3a6f7; }
-.t-opposition { color: #ffb37a; border-color: #ffb37a; }
 .reading-panel { margin-top: 26px; }
+.interp-list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 14px; }
+.interp-item { line-height: 1.85; }
+.interp-item p { margin: 4px 0 0; color: var(--ink); font-size: 0.93rem; white-space: pre-line; }
+.interp-title { color: var(--lavender-soft); font-weight: 400; }
+.advice-box {
+  margin-top: 18px;
+  padding: 13px 16px;
+  background: rgba(124, 107, 214, 0.16);
+  border-left: 3px solid var(--gold);
+  border-radius: 8px;
+  line-height: 1.9;
+}
 </style>

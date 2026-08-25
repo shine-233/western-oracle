@@ -122,7 +122,7 @@ const placedInner = computed(() => (props.innerPlanets ? avoidCollisions(props.i
 const aspectLines = computed(() => {
   const byName = new Map(props.planets.map((p) => [p.name, p]))
   return props.aspects
-    .map((a) => {
+    .map((a, i) => {
       const p1 = byName.get(a.body1)
       const p2 = byName.get(a.body2)
       if (!p1 || !p2) return null
@@ -132,11 +132,25 @@ const aspectLines = computed(() => {
         x1: q1.x, y1: q1.y, x2: q2.x, y2: q2.y,
         color: ASPECT_COLORS[a.type] ?? '#888',
         dashed: a.type === 'square' || a.type === 'opposition',
-        title: `${a.body1} ${ASPECT_CN[a.type] ?? a.type} ${a.body2}`,
+        title: `${PLANET_CN_OF(a.body1)} ${ASPECT_CN[a.type] ?? a.type} ${PLANET_CN_OF(a.body2)}`,
+        order: i,
+        strength: Math.max(0.35, Math.min(1, (a.strength ?? 60) / 100)),
       }
     })
     .filter((v): v is NonNullable<typeof v> => v !== null)
 })
+
+function PLANET_CN_OF(key: string): string {
+  // 延迟导入避免循环依赖；corpus 为纯数据无风险
+  return PLANET_CN_MAP[key] ?? key
+}
+
+const PLANET_CN_MAP: Record<string, string> = {
+  Sun: '太阳', Moon: '月亮', Mercury: '水星', Venus: '金星', Mars: '火星',
+  Jupiter: '木星', Saturn: '土星', Uranus: '天王星', Neptune: '海王星', Pluto: '冥王星',
+  Chiron: '凯龙', Lilith: '莉莉丝', NorthNode: '北交点', SouthNode: '南交点',
+  Ceres: '谷神星', Pallas: '智神星', Juno: '婚神星', Vesta: '灶神星',
+}
 
 /** 合盘/行运：外环×内环交叉相位虚线 */
 const synastryLines = computed(() => {
@@ -145,7 +159,7 @@ const synastryLines = computed(() => {
   const inner = new Map(props.innerPlanets.map((p) => [p.name, p]))
   return (props.synastryAspects ?? [])
     .slice(0, 40)
-    .map((a) => {
+    .map((a, i) => {
       const p1 = outer.get(a.body1)
       const p2 = inner.get(a.body2)
       if (!p1 || !p2) return null
@@ -155,7 +169,9 @@ const synastryLines = computed(() => {
         x1: q1.x, y1: q1.y, x2: q2.x, y2: q2.y,
         color: ASPECT_COLORS[a.type] ?? '#888',
         dashed: a.type === 'square' || a.type === 'opposition',
-        title: `${a.body1} ${ASPECT_CN[a.type] ?? a.type} ${a.body2}（orb ${a.orb}°）`,
+        title: `${PLANET_CN_MAP[a.body1] ?? a.body1} ${ASPECT_CN[a.type] ?? a.type} ${PLANET_CN_MAP[a.body2] ?? a.body2}（偏差 ${a.orb}°）`,
+        order: i,
+        strength: 0.5,
       }
     })
     .filter((v): v is NonNullable<typeof v> => v !== null)
@@ -213,10 +229,12 @@ const ascTick = computed(() => pt(props.ascLon, R.zodiacOut + 4))
       <line
         v-for="(al, i) in aspectLines"
         :key="'asp' + i"
+        class="asp-line"
+        :class="{ dashed: al.dashed }"
+        :style="{ '--i': i, '--w': al.strength }"
         :x1="al.x1" :y1="al.y1" :x2="al.x2" :y2="al.y2"
-        :stroke="al.color" stroke-width="1.1"
+        :stroke="al.color" :stroke-width="0.8 + al.strength * 0.9"
         :stroke-dasharray="al.dashed ? '5 4' : undefined"
-        opacity="0.75"
       >
         <title>{{ al.title }}</title>
       </line>
@@ -227,6 +245,9 @@ const ascTick = computed(() => pt(props.ascLon, R.zodiacOut + 4))
       <line
         v-for="(sl, i) in synastryLines"
         :key="'syn' + i"
+        class="syn-line"
+        :class="{ dashed: sl.dashed }"
+        :style="{ '--i': i }"
         :x1="sl.x1" :y1="sl.y1" :x2="sl.x2" :y2="sl.y2"
         :stroke="sl.color" stroke-width="1"
         :stroke-dasharray="sl.dashed ? '3 5' : '6 3'"
@@ -296,6 +317,39 @@ const ascTick = computed(() => pt(props.ascLon, R.zodiacOut + 4))
 .planet-glyph:hover {
   transform: scale(1.45);
   filter: drop-shadow(0 0 6px rgba(255, 227, 168, 0.9));
+}
+
+/* 相位线：级联描边入场 + 刑冲虚线流动 */
+.asp-line {
+  opacity: 0;
+  animation: asp-draw-in 0.6s cubic-bezier(0.34, 1.3, 0.64, 1) forwards;
+  animation-delay: calc(var(--i) * 45ms);
+  transition: stroke-width 0.2s ease, opacity 0.2s ease;
+}
+.asp-line:hover { opacity: 1 !important; stroke-width: calc(var(--w) * 3); }
+@keyframes asp-draw-in {
+  from { stroke-dashoffset: 480; }
+  to { stroke-dashoffset: 0; opacity: 0.75; }
+}
+.asp-line:not(.dashed) {
+  stroke-dasharray: 480;
+}
+.asp-line.dashed { opacity: 0; }
+.asp-line.dashed { animation-name: asp-fade-in, dash-march; animation-duration: 0.5s, 1.4s; animation-timing-function: ease-out, linear; animation-iteration-count: 1, infinite; animation-delay: calc(var(--i) * 45ms), calc(var(--i) * 45ms); }
+@keyframes asp-fade-in {
+  from { opacity: 0; }
+  to { opacity: 0.75; }
+}
+@keyframes dash-march {
+  to { stroke-dashoffset: -18; }
+}
+.syn-line {
+  animation: syn-pop 0.45s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+  animation-delay: calc(var(--i) * 30ms);
+}
+@keyframes syn-pop {
+  from { opacity: 0; stroke-width: 3px; }
+  to { opacity: 0.6; }
 }
 @media (prefers-reduced-motion: reduce) {
   .deco-ring { animation: none; }

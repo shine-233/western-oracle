@@ -1,19 +1,7 @@
 import { calculateChart, getMoonPosition, getSunPosition, toJulianDate } from 'celestine'
+import { CHART_POINT_KEYS, PATTERNS_CN, PLANETS, SIGNS, planetGlyph } from '../data/corpus'
 
-export const ZODIAC_SIGNS = [
-  { en: 'Aries', cn: '白羊座', glyph: '♈' },
-  { en: 'Taurus', cn: '金牛座', glyph: '♉' },
-  { en: 'Gemini', cn: '双子座', glyph: '♊' },
-  { en: 'Cancer', cn: '巨蟹座', glyph: '♋' },
-  { en: 'Leo', cn: '狮子座', glyph: '♌' },
-  { en: 'Virgo', cn: '处女座', glyph: '♍' },
-  { en: 'Libra', cn: '天秤座', glyph: '♎' },
-  { en: 'Scorpio', cn: '天蝎座', glyph: '♏' },
-  { en: 'Sagittarius', cn: '射手座', glyph: '♐' },
-  { en: 'Capricorn', cn: '摩羯座', glyph: '♑' },
-  { en: 'Aquarius', cn: '水瓶座', glyph: '♒' },
-  { en: 'Pisces', cn: '双鱼座', glyph: '♓' },
-] as const
+export const ZODIAC_SIGNS = SIGNS.map((s) => ({ en: s.en, cn: s.cn, glyph: s.glyph }))
 
 export const ELEMENT_CN: Record<string, string> = {
   fire: '火',
@@ -28,18 +16,29 @@ export const MODALITY_CN: Record<string, string> = {
   mutable: '变动',
 }
 
-export const PLANET_CN: Record<string, string> = {
-  Sun: '太阳', Moon: '月亮', Mercury: '水星', Venus: '金星', Mars: '火星',
-  Jupiter: '木星', Saturn: '土星', Uranus: '天王星', Neptune: '海王星', Pluto: '冥王星',
+export const PLANET_CN: Record<string, string> = Object.fromEntries(
+  Object.entries(PLANETS).map(([k, v]) => [k, v.cn]),
+)
+
+/** 兼容旧引用：一句话版行星释义（详细版见 data/corpus.ts） */
+export const PLANET_MEANINGS: Record<string, string> = Object.fromEntries(
+  Object.entries(PLANETS).map(([k, v]) => [k, `${v.cn} —— ${v.detail}`]),
+)
+
+const POINT_ORDER = new Map<string, number>(CHART_POINT_KEYS.map((k, i) => [k as string, i]))
+const POINT_SET = new Set<string>(CHART_POINT_KEYS)
+
+/** celestine 返回名 → 内部 key */
+const NAME_ALIASES: Record<string, string> = {
+  'North Node': 'NorthNode',
+  'South Node': 'SouthNode',
+  'Mean Lilith': 'Lilith',
+  'True Lilith': 'Lilith',
 }
 
-const PLANET_GLYPHS: Record<string, string> = {
-  Sun: '☉', Moon: '☽', Mercury: '☿', Venus: '♀', Mars: '♂',
-  Jupiter: '♃', Saturn: '♄', Uranus: '♅', Neptune: '♆', Pluto: '♇',
+function normalizeName(raw: string): string {
+  return NAME_ALIASES[raw] ?? raw
 }
-
-/** 默认展示的十大星体 */
-const MAIN_PLANETS = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto']
 
 const MAJOR_ASPECT_TYPES = new Set(['conjunction', 'opposition', 'trine', 'square', 'sextile'])
 
@@ -57,8 +56,10 @@ export interface BirthInput {
 
 export interface ChartPlanet {
   name: string
+  cn: string
   glyph: string
   lon: number
+  signIndex: number
   signCn: string
   /** "24°23′" */
   degText: string
@@ -74,17 +75,41 @@ export interface ChartAspect {
   strength: number
 }
 
+export interface ChartPattern {
+  type: string
+  cn: string
+  bodies: string[]
+  desc: string
+}
+
 export interface NatalChart {
   planets: ChartPlanet[]
   ascendant: { lon: number; text: string }
   midheaven: { lon: number; text: string }
   cusps: number[]
   aspects: ChartAspect[]
+  patterns: ChartPattern[]
   elements: Record<string, string[]>
   modalities: Record<string, string[]>
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
+function toPoint(raw: any): ChartPlanet | null {
+  const name = normalizeName(String(raw.name))
+  if (!POINT_SET.has(name)) return null
+  return {
+    name,
+    cn: PLANETS[name]?.cn ?? name,
+    glyph: planetGlyph(name),
+    lon: raw.longitude,
+    signIndex: raw.sign as number,
+    signCn: SIGNS[raw.sign as number]?.cn ?? raw.signName,
+    degText: `${raw.degree}°${String(raw.minute).padStart(2, '0')}′`,
+    house: raw.house ?? 0,
+    retro: Boolean(raw.isRetrograde),
+  }
+}
+
 export function computeNatalChart(input: BirthInput): NatalChart {
   const raw = calculateChart({
     year: input.year,
@@ -97,40 +122,74 @@ export function computeNatalChart(input: BirthInput): NatalChart {
     longitude: input.longitude,
   }) as any
 
-  const planets: ChartPlanet[] = (raw.planets as any[])
-    .filter((p) => MAIN_PLANETS.includes(p.name))
-    .map((p) => ({
-      name: p.name,
-      glyph: PLANET_GLYPHS[p.name] ?? p.name[0]!,
-      lon: p.longitude,
-      signCn: ZODIAC_SIGNS[p.sign as number]?.cn ?? p.signName,
-      degText: `${p.degree}°${String(p.minute).padStart(2, '0')}′`,
-      house: p.house ?? 0,
-      retro: Boolean(p.isRetrograde),
-    }))
+  const byName = new Map<string, ChartPlanet>()
+  for (const rp of raw.planets as any[]) {
+    const p = toPoint(rp)
+    if (p && !byName.has(p.name)) byName.set(p.name, p)
+  }
+  for (const rn of (raw.nodes ?? []) as any[]) {
+    const p = toPoint(rn)
+    if (p && !byName.has(p.name)) byName.set(p.name, p)
+  }
+  for (const rl of (raw.lilith ?? []) as any[]) {
+    const p = toPoint(rl)
+    if (p && !byName.has(p.name)) byName.set(p.name, p)
+  }
+
+  // 由北交点推算缺失的南交点（恒相对 180°）
+  const north = byName.get('NorthNode')
+  if (north && !byName.has('SouthNode')) {
+    const signIdx = (north.signIndex + 6) % 12
+    byName.set('SouthNode', {
+      ...north,
+      name: 'SouthNode',
+      cn: PLANETS.SouthNode!.cn,
+      glyph: PLANETS.SouthNode!.glyph,
+      lon: (north.lon + 180) % 360,
+      signIndex: signIdx,
+      signCn: SIGNS[signIdx]!.cn,
+    })
+  }
+
+  const southFinal = byName.get('SouthNode')
+  const planets = [...byName.values()]
+    .filter((p) => p.name !== 'SouthNode')
+    .sort((a, b) => (POINT_ORDER.get(a.name) ?? 99) - (POINT_ORDER.get(b.name) ?? 99))
+  if (southFinal && !planets.some((p) => p.name === 'SouthNode')) {
+    planets.push(southFinal)
+  }
 
   const aspects: ChartAspect[] = (raw.aspects.all as any[])
-    .filter((a) => MAJOR_ASPECT_TYPES.has(a.type) && MAIN_PLANETS.includes(a.body1) && MAIN_PLANETS.includes(a.body2))
+    .filter((a) => MAJOR_ASPECT_TYPES.has(a.type) && POINT_SET.has(normalizeName(a.body1)) && POINT_SET.has(normalizeName(a.body2)))
     .map((a) => ({
-      body1: a.body1,
-      body2: a.body2,
+      body1: normalizeName(a.body1),
+      body2: normalizeName(a.body2),
       type: a.type,
       symbol: a.symbol,
       strength: Math.round(a.strength ?? 0),
+    }))
+
+  const patterns: ChartPattern[] = ((raw.patterns ?? []) as any[])
+    .map((pt) => ({
+      type: String(pt.type),
+      cn: PATTERNS_CN[String(pt.type)]?.cn ?? String(pt.type),
+      bodies: (pt.bodies as string[]).map(normalizeName),
+      desc: PATTERNS_CN[String(pt.type)]?.desc ?? String(pt.description ?? ''),
     }))
 
   return {
     planets,
     ascendant: {
       lon: raw.angles.ascendant.longitude,
-      text: `${ZODIAC_SIGNS[raw.angles.ascendant.sign as number]?.cn ?? ''} ${raw.angles.ascendant.degree}°`,
+      text: `${SIGNS[raw.angles.ascendant.sign as number]?.cn ?? ''} ${raw.angles.ascendant.degree}°`,
     },
     midheaven: {
       lon: raw.angles.midheaven.longitude,
-      text: `${ZODIAC_SIGNS[raw.angles.midheaven.sign as number]?.cn ?? ''} ${raw.angles.midheaven.degree}°`,
+      text: `${SIGNS[raw.angles.midheaven.sign as number]?.cn ?? ''} ${raw.angles.midheaven.degree}°`,
     },
     cusps: (raw.houses.cusps as any[]).map((c) => c.longitude as number),
     aspects,
+    patterns,
     elements: raw.summary.elements ?? {},
     modalities: raw.summary.modalities ?? {},
   }
@@ -201,6 +260,14 @@ export const ASPECT_CN: Record<string, string> = {
   opposition: '冲相',
 }
 
+export const ASPECT_SYMBOL: Record<string, string> = {
+  conjunction: '☌',
+  sextile: '⚹',
+  square: '□',
+  trine: '△',
+  opposition: '☍',
+}
+
 export interface CrossAspect {
   body1: string
   body2: string
@@ -267,19 +334,4 @@ export function moonPhase(date = new Date()): MoonPhaseInfo {
   const elong = (((moon.longitude - sun.longitude) % 360) + 360) % 360
   const index = Math.floor(elong / 45) % 8
   return { index, ...PHASES[index]! }
-}
-
-/* ---------- 行星详解（点击星盘表格展开） ---------- */
-
-export const PLANET_MEANINGS: Record<string, string> = {
-  Sun: '太阳 —— 你的核心自我与生命力，回答"我是谁"。所在星座与宫位是你人生的主要舞台。',
-  Moon: '月亮 —— 情绪与内在需求，回答"什么让我有安全感"。代表本能反应与最私密的自己。',
-  Mercury: '水星 —— 思维与沟通方式，你如何学习、说话、消化信息。',
-  Venus: '金星 —— 爱与审美，你如何去爱、被什么吸引、如何享受生活。',
-  Mars: '火星 —— 行动欲与竞争心，你如何争取想要的东西、如何发怒。',
-  Jupiter: '木星 —— 幸运与扩张，你的信念系统与机遇所在，过度时会膨胀。',
-  Saturn: '土星 —— 课题与纪律，人生中最严格也最能出成就的领域，30岁前后迎来成熟。',
-  Uranus: '天王星 —— 变革与独立，你在哪里的生活容易"说翻就翻"，也是天才所在。',
-  Neptune: '海王星 —— 梦想与灵性，你最富想象力的领域，也最容易迷失的地方。',
-  Pluto: '冥王星 —— 深层转化，你在哪里经历重生，拥有洞穿本质的力量。',
 }

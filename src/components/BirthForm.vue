@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { CITY_PRESETS, TIMEZONES, type BirthInput } from '../lib/astrology'
 import { loadJSON, saveJSON } from '../lib/storage'
 import { sparkleFromEvent } from '../lib/sparkle'
+import { t } from '../lib/i18n'
 
 export interface BirthFormValue {
   date: string
@@ -47,11 +48,11 @@ function submit(e: MouseEvent): void {
   const [y, m, d] = form.value.date.split('-').map(Number)
   const [hh, mm] = form.value.time.split(':').map(Number)
   if (!y || !m || !d || Number.isNaN(hh) || Number.isNaN(mm)) {
-    errorText.value = '请填写完整的出生日期与时间～'
+    errorText.value = t('err.date')
     return
   }
   if (!Number.isFinite(form.value.lat) || !Number.isFinite(form.value.lng)) {
-    errorText.value = '经纬度必须是有效数字哦。'
+    errorText.value = t('err.coord')
     return
   }
   if (props.useSaved) saveJSON('birth-profile', form.value)
@@ -65,26 +66,26 @@ function submit(e: MouseEvent): void {
 
 <template>
   <div class="form-row">
-    <label class="field"><span>出生日期</span><input v-model="form.date" type="date" /></label>
-    <label class="field"><span>出生时间</span><input v-model="form.time" type="time" /></label>
+    <label class="field"><span>{{ t('bf.date') }}</span><input v-model="form.date" type="date" /></label>
+    <label class="field"><span>{{ t('bf.time') }}</span><input v-model="form.time" type="time" /></label>
     <label class="field">
-      <span>时区</span>
+      <span>{{ t('bf.tz') }}</span>
       <select v-model.number="form.tz">
-        <option v-for="t in TIMEZONES" :key="t.label" :value="t.value">{{ t.label }}</option>
+        <option v-for="tz in TIMEZONES" :key="tz.label" :value="tz.value">{{ tz.label }}</option>
       </select>
     </label>
   </div>
   <div class="form-row">
     <label class="field">
-      <span>出生城市（快捷选择）</span>
+      <span>{{ t('bf.city') }}</span>
       <select v-model.number="form.cityIndex" @change="onCityChange">
-        <option :value="-1">—— 手动输入经纬度 ——</option>
+        <option :value="-1">{{ t('bf.manual') }}</option>
         <option v-for="(c, i) in CITY_PRESETS" :key="c.city" :value="i">{{ c.city }}</option>
       </select>
     </label>
-    <label class="field"><span>北纬（°）</span><input v-model.number="form.lat" type="number" step="0.0001" /></label>
-    <label class="field"><span>东经（°）</span><input v-model.number="form.lng" type="number" step="0.0001" /></label>
+    <label class="field"><span>{{ t('bf.lat') }}</span><input v-model.number="form.lat" type="number" step="0.0001" /></label>
+    <label class="field"><span>{{ t('bf.lng') }}</span><input v-model.number="form.lng" type="number" step="0.0001" /></label>
   </div>
-  <button class="btn" @click="submit">{{ buttonLabel ?? '绘制星盘' }}</button>
+  <button class="btn" @click="submit">{{ buttonLabel ?? t('bf.submit') }}</button>
   <p v-if="errorText" class="error-text">{{ errorText }}</p>
 </template>

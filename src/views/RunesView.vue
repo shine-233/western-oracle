@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { drawRunes, type Rune } from '../data/runes'
-import { askAI, isAiEnabled, oracleSystemPrompt } from '../lib/ai'
 import { sparkle, sparkleFromEvent } from '../lib/sparkle'
+import { addHistory } from '../lib/history'
 import { sfx } from '../lib/sfx'
+import { t } from '../lib/i18n'
+import AiChat from '../components/AiChat.vue'
 
 interface DrawnRune {
   rune: Rune
@@ -15,17 +17,12 @@ const allowReversed = ref(true)
 const question = ref('')
 const drawn = ref<DrawnRune[]>([])
 const revealedStones = ref<boolean[]>([])
-const aiText = ref<string | null>(null)
-const aiLoading = ref(false)
-const aiFailed = ref(false)
 
 const allRevealed = computed(() => drawn.value.length > 0 && revealedStones.value.length > 0 && revealedStones.value.every(Boolean))
 
 function draw(e?: MouseEvent): void {
   drawn.value = drawRunes(count.value, allowReversed.value)
   revealedStones.value = drawn.value.map(() => false)
-  aiText.value = null
-  aiFailed.value = false
   sfx.whoosh()
   if (e) sparkleFromEvent(e, 12)
 }
@@ -53,53 +50,67 @@ function meaningOf(d: DrawnRune): string {
 
 const POSITIONS = ['境况', '挑战', '指引']
 
-async function askAiInterpretation(): Promise<void> {
-  if (!isAiEnabled() || drawn.value.length === 0 || aiLoading.value) return
-  aiLoading.value = true
-  aiFailed.value = false
+const ruleReading = computed(() => {
+  if (!allRevealed.value) return ''
+  return drawn.value
+    .map((d, i) => {
+      const pos = count.value === 1 ? '抽到的符文' : POSITIONS[i] ?? `第${i + 1}位`
+      return `【${pos}】${d.rune.nameCn}（${d.rune.name}）${d.reversed ? ' · 倒转' : ''}\n${meaningOf(d)}`
+    })
+    .join('\n\n')
+})
+
+const aiContext = computed(() => {
   const lines = drawn.value.map((d, i) => {
     const pos = count.value === 1 ? '抽到的符文' : POSITIONS[i] ?? `第${i + 1}位`
     return `${pos}：${d.rune.name}（${d.rune.nameCn}，${d.reversed ? '倒转' : '正位'}；释义：${meaningOf(d)}）`
   })
-  const payload = [
+  return [
     question.value.trim() ? `提问者的问题：「${question.value.trim()}」` : '提问者没有具体问题，请做整体指引。',
     ...lines,
   ].join('\n')
-  const res = await askAI(oracleSystemPrompt(), payload)
-  if (res === null) aiFailed.value = true
-  else aiText.value = res
-  aiLoading.value = false
-}
+})
+
+watch(allRevealed, (done) => {
+  if (!done) return
+  addHistory({
+    type: 'rune',
+    label: `符文 · ${count.value === 1 ? '单颗' : '三颗牌位'}`,
+    question: question.value.trim() || undefined,
+    summary: drawn.value.map((d) => `${d.rune.nameCn}${d.reversed ? '(倒)' : ''}`).join('、'),
+    detail: ruleReading.value,
+  })
+})
 </script>
 
 <template>
   <div class="page-root">
-    <h2>卢恩符文占卜</h2>
-  <p class="hint">古弗萨克（Elder Futhark）是北欧最古老的符文体系。静心默想问题，再从智慧之袋中抽取符文石。</p>
+    <h2><DecryptTitle :text="t('rune.title')" /></h2>
+  <p class="hint">{{ t('rune.hint') }}</p>
 
   <section class="panel" style="margin-top: 18px;">
     <div class="form-row">
       <label class="field">
-        <span>抽取数量</span>
+        <span>{{ t('rune.count') }}</span>
         <select v-model.number="count">
-          <option :value="1">单颗 —— 直指核心</option>
-          <option :value="3">三颗 —— 境况 · 挑战 · 指引</option>
+          <option :value="1">{{ t('rune.one') }}</option>
+          <option :value="3">{{ t('rune.three') }}</option>
         </select>
       </label>
       <label class="field">
-        <span>你的问题（可选，用于 AI 解读）</span>
-        <input v-model="question" type="text" maxlength="120" placeholder="例如：这次远行对我意味着什么？" />
+        <span>{{ t('tarot.q') }}</span>
+        <input v-model="question" type="text" maxlength="120" :placeholder="t('tarot.q.ph')" />
       </label>
     </div>
     <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
-      <label class="toggle-row"><input v-model="allowReversed" type="checkbox" /> 启用倒转</label>
-      <button class="btn" @click="draw($event)">探入符文袋 · 抽 {{ count }} 颗</button>
+      <label class="toggle-row"><input v-model="allowReversed" type="checkbox" /> {{ t('tarot.allowRev') }}</label>
+      <button class="btn" @click="draw($event)">{{ t('rune.draw', { n: count }) }}</button>
     </div>
   </section>
 
   <template v-if="drawn.length">
     <div style="display: flex; justify-content: flex-end; margin-top: 16px;">
-      <button v-if="!allRevealed" class="btn ghost small" @click="revealAll">全部翻开</button>
+      <button v-if="!allRevealed" class="btn ghost small" @click="revealAll">{{ t('rune.revealAll') }}</button>
     </div>
     <div class="rune-row">
       <figure
@@ -116,26 +127,21 @@ async function askAiInterpretation(): Promise<void> {
         </div>
         <figcaption v-if="revealedStones[i]" class="bounce-in">
           <strong>{{ d.rune.nameCn }}</strong>
-          <small>{{ d.rune.name }} · {{ d.reversed ? '倒转' : '正位' }}</small>
+          <small>{{ d.rune.name }} · {{ d.reversed ? t('c.inverted') : t('c.upright') }}</small>
           <p>{{ meaningOf(d) }}</p>
         </figcaption>
-        <figcaption v-else class="tap-hint">点一下揭晓</figcaption>
+        <figcaption v-else class="tap-hint">{{ t('rune.tap') }}</figcaption>
       </figure>
     </div>
 
     <div class="divider-star">✦ ✦ ✦</div>
 
     <section v-if="allRevealed" class="panel reading-panel">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h3 style="margin: 0;">AI 综合解读</h3>
-        <button v-if="!aiText" class="btn small" :disabled="aiLoading" @click="askAiInterpretation">
-          {{ aiLoading ? '符文低语中…' : '开始解读' }}
-        </button>
-      </div>
-      <div v-if="aiText" class="reading ai" style="margin-top: 14px;">{{ aiText }}</div>
-      <p v-else-if="aiFailed" class="error-text" style="margin-bottom: 0;">AI 解读失败：请检查设置中的接口地址与密钥，或稍后重试。</p>
-      <p v-else-if="!isAiEnabled()" class="hint" style="margin-bottom: 0;">在「设置」中配置 OpenAI 兼容接口的 API Key 即可启用 AI 解读。</p>
+      <h3 style="margin-top: 0;">{{ t('rune.local') }}<span class="tag">{{ t('c.localTag') }}</span></h3>
+      <div class="reading">{{ ruleReading }}</div>
     </section>
+
+    <AiChat :context="aiContext" :title="t('ai.rune.title')" :intro="t('ai.rune.intro')" />
   </template>
   </div>
 </template>

@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { ALL_CARDS, SPREADS, dailyCard, type SpreadDef, type TarotCard } from '../data/tarot'
 import { randInt, shuffle } from '../lib/random'
-import { askAI, isAiEnabled, oracleSystemPrompt } from '../lib/ai'
 import { sparkle, sparkleFromEvent } from '../lib/sparkle'
 import { sfx } from '../lib/sfx'
 import { cardImageUrl } from '../data/tarot'
+import { addHistory } from '../lib/history'
+import { downloadShareCard } from '../lib/share'
+import { t, locale } from '../lib/i18n'
 import TarotCardItem from '../components/TarotCardItem.vue'
+import AiChat from '../components/AiChat.vue'
+import DecryptTitle from '../components/DecryptTitle.vue'
 
 interface DrawnCard {
   card: TarotCard
@@ -14,32 +18,92 @@ interface DrawnCard {
   flipped: boolean
 }
 
+type Stage = 'form' | 'shuffle' | 'fan' | 'reading'
+
+const stage = ref<Stage>('form')
 const spread = ref<SpreadDef>(SPREADS[1]!)
 const question = ref('')
 const allowReversed = ref(true)
 const drawn = ref<DrawnCard[]>([])
 const detail = ref<DrawnCard | null>(null)
-const aiText = ref<string | null>(null)
-const aiLoading = ref(false)
-const aiFailed = ref(false)
+
+/** 扇形牌堆 */
+const FAN_COUNT = 27
+const FAN_ARC = 96
+const deck = ref<TarotCard[]>([])
+const pickedSet = ref<Set<number>>(new Set())
 
 const today = dailyCard()
 
 const allFlipped = computed(() => drawn.value.length > 0 && drawn.value.every((d) => d.flipped))
 const isCeltic = computed(() => spread.value.id === 'celtic')
 
-function draw(e?: MouseEvent): void {
-  const picked = shuffle(ALL_CARDS).slice(0, spread.value.positions.length)
-  drawn.value = picked.map((card) => ({
+/* ---------- 仪式流程 ---------- */
+
+let shuffleTimers: number[] = []
+
+function beginRitual(): void {
+  stage.value = 'shuffle'
+  drawn.value = []
+  pickedSet.value = new Set()
+  deck.value = shuffle(ALL_CARDS)
+  sfx.riffle()
+  shuffleTimers.forEach((t) => window.clearTimeout(t))
+  shuffleTimers = [
+    window.setTimeout(() => sfx.riffle(), 520),
+    window.setTimeout(() => {
+      sfx.whoosh()
+      stage.value = 'fan'
+    }, 1250),
+  ]
+}
+
+function backToForm(): void {
+  stage.value = 'form'
+  drawn.value = []
+  pickedSet.value = new Set()
+}
+
+/** 扇形卡片的角度与层级 */
+function fanStyle(i: number): Record<string, string> {
+  const t = i / (FAN_COUNT - 1)
+  const angle = -FAN_ARC / 2 + FAN_ARC * t
+  const picked = pickedSet.value.has(i)
+  return {
+    transform: picked
+      ? 'translateX(-50%) rotate(' + angle + 'deg) translateY(-46px)'
+      : 'translateX(-50%) rotate(' + angle + 'deg)',
+    zIndex: String(i),
+    opacity: picked ? '0.25' : '1',
+    pointerEvents: picked ? 'none' : 'auto',
+  }
+}
+
+function pickFromFan(e: MouseEvent, i: number): void {
+  if (pickedSet.value.has(i)) return
+  if (drawn.value.length >= spread.value.positions.length) return
+
+  const card = deck.value[(i * 7 + drawn.value.length * 3) % deck.value.length]!
+  drawn.value.push({
     card,
     reversed: allowReversed.value && randInt(2) === 0,
     flipped: false,
-  }))
-  aiText.value = null
-  aiFailed.value = false
-  sfx.whoosh()
-  if (e) sparkleFromEvent(e, 12)
+  })
+  const next = new Set(pickedSet.value)
+  next.add(i)
+  pickedSet.value = next
+  sfx.pop()
+  sparkleFromEvent(e, 8)
+
+  if (drawn.value.length >= spread.value.positions.length) {
+    window.setTimeout(() => {
+      stage.value = 'reading'
+      sfx.ding()
+    }, 420)
+  }
 }
+
+/* ---------- 翻牌 ---------- */
 
 function onFlip(e: MouseEvent | undefined, d: DrawnCard): void {
   if (d.flipped) {
@@ -58,6 +122,8 @@ function flipAll(): void {
   })
 }
 
+/* ---------- 解读 ---------- */
+
 function meaningOf(d: DrawnCard): string {
   return d.reversed ? d.card.reversed : d.card.upright
 }
@@ -72,159 +138,202 @@ const ruleReading = computed(() => {
     .join('\n\n')
 })
 
-async function askAiInterpretation(): Promise<void> {
-  if (!isAiEnabled() || !allFlipped.value || aiLoading.value) return
-  aiLoading.value = true
-  aiFailed.value = false
-  aiText.value = null
+const cardsLine = computed(() =>
+  drawn.value
+    .map((d, i) => `${spread.value.positions[i] ?? i + 1}：${d.card.nameCn}${d.reversed ? '(逆)' : '(正)'}`)
+    .join('、'),
+)
 
+function shareReading(): void {
+  const zh = locale.value === 'zh'
+  downloadShareCard({
+    title: zh ? `塔罗 · ${spread.value.name}` : `Tarot · ${spread.value.name}`,
+    subtitle: `${new Date().toLocaleDateString(zh ? 'zh-CN' : 'en-US')}${question.value.trim() ? (zh ? ` · 「${question.value.trim()}」` : ` · "${question.value.trim()}"`) : ''}`,
+    lines: [cardsLine.value],
+    footer: 'WESTERN ORACLE',
+  })
+  sfx.ding()
+}
+
+const aiContext = computed(() => {
   const lines = drawn.value.map((d, i) => {
     const pos = spread.value.positions[i] ?? `第${i + 1}张`
     return `${pos}：${d.card.name}（${d.reversed ? '逆位' : '正位'}，关键词 ${d.card.keywords.join('、')}；传统释义：${meaningOf(d)}）`
   })
-  const payload = [
+  return [
     question.value.trim() ? `提问者的问题：「${question.value.trim()}」` : '提问者没有具体问题，请做整体运势指引。',
     `牌阵：${spread.value.name}`,
     ...lines,
   ].join('\n')
+})
 
-  const res = await askAI(oracleSystemPrompt(), payload)
-  if (res === null) {
-    aiFailed.value = true
-  } else {
-    aiText.value = res
-  }
-  aiLoading.value = false
-}
+/* ---------- 历史 ---------- */
+
+watch(allFlipped, (done) => {
+  if (!done) return
+  addHistory({
+    type: 'tarot',
+    label: `塔罗 · ${spread.value.name}`,
+    question: question.value.trim() || undefined,
+    summary: cardsLine.value,
+    detail: ruleReading.value,
+  })
+})
 </script>
 
 <template>
   <div class="page-root">
-    <h2>塔罗占卜</h2>
-  <p class="hint">洗牌时在心里默想你的问题，再从牌堆中抽取属于你的牌。牌面为 1909 年公版 Rider-Waite-Smith 插图。</p>
+    <h2><DecryptTitle :text="t('tarot.title')" /></h2>
+    <p class="hint">{{ t('tarot.hint') }}</p>
 
-  <!-- 每日一牌 -->
-  <section class="panel daily-panel bounce-in">
-    <div class="daily-inner">
-      <img :src="cardImageUrl(today.card.id)" :alt="today.card.nameCn" :class="{ upside: today.reversed }" />
-      <div class="daily-text">
-        <span class="dc-label">TODAY'S CARD · 每日一牌</span>
-        <h3 style="margin: 6px 0;">{{ today.card.nameCn }}{{ today.reversed ? ' · 逆位' : '' }}</h3>
-        <p class="reading">{{ today.reversed ? today.card.reversed : today.card.upright }}</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="panel" style="margin-top: 18px;">
-    <div class="form-row">
-      <label class="field">
-        <span>选择牌阵</span>
-        <select v-model="spread">
-          <option v-for="s in SPREADS" :key="s.id" :value="s">{{ s.name }} —— {{ s.desc }}</option>
-        </select>
-      </label>
-    </div>
-    <label class="field">
-      <span>你的问题（可选，用于 AI 解读）</span>
-      <input v-model="question" type="text" maxlength="120" placeholder="例如：我该不该换一份工作？" />
-    </label>
-    <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap; margin-top: 8px;">
-      <label class="toggle-row">
-        <input v-model="allowReversed" type="checkbox" /> 启用逆位
-      </label>
-      <button class="btn" @click="draw">洗牌 · 抽 {{ spread.positions.length }} 张</button>
-      <button v-if="drawn.length && !allFlipped" class="btn ghost small" @click="flipAll">翻开全部</button>
-    </div>
-  </section>
-
-  <!-- 凯尔特十字特殊布局 -->
-  <section v-if="drawn.length && isCeltic" style="margin-top: 34px;">
-    <div class="celtic-board">
-      <div class="celtic-cell c-pos5"><span class="pos-label">5 冠冕</span><TarotCardItem :card="drawn[4]!.card" :reversed="drawn[4]!.reversed" :revealed="drawn[4]!.flipped" @flip="onFlip($event, drawn[4]!)" /></div>
-      <div class="celtic-cell c-pos4"><span class="pos-label">4 过去</span><TarotCardItem :card="drawn[3]!.card" :reversed="drawn[3]!.reversed" :revealed="drawn[3]!.flipped" @flip="onFlip($event, drawn[3]!)" /></div>
-      <div class="celtic-cell c-cross">
-        <span class="pos-label">1 现状</span>
-        <div class="cross-stack">
-          <TarotCardItem :card="drawn[0]!.card" :reversed="drawn[0]!.reversed" :revealed="drawn[0]!.flipped" @flip="onFlip($event, drawn[0]!)" />
-          <div class="crossing-card"><TarotCardItem :card="drawn[1]!.card" :reversed="drawn[1]!.reversed" :revealed="drawn[1]!.flipped" @flip="onFlip($event, drawn[1]!)" /></div>
+    <!-- 每日一牌 -->
+    <section class="panel daily-panel bounce-in">
+      <div class="daily-inner">
+        <img :src="cardImageUrl(today.card.id)" :alt="today.card.nameCn" :class="{ upside: today.reversed }" />
+        <div class="daily-text">
+          <span class="dc-label">{{ t('home.dc.card') }}</span>
+          <h3 style="margin: 6px 0;">{{ locale === 'zh' ? today.card.nameCn : today.card.name }}{{ today.reversed ? (locale === 'zh' ? ' · 逆位' : ' · Reversed') : '' }}</h3>
+          <p class="reading">{{ today.reversed ? today.card.reversed : today.card.upright }}</p>
         </div>
       </div>
-      <div class="celtic-cell c-pos6"><span class="pos-label">6 近期未来</span><TarotCardItem :card="drawn[5]!.card" :reversed="drawn[5]!.reversed" :revealed="drawn[5]!.flipped" @flip="onFlip($event, drawn[5]!)" /></div>
-      <div class="celtic-cell c-pos3"><span class="pos-label">3 根基</span><TarotCardItem :card="drawn[2]!.card" :reversed="drawn[2]!.reversed" :revealed="drawn[2]!.flipped" @flip="onFlip($event, drawn[2]!)" /></div>
-      <div class="celtic-cell c-pos10"><span class="pos-label">10 结果</span><TarotCardItem :card="drawn[9]!.card" :reversed="drawn[9]!.reversed" :revealed="drawn[9]!.flipped" @flip="onFlip($event, drawn[9]!)" /></div>
-      <div class="celtic-cell c-pos9"><span class="pos-label">9 希望与恐惧</span><TarotCardItem :card="drawn[8]!.card" :reversed="drawn[8]!.reversed" :revealed="drawn[8]!.flipped" @flip="onFlip($event, drawn[8]!)" /></div>
-      <div class="celtic-cell c-pos8"><span class="pos-label">8 环境</span><TarotCardItem :card="drawn[7]!.card" :reversed="drawn[7]!.reversed" :revealed="drawn[7]!.flipped" @flip="onFlip($event, drawn[7]!)" /></div>
-      <div class="celtic-cell c-pos7"><span class="pos-label">7 自我</span><TarotCardItem :card="drawn[6]!.card" :reversed="drawn[6]!.reversed" :revealed="drawn[6]!.flipped" @flip="onFlip($event, drawn[6]!)" /></div>
-    </div>
-  </section>
-
-  <!-- 普通牌阵布局 -->
-  <section v-if="drawn.length && !isCeltic" style="margin-top: 34px;">
-    <div class="tarot-row">
-      <div
-        v-for="(d, i) in drawn"
-        :key="d.card.id"
-        class="tarot-slot deal-in"
-        :style="{ animationDelay: `${i * 90}ms` }"
-      >
-        <span class="pos-label">{{ spread.positions[i] }}</span>
-        <TarotCardItem :card="d.card" :reversed="d.reversed" :revealed="d.flipped" @flip="onFlip($event, d)" />
-      </div>
-    </div>
-  </section>
-
-  <template v-if="allFlipped">
-    <div class="divider-star">✦ ✦ ✦</div>
-    <section class="panel reading-panel">
-      <h3 style="margin-top: 0;">牌面解读<span class="tag">本地规则</span></h3>
-      <div class="reading">{{ ruleReading }}</div>
     </section>
 
-    <section v-if="aiText || aiFailed || isAiEnabled()" class="panel reading-panel" style="margin-top: 18px;">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h3 style="margin: 0;">AI 综合解读</h3>
-        <button v-if="!aiText" class="btn small" :disabled="aiLoading" @click="askAiInterpretation">
-          {{ aiLoading ? '星语传达中…' : '开始解读' }}
+    <!-- ① 设定阶段 -->
+    <section v-if="stage === 'form'" class="panel stagger-in" style="margin-top: 18px;">
+      <div class="form-row">
+        <label class="field">
+          <span>{{ t('tarot.spread') }}</span>
+          <select v-model="spread">
+            <option v-for="s in SPREADS" :key="s.id" :value="s">{{ s.name }} —— {{ s.desc }}</option>
+          </select>
+        </label>
+      </div>
+      <label class="field">
+        <span>{{ t('tarot.q') }}</span>
+        <input v-model="question" type="text" maxlength="120" :placeholder="t('tarot.q.ph')" />
+      </label>
+      <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap; margin-top: 8px;">
+        <label class="toggle-row">
+          <input v-model="allowReversed" type="checkbox" /> {{ t('tarot.allowRev') }}
+        </label>
+        <button class="btn ritual-btn" @click="beginRitual">{{ t('tarot.start', { n: spread.positions.length }) }}</button>
+      </div>
+    </section>
+
+    <!-- ② 洗牌阶段 -->
+    <section v-if="stage === 'shuffle'" class="panel shuffle-stage">
+      <div class="deck-stack">
+        <div v-for="n in 6" :key="n" class="deck-card" :style="{ '--i': n }" />
+      </div>
+      <p class="shuffle-hint">{{ t('tarot.shuffling') }}</p>
+    </section>
+
+    <!-- ③ 扇形摊开：手动选牌 -->
+    <section v-if="stage === 'fan'" class="panel fan-stage">
+      <p class="fan-tip">{{ t('tarot.fanTip', { total: spread.positions.length }) }} · <strong>{{ t('tarot.fanDone', { n: drawn.length }) }}</strong></p>
+      <div class="fan-board" role="listbox" aria-label="扇形摊开的塔罗牌堆">
+        <button
+          v-for="i in FAN_COUNT"
+          :key="i"
+          class="fan-card"
+          :class="{ picked: pickedSet.has(i - 1) }"
+          :style="fanStyle(i - 1)"
+          :aria-label="'第 ' + i + ' 张牌'"
+          @click="pickFromFan($event, i - 1)"
+        >
+          <span class="fan-card-inner">
+            <span class="star-big">✦</span>
+            <span class="star-small">✧</span>
+          </span>
         </button>
       </div>
-      <div v-if="aiText" class="reading ai" style="margin-top: 14px;">{{ aiText }}</div>
-      <p v-else-if="aiFailed" class="error-text" style="margin-bottom: 0;">
-        AI 解读失败：请检查设置中的接口地址与密钥，或稍后重试。上方本地解读仍然有效。
-      </p>
-      <p v-else-if="!isAiEnabled()" class="hint" style="margin-bottom: 0;">
-        在「设置」中配置 OpenAI 兼容接口的 API Key 即可启用 AI 解读。
-      </p>
-      </section>
-    </template>
-  </div>
+      <button class="btn ghost small reshuffle" @click="backToForm">{{ t('tarot.reset') }}</button>
+    </section>
 
-  <!-- 卡牌详情弹窗 -->
-  <Teleport to="body">
-    <Transition name="modal">
-      <div v-if="detail" class="modal-backdrop" @click.self="detail = null">
-        <div class="modal-panel panel bounce-in">
-          <button class="modal-close btn small ghost" @click="detail = null">✕ 关闭</button>
-          <div class="modal-body">
-            <img :src="cardImageUrl(detail.card.id)" :alt="detail.card.nameCn" :class="{ upside: detail.reversed }" />
-            <div class="modal-info">
-              <span class="dc-label">{{ detail.card.rankLabel }} · {{ detail.card.name }}</span>
-              <h3 style="margin: 6px 0;">{{ detail.card.nameCn }}{{ detail.reversed ? ' · 逆位' : '' }}</h3>
-              <p class="hint">关键词：{{ detail.card.keywords.join(' / ') }}</p>
-              <div class="modal-sec">
-                <strong>正位</strong>
-                <p class="reading">{{ detail.card.upright }}</p>
+    <!-- ④ 已选牌落位 -->
+    <template v-if="stage === 'reading' || drawn.length > 0">
+      <!-- 凯尔特十字特殊布局（十张全部选定后展示） -->
+      <section v-if="isCeltic && drawn.length === spread.positions.length" style="margin-top: 34px;">
+        <div class="celtic-board">
+          <div class="celtic-cell c-pos5"><span class="pos-label">5 冠冕</span><TarotCardItem :card="drawn[4]!.card" :reversed="drawn[4]!.reversed" :revealed="drawn[4]!.flipped" @flip="onFlip($event, drawn[4]!)" /></div>
+          <div class="celtic-cell c-pos4"><span class="pos-label">4 过去</span><TarotCardItem :card="drawn[3]!.card" :reversed="drawn[3]!.reversed" :revealed="drawn[3]!.flipped" @flip="onFlip($event, drawn[3]!)" /></div>
+          <div class="celtic-cell c-cross">
+            <span class="pos-label">1 现状</span>
+            <div class="cross-stack">
+              <TarotCardItem :card="drawn[0]!.card" :reversed="drawn[0]!.reversed" :revealed="drawn[0]!.flipped" @flip="onFlip($event, drawn[0]!)" />
+              <div class="crossing-card"><TarotCardItem :card="drawn[1]!.card" :reversed="drawn[1]!.reversed" :revealed="drawn[1]!.flipped" @flip="onFlip($event, drawn[1]!)" /></div>
+            </div>
+          </div>
+          <div class="celtic-cell c-pos6"><span class="pos-label">6 近期未来</span><TarotCardItem :card="drawn[5]!.card" :reversed="drawn[5]!.reversed" :revealed="drawn[5]!.flipped" @flip="onFlip($event, drawn[5]!)" /></div>
+          <div class="celtic-cell c-pos3"><span class="pos-label">3 根基</span><TarotCardItem :card="drawn[2]!.card" :reversed="drawn[2]!.reversed" :revealed="drawn[2]!.flipped" @flip="onFlip($event, drawn[2]!)" /></div>
+          <div class="celtic-cell c-pos10"><span class="pos-label">10 结果</span><TarotCardItem :card="drawn[9]!.card" :reversed="drawn[9]!.reversed" :revealed="drawn[9]!.flipped" @flip="onFlip($event, drawn[9]!)" /></div>
+          <div class="celtic-cell c-pos9"><span class="pos-label">9 希望与恐惧</span><TarotCardItem :card="drawn[8]!.card" :reversed="drawn[8]!.reversed" :revealed="drawn[8]!.flipped" @flip="onFlip($event, drawn[8]!)" /></div>
+          <div class="celtic-cell c-pos8"><span class="pos-label">8 环境</span><TarotCardItem :card="drawn[7]!.card" :reversed="drawn[7]!.reversed" :revealed="drawn[7]!.flipped" @flip="onFlip($event, drawn[7]!)" /></div>
+          <div class="celtic-cell c-pos7"><span class="pos-label">7 自我</span><TarotCardItem :card="drawn[6]!.card" :reversed="drawn[6]!.reversed" :revealed="drawn[6]!.flipped" @flip="onFlip($event, drawn[6]!)" /></div>
+        </div>
+      </section>
+
+      <!-- 普通牌阵布局 -->
+      <section v-if="!isCeltic && drawn.length" style="margin-top: 34px;">
+        <div class="tarot-row">
+          <div
+            v-for="(d, i) in drawn"
+            :key="d.card.id + '-' + i"
+            class="tarot-slot deal-in"
+            :style="{ animationDelay: `${Math.max(0, i - 1) * 90}ms` }"
+          >
+            <span class="pos-label">{{ spread.positions[i] }}</span>
+            <TarotCardItem :card="d.card" :reversed="d.reversed" :revealed="d.flipped" @flip="onFlip($event, d)" />
+          </div>
+        </div>
+      </section>
+
+      <div v-if="stage === 'reading'" style="display: flex; gap: 14px; justify-content: center; margin-top: 20px; flex-wrap: wrap;">
+        <button v-if="!allFlipped" class="btn ghost small" @click="flipAll">{{ t('tarot.flipAll') }}</button>
+        <button class="btn ghost small" @click="beginRitual">{{ t('tarot.again') }}</button>
+        <button class="btn ghost small" @click="backToForm">{{ t('tarot.newQ') }}</button>
+      </div>
+
+      <template v-if="allFlipped">
+        <div class="divider-star">✦ ✦ ✦</div>
+        <section class="panel reading-panel">
+          <h3 style="margin-top: 0;">{{ t('tarot.reading') }}<span class="tag">{{ t('c.localTag') }}</span></h3>
+          <div class="reading">{{ ruleReading }}</div>
+          <button class="btn ghost small share-btn" @click="shareReading">{{ t('tarot.share') }}</button>
+        </section>
+
+        <AiChat :context="aiContext" :title="t('ai.tarot.title')" :intro="t('ai.tarot.intro')" />
+      </template>
+    </template>
+
+    <!-- 卡牌详情弹窗 -->
+    <Teleport to="body">
+      <Transition name="modal">
+        <div v-if="detail" class="modal-backdrop" @click.self="detail = null">
+          <div class="modal-panel panel bounce-in">
+            <button class="modal-close btn small ghost" @click="detail = null">{{ t('c.close') }}</button>
+            <div class="modal-body">
+              <img :src="cardImageUrl(detail.card.id)" :alt="detail.card.nameCn" :class="{ upside: detail.reversed }" />
+              <div class="modal-info">
+                <span class="dc-label">{{ detail.card.rankLabel }} · {{ detail.card.name }}</span>
+                <h3 style="margin: 6px 0;">{{ locale === 'zh' ? detail.card.nameCn : detail.card.name }}{{ detail.reversed ? (locale === 'zh' ? ' · 逆位' : ' · Reversed') : '' }}</h3>
+                <p class="hint">{{ t('c.keywords') }}：{{ detail.card.keywords.join(' / ') }}</p>
+                <div class="modal-sec">
+                  <strong>{{ t('c.upright') }}</strong>
+                  <p class="reading">{{ detail.card.upright }}</p>
+                </div>
+                <div class="modal-sec">
+                  <strong>{{ t('c.reversed') }}</strong>
+                  <p class="reading">{{ detail.card.reversed }}</p>
+                </div>
+                <p class="hint" style="font-style: italic;">{{ t('tarot.modalTip') }}</p>
               </div>
-              <div class="modal-sec">
-                <strong>逆位</strong>
-                <p class="reading">{{ detail.card.reversed }}</p>
-              </div>
-              <p class="hint" style="font-style: italic;">小提示：再点一下可以收起弹窗～</p>
             </div>
           </div>
         </div>
-      </div>
-    </Transition>
-  </Teleport>
+      </Transition>
+    </Teleport>
+  </div>
 </template>
 
 <style scoped>
@@ -259,6 +368,91 @@ async function askAiInterpretation(): Promise<void> {
   text-align: center;
 }
 .reading-panel { margin-top: 26px; }
+.share-btn { display: inline-block; margin-top: 14px; }
+.ritual-btn {
+  font-family: var(--cute);
+  letter-spacing: 0.12em;
+  animation: ritual-glow 2.6s ease-in-out infinite;
+}
+@keyframes ritual-glow {
+  0%, 100% { box-shadow: 0 0 0 rgba(245, 200, 110, 0); transform: scale(1); }
+  50% { box-shadow: 0 0 26px rgba(245, 200, 110, 0.4); transform: scale(1.02); }
+}
+
+/* ---------- 洗牌阶段 ---------- */
+.shuffle-stage { text-align: center; padding: 40px 18px 30px; }
+.deck-stack { position: relative; height: 190px; width: 120px; margin: 0 auto; perspective: 700px; }
+.deck-card {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 196, 224, 0.28), transparent 55%),
+    repeating-linear-gradient(45deg, #221d4e 0 8px, #191542 8px 16px);
+  border: 3px solid #2e2650;
+  box-shadow: inset 0 0 0 3px #151232, inset 0 0 0 5px rgba(255, 159, 206, 0.5);
+  animation: riffle-shuffle 0.55s cubic-bezier(0.34, 1.4, 0.64, 1) infinite alternate;
+  animation-delay: calc(var(--i) * 70ms);
+}
+@keyframes riffle-shuffle {
+  0% { transform: translate(calc(var(--i) * -3px), 0) rotate(calc(var(--i) * -2.4deg)); }
+  100% { transform: translate(calc(var(--i) * 3px), -3px) rotate(calc(var(--i) * 2.4deg)); }
+}
+.shuffle-hint { color: var(--lavender-soft); letter-spacing: 0.25em; margin-top: 22px; animation: hint-pulse 1.4s ease-in-out infinite; }
+@keyframes hint-pulse { 50% { opacity: 0.45; } }
+
+/* ---------- 扇形选牌 ---------- */
+.fan-stage { padding-bottom: 26px; }
+.fan-tip { text-align: center; color: var(--gold-bright); letter-spacing: 0.15em; margin: 4px 0 0; }
+.fan-tip strong { color: var(--pink-soft); font-size: 1.1em; }
+.fan-board {
+  position: relative;
+  height: 320px;
+  margin-top: 12px;
+  overflow: hidden;
+}
+.fan-card {
+  position: absolute;
+  left: 50%;
+  top: 108%;
+  width: 104px;
+  height: 168px;
+  transform-origin: 50% 118%;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+  cursor: pointer;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 196, 224, 0.28), transparent 55%),
+    radial-gradient(circle at 50% 58%, rgba(245, 200, 110, 0.2), transparent 50%),
+    repeating-linear-gradient(45deg, #221d4e 0 8px, #191542 8px 16px);
+  border: 3px solid #2e2650;
+  box-shadow: inset 0 0 0 3px #151232, inset 0 0 0 5px rgba(255, 159, 206, 0.5), 0 4px 14px rgba(0, 0, 0, 0.45);
+  border-radius: 9px;
+  padding: 0;
+}
+.fan-card:hover:not(.picked) {
+  filter: brightness(1.22) drop-shadow(0 0 12px rgba(255, 196, 224, 0.55));
+}
+.fan-card.picked {
+  filter: brightness(0.6) saturate(0.5);
+  box-shadow: inset 0 0 0 3px #151232, inset 0 0 0 5px rgba(255, 159, 206, 0.2);
+}
+.fan-card-inner { position: relative; display: block; width: 100%; height: 100%; }
+.fan-card-inner .star-big {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.7rem;
+  color: var(--gold-bright);
+  text-shadow: 0 0 12px rgba(255, 227, 168, 0.8);
+}
+.fan-card-inner .star-small { position: absolute; bottom: 8px; right: 10px; font-size: 0.7rem; color: var(--pink-soft); opacity: 0.8; }
+.reshuffle { display: block; margin: 0 auto; }
+
+@media (max-width: 640px) {
+  .fan-board { height: 250px; }
+  .fan-card { width: 78px; height: 128px; }
+}
 
 /* ---------- 凯尔特十字 ---------- */
 .celtic-board {
