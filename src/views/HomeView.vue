@@ -4,6 +4,8 @@ import { RouterLink } from 'vue-router'
 import { dailyCard, cardImageUrl } from '../data/tarot'
 import { dailyRune } from '../data/runes'
 import { moonPhase } from '../lib/astrology'
+import { todayAlmanac } from '../lib/daily'
+import { PLANETS } from '../data/corpus'
 import { loadJSON } from '../lib/storage'
 import { vTilt } from '../lib/tilt'
 import { t, locale } from '../lib/i18n'
@@ -18,6 +20,11 @@ const moonName = computed(() => t(`moon.${phase.index}.name`))
 const moonDesc = computed(() => t(`moon.${phase.index}.desc`))
 const lunaSays = computed(() =>
   phase.index === 4 ? t('home.luna.full') : phase.index === 0 ? t('home.luna.new') : t('home.luna.default'),
+)
+
+const almanac = todayAlmanac()
+const rulerName = computed(() =>
+  locale.value === 'zh' ? PLANETS[almanac.rulerKey]?.cn ?? '' : almanac.rulerKey,
 )
 
 const modules = [
@@ -80,6 +87,37 @@ const greeting = computed(() => {
     </div>
   </section>
 
+  <!-- 今日星历 -->
+  <section class="panel almanac stagger-in">
+    <h3 style="margin: 0 0 14px;">✦ {{ t('alm.title') }}</h3>
+    <div class="alm-grid">
+      <div class="alm-item">
+        <span class="alm-key">{{ t('alm.ruler') }}</span>
+        <strong class="alm-val ruler">{{ PLANETS[almanac.rulerKey]?.glyph }} {{ rulerName }}</strong>
+        <small>{{ almanac.rulerLine }}</small>
+      </div>
+      <div class="alm-item do">
+        <span class="alm-key">{{ t('alm.do') }}</span>
+        <strong class="alm-val">{{ almanac.doText }}</strong>
+        <small>{{ moonDesc }}</small>
+      </div>
+      <div class="alm-item dont">
+        <span class="alm-key">{{ t('alm.dont') }}</span>
+        <strong class="alm-val">{{ almanac.dontText }}</strong>
+        <small>·</small>
+      </div>
+      <div class="alm-item">
+        <span class="alm-key">{{ t('alm.color') }} / {{ t('alm.number') }}</span>
+        <strong class="alm-val color-row">
+          <i class="color-dot" :style="{ background: almanac.luckyColor.hex }" />
+          {{ locale === 'zh' ? almanac.luckyColor.cn : almanac.luckyColor.en }}
+          <em>{{ almanac.luckyNumber }}</em>
+        </strong>
+        <small>·</small>
+      </div>
+    </div>
+  </section>
+
   <div class="divider-star">✦ ✦ ✦</div>
 
   <!-- 露娜的 3D 小屋 -->
@@ -133,4 +171,40 @@ const greeting = computed(() => {
 .mini-link { color: var(--pink-soft); }
 .voxel-panel { margin-top: 10px; }
 .voxel-head { margin-bottom: 16px; }
+
+/* 今日星历 */
+.almanac { margin-top: 18px; border-color: rgba(125, 232, 195, 0.35); }
+.alm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+}
+.alm-item {
+  padding: 13px 15px;
+  background: rgba(30, 26, 69, 0.55);
+  border: 1.5px solid rgba(179, 166, 247, 0.25);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s;
+}
+.alm-item:hover { transform: translateY(-3px); border-color: var(--mint); }
+.alm-item.do:hover { border-color: var(--gold); }
+.alm-item.dont:hover { border-color: var(--danger); }
+.alm-key { font-family: var(--pixel); font-size: 0.55rem; letter-spacing: 0.12em; color: var(--ink-dim); }
+.alm-val { color: var(--gold-bright); font-weight: 400; line-height: 1.5; }
+.alm-val.ruler { font-size: 1.25rem; }
+.alm-item small { color: var(--ink-dim); font-size: 0.75rem; }
+.color-row { display: flex; align-items: center; gap: 7px; }
+.color-row em { font-style: normal; color: var(--pink); font-family: var(--pixel); font-size: 0.9rem; margin-left: auto; }
+.color-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 8px currentColor;
+  animation: dot-breathe 2.6s ease-in-out infinite;
+}
+@keyframes dot-breathe { 50% { transform: scale(1.25); } }
 </style>

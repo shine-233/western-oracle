@@ -48,6 +48,69 @@ let jumpVel = 0
 const moodText = ref('')
 let moodTimer: number | null = null
 
+/* ---------- 戳一下的星屑爆裂 ---------- */
+interface Burst {
+  points: THREE.Points
+  vels: Float32Array
+  born: number
+}
+let bursts: Burst[] = []
+const reducedMotion =
+  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+function spawnBurst(): void {
+  if (!scene || reducedMotion) return
+  const N = 46
+  const pos = new Float32Array(N * 3)
+  const vels = new Float32Array(N * 3)
+  for (let i = 0; i < N; i++) {
+    pos[i * 3] = 0
+    pos[i * 3 + 1] = 0.6
+    pos[i * 3 + 2] = 1.4
+    const a = Math.random() * Math.PI * 2
+    const b = Math.acos(2 * Math.random() - 1)
+    const sp = 0.07 + Math.random() * 0.13
+    vels[i * 3] = Math.sin(b) * Math.cos(a) * sp
+    vels[i * 3 + 1] = Math.abs(Math.cos(b)) * sp * 1.5 + 0.035
+    vels[i * 3 + 2] = Math.sin(b) * Math.sin(a) * sp * 0.7 + 0.06
+  }
+  const geo = new THREE.BufferGeometry()
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3))
+  const hue = [0.11, 0.9, 0.45][Math.floor(Math.random() * 3)]!
+  const mat = new THREE.PointsMaterial({
+    color: new THREE.Color().setHSL(hue, 0.85, 0.74),
+    size: 0.24,
+    transparent: true,
+    opacity: 1,
+  })
+  const points = new THREE.Points(geo, mat)
+  scene.add(points)
+  bursts.push({ points, vels, born: clock.getElapsedTime() })
+}
+
+function tickBursts(t: number): void {
+  for (let i = bursts.length - 1; i >= 0; i--) {
+    const b = bursts[i]!
+    const age = t - b.born
+    const attr = b.points.geometry.getAttribute('position') as THREE.BufferAttribute
+    const arr = attr.array as Float32Array
+    for (let j = 0; j < arr.length; j += 3) {
+      b.vels[j + 1]! -= 0.0045
+      arr[j]! += b.vels[j]!
+      arr[j + 1]! += b.vels[j + 1]!
+      arr[j + 2]! += b.vels[j + 2]!
+    }
+    attr.needsUpdate = true
+    ;(b.points.material as THREE.PointsMaterial).opacity = Math.max(0, 1 - age / 1.15)
+    if (age > 1.15 && scene) {
+      scene.remove(b.points)
+      b.points.geometry.dispose()
+      ;(b.points.material as THREE.PointsMaterial).dispose()
+      bursts.splice(i, 1)
+    }
+  }
+}
+
 function showMood(text: string): void {
   moodText.value = text
   if (moodTimer !== null) window.clearTimeout(moodTimer)
@@ -184,6 +247,7 @@ function doAction(): void {
   const actions = ['jump', 'spin', 'wink', 'shy'] as const
   const action = actions[Math.floor(Math.random() * actions.length)]!
   sfx.pop()
+  spawnBurst()
 
   switch (action) {
     case 'jump':
@@ -286,6 +350,7 @@ function animate(): void {
     moon.rotation.y = t * 1.4
     moon.rotation.x = t * 0.7
   }
+  tickBursts(t)
 
   if (composer) composer.render()
   else if (renderer && scene && camera) renderer.render(scene, camera)
@@ -307,6 +372,11 @@ onBeforeUnmount(() => {
   cancelAnimationFrame(raf)
   window.removeEventListener('resize', onResize)
   if (moodTimer !== null) window.clearTimeout(moodTimer)
+  for (const b of bursts) {
+    b.points.geometry.dispose()
+    ;(b.points.material as THREE.PointsMaterial).dispose()
+  }
+  bursts = []
   renderer?.dispose()
   renderer?.domElement.remove()
 })

@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { ALL_CARDS, cardImageUrl, type Suit, type TarotCard } from '../data/tarot'
 import { sfx } from '../lib/sfx'
 import { sparkleFromEvent } from '../lib/sparkle'
+import { useEscClose } from '../lib/useEsc'
 import { t } from '../lib/i18n'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
@@ -20,6 +21,10 @@ const FILTERS: Array<{ key: FilterKey; keyName: string; glyph: string }> = [
 const filter = ref<FilterKey>('all')
 const keyword = ref('')
 const detail = ref<TarotCard | null>(null)
+
+useEscClose(() => {
+  detail.value = null
+})
 
 const filtered = computed(() => {
   const kw = keyword.value.trim().toLowerCase()

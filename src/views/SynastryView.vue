@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 import { computeNatalChart, crossAspects, type BirthInput, type ChartPlanet, type CrossAspect, type NatalChart } from '../lib/astrology'
 import { PLANETS } from '../data/corpus'
 import { readSynastry, type SynastryReading } from '../lib/interpret'
 import { addHistory } from '../lib/history'
 import { sfx } from '../lib/sfx'
+import { sparkle } from '../lib/sparkle'
 import { t } from '../lib/i18n'
 import AstroWheel from '../components/AstroWheel.vue'
 import BirthForm from '../components/BirthForm.vue'
@@ -48,6 +49,18 @@ function planetLine(p: ChartPlanet): string {
   return `${p.cn} ${p.signCn}${p.degText}${p.retro ? '℞' : ''}（第${p.house}宫）`
 }
 
+/* ---------- 高分庆祝：缘分指数 ≥ 80 时星屑环绕 ---------- */
+const scoreWrap = ref<HTMLElement | null>(null)
+
+watch(reading, async (r) => {
+  if (!r || r.score < 80) return
+  await nextTick()
+  const el = scoreWrap.value?.querySelector('.score-ring')
+  if (!el) return
+  const rect = el.getBoundingClientRect()
+  sparkle(rect.left + rect.width / 2, rect.top + rect.height / 2, 16)
+})
+
 const aiContext = (): string => {
   if (!chartA.value || !chartB.value || !reading.value) return ''
   const top = aspects.value.slice(0, 15)
@@ -82,7 +95,7 @@ const aiContext = (): string => {
 
       <!-- 缘分指数卡 -->
       <section class="panel score-panel bounce-in">
-        <div class="score-ring-wrap">
+        <div ref="scoreWrap" class="score-ring-wrap">
           <svg viewBox="0 0 120 120" class="score-ring">
             <circle cx="60" cy="60" r="52" class="ring-bg" />
             <circle cx="60" cy="60" r="52" class="ring-fg" :stroke-dasharray="`${(reading.score / 100) * 327} 327`" />

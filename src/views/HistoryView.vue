@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { TYPE_META, clearHistory, getHistory, removeHistory, type HistoryEntry, type HistoryType } from '../lib/history'
-import { downloadShareCard } from '../lib/share'
+import { generateShareCard } from '../lib/share'
 import { sfx } from '../lib/sfx'
+import { useEscClose } from '../lib/useEsc'
 import { t } from '../lib/i18n'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
@@ -49,14 +50,21 @@ function onClear(): void {
 }
 
 function onShare(entry: HistoryEntry): void {
-  downloadShareCard({
+  const canvas = generateShareCard({
     title: entry.label,
     subtitle: `${fmtDate(entry.createdAt)} ${fmtTime(entry.createdAt)}${entry.question ? ` · 「${entry.question}」` : ''}`,
     lines: entry.summary.split('\n').filter(Boolean),
     footer: 'WESTERN ORACLE',
   })
+  sharePreview.value = canvas.toDataURL('image/png')
   sfx.ding()
 }
+
+const sharePreview = ref<string | null>(null)
+
+useEscClose(() => {
+  sharePreview.value = null
+})
 
 type FilterKey = 'all' | HistoryType
 const FILTERS: Array<{ key: FilterKey; keyName: string; glyph: string }> = [
@@ -120,6 +128,22 @@ function setFilter(k: FilterKey): void {
     <div v-if="entries.length > 0" style="margin-top: 22px;">
       <button class="btn ghost small danger" @click="onClear">{{ t('his.clear') }}</button>
     </div>
+
+    <!-- 分享图预览 -->
+    <Teleport to="body">
+      <Transition name="modal">
+        <div v-if="sharePreview" class="modal-backdrop" @click.self="sharePreview = null">
+          <div class="panel preview-panel bounce-in">
+            <button class="modal-close btn small ghost" @click="sharePreview = null">{{ t('c.close') }}</button>
+            <h3 style="margin: 0 0 14px;">✦ {{ t('his.share') }}</h3>
+            <img :src="sharePreview" alt="share card" class="preview-img" />
+            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 16px;">
+              <a class="btn small" :href="sharePreview" download="western-oracle.png">⬇ PNG</a>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
   </div>
 </template>
 
@@ -180,6 +204,36 @@ function setFilter(k: FilterKey): void {
 .hist-enter-from { opacity: 0; transform: translateY(14px) scale(0.98); }
 .hist-leave-to { opacity: 0; transform: scale(0.96); }
 .hist-move { transition: transform 0.3s ease; }
+
+.preview-panel {
+  max-width: 420px;
+  width: 100%;
+  position: relative;
+  background: var(--void-1);
+}
+.preview-img {
+  width: 100%;
+  border-radius: 10px;
+  border: 2px solid var(--gold);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: block;
+}
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(10, 8, 30, 0.78);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-close { position: absolute; top: 14px; right: 14px; }
+.modal-enter-active { transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.modal-leave-active { transition: all 0.18s ease; }
+.modal-enter-from { opacity: 0; }
+.modal-enter-from .preview-panel { transform: scale(0.85) translateY(20px); }
+.modal-leave-to { opacity: 0; }
 
 @media (max-width: 640px) {
   .hist-time { margin-left: 0; width: 100%; order: 9; }

@@ -329,9 +329,45 @@ export function moonPhase(date = new Date()): MoonPhaseInfo {
     minute: date.getMinutes(),
     second: 0,
   })
+  return moonPhaseFromJD(jd)
+}
+
+function moonPhaseFromJD(jd: number): MoonPhaseInfo {
   const sun = getSunPosition(jd)
   const moon = getMoonPosition(jd)
   const elong = (((moon.longitude - sun.longitude) % 360) + 360) % 360
   const index = Math.floor(elong / 45) % 8
   return { index, ...PHASES[index]! }
+}
+
+export interface NextMoonPhaseInfo {
+  /** 下一个月相 0-7 */
+  index: number
+  name: string
+  emoji: string
+  /** 距下一个月相的约天数（朔望月均分估算） */
+  days: number
+}
+
+const SYNODIC_MONTH = 29.530588853
+
+/** 距下一个月相还有多久（默认当前时刻） */
+export function nextMoonPhase(date = new Date()): NextMoonPhaseInfo {
+  const jd = toJulianDate({
+    year: date.getFullYear(),
+    month: date.getMonth() + 1,
+    day: date.getDate(),
+    hour: date.getHours(),
+    minute: date.getMinutes(),
+    second: 0,
+  })
+  const sun = getSunPosition(jd)
+  const moon = getMoonPosition(jd)
+  const elong = (((moon.longitude - sun.longitude) % 360) + 360) % 360
+  const curIndex = Math.floor(elong / 45) % 8
+  const degToBoundary = ((curIndex + 1) * 45 - elong) % 360
+  const days = Math.max(0, (degToBoundary / 360) * SYNODIC_MONTH)
+  const nextIndex = (curIndex + 1) % 8
+  const p = PHASES[nextIndex]!
+  return { index: nextIndex, name: p.name, emoji: p.emoji, days }
 }

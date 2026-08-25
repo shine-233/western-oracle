@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { NUMBER_MEANINGS, PERSONAL_YEAR_MEANINGS, calculateNumerology, personalDay, personalMonth, personalYear, type NumerologyResult } from '../lib/numerology'
+import { NUMBER_MEANINGS, PERSONAL_YEAR_MEANINGS, calculateNumerology, lifePathChain, personalDay, personalMonth, personalYear, type NumerologyResult } from '../lib/numerology'
 import { loadJSON, saveJSON } from '../lib/storage'
 import { sparkleFromEvent } from '../lib/sparkle'
 import { addHistory } from '../lib/history'
@@ -114,6 +114,28 @@ const todayNumbers = computed(() => {
     yearMeaning: PERSONAL_YEAR_MEANINGS[py] ?? '',
   }
 })
+
+/* ---------- 数字约减链 ---------- */
+const birthDigits = computed(() => {
+  const [y = '', m = '', d = ''] = birthDate.value.split('-')
+  const mm = m.padStart(2, '0')
+  const dd = d.padStart(2, '0')
+  return (y + mm + dd).split('')
+})
+
+const chainSteps = computed(() => {
+  const [y, m, d] = birthDate.value.split('-').map(Number)
+  if (!y || !m || !d) return []
+  return lifePathChain(y, m, d)
+})
+
+const chainKey = ref(0)
+
+function replayChain(e?: MouseEvent): void {
+  chainKey.value++
+  sfx.blip()
+  if (e) sparkleFromEvent(e, 6)
+}
 </script>
 
 <template>
@@ -137,6 +159,27 @@ const todayNumbers = computed(() => {
       <p class="nh-value">{{ displayLifePath }}</p>
       <p class="nh-title">{{ NUMBER_MEANINGS[result.lifePath]?.title }}</p>
       <p class="reading">{{ NUMBER_MEANINGS[result.lifePath]?.detail }}</p>
+    </section>
+
+    <!-- 数字约减链：点一下重播 -->
+    <section v-if="chainSteps.length" class="panel chain-panel" @click="replayChain($event)">
+      <h3 style="margin: 0 0 4px;">{{ t('num.chain') }}<span class="tag">↻</span></h3>
+      <p class="hint" style="margin: 0 0 14px;">{{ t('num.chainHint') }}</p>
+      <div :key="chainKey">
+        <div class="chain-digits">
+          <span v-for="(dg, i) in birthDigits" :key="'d' + i" class="chain-digit">{{ dg }}</span>
+        </div>
+        <div class="chain-row">
+          <template v-for="(step, i) in chainSteps" :key="'s' + i + '-' + chainKey">
+            <span v-if="i > 0" class="chain-arrow" :style="{ '--d': (i - 0.5) * 0.22 + 's' }">→</span>
+            <span
+              class="chain-chip"
+              :class="{ final: i === chainSteps.length - 1, master: step === 11 || step === 22 || step === 33 }"
+              :style="{ '--d': i * 0.22 + 's' }"
+            >{{ step }}</span>
+          </template>
+        </div>
+      </div>
     </section>
 
     <div class="num-grid">
@@ -201,4 +244,51 @@ const todayNumbers = computed(() => {
 .pday-box:nth-child(3) { animation-delay: 1.2s; border-color: rgba(245, 200, 110, 0.45); }
 .pday-box small { display: block; color: var(--ink-dim); font-size: 0.75rem; letter-spacing: 0.2em; margin-bottom: 4px; }
 .pday-box strong { font-family: var(--cute); font-size: 1.9rem; color: var(--gold-bright); font-weight: 400; }
+
+/* 数字约减链 */
+.chain-panel { margin-top: 16px; cursor: pointer; transition: border-color 0.25s; }
+.chain-panel:hover { border-color: rgba(245, 200, 110, 0.5); }
+.chain-digits { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; margin-bottom: 14px; }
+.chain-digit {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: rgba(13, 11, 32, 0.75);
+  border: 1.5px solid rgba(179, 166, 247, 0.3);
+  color: var(--lavender-soft);
+  font-family: var(--pixel);
+  font-size: 0.65rem;
+}
+.chain-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; }
+.chain-chip {
+  min-width: 52px;
+  padding: 8px 16px;
+  text-align: center;
+  border-radius: 12px;
+  border: 2px solid var(--gold);
+  color: var(--gold-bright);
+  font-family: var(--cute);
+  font-size: 1.45rem;
+  background: rgba(13, 11, 32, 0.6);
+  animation: chip-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation-delay: var(--d);
+}
+.chain-chip.final {
+  background: linear-gradient(135deg, var(--gold), #ffe6b3);
+  color: var(--void-2);
+  box-shadow: 0 0 18px rgba(245, 200, 110, 0.55);
+  transform: scale(1.12);
+}
+.chain-chip.master {
+  border-color: var(--pink);
+  box-shadow: 0 0 16px rgba(255, 159, 206, 0.6);
+}
+.chain-arrow { color: var(--ink-dim); animation: arrow-in 0.4s ease both; animation-delay: var(--d); }
+@keyframes chip-in { from { opacity: 0; transform: translateY(12px) scale(0.55); } }
+@keyframes arrow-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .chain-chip, .chain-arrow { animation: none; }
+}
 </style>

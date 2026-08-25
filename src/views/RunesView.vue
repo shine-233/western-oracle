@@ -147,13 +147,15 @@ watch(allRevealed, (done) => {
           <strong>{{ d.rune.nameCn }}</strong>
           <small>{{ d.rune.name }} · {{ d.reversed ? t('c.inverted') : t('c.upright') }}</small>
           <p>{{ meaningOf(d) }}</p>
-          <div v-if="poemsOf(d.rune).length" class="poem-block">
-            <div v-for="p in poemsOf(d.rune)" :key="p.lang" class="poem-quote">
-              <span class="poem-title">{{ p.title }}</span>
-              「{{ p.translation }}」<br />
-              <span class="poem-oe">{{ p.original }}</span>
-            </div>
-            <span class="poem-src">—— 英译 Bruce Dickins 1915（公版），经 research/ 流水线清洗</span>
+          <div v-if="poemsOf(d.rune).length" class="poem-wrap">
+            <details>
+              <summary>{{ t('src.rune.summary') }}<span class="tag">研究数据</span></summary>
+              <div v-for="p in poemsOf(d.rune)" :key="p.lang" class="poem-quote">
+                <span class="poem-title">{{ p.title }}</span>
+                「{{ p.translation }}」<br />
+                <span class="poem-oe">{{ p.original }}</span>
+              </div>
+            </details>
           </div>
         </figcaption>
         <figcaption v-else class="tap-hint">{{ t('rune.tap') }}</figcaption>
@@ -216,6 +218,20 @@ watch(allRevealed, (done) => {
 .rune-stone small { display: block; color: var(--ink-dim); font-size: 0.78rem; margin: 3px 0 8px; }
 .rune-stone p { font-size: 0.88rem; line-height: 1.75; color: var(--ink); margin: 0; }
 .tap-hint { color: var(--ink-dim); opacity: 0.65; font-size: 0.8rem; }
+.poem-wrap {
+  margin-top: 10px;
+  border: 1.5px dashed rgba(245, 200, 110, 0.45);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+.poem-wrap summary {
+  cursor: pointer;
+  color: var(--lavender-soft);
+  font-size: 0.75rem;
+  user-select: none;
+}
+.poem-wrap summary:hover { color: var(--gold-bright); }
+.poem-wrap[open] summary { margin-bottom: 8px; color: var(--gold-bright); }
 .poem-block { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
 .poem-quote {
   padding: 10px 12px;

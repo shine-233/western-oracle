@@ -7,6 +7,18 @@ import { t, toggleLocale, locale } from './lib/i18n'
 
 const soundOn = ref(isSoundOn())
 
+/** 顶部滚动进度条 */
+const progress = ref(0)
+let progRaf = 0
+function onScroll(): void {
+  if (progRaf) return
+  progRaf = requestAnimationFrame(() => {
+    const max = document.documentElement.scrollHeight - window.innerHeight
+    progress.value = max > 0 ? Math.min(100, (window.scrollY / max) * 100) : 0
+    progRaf = 0
+  })
+}
+
 function onToggleSound(): void {
   soundOn.value = toggleSound()
 }
@@ -101,17 +113,26 @@ onMounted(() => {
     scheduleShootingStar()
     scheduleBroomFlight()
   }
+  window.addEventListener('scroll', onScroll, { passive: true })
+  onScroll()
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('mousemove', onMouseMove)
+  window.removeEventListener('scroll', onScroll)
   if (raf) cancelAnimationFrame(raf)
+  if (progRaf) cancelAnimationFrame(progRaf)
   if (starTimer !== null) window.clearTimeout(starTimer)
   if (broomTimer !== null) window.clearTimeout(broomTimer)
 })
 </script>
 
 <template>
+  <!-- 顶部滚动进度条 -->
+  <div class="scroll-progress" aria-hidden="true">
+    <i :style="{ width: progress + '%' }" />
+  </div>
+
   <!-- 全屏星野背景（三层视差） -->
   <div class="starfield" aria-hidden="true">
     <div class="star-layer l1" />
@@ -159,6 +180,24 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 9999;
+  background: rgba(13, 11, 32, 0.6);
+  pointer-events: none;
+}
+.scroll-progress i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--pink), var(--lavender));
+  box-shadow: 0 0 10px rgba(245, 200, 110, 0.8);
+  transition: width 0.12s linear;
+}
+
 .sound-toggle {
   background: var(--void-2);
   border: 2px solid rgba(179, 166, 247, 0.5);

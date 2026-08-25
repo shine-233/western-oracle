@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { birthdayNumber, calculateNumerology, digitSum, lifePathNumber, personalDay, personalMonth, personalYear } from '../numerology'
+import { birthdayNumber, calculateNumerology, digitSum, lifePathChain, lifePathNumber, personalDay, personalMonth, personalYear } from '../numerology'
 
 describe('numerology', () => {
   it('digitSum 反复约简到个位', () => {
@@ -23,6 +23,17 @@ describe('numerology', () => {
     expect(birthdayNumber(22)).toBe(22)
     // 生日数不做大师数保留：29 → 11 → 2
     expect(birthdayNumber(29)).toBe(2)
+  })
+
+  it('约减链：首项为生日数字和，末项等于生命路径数', () => {
+    const chain = lifePathChain(1962, 8, 29)
+    // 1+9+6+2+8+2+9 = 37 → 10 → 1
+    expect(chain).toEqual([37, 10, 1])
+    expect(chain[chain.length - 1]).toBe(lifePathNumber(1962, 8, 29))
+
+    const master = lifePathChain(1990, 5, 23)
+    // 1+9+9+0+0+5+2+3 = 29 → 11（大师数停）
+    expect(master).toEqual([29, 11])
   })
 
   it('无姓名时姓名系数字为 null', () => {

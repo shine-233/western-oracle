@@ -28,6 +28,25 @@ function reduceKeepMasters(numStr: string): number {
   return n
 }
 
+/** 生命路径数的逐级约减链：如 19900523 → 29 → 11（遇主数 11/22/33 停） */
+export function lifePathChain(y: number, m: number, d: number): number[] {
+  const steps: number[] = []
+  let n = (
+    String(y) + String(m).padStart(2, '0') + String(d).padStart(2, '0')
+  )
+    .split('')
+    .reduce((s, c) => s + Number(c), 0)
+  steps.push(n)
+  while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
+    // 每次只做一层"各位相加"，保留中间过程（如 37 → 10 → 1）
+    n = String(n)
+      .split('')
+      .reduce((s, c) => s + Number(c), 0)
+    steps.push(n)
+  }
+  return steps
+}
+
 /** 生日数：仅用"日" */
 export function birthdayNumber(d: number): number {
   return d > 22 ? digitSum(d) : d === 22 ? 22 : d > 9 ? digitSum(d) : d

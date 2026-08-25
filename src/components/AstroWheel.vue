@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import type { ChartAspect, ChartPlanet, CrossAspect } from '../lib/astrology'
 import { ZODIAC_SIGNS } from '../lib/astrology'
 
@@ -135,6 +135,8 @@ const aspectLines = computed(() => {
         title: `${PLANET_CN_OF(a.body1)} ${ASPECT_CN[a.type] ?? a.type} ${PLANET_CN_OF(a.body2)}`,
         order: i,
         strength: Math.max(0.35, Math.min(1, (a.strength ?? 60) / 100)),
+        dimmed: selected.value !== null && a.body1 !== selected.value && a.body2 !== selected.value,
+        hot: selected.value !== null && (a.body1 === selected.value || a.body2 === selected.value),
       }
     })
     .filter((v): v is NonNullable<typeof v> => v !== null)
@@ -172,16 +174,42 @@ const synastryLines = computed(() => {
         title: `${PLANET_CN_MAP[a.body1] ?? a.body1} ${ASPECT_CN[a.type] ?? a.type} ${PLANET_CN_MAP[a.body2] ?? a.body2}（偏差 ${a.orb}°）`,
         order: i,
         strength: 0.5,
+        dimmed: selected.value !== null && a.body1 !== selected.value && a.body2 !== selected.value,
+        hot: selected.value !== null && (a.body1 === selected.value || a.body2 === selected.value),
       }
     })
     .filter((v): v is NonNullable<typeof v> => v !== null)
 })
 
 const ascTick = computed(() => pt(props.ascLon, R.zodiacOut + 4))
+
+/* ---------- 点击行星：高亮相位线 ---------- */
+const selected = ref<string | null>(null)
+
+function toggleSelect(name: string | undefined): void {
+  if (!name) return
+  selected.value = selected.value === name ? null : name
+}
+
+const selInfo = computed(() => {
+  if (!selected.value) return ''
+  const p = props.planets.find((x) => x.name === selected.value)
+    ?? props.innerPlanets?.find((x) => x.name === selected.value)
+  if (!p) return ''
+  const natalCount = props.aspects.filter((a) => a.body1 === selected.value || a.body2 === selected.value).length
+  const crossCount = (props.synastryAspects ?? []).filter((a) => a.body1 === selected.value || a.body2 === selected.value).length
+  const bits = [
+    `${PLANET_CN_MAP[p.name] ?? p.name} ${p.signCn}${p.degText}`,
+    p.house > 0 ? `第${p.house}宫` : '',
+    natalCount > 0 ? `${natalCount} 条本命相位` : '',
+    crossCount > 0 ? `${crossCount} 条交叉相位` : '',
+  ].filter(Boolean)
+  return bits.join(' · ')
+})
 </script>
 
 <template>
-  <svg :viewBox="`0 0 ${SIZE} ${SIZE}`" class="astro-wheel" role="img" aria-label="星盘图">
+  <svg :viewBox="`0 0 ${SIZE} ${SIZE}`" class="astro-wheel" role="img" aria-label="星盘图" @click="selected = null">
     <defs>
       <radialGradient id="wheelBg" cx="50%" cy="50%" r="50%">
         <stop offset="0%" stop-color="#1e1a45" />
@@ -230,10 +258,10 @@ const ascTick = computed(() => pt(props.ascLon, R.zodiacOut + 4))
         v-for="(al, i) in aspectLines"
         :key="'asp' + i"
         class="asp-line"
-        :class="{ dashed: al.dashed }"
+        :class="{ dashed: al.dashed, muted: al.dimmed, hot: al.hot }"
         :style="{ '--i': i, '--w': al.strength }"
         :x1="al.x1" :y1="al.y1" :x2="al.x2" :y2="al.y2"
-        :stroke="al.color" :stroke-width="0.8 + al.strength * 0.9"
+        :stroke="al.color" :stroke-width="0.8 + al.strength * (al.hot ? 2.2 : 0.9)"
         :stroke-dasharray="al.dashed ? '5 4' : undefined"
       >
         <title>{{ al.title }}</title>
@@ -246,12 +274,13 @@ const ascTick = computed(() => pt(props.ascLon, R.zodiacOut + 4))
         v-for="(sl, i) in synastryLines"
         :key="'syn' + i"
         class="syn-line"
-        :class="{ dashed: sl.dashed }"
+        :class="{ dashed: sl.dashed, muted: sl.dimmed, hot: sl.hot }"
         :style="{ '--i': i }"
         :x1="sl.x1" :y1="sl.y1" :x2="sl.x2" :y2="sl.y2"
-        :stroke="sl.color" stroke-width="1"
+        :stroke="sl.color"
+        :stroke-width="sl.hot ? 2 : 1"
         :stroke-dasharray="sl.dashed ? '3 5' : '6 3'"
-        opacity="0.6"
+        :opacity="sl.hot ? 0.95 : 0.6"
       >
         <title>{{ sl.title }}</title>
       </line>
@@ -259,7 +288,13 @@ const ascTick = computed(() => pt(props.ascLon, R.zodiacOut + 4))
 
     <!-- 外环行星 -->
     <g>
-      <g v-for="p in placedPlanets" :key="p.name">
+      <g
+        v-for="p in placedPlanets"
+        :key="p.name"
+        class="planet-node"
+        :class="{ faded: selected && p.name !== selected }"
+        @click.stop="toggleSelect(p.name)"
+      >
         <line :x1="p.dotX" :y1="p.dotY" :x2="p.x" :y2="p.y" stroke="#f5c86e" stroke-width="0.7" opacity="0.5" />
         <circle :cx="p.dotX" :cy="p.dotY" r="3" fill="#ffe3a8">
           <title>{{ p.name }} {{ p.signCn }} {{ p.degText }}{{ p.retro ? ' ℞' : '' }}</title>
@@ -273,7 +308,13 @@ const ascTick = computed(() => pt(props.ascLon, R.zodiacOut + 4))
 
     <!-- 内环行星（对方/行运） -->
     <g v-if="placedInner.length">
-      <g v-for="p in placedInner" :key="'in-' + p.name">
+      <g
+        v-for="p in placedInner"
+        :key="'in-' + p.name"
+        class="planet-node"
+        :class="{ faded: selected && p.name !== selected }"
+        @click.stop="toggleSelect(p.name)"
+      >
         <circle :cx="p.dotX" :cy="p.dotY" r="2.6" fill="#7de8c3">
           <title>{{ p.name }} {{ p.signCn }} {{ p.degText }}</title>
         </circle>
@@ -283,6 +324,11 @@ const ascTick = computed(() => pt(props.ascLon, R.zodiacOut + 4))
         </text>
       </g>
     </g>
+
+    <!-- 选中行星信息条 -->
+    <Transition name="selinfo">
+      <text v-if="selInfo" x="300" :y="SIZE - 12" text-anchor="middle" class="sel-info">{{ selInfo }}</text>
+    </Transition>
 
     <text :x="ascTick.x" :y="ascTick.y" text-anchor="middle" dominant-baseline="central" fill="#f5c86e" font-size="15" font-weight="bold">ASC</text>
   </svg>
@@ -324,9 +370,15 @@ const ascTick = computed(() => pt(props.ascLon, R.zodiacOut + 4))
   opacity: 0;
   animation: asp-draw-in 0.6s cubic-bezier(0.34, 1.3, 0.64, 1) forwards;
   animation-delay: calc(var(--i) * 45ms);
-  transition: stroke-width 0.2s ease, opacity 0.2s ease;
+  transition: stroke-width 0.2s ease, opacity 0.25s ease;
 }
 .asp-line:hover { opacity: 1 !important; stroke-width: calc(var(--w) * 3); }
+.asp-line.muted { opacity: 0.05 !important; animation: none; stroke-width: 0.6; }
+.asp-line.hot {
+  opacity: 1 !important;
+  animation: none;
+  filter: drop-shadow(0 0 4px currentColor);
+}
 @keyframes asp-draw-in {
   from { stroke-dashoffset: 480; }
   to { stroke-dashoffset: 0; opacity: 0.75; }
@@ -336,6 +388,7 @@ const ascTick = computed(() => pt(props.ascLon, R.zodiacOut + 4))
 }
 .asp-line.dashed { opacity: 0; }
 .asp-line.dashed { animation-name: asp-fade-in, dash-march; animation-duration: 0.5s, 1.4s; animation-timing-function: ease-out, linear; animation-iteration-count: 1, infinite; animation-delay: calc(var(--i) * 45ms), calc(var(--i) * 45ms); }
+.asp-line.dashed.muted { animation: none; }
 @keyframes asp-fade-in {
   from { opacity: 0; }
   to { opacity: 0.75; }
@@ -346,11 +399,29 @@ const ascTick = computed(() => pt(props.ascLon, R.zodiacOut + 4))
 .syn-line {
   animation: syn-pop 0.45s cubic-bezier(0.34, 1.4, 0.64, 1) both;
   animation-delay: calc(var(--i) * 30ms);
+  transition: stroke-width 0.2s ease, opacity 0.25s ease;
 }
+.syn-line.muted { opacity: 0.05 !important; animation: none; }
 @keyframes syn-pop {
   from { opacity: 0; stroke-width: 3px; }
   to { opacity: 0.6; }
 }
+
+/* 点击行星：节点淡化与信息条 */
+.planet-node { cursor: pointer; transition: opacity 0.25s ease; }
+.planet-node.faded { opacity: 0.22; }
+.sel-info {
+  fill: var(--gold-bright);
+  font-size: 15px;
+  font-family: var(--cute);
+  letter-spacing: 0.06em;
+  paint-order: stroke;
+  stroke: rgba(13, 11, 32, 0.85);
+  stroke-width: 4px;
+}
+.selinfo-enter-active, .selinfo-leave-active { transition: all 0.25s ease; }
+.selinfo-enter-from, .selinfo-leave-to { opacity: 0; transform: translateY(6px); }
+
 @media (prefers-reduced-motion: reduce) {
   .deco-ring { animation: none; }
 }

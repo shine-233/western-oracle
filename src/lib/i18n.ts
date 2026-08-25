@@ -312,6 +312,27 @@ const messages: Record<string, Pair> = {
   'mood.wink': ['😉 嘿~', '😉 Hey~'],
   'mood.shy': ['😳 被、被发现了…', '😳 Y-you noticed…'],
 
+  /* ---------- 今日星历 ---------- */
+  'alm.title': ['今日星历', 'Daily Almanac'],
+  'alm.ruler': ['星期守护星', 'Weekday Ruler'],
+  'alm.do': ['宜', 'Do'],
+  'alm.dont': ['忌', 'Avoid'],
+  'alm.color': ['幸运色', 'Lucky color'],
+  'alm.number': ['幸运数', 'Number'],
+
+  /* ---------- 古典文献折叠彩蛋 ---------- */
+  'src.tarot.summary': ['📜 古典文献 · 点开深读', '📜 Classical sources — tap to dive in'],
+  'src.astro.summary': ['📜 Ptolemy《Tetrabiblos》Book I · 研究数据', '📜 Ptolemy, Tetrabiblos Book I · research data'],
+  'src.rune.summary': ['📜 卢恩诗原文 · Bruce Dickins 1915（公版）', '📜 Original rune poems — Bruce Dickins 1915 (public domain)'],
+
+  /* ---------- 行运：下一段月相倒计时 ---------- */
+  'tr.nextPhase': ['下一月相', 'Next moon'],
+  'tr.inDays': ['约 {d} 天后', 'in ~{d} days'],
+
+  /* ---------- 灵数：数字约减链 ---------- */
+  'num.chain': ['生命路径 · 数字约减链', 'Life Path · digit reduction'],
+  'num.chainHint': ['把生日所有数字一路相加，直到剩下一位（或主数）。点一下重播。', 'Sum every birth digit down to a single one (or a master). Click to replay.'],
+
   /* ---------- 月相 ---------- */
   'moon.0.name': ['新月', 'New Moon'],
   'moon.0.desc': ['适合播种愿望、开启新计划的日子。', 'Plant wishes; start new plans.'],

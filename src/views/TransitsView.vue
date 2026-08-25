@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import {
   ASPECT_CN,
   ELEMENT_CN,
   computeNatalChart,
   crossAspects,
   moonPhase,
+  nextMoonPhase,
   type BirthInput,
   type NatalChart,
 } from '../lib/astrology'
@@ -30,6 +31,24 @@ const lastRefresh = ref('')
 const phase = moonPhase()
 const moonName = computed(() => t(`moon.${phase.index}.name`))
 const moonDesc = computed(() => t(`moon.${phase.index}.desc`))
+
+/* ---------- 下一段月相倒计时（每 30 秒自动刷新） ---------- */
+const tick = ref(Date.now())
+let tickTimer: number | null = null
+onMounted(() => {
+  tickTimer = window.setInterval(() => {
+    tick.value = Date.now()
+  }, 30000)
+})
+onBeforeUnmount(() => {
+  if (tickTimer !== null) window.clearInterval(tickTimer)
+})
+
+const nextPhaseInfo = computed(() => nextMoonPhase(new Date(tick.value)))
+const nextPhaseName = computed(() => t(`moon.${nextPhaseInfo.value.index}.name`))
+const daysText = computed(() =>
+  t('tr.inDays', { d: nextPhaseInfo.value.days.toFixed(1) }),
+)
 
 /** 当前时刻天象盘（用浏览器本地时区；宫位无意义，仅取行星） */
 function computeSky(): NatalChart {
@@ -112,6 +131,7 @@ const aiContext = (): string => {
         <div class="sky-item"><span class="dc-label">{{ t('tr.sunNow') }}</span><strong>{{ skySunSign }}</strong></div>
         <div class="sky-item"><span class="dc-label">{{ t('tr.moonNow') }}</span><strong>{{ skyMoonSign }}</strong></div>
         <div class="sky-item"><span class="dc-label">{{ t('tr.phase') }}</span><strong>{{ phase.emoji }} {{ moonName }}</strong><small>{{ moonDesc }}</small></div>
+        <div class="sky-item next-moon"><span class="dc-label">{{ t('tr.nextPhase') }}</span><strong>{{ nextPhaseInfo.emoji }} {{ nextPhaseName }}</strong><small class="countdown">{{ daysText }}</small></div>
         <div class="sky-item"><span class="dc-label">{{ t('tr.refreshed') }}</span><strong>{{ lastRefresh }}</strong><button class="btn ghost small" style="margin-top: 6px;" @click="refresh()">{{ t('tr.refresh') }}</button></div>
       </section>
 
@@ -184,6 +204,20 @@ const aiContext = (): string => {
 .sky-item { display: flex; flex-direction: column; gap: 4px; }
 .sky-item strong { font-family: var(--cute); color: var(--gold-bright); font-size: 1.15rem; font-weight: 400; }
 .sky-item small { color: var(--ink-dim); font-size: 0.78rem; line-height: 1.5; }
+
+.next-moon { position: relative; }
+.next-moon .countdown {
+  display: inline-block;
+  padding: 1px 10px;
+  border-radius: 999px;
+  border: 1.5px dashed rgba(125, 232, 195, 0.55);
+  color: var(--mint);
+  animation: cd-breathe 3s ease-in-out infinite;
+}
+@keyframes cd-breathe { 50% { opacity: 0.55; } }
+@media (prefers-reduced-motion: reduce) {
+  .next-moon .countdown { animation: none; }
+}
 
 .highlight-card {
   border-color: rgba(245, 200, 110, 0.55);

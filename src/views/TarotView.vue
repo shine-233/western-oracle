@@ -4,6 +4,7 @@ import { ALL_CARDS, SPREADS, dailyCard, type SpreadDef, type TarotCard } from '.
 import { randInt, shuffle } from '../lib/random'
 import { sparkle, sparkleFromEvent } from '../lib/sparkle'
 import { sfx } from '../lib/sfx'
+import { useEscClose } from '../lib/useEsc'
 import { cardImageUrl } from '../data/tarot'
 import { WAITE_MEANINGS } from '../data/waiteMeanings'
 import { TAROT_SOURCES } from '../data/tarotSources'
@@ -36,6 +37,10 @@ const deck = ref<TarotCard[]>([])
 const pickedSet = ref<Set<number>>(new Set())
 
 const today = dailyCard()
+
+useEscClose(() => {
+  detail.value = null
+})
 
 const allFlipped = computed(() => drawn.value.length > 0 && drawn.value.every((d) => d.flipped))
 const isCeltic = computed(() => spread.value.id === 'celtic')
@@ -330,19 +335,22 @@ watch(allFlipped, (done) => {
                   <strong>{{ t('c.reversed') }}</strong>
                   <p class="reading">{{ detail.card.reversed }}</p>
                 </div>
-                <div v-if="WAITE_MEANINGS[detail.card.id]" class="modal-sec waite">
-                  <strong>Waite 原文牌意 · 1911<span class="tag">研究数据</span></strong>
-                  <p class="reading en-quote">“{{ WAITE_MEANINGS[detail.card.id]!.up }}”</p>
-                  <p class="reading en-quote">“{{ WAITE_MEANINGS[detail.card.id]!.rev }}”</p>
-                </div>
-                <div v-if="TAROT_SOURCES[detail.card.id]" class="modal-sec papus">
-                  <strong>Papus 占卜释义 · 1892<span class="tag">研究数据</span></strong>
-                  <p class="reading en-quote">{{ TAROT_SOURCES[detail.card.id]!.papus }}</p>
-                </div>
-                <div v-if="TAROT_SOURCES[detail.card.id]?.fortuneTelling.length" class="modal-sec fortune">
-                  <strong>Fortune Telling · McElroy<span class="tag">研究数据</span></strong>
-                  <p v-for="f in TAROT_SOURCES[detail.card.id]!.fortuneTelling" :key="f" class="reading en-quote">✦ {{ f }}</p>
-                </div>
+                <details class="sources-box">
+                  <summary>{{ t('src.tarot.summary') }}<span class="tag">研究数据</span></summary>
+                  <div v-if="WAITE_MEANINGS[detail.card.id]" class="src-block src-waite">
+                    <strong>Waite 原文牌意 · 1911</strong>
+                    <p class="reading en-quote">“{{ WAITE_MEANINGS[detail.card.id]!.up }}”</p>
+                    <p class="reading en-quote">“{{ WAITE_MEANINGS[detail.card.id]!.rev }}”</p>
+                  </div>
+                  <div v-if="TAROT_SOURCES[detail.card.id]?.papus" class="src-block src-papus">
+                    <strong>Papus 占卜释义 · 1892</strong>
+                    <p class="reading en-quote">{{ TAROT_SOURCES[detail.card.id]!.papus }}</p>
+                  </div>
+                  <div v-if="TAROT_SOURCES[detail.card.id]?.fortuneTelling.length" class="src-block src-fortune">
+                    <strong>Fortune Telling · McElroy</strong>
+                    <p v-for="f in TAROT_SOURCES[detail.card.id]!.fortuneTelling" :key="f" class="reading en-quote">✦ {{ f }}</p>
+                  </div>
+                </details>
                 <p class="hint" style="font-style: italic;">{{ t('tarot.modalTip') }}</p>
               </div>
             </div>
@@ -547,9 +555,31 @@ watch(allFlipped, (done) => {
   border-left: 3px solid var(--pink);
 }
 .modal-sec strong { color: var(--gold-bright); font-family: var(--cute); font-weight: 400; }
-.modal-sec.waite { border-left-color: var(--gold); }
-.modal-sec.papus { border-left-color: var(--pink); }
-.modal-sec.fortune { border-left-color: var(--mint); }
+.sources-box {
+  margin-top: 14px;
+  border: 1.5px dashed rgba(245, 200, 110, 0.5);
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: rgba(13, 11, 32, 0.45);
+}
+.sources-box summary {
+  cursor: pointer;
+  color: var(--lavender-soft);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  user-select: none;
+  transition: color 0.2s;
+}
+.sources-box summary:hover { color: var(--gold-bright); }
+.sources-box[open] summary { margin-bottom: 10px; color: var(--gold-bright); }
+.src-block {
+  padding: 9px 12px;
+  margin-top: 8px;
+  background: rgba(21, 18, 50, 0.55);
+  border-left: 3px solid var(--gold);
+}
+.src-block.src-papus { border-left-color: var(--pink); }
+.src-block.src-fortune { border-left-color: var(--mint); }
 .en-quote { font-style: italic; color: var(--ink-dim); font-size: 0.88rem; margin: 4px 0 0; white-space: normal; }
 .modal-enter-active { transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
 .modal-leave-active { transition: all 0.18s ease; }

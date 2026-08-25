@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { computeNatalChart, crossAspects, moonPhase, type BirthInput } from '../astrology'
+import { computeNatalChart, crossAspects, moonPhase, nextMoonPhase, type BirthInput } from '../astrology'
 
 const BEIJING: BirthInput = {
   year: 2000,
@@ -68,5 +68,23 @@ describe('moon phase', () => {
     // 2026-08-28 为满月（近似），检查 elongation 落在满月档
     const full = moonPhase(new Date('2026-08-28T12:00:00Z'))
     expect([3, 4, 5]).toContain(full.index)
+  })
+
+  it('下一段月相：索引为当前档 +1，倒计时在 0-7.4 天内', () => {
+    const at = new Date('2026-08-25T20:00:00')
+    const cur = moonPhase(at)
+    const nxt = nextMoonPhase(at)
+    expect(nxt.index).toBe((cur.index + 1) % 8)
+    expect(nxt.days).toBeGreaterThanOrEqual(0)
+    expect(nxt.days).toBeLessThanOrEqual(29.53 / 4)
+    expect(nxt.name.length).toBeGreaterThan(0)
+    // 满月当天：下一档应为亏凸月，且倒计时不为负、不超过一档时长
+    const afterFull = moonPhase(new Date('2026-08-28T12:00:00Z'))
+    if (afterFull.index === 4) {
+      const after = nextMoonPhase(new Date('2026-08-28T12:00:00Z'))
+      expect(after.index).toBe(5)
+      expect(after.days).toBeGreaterThanOrEqual(0)
+      expect(after.days).toBeLessThanOrEqual(29.53 / 4)
+    }
   })
 })

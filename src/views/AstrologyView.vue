@@ -3,7 +3,6 @@ import { computed, ref } from 'vue'
 import {
   CITY_PRESETS,
   ELEMENT_CN,
-  MODALITY_CN,
   TIMEZONES,
   computeNatalChart,
   type BirthInput,
@@ -13,6 +12,7 @@ import { ASPECTS, HOUSES, PATTERNS_CN, PLANETS, SIGNS, aspectText, houseFullText
 import { loadJSON, saveJSON } from '../lib/storage'
 import { addHistory } from '../lib/history'
 import { sfx } from '../lib/sfx'
+import { useEscClose } from '../lib/useEsc'
 import { TETRABIBLOS_PLANETS } from '../data/tetrabiblosPlanets'
 import { vTilt } from '../lib/tilt'
 import { t, locale } from '../lib/i18n'
@@ -44,6 +44,12 @@ const errorText = ref('')
 const expandedPlanet = ref<string | null>(null)
 const signModal = ref<number | null>(null)
 const houseModal = ref<number | null>(null)
+
+useEscClose(() => {
+  signModal.value = null
+  houseModal.value = null
+  if (expandedPlanet.value) expandedPlanet.value = null
+})
 
 function togglePlanet(name: string): void {
   expandedPlanet.value = expandedPlanet.value === name ? null : name
@@ -180,6 +186,36 @@ const aiContext = computed(() => {
 function PLANET_CN_OF(key: string): string {
   return PLANETS[key]?.cn ?? key
 }
+
+/** 元素/模式平衡条数据 */
+const elColor: Record<string, string> = {
+  fire: 'linear-gradient(90deg,#ff9f6e,#ffd2a8)',
+  earth: 'linear-gradient(90deg,#b8a86a,#e8dcae)',
+  air: 'linear-gradient(90deg,#7ea6d6,#c4dcf0)',
+  water: 'linear-gradient(90deg,#5fa8c9,#bfe4ee)',
+}
+const mdColor: Record<string, string> = {
+  cardinal: 'linear-gradient(90deg,#ff9fce,#ffc9e3)',
+  fixed: 'linear-gradient(90deg,#8f7fe8,#cabfff)',
+  mutable: 'linear-gradient(90deg,#5fb8a5,#b6ecdd)',
+}
+const elNames: Record<string, [string, string]> = { fire: ['火', 'Fire'], earth: ['土', 'Earth'], air: ['风', 'Air'], water: ['水', 'Water'] }
+const mdNames: Record<string, [string, string]> = { cardinal: ['开创', 'Cardinal'], fixed: ['固定', 'Fixed'], mutable: ['变动', 'Mutable'] }
+
+interface BalRow { label: string; pct: number; count: number; color: string }
+
+function toRows(src: Record<string, string[]>, labels: Record<string, [string, string]>, colors: Record<string, string>): BalRow[] {
+  const total = Object.values(src).reduce((s, v) => s + v.length, 0) || 1
+  return Object.entries(src).map(([k, items]) => ({
+    label: locale.value === 'zh' ? labels[k]?.[0] ?? k : labels[k]?.[1] ?? k,
+    pct: Math.max(6, Math.round((items.length / total) * 100)),
+    count: items.length,
+    color: colors[k] ?? '#888',
+  }))
+}
+
+const elementRows = computed(() => (chart.value ? toRows(chart.value.elements, elNames, elColor) : []))
+const modalityRows = computed(() => (chart.value ? toRows(chart.value.modalities, mdNames, mdColor) : []))
 </script>
 
 <script lang="ts">
@@ -230,9 +266,24 @@ export default {}
           <ul class="fact-list">
             <li><strong>{{ t('astro.asc') }} {{ chart.ascendant.text }}</strong>{{ t('astro.ascDesc') }}</li>
             <li><strong>{{ t('astro.mc') }} {{ chart.midheaven.text }}</strong>{{ t('astro.mcDesc') }}</li>
-            <li>{{ t('astro.elements') }}：{{ Object.entries(chart.elements).map(([el, names]) => `${ELEMENT_CN[el] ?? el} ${names.length}`).join('　·　') }}</li>
-            <li>{{ t('astro.modalities') }}：{{ Object.entries(chart.modalities).map(([md, names]) => `${MODALITY_CN[md] ?? md} ${names.length}`).join('　·　') }}</li>
           </ul>
+
+          <div class="balance-group">
+            <p class="bal-title">{{ t('astro.elements') }}</p>
+            <div v-for="(row, i) in elementRows" :key="'e' + i" class="balance-row">
+              <span class="bal-label">{{ row.label }}</span>
+              <span class="bal-track"><i class="bal-fill" :style="{ width: row.pct + '%', background: row.color }" /></span>
+              <span class="bal-count">{{ row.count }}</span>
+            </div>
+          </div>
+          <div class="balance-group">
+            <p class="bal-title">{{ t('astro.modalities') }}</p>
+            <div v-for="(row, i) in modalityRows" :key="'m' + i" class="balance-row">
+              <span class="bal-label">{{ row.label }}</span>
+              <span class="bal-track"><i class="bal-fill" :style="{ width: row.pct + '%', background: row.color }" /></span>
+              <span class="bal-count">{{ row.count }}</span>
+            </div>
+          </div>
 
           <h3>{{ t('astro.planets') }}<span class="hint" style="font-size: 0.75rem;">{{ t('astro.planetsTip') }}</span></h3>
           <table class="planet-table">
@@ -247,11 +298,11 @@ export default {}
                 <tr v-if="expandedPlanet === p.name">
                   <td colspan="4" class="planet-detail bounce-in">
                     {{ planetDetail(p.name) }}
-                    <div v-if="TETRABIBLOS_PLANETS[p.name]" class="tb-quote">
-                      <span class="tb-label">Ptolemy《Tetrabiblos》Book I · Ashmand 1822<span class="tag">研究数据</span></span>
+                    <details v-if="TETRABIBLOS_PLANETS[p.name]" class="tb-wrap">
+                      <summary>{{ t('src.astro.summary') }}<span class="tag">研究数据</span></summary>
                       <p>「{{ TETRABIBLOS_PLANETS[p.name]!.natureQuote }}」</p>
                       <p class="tb-ext">庙宫：{{ TETRABIBLOS_PLANETS[p.name]!.domicile.join(' / ') }} · 旺：{{ TETRABIBLOS_PLANETS[p.name]!.exaltation }}</p>
-                    </div>
+                    </details>
                   </td>
                 </tr>
               </template>
@@ -340,6 +391,20 @@ export default {}
   .astro-layout { grid-template-columns: 1fr; }
 }
 .fact-list { margin: 0; padding-left: 20px; line-height: 2; }
+.balance-group { margin: 12px 0 4px; }
+.bal-title { color: var(--ink-dim); font-size: 0.78rem; letter-spacing: 0.15em; margin: 0 0 6px; }
+.balance-row { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; }
+.bal-label { width: 58px; font-size: 0.85rem; color: var(--ink); text-align: right; flex-shrink: 0; }
+.bal-track { flex: 1; height: 10px; background: rgba(13, 11, 32, 0.8); border-radius: 999px; overflow: hidden; border: 1px solid rgba(179, 166, 247, 0.25); }
+.bal-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  animation: bar-grow 1s cubic-bezier(0.34, 1.3, 0.64, 1) both;
+  box-shadow: 0 0 8px rgba(255, 227, 168, 0.35);
+}
+@keyframes bar-grow { from { width: 0 !important; } }
+.bal-count { width: 20px; text-align: center; font-family: var(--pixel); font-size: 0.55rem; color: var(--gold-bright); }
 .planet-table { width: 100%; border-collapse: collapse; }
 .planet-table td { padding: 6px 8px; border-bottom: 1px solid rgba(169, 158, 240, 0.15); font-size: 0.95rem; }
 .planet-row { cursor: pointer; transition: background 0.2s; }
@@ -353,17 +418,22 @@ export default {}
   white-space: pre-wrap;
 }
 .planet-table .pg { font-size: 1.2rem; color: var(--gold); width: 34px; }
-.tb-quote {
+.tb-wrap {
   margin-top: 10px;
-  padding: 10px 12px;
-  background: rgba(13, 11, 32, 0.6);
-  border-left: 3px solid var(--gold);
-  font-size: 0.8rem;
-  font-style: italic;
-  line-height: 1.8;
+  border: 1.5px dashed rgba(245, 200, 110, 0.5);
+  border-radius: 8px;
+  padding: 9px 12px;
+  background: rgba(13, 11, 32, 0.45);
 }
-.tb-label { display: block; font-style: normal; color: var(--gold-bright); font-size: 0.72rem; margin-bottom: 6px; }
-.tb-ext { font-style: normal; color: var(--ink-dim); margin-top: 6px; font-size: 0.75rem; }
+.tb-wrap summary {
+  cursor: pointer;
+  color: var(--lavender-soft);
+  font-size: 0.78rem;
+  user-select: none;
+}
+.tb-wrap summary:hover { color: var(--gold-bright); }
+.tb-wrap p { font-style: italic; line-height: 1.8; margin: 8px 0 0; }
+.tb-ext { font-style: normal !important; color: var(--ink-dim); font-size: 0.75rem; }
 .retro { color: var(--danger); font-size: 0.75rem; margin-left: 4px; }
 .dim { color: var(--ink-dim); font-size: 0.85rem; text-align: right; }
 .reading-panel { margin-top: 26px; }
