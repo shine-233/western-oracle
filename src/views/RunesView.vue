@@ -1,14 +1,26 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { drawRunes, type Rune } from '../data/runes'
-import { RUNE_POEM_OE } from '../data/runePoemOE'
+import { RUNE_POEMS, type PoemLang } from '../data/runePoems'
 import { askAI, isAiEnabled, oracleSystemPrompt } from '../lib/ai'
 import { sparkle, sparkleFromEvent } from '../lib/sparkle'
 import { sfx } from '../lib/sfx'
 
-function poemOf(rune: Rune): { oe: string; en: string } | null {
-  const p = RUNE_POEM_OE.find((x) => x.rune === rune.name)
-  return p ? { oe: p.oe, en: p.en } : null
+const POEM_LANG_CN: Record<PoemLang, string> = {
+  anglo_saxon: '盎格鲁-撒克逊卢恩诗 · 8-9世纪',
+  norwegian: '挪威卢恩诗 · 约13世纪',
+  icelandic: '冰岛卢恩诗 · 约15世纪',
+}
+
+function poemsOf(rune: Rune): Array<{ lang: PoemLang; title: string; original: string; translation: string }> {
+  const entry = RUNE_POEMS.find((x) => x.rune === rune.name)
+  if (!entry) return []
+  return (Object.keys(entry.poems) as PoemLang[]).map((lang) => ({
+    lang,
+    title: POEM_LANG_CN[lang],
+    original: entry.poems[lang]!.original,
+    translation: entry.poems[lang]!.translation,
+  }))
 }
 
 interface DrawnRune {
@@ -124,11 +136,14 @@ async function askAiInterpretation(): Promise<void> {
           <strong>{{ d.rune.nameCn }}</strong>
           <small>{{ d.rune.name }} · {{ d.reversed ? '倒转' : '正位' }}</small>
           <p>{{ meaningOf(d) }}</p>
-          <p v-if="poemOf(d.rune)" class="poem-quote">
-            「{{ poemOf(d.rune)!.en }}」<br />
-            <span class="poem-oe">{{ poemOf(d.rune)!.oe }}</span>
-            <span class="poem-src">—— 盎格鲁-撒克逊卢恩诗，Dickins 英译 1915</span>
-          </p>
+          <div v-if="poemsOf(d.rune).length" class="poem-block">
+            <div v-for="p in poemsOf(d.rune)" :key="p.lang" class="poem-quote">
+              <span class="poem-title">{{ p.title }}</span>
+              「{{ p.translation }}」<br />
+              <span class="poem-oe">{{ p.original }}</span>
+            </div>
+            <span class="poem-src">—— 英译 Bruce Dickins 1915（公版），经 research/ 流水线清洗</span>
+          </div>
         </figcaption>
         <figcaption v-else class="tap-hint">点一下揭晓</figcaption>
       </figure>
@@ -195,8 +210,8 @@ async function askAiInterpretation(): Promise<void> {
 .rune-stone small { display: block; color: var(--ink-dim); font-size: 0.78rem; margin: 3px 0 8px; }
 .rune-stone p { font-size: 0.88rem; line-height: 1.75; color: var(--ink); margin: 0; }
 .tap-hint { color: var(--ink-dim); opacity: 0.65; font-size: 0.8rem; }
+.poem-block { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
 .poem-quote {
-  margin-top: 10px;
   padding: 10px 12px;
   background: rgba(13, 11, 32, 0.6);
   border-left: 3px solid var(--gold);
@@ -206,7 +221,8 @@ async function askAiInterpretation(): Promise<void> {
   line-height: 1.8;
   text-align: left;
 }
+.poem-title { display: block; font-style: normal; color: var(--mint); font-size: 0.72rem; letter-spacing: 0.1em; margin-bottom: 4px; }
 .poem-oe { font-style: normal; opacity: 0.8; font-size: 0.75rem; }
-.poem-src { display: block; margin-top: 6px; font-size: 0.7rem; opacity: 0.6; font-style: normal; }
+.poem-src { display: block; margin-top: 2px; font-size: 0.7rem; opacity: 0.6; font-style: normal; }
 .reading-panel { margin-top: 26px; }
 </style>

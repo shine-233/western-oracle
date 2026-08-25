@@ -35,13 +35,19 @@
    ],
    "pass": true
   },
-  "rune_poem_oe": {
+  "rune_poems_v2": {
    "checks": {
     "count_24": true,
     "unique": true,
-    "all_have_oe": true,
-    "all_have_en": true,
+    "full_coverage_16": true,
+    "oe_only_matches_expected": true,
+    "all_texts_nonempty": true,
     "all_have_source": true
+   },
+   "poem_counts": {
+    "anglo_saxon": 24,
+    "norwegian": 16,
+    "icelandic": 16
    },
    "pass": true
   }

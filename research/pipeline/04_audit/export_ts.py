@@ -46,27 +46,38 @@ def export_tarot() -> None:
 
 
 def export_runes() -> None:
-    runes = json.loads((DATA / 'rune_poem_oe_v1.json').read_text(encoding='utf-8'))
+    runes = json.loads((DATA / 'rune_poems_v2.json').read_text(encoding='utf-8'))
     lines = [
         '/**',
-        ' * 盎格鲁-撒克逊卢恩诗 (8-9世纪) × Bruce Dickins 英译 (1915, 公版)。',
-        ' * 由 research/pipeline 自动生成，请勿手改。',
+        ' * 三首卢恩诗对照（盎格鲁-撒克逊 8-9c / 挪威 c.13c / 冰岛 c.15c），',
+        ' * 英译 Bruce Dickins 1915（公版）。由 research/pipeline 自动生成，请勿手改。',
         ' */',
-        'export interface RunePoemOE {',
-        "  rune: string",
-        "  asName: string",
-        "  oe: string",
-        "  en: string",
+        "export type PoemLang = 'anglo_saxon' | 'norwegian' | 'icelandic'",
+        '',
+        'export interface RunePoemEntry {',
+        "  original: string",
+        "  translation: string",
+        "  source: string",
         '}',
         '',
-        'export const RUNE_POEM_OE: RunePoemOE[] = [',
+        'export interface RunePoems {',
+        "  rune: string",
+        "  poems: Partial<Record<PoemLang, RunePoemEntry>>",
+        '}',
+        '',
+        'export const RUNE_POEMS: RunePoems[] = [',
     ]
     for r in runes:
-        lines.append(
-            f"  {{ rune: '{r['rune']}', asName: '{r['as_name']}', oe: '{ts_str(r['oe_text'])}', en: '{ts_str(r['en_text'])}' }},"
-        )
+        poems = []
+        for lang, p in r['poems'].items():
+            poems.append(
+                f"    {lang}: {{ original: '{ts_str(p['original'])}', translation: '{ts_str(p['translation'])}', source: '{ts_str(p['source'])}' }},"
+            )
+        lines.append(f"  {{ rune: '{r['rune']}', poems: {{")
+        lines.extend(poems)
+        lines.append('  }},')
     lines.append(']')
-    outp = SRC_DATA / 'runePoemOE.ts'
+    outp = SRC_DATA / 'runePoems.ts'
     outp.write_text('\n'.join(lines) + '\n', encoding='utf-8')
     print(f'exported {len(runes)} -> {outp}')
 

@@ -1,0 +1,140 @@
+# 挪威卢恩诗 + 冰岛卢恩诗 (挪威诗约13世纪 / 冰岛诗约15世纪)
+# 英译: Bruce Dickins, Runic and Heroic Poems of the Old Teutonic Peoples, 1915 (公版)
+# 来源: Wikisource https://en.wikisource.org/wiki/Rune_poems
+# 抓取日期: 2026-08-25
+# 说明: 两诗均为年轻弗萨克(16符文)体系。清洗阶段按通行对应关系映射到老弗萨克24符文，
+#       其中年轻弗萨克 Ýr 映射到老弗萨克 Algiz（字形演变关系）。
+#       老弗萨克中的 Gebo/Wunjo/Eihwaz/Perthro/Ehwaz/Ingwaz/Othala/Dagaz 在年轻弗萨克中被弃用，
+#       故无挪威/冰岛诗节，属预期缺口而非漏采。
+
+== THE NORWEGIAN RUNE POEM ==
+
+[FÉ]
+NO: Fé vældr frænda róge; føðesk ulfr í skóge.
+EN: Fe — Wealth is a source of discord among kinsmen; the wolf lives in the forest.
+
+[ÚR]
+NO: Úr er af illu jarne; opt løypr ræinn á hjarne.
+EN: Ur — Dross comes from bad iron; the reindeer often races over the frozen snow.
+
+[ÞURS]
+NO: Þurs vældr kvinna kvillu; kátr værðr fár af illu.
+EN: Thurs — Giant causes anguish to women; misfortune makes few men cheerful.
+
+[ÓSS]
+NO: Óss er flæstra færða för; en skalpr er sværða.
+EN: As — Estuary is the way of most journeys; but a scabbard is of swords.
+
+[REIÐ]
+NO: Ræið kveða rossom væsta; Reginn sló sværðet bæzta.
+EN: Reidh — Riding is said to be the worst thing for horses; Reginn forged the finest sword.
+
+[KAUN]
+NO: Kaun er barna bǫlvan; bǫl gørver nán fǫlvan.
+EN: Kaun — Ulcer is fatal to children; death makes a corpse pale.
+
+[HAGALL]
+NO: Hagall er kaldastr korna; Kristr skóp hæimenn forna.
+EN: Hagall — Hail is the coldest of grain; Christ created the world of old.
+
+[NAUDHR]
+NO: Nauðr gerer næppa koste; nøktan kælr í froste.
+EN: Naudhr — Constraint gives scant choice; a naked man is chilled by the frost.
+
+[ÍS]
+NO: Ís kǫllum brú bræiða; blindan þarf at læiða.
+EN: Isa — Ice we call the broad bridge; the blind man must be led.
+
+[ÁR]
+NO: Ár er gumna góðe; get ek at ǫrr var Fróðe.
+EN: Ar — Plenty is a boon to men; I say that Frodi was generous.
+
+[SÓL]
+NO: Sól er landa ljóme; lúti ek helgum dóme.
+EN: Sol — Sun is the light of the world; I bow to the divine decree.
+
+[TÝR]
+NO: Týr er æinendr ása; opt værðr smiðr blása.
+EN: Tyr — Tyr is a one-handed god; often has the smith to blow.
+
+[BJARKAN]
+NO: Bjarkan er laufgrønstr líma; Loki bar flærða tíma.
+EN: Bjarkan — Birch has the greenest leaves of any shrub; Loki was fortunate in his deceit.
+
+[MAÐR]
+NO: Maðr er moldar auki; mikil er græip á hauki.
+EN: Madhr — Man is an augmentation of the dust; great is the claw of the hawk.
+
+[LǪGR]
+NO: Lǫgr er, fællr ór fjalle foss; en gull ero nosser.
+EN: Logr — A waterfall is a river which falls from a mountain-side; but ornaments are of gold.
+
+[ÝR]
+NO: Ýr er vetrgrønstr viða; vænt er, er brennr, at sviða.
+EN: Yr — Yew is the greenest of trees in winter; it is wont to crackle when it burns.
+
+== THE ICELANDIC RUNE POEM ==
+
+[FÉ]
+IS: Fé er frænda róg ok flæðar viti ok grafseiðs gata, aurum fylkir.
+EN: Fé — Wealth: source of discord among kinsmen, and fire of the sea, and path of the serpent.
+
+[ÚR]
+IS: Úr er skýja grátr ok skára þverrir ok hirðis hatr, umbre vísi.
+EN: Ur — Shower: lamentation of the clouds, and ruin of the hay-harvest, and abomination of the shepherd.
+
+[ÞURS]
+IS: Þurs er kvenna kvöl ok kletta búi ok varðrúnar verr, Saturnus þengill.
+EN: Thurs — Giant: torture of women, and cliff-dweller, and husband of a giantess.
+
+[ÓSS]
+IS: Óss er algingautr ok ásgarðs jöfurr, ok valhallar vísi, Jupiter oddviti.
+EN: Oss — God: aged Gautr, and prince of Ásgardr, and lord of Vallhalla.
+
+[REIÐ]
+IS: Reið er sitjandi sæla ok snúðig ferð ok jórs erfiði, iter ræsir.
+EN: Reid — Riding: joy of the horsemen, and speedy journey, and toil of the steed.
+
+[KAUN]
+IS: Kaun er barna böl ok bardaga för ok holdfúa hús, flagella konungr.
+EN: Kaun — Ulcer: disease fatal to children, and painful spot, and abode of mortification.
+
+[HAGALL]
+IS: Hagall er kaldakorn ok krapadrífa ok snáka sótt, grando hildingr.
+EN: Hagall — Hail: cold grain, and shower of sleet, and sickness of serpents.
+
+[NAUD]
+IS: Nauð er Þýjar þrá ok þungr kostr ok vássamlig verk, opera niflungr.
+EN: Naud — Constraint: grief of the bond-maid, and state of oppression, and toilsome work.
+
+[ÍSS]
+IS: Íss er árbörkr ok unnar þak ok feigra manna fár, glacies jöfurr.
+EN: Iss — Ice: bark of rivers, and roof of the wave, and destruction of the doomed.
+
+[ÁR]
+IS: Ár er gumna góði ok gott sumar, algróinn akr, annus allvaldr.
+EN: Ar — Plenty: boon to men, and good summer, and thriving crops.
+
+[SÓL]
+IS: Sól er skýja skjöldr ok skínandi röðull ok ísa aldrtregi, rota siklingr.
+EN: Sol — Sun: shield of the clouds, and shining ray, and destroyer of ice.
+
+[TÝR]
+IS: Týr er einhendr áss ok ulfs leifar ok hofa hilmir, Mars tiggi.
+EN: Tyr — Tyr: god with one hand, and leavings of the wolf, and prince of temples.
+
+[BJARKAN]
+IS: Bjarkan er laufgat lim ok lítit tré ok ungsamligr viðr, abies buðlungr.
+EN: Bjarken — Birch: leafy twig, and little tree, and fresh young shrub.
+
+[MAÐR]
+IS: Maðr er manns gaman ok moldar auki ok skipa skreytir, homo mildingr.
+EN: Madr — Man: delight of man, and augmentation of the earth, and adorner of ships.
+
+[LÖGR]
+IS: Lögr er vellanda vatn ok viðr ketill ok glömmungr grund, lacus lofðungr.
+EN: Lögr — Water: eddying stream, and broad geysir, and land of the fish.
+
+[ÝR]
+IS: Ýr er bendr bogi ok brotgjarnt járn ok fífu fárbauti, arcus ynglingr.
+EN: Yr — Yew: bent bow, and brittle iron, and giant of the arrow.

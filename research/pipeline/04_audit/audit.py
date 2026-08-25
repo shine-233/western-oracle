@@ -47,15 +47,32 @@ def audit_tarot(report: dict) -> None:
 
 
 def audit_runes(report: dict) -> None:
-    runes = json.loads((DATA / 'rune_poem_oe_v1.json').read_text(encoding='utf-8'))
+    runes = json.loads((DATA / 'rune_poems_v2.json').read_text(encoding='utf-8'))
+    expected_oe_only = {'Gebo', 'Wunjo', 'Eihwaz', 'Perthro', 'Ehwaz', 'Ingwaz', 'Othala', 'Dagaz'}
+    full = [r for r in runes if len(r['poems']) == 3]
+    oe_only = {r['rune'] for r in runes if len(r['poems']) == 1}
     checks = {
         'count_24': len(runes) == 24,
         'unique': len({r['rune'] for r in runes}) == 24,
-        'all_have_oe': all(r['oe_text'].strip() for r in runes),
-        'all_have_en': all(r['en_text'].strip() for r in runes),
-        'all_have_source': all(r['source'].strip() for r in runes),
+        'full_coverage_16': len(full) == 16,
+        'oe_only_matches_expected': oe_only == expected_oe_only,
+        'all_texts_nonempty': all(
+            p['original'].strip() and p['translation'].strip()
+            for r in runes for p in r['poems'].values()
+        ),
+        'all_have_source': all(
+            p['source'].strip() for r in runes for p in r['poems'].values()
+        ),
     }
-    report['rune_poem_oe'] = {'checks': checks, 'pass': all(checks.values())}
+    report['rune_poems_v2'] = {
+        'checks': checks,
+        'poem_counts': {
+            'anglo_saxon': sum(1 for r in runes if 'anglo_saxon' in r['poems']),
+            'norwegian': sum(1 for r in runes if 'norwegian' in r['poems']),
+            'icelandic': sum(1 for r in runes if 'icelandic' in r['poems']),
+        },
+        'pass': all(checks.values()),
+    }
 
 
 def main() -> None:
