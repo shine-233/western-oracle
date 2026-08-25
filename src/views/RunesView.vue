@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { drawRunes, type Rune } from '../data/runes'
+import { RUNE_POEM_OE } from '../data/runePoemOE'
 import { askAI, isAiEnabled, oracleSystemPrompt } from '../lib/ai'
 import { sparkle, sparkleFromEvent } from '../lib/sparkle'
 import { sfx } from '../lib/sfx'
+
+function poemOf(rune: Rune): { oe: string; en: string } | null {
+  const p = RUNE_POEM_OE.find((x) => x.rune === rune.name)
+  return p ? { oe: p.oe, en: p.en } : null
+}
 
 interface DrawnRune {
   rune: Rune
@@ -118,6 +124,11 @@ async function askAiInterpretation(): Promise<void> {
           <strong>{{ d.rune.nameCn }}</strong>
           <small>{{ d.rune.name }} · {{ d.reversed ? '倒转' : '正位' }}</small>
           <p>{{ meaningOf(d) }}</p>
+          <p v-if="poemOf(d.rune)" class="poem-quote">
+            「{{ poemOf(d.rune)!.en }}」<br />
+            <span class="poem-oe">{{ poemOf(d.rune)!.oe }}</span>
+            <span class="poem-src">—— 盎格鲁-撒克逊卢恩诗，Dickins 英译 1915</span>
+          </p>
         </figcaption>
         <figcaption v-else class="tap-hint">点一下揭晓</figcaption>
       </figure>
@@ -184,5 +195,18 @@ async function askAiInterpretation(): Promise<void> {
 .rune-stone small { display: block; color: var(--ink-dim); font-size: 0.78rem; margin: 3px 0 8px; }
 .rune-stone p { font-size: 0.88rem; line-height: 1.75; color: var(--ink); margin: 0; }
 .tap-hint { color: var(--ink-dim); opacity: 0.65; font-size: 0.8rem; }
+.poem-quote {
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: rgba(13, 11, 32, 0.6);
+  border-left: 3px solid var(--gold);
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--ink-dim);
+  line-height: 1.8;
+  text-align: left;
+}
+.poem-oe { font-style: normal; opacity: 0.8; font-size: 0.75rem; }
+.poem-src { display: block; margin-top: 6px; font-size: 0.7rem; opacity: 0.6; font-style: normal; }
 .reading-panel { margin-top: 26px; }
 </style>

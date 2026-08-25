@@ -1,0 +1,50 @@
+{
+ "generated": "2026-08-25",
+ "datasets": {
+  "tarot_waite": {
+   "checks": {
+    "count_78": true,
+    "majors_22": true,
+    "minors_56": true,
+    "all_have_up": true,
+    "all_have_rev": true,
+    "unique_ids": true,
+    "spot_check_5": true
+   },
+   "spot_check": [
+    {
+     "site_id": "cups-5",
+     "match_original": true
+    },
+    {
+     "site_id": "swords-page",
+     "match_original": true
+    },
+    {
+     "site_id": "magician",
+     "match_original": true
+    },
+    {
+     "site_id": "wands-7",
+     "match_original": true
+    },
+    {
+     "site_id": "wands-queen",
+     "match_original": true
+    }
+   ],
+   "pass": true
+  },
+  "rune_poem_oe": {
+   "checks": {
+    "count_24": true,
+    "unique": true,
+    "all_have_oe": true,
+    "all_have_en": true,
+    "all_have_source": true
+   },
+   "pass": true
+  }
+ },
+ "all_pass": true
+}
