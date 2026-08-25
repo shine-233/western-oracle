@@ -6,7 +6,9 @@ export interface Almanac {
   rulerKey: string
   rulerLine: string
   doText: string
+  doEn: string
   dontText: string
+  dontEn: string
   luckyColor: { cn: string; en: string; hex: string }
   luckyNumber: number
 }
@@ -71,7 +73,9 @@ export function todayAlmanac(date = new Date()): Almanac {
     rulerKey,
     rulerLine: `${domain[0]}｜${domain[1]}`,
     doText: PHASE_DO[phase.index]![0],
+    doEn: PHASE_DO[phase.index]![1],
     dontText: PHASE_DONT[phase.index]![0],
+    dontEn: PHASE_DONT[phase.index]![1],
     luckyColor: color,
     luckyNumber,
   }

@@ -99,12 +99,12 @@ const greeting = computed(() => {
       <div class="alm-item do">
         <span class="alm-key">{{ t('alm.do') }}</span>
         <strong class="alm-val">{{ almanac.doText }}</strong>
-        <small>{{ moonDesc }}</small>
+        <small>{{ almanac.doEn }}</small>
       </div>
       <div class="alm-item dont">
         <span class="alm-key">{{ t('alm.dont') }}</span>
         <strong class="alm-val">{{ almanac.dontText }}</strong>
-        <small>·</small>
+        <small>{{ almanac.dontEn }}</small>
       </div>
       <div class="alm-item">
         <span class="alm-key">{{ t('alm.color') }} / {{ t('alm.number') }}</span>
@@ -113,7 +113,7 @@ const greeting = computed(() => {
           {{ locale === 'zh' ? almanac.luckyColor.cn : almanac.luckyColor.en }}
           <em>{{ almanac.luckyNumber }}</em>
         </strong>
-        <small>·</small>
+        <small class="hex-note">{{ almanac.luckyColor.hex.toUpperCase() }}</small>
       </div>
     </div>
   </section>
@@ -196,6 +196,7 @@ const greeting = computed(() => {
 .alm-val { color: var(--gold-bright); font-weight: 400; line-height: 1.5; }
 .alm-val.ruler { font-size: 1.25rem; }
 .alm-item small { color: var(--ink-dim); font-size: 0.75rem; }
+.hex-note { font-family: var(--pixel); font-size: 0.55rem; letter-spacing: 0.1em; opacity: 0.8; }
 .color-row { display: flex; align-items: center; gap: 7px; }
 .color-row em { font-style: normal; color: var(--pink); font-family: var(--pixel); font-size: 0.9rem; margin-left: auto; }
 .color-dot {
