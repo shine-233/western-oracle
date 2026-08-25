@@ -10,15 +10,15 @@ export interface BirthstoneMonth {
 
 export const BIRTHSTONES_BY_MONTH: Record<string, BirthstoneMonth[]> = {
   'January': [{ stone: 'Garnet', lists: 7 }, { stone: 'Hyacinth', lists: 2 }],
-  'February': [{ stone: 'Amethyst', lists: 8 }, { stone: 'Hyacinth', lists: 1 }, { stone: 'Pearl', lists: 1 }, { stone: 'Jasper', lists: 5 }, { stone: 'Bloodstone', lists: 4 }, { stone: 'Sapphire', lists: 7 }, { stone: 'Diamond', lists: 2 }, { stone: 'Agate', lists: 5 }, { stone: 'Emerald', lists: 4 }, { stone: 'Chalcedony', lists: 1 }, { stone: 'Carnelian', lists: 1 }, { stone: 'Emerald', lists: 4 }, { stone: 'Agate', lists: 4 }, { stone: 'Chaleedony', lists: 3 }, { stone: 'Turquoise', lists: 1 }, { stone: 'S-eye', lists: 1 }, { stone: 'Onyx', lists: 5 }, { stone: 'Sardonyx', lists: 1 }, { stone: 'Carnelian', lists: 1 }, { stone: 'Ruby', lists: 1 }, { stone: 'Turquoise', lists: 1 }, { stone: 'Carnelian', lists: 5 }, { stone: 'Sardonyx', lists: 3 }, { stone: 'Moonstone', lists: 1 }, { stone: 'Topaz', lists: 1 }, { stone: 'Andrite', lists: 1 }],
+  'February': [{ stone: 'Amethyst', lists: 8 }, { stone: 'Hyacinth', lists: 1 }, { stone: 'Pearl', lists: 1 }, { stone: 'I', lists: 2 }, { stone: 'Jasper', lists: 5 }, { stone: 'Bloodstone', lists: 4 }, { stone: 'Sapphire', lists: 7 }, { stone: 'Diamond', lists: 2 }, { stone: 'Agate', lists: 5 }, { stone: 'Emerald', lists: 4 }, { stone: 'Chalcedony', lists: 1 }, { stone: 'Carnelian', lists: 1 }, { stone: 'Emerald', lists: 4 }, { stone: 'Agate', lists: 4 }, { stone: 'Chalcedony', lists: 3 }, { stone: 'Turquoise', lists: 1 }, { stone: 'Pearl', lists: 1 }, { stone: 'Cat\'s-eye', lists: 1 }, { stone: 'Onyx', lists: 5 }, { stone: 'Sardonyx', lists: 1 }, { stone: 'Carnelian', lists: 1 }, { stone: 'Ruby', lists: 1 }, { stone: 'Turquoise', lists: 1 }, { stone: 'Carnelian', lists: 5 }, { stone: 'Sardonyx', lists: 3 }, { stone: 'Moonstone', lists: 1 }, { stone: 'Topaz', lists: 1 }, { stone: 'Andrite', lists: 1 }],
   'September': [{ stone: 'Chrysolite', lists: 6 }, { stone: 'Sardonyx', lists: 2 }],
-  'October': [{ stone: 'Aquamarine', lists: 5 }, { stone: 'Opal', lists: 1 }],
+  'October': [{ stone: 'Beryl', lists: 8 }, { stone: 'Aquamarine', lists: 5 }, { stone: 'Opal', lists: 1 }],
   'November': [{ stone: 'Topaz', lists: 8 }, { stone: 'Pearl', lists: 1 }],
   'December': [{ stone: 'Ruby', lists: 6 }, { stone: 'Turquoise', lists: 2 }, { stone: 'Chrysoprase', lists: 1 }, { stone: 'Bloodstone', lists: 1 }],
   'March': [{ stone: 'Jasper', lists: 5 }, { stone: 'Bloodstone', lists: 4 }],
   'April': [{ stone: 'Sapphire', lists: 7 }, { stone: 'Diamond', lists: 2 }],
   'May': [{ stone: 'Agate', lists: 5 }, { stone: 'Emerald', lists: 4 }, { stone: 'Chalcedony', lists: 1 }, { stone: 'Carnelian', lists: 1 }],
-  'June': [{ stone: 'Emerald', lists: 4 }, { stone: 'Agate', lists: 4 }, { stone: 'Turquoise', lists: 1 }],
+  'June': [{ stone: 'Emerald', lists: 4 }, { stone: 'Agate', lists: 4 }, { stone: 'Turquoise', lists: 1 }, { stone: 'Pearl', lists: 1 }, { stone: 'Cat\'s-eye', lists: 1 }],
   'July': [{ stone: 'Onyx', lists: 5 }, { stone: 'Sardonyx', lists: 1 }],
   'August': [{ stone: 'Carnelian', lists: 5 }, { stone: 'Sardonyx', lists: 3 }, { stone: 'Moonstone', lists: 1 }],
 }
