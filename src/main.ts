@@ -19,3 +19,10 @@ app.mount('#app')
 installKonami()
 installOverlays()
 installMotionGlobal()
+
+// PWA：生产环境注册 Service Worker（离线缓存 + 可安装）
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => {})
+  })
+}
