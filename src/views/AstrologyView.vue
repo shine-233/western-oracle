@@ -13,6 +13,8 @@ import { ASPECTS, HOUSES, PATTERNS_CN, PLANETS, SIGNS, aspectText, houseFullText
 import { loadJSON, saveJSON } from '../lib/storage'
 import { addHistory } from '../lib/history'
 import { sfx } from '../lib/sfx'
+import { TETRABIBLOS_PLANETS } from '../data/tetrabiblosPlanets'
+import { vTilt } from '../lib/tilt'
 import { t, locale } from '../lib/i18n'
 import AstroWheel from '../components/AstroWheel.vue'
 import AiChat from '../components/AiChat.vue'
@@ -219,7 +221,9 @@ export default {}
       <div class="divider-star">✦ ✦ ✦</div>
 
       <section class="astro-layout">
-        <AstroWheel :planets="chart.planets" :cusps="chart.cusps" :asc-lon="chart.ascendant.lon" :aspects="chart.aspects" />
+        <div v-tilt="5">
+          <AstroWheel :planets="chart.planets" :cusps="chart.cusps" :asc-lon="chart.ascendant.lon" :aspects="chart.aspects" />
+        </div>
 
         <section class="panel astro-facts">
           <h3 style="margin-top: 0;">{{ t('astro.facts') }}</h3>
@@ -241,7 +245,14 @@ export default {}
                   <td class="dim">{{ t('c.houseShort', { n: p.house }) }}</td>
                 </tr>
                 <tr v-if="expandedPlanet === p.name">
-                  <td colspan="4" class="planet-detail bounce-in">{{ planetDetail(p.name) }}</td>
+                  <td colspan="4" class="planet-detail bounce-in">
+                    {{ planetDetail(p.name) }}
+                    <div v-if="TETRABIBLOS_PLANETS[p.name]" class="tb-quote">
+                      <span class="tb-label">Ptolemy《Tetrabiblos》Book I · Ashmand 1822<span class="tag">研究数据</span></span>
+                      <p>「{{ TETRABIBLOS_PLANETS[p.name]!.natureQuote }}」</p>
+                      <p class="tb-ext">庙宫：{{ TETRABIBLOS_PLANETS[p.name]!.domicile.join(' / ') }} · 旺：{{ TETRABIBLOS_PLANETS[p.name]!.exaltation }}</p>
+                    </div>
+                  </td>
                 </tr>
               </template>
             </tbody>
@@ -342,6 +353,17 @@ export default {}
   white-space: pre-wrap;
 }
 .planet-table .pg { font-size: 1.2rem; color: var(--gold); width: 34px; }
+.tb-quote {
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: rgba(13, 11, 32, 0.6);
+  border-left: 3px solid var(--gold);
+  font-size: 0.8rem;
+  font-style: italic;
+  line-height: 1.8;
+}
+.tb-label { display: block; font-style: normal; color: var(--gold-bright); font-size: 0.72rem; margin-bottom: 6px; }
+.tb-ext { font-style: normal; color: var(--ink-dim); margin-top: 6px; font-size: 0.75rem; }
 .retro { color: var(--danger); font-size: 0.75rem; margin-left: 4px; }
 .dim { color: var(--ink-dim); font-size: 0.85rem; text-align: right; }
 .reading-panel { margin-top: 26px; }

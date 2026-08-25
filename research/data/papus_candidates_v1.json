@@ -1,0 +1,314 @@
+[
+ {
+  "site_id": "wands-king",
+  "meaning": "The King of Sceptres symbolizes a dark man, a friend. He generally represents a married man, the father of a family."
+ },
+ {
+  "site_id": "wands-queen",
+  "meaning": "A dark woman, a friend. Represents a serious woman, a very good counsellor, often the mother of a family."
+ },
+ {
+  "site_id": "wands-knight",
+  "meaning": "A dark young man, a friend."
+ },
+ {
+  "site_id": "wands-page",
+  "meaning": "A dark child, a friend. Also represents a message from a near relation."
+ },
+ {
+  "site_id": "wands-ace",
+  "meaning": "Commencement of an Enterprise."
+ },
+ {
+  "site_id": "wands-2",
+  "meaning": "Opposition to the commencement of the Enterprise. The Enterprise is commenced when an unexpected obstacle suddenly prevents its execution."
+ },
+ {
+  "site_id": "wands-3",
+  "meaning": "Realization of the commencement of the Enterprise. The basis of the work is now definitely established, and the undertaking can be fearlessly continued."
+ },
+ {
+  "site_id": "wands-4",
+  "meaning": "Obstacles to the Enterprise. Nothing can be accomplished without obstacles. We therefore now find them appearing, and must prepare ourselves to overcome them."
+ },
+ {
+  "site_id": "wands-5",
+  "meaning": "Opposition to the obstacles. Victory after surmounting them."
+ },
+ {
+  "site_id": "wands-6",
+  "meaning": "Realization of the opposition. At last the obstacles succeed. Failure of the Enterprise in the midst of its execution."
+ },
+ {
+  "site_id": "wands-7",
+  "meaning": "Certain success to the Enterprise."
+ },
+ {
+  "site_id": "wands-8",
+  "meaning": "Opposition to its success. The Enterprise will only partially succeed."
+ },
+ {
+  "site_id": "wands-9",
+  "meaning": "Realization of success. Success is continued."
+ },
+ {
+  "site_id": "wands-10",
+  "meaning": "Uncertainty in the management of the Enterprise."
+ },
+ {
+  "site_id": "cups-king",
+  "meaning": "A fair man, a friend. This card also represents a barrister, judge, or ecclesiastic. It symbolizes a Bachelor."
+ },
+ {
+  "site_id": "cups-queen",
+  "meaning": "A fair woman, a friend. The woman loved. The Mistress."
+ },
+ {
+  "site_id": "cups-knight",
+  "meaning": "A young fair man, a friend. The young man loved. The Lover."
+ },
+ {
+  "site_id": "cups-page",
+  "meaning": "A fair child. A messenger. Birth."
+ },
+ {
+  "site_id": "cups-ace",
+  "meaning": "Commencement of a love affair."
+ },
+ {
+  "site_id": "cups-2",
+  "meaning": "Opposition to this commencement. Unimportant obstacles raised by one of the lovers."
+ },
+ {
+  "site_id": "cups-3",
+  "meaning": "Realization of this commencement. The love is mutual."
+ },
+ {
+  "site_id": "cups-4",
+  "meaning": "Serious obstacles to the love. They arise from other persons, not from the lovers."
+ },
+ {
+  "site_id": "cups-5",
+  "meaning": "Opposition to the obstacles. Victory over the obstacles after a struggle."
+ },
+ {
+  "site_id": "cups-6",
+  "meaning": "The obstacles triumph. Love destroyed in the midst of happiness. Widowhood."
+ },
+ {
+  "site_id": "cups-7",
+  "meaning": "Success assured to the lovers."
+ },
+ {
+  "site_id": "cups-8",
+  "meaning": "Partial failure of love. Love only partially succeeds."
+ },
+ {
+  "site_id": "cups-9",
+  "meaning": "Motherhood."
+ },
+ {
+  "site_id": "cups-10",
+  "meaning": "Uncertainty in the management of the love affair."
+ },
+ {
+  "site_id": "swords-king",
+  "meaning": "A dark, bad man. He is a soldier, a powerful enemy, who must be distrusted."
+ },
+ {
+  "site_id": "swords-queen",
+  "meaning": "A dark wicked woman. The card also indicates her actions, gossip and calumnies."
+ },
+ {
+  "site_id": "swords-knight",
+  "meaning": "A young, dark man, an enemy. He is also a spy."
+ },
+ {
+  "site_id": "swords-page",
+  "meaning": "A child, an enemy. Bad news. Delay."
+ },
+ {
+  "site_id": "swords-ace",
+  "meaning": "Commencement of enmity."
+ },
+ {
+  "site_id": "swords-2",
+  "meaning": "Opposition to this commencement. The enmity does not last."
+ },
+ {
+  "site_id": "swords-3",
+  "meaning": "Realization of the enmity. Hatred."
+ },
+ {
+  "site_id": "swords-4",
+  "meaning": "Opposition to the hatred. Success against the enemy."
+ },
+ {
+  "site_id": "swords-5",
+  "meaning": "Opposition to this opposition. The enemy triumphs at the moment one fancies the victory is secured."
+ },
+ {
+  "site_id": "swords-6",
+  "meaning": "Equilibrium of the opposition. The enemy is rendered powerless at last."
+ },
+ {
+  "site_id": "swords-7",
+  "meaning": "Success assured to the enemy."
+ },
+ {
+  "site_id": "swords-8",
+  "meaning": "Partial opposition to this success. The enemy only partially triumphs."
+ },
+ {
+  "site_id": "swords-9",
+  "meaning": "Certain duration of the hatred."
+ },
+ {
+  "site_id": "swords-10",
+  "meaning": "Uncertainty in the enmity."
+ },
+ {
+  "site_id": "pentacles-king",
+  "meaning": "A fair man, inimical or indifferent."
+ },
+ {
+  "site_id": "pentacles-queen",
+  "meaning": "A fair woman, indifferent, or inimical."
+ },
+ {
+  "site_id": "pentacles-knight",
+  "meaning": "A young, fair man. A stranger. An arrival."
+ },
+ {
+  "site_id": "pentacles-page",
+  "meaning": "A fair child. A messenger. A letter."
+ },
+ {
+  "site_id": "pentacles-ace",
+  "meaning": "Commencement of fortune. Inheritance. Gifts. Economy, etc., etc."
+ },
+ {
+  "site_id": "pentacles-2",
+  "meaning": "Opposition to this commencement. Difficulty in well establishing the first landmarks of good fortune."
+ },
+ {
+  "site_id": "pentacles-3",
+  "meaning": "Realization of this commencement of fortune. A small sum."
+ },
+ {
+  "site_id": "pentacles-4",
+  "meaning": "Opposition of fortune. Loss of money."
+ },
+ {
+  "site_id": "pentacles-5",
+  "meaning": "Opposition to this opposition. A success coming which will balance the low."
+ },
+ {
+  "site_id": "pentacles-6",
+  "meaning": "Realization of the opposition. Ruin."
+ },
+ {
+  "site_id": "pentacles-7",
+  "meaning": "Success assured. A large fortune."
+ },
+ {
+  "site_id": "pentacles-8",
+  "meaning": "Partial success. Great loss of money at the moment apparently of definitely securing the fortune."
+ },
+ {
+  "site_id": "pentacles-9",
+  "meaning": "Equilibrium of Equilibrium. A durable fortune."
+ },
+ {
+  "site_id": "pentacles-10",
+  "meaning": "Uncertainty in the fortune. Great success and great reverses."
+ },
+ {
+  "site_id": "magician",
+  "meaning": "The Juggler"
+ },
+ {
+  "site_id": "high-priestess",
+  "meaning": "The High Priestess"
+ },
+ {
+  "site_id": "empress",
+  "meaning": "The Empress"
+ },
+ {
+  "site_id": "emperor",
+  "meaning": "The Emperor"
+ },
+ {
+  "site_id": "hierophant",
+  "meaning": "The Pope"
+ },
+ {
+  "site_id": "lovers",
+  "meaning": "The Lovers"
+ },
+ {
+  "site_id": "chariot",
+  "meaning": "The Chariot"
+ },
+ {
+  "site_id": "justice",
+  "meaning": "Justice"
+ },
+ {
+  "site_id": "hermit",
+  "meaning": "The Hermit"
+ },
+ {
+  "site_id": "wheel-of-fortune",
+  "meaning": "The Wheel of Fortune"
+ },
+ {
+  "site_id": "strength",
+  "meaning": "Strength"
+ },
+ {
+  "site_id": "hanged-man",
+  "meaning": "The Hanged Man"
+ },
+ {
+  "site_id": "death",
+  "meaning": "Death"
+ },
+ {
+  "site_id": "temperance",
+  "meaning": "Temperance"
+ },
+ {
+  "site_id": "devil",
+  "meaning": "The Devil"
+ },
+ {
+  "site_id": "tower",
+  "meaning": "The Lightning-struck Tower"
+ },
+ {
+  "site_id": "star",
+  "meaning": "The Stars"
+ },
+ {
+  "site_id": "moon",
+  "meaning": "The Moon"
+ },
+ {
+  "site_id": "sun",
+  "meaning": "The Sun"
+ },
+ {
+  "site_id": "judgement",
+  "meaning": "The Judgment"
+ },
+ {
+  "site_id": "fool",
+  "meaning": "The Foolish Man"
+ },
+ {
+  "site_id": "world",
+  "meaning": "The Universe"
+ }
+]

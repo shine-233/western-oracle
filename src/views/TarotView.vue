@@ -6,6 +6,7 @@ import { sparkle, sparkleFromEvent } from '../lib/sparkle'
 import { sfx } from '../lib/sfx'
 import { cardImageUrl } from '../data/tarot'
 import { WAITE_MEANINGS } from '../data/waiteMeanings'
+import { TAROT_SOURCES } from '../data/tarotSources'
 import { addHistory } from '../lib/history'
 import { downloadShareCard } from '../lib/share'
 import { t, locale } from '../lib/i18n'
@@ -159,7 +160,9 @@ function shareReading(): void {
 const aiContext = computed(() => {
   const lines = drawn.value.map((d, i) => {
     const pos = spread.value.positions[i] ?? `第${i + 1}张`
-    return `${pos}：${d.card.name}（${d.reversed ? '逆位' : '正位'}，关键词 ${d.card.keywords.join('、')}；传统释义：${meaningOf(d)}）`
+    const en = TAROT_SOURCES[d.card.id]
+    const enKw = en?.keywords.length ? `；EN keywords: ${en.keywords.join(', ')}` : ''
+    return `${pos}：${d.card.name}（${d.reversed ? '逆位' : '正位'}，关键词 ${d.card.keywords.join('、')}${enKw}；传统释义：${meaningOf(d)}）`
   })
   return [
     question.value.trim() ? `提问者的问题：「${question.value.trim()}」` : '提问者没有具体问题，请做整体运势指引。',
@@ -331,6 +334,14 @@ watch(allFlipped, (done) => {
                   <strong>Waite 原文牌意 · 1911<span class="tag">研究数据</span></strong>
                   <p class="reading en-quote">“{{ WAITE_MEANINGS[detail.card.id]!.up }}”</p>
                   <p class="reading en-quote">“{{ WAITE_MEANINGS[detail.card.id]!.rev }}”</p>
+                </div>
+                <div v-if="TAROT_SOURCES[detail.card.id]" class="modal-sec papus">
+                  <strong>Papus 占卜释义 · 1892<span class="tag">研究数据</span></strong>
+                  <p class="reading en-quote">{{ TAROT_SOURCES[detail.card.id]!.papus }}</p>
+                </div>
+                <div v-if="TAROT_SOURCES[detail.card.id]?.fortuneTelling.length" class="modal-sec fortune">
+                  <strong>Fortune Telling · McElroy<span class="tag">研究数据</span></strong>
+                  <p v-for="f in TAROT_SOURCES[detail.card.id]!.fortuneTelling" :key="f" class="reading en-quote">✦ {{ f }}</p>
                 </div>
                 <p class="hint" style="font-style: italic;">{{ t('tarot.modalTip') }}</p>
               </div>
@@ -537,6 +548,8 @@ watch(allFlipped, (done) => {
 }
 .modal-sec strong { color: var(--gold-bright); font-family: var(--cute); font-weight: 400; }
 .modal-sec.waite { border-left-color: var(--gold); }
+.modal-sec.papus { border-left-color: var(--pink); }
+.modal-sec.fortune { border-left-color: var(--mint); }
 .en-quote { font-style: italic; color: var(--ink-dim); font-size: 0.88rem; margin: 4px 0 0; white-space: normal; }
 .modal-enter-active { transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
 .modal-leave-active { transition: all 0.18s ease; }

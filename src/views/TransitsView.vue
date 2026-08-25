@@ -13,6 +13,7 @@ import { PLANETS } from '../data/corpus'
 import { readTransits, type TransitReading } from '../lib/interpret'
 import { addHistory } from '../lib/history'
 import { sfx } from '../lib/sfx'
+import { vTilt } from '../lib/tilt'
 import { t, locale } from '../lib/i18n'
 import { SIGNS } from '../data/corpus'
 import AstroWheel from '../components/AstroWheel.vue'
@@ -121,14 +122,16 @@ const aiContext = (): string => {
       </section>
 
       <section class="astro-layout" style="margin-top: 18px;">
-        <AstroWheel
-          :planets="natal.planets"
-          :cusps="natal.cusps"
-          :asc-lon="natal.ascendant.lon"
-          :aspects="natal.aspects"
-          :inner-planets="sky.planets"
-          :synastry-aspects="aspects"
-        />
+        <div v-tilt="5">
+          <AstroWheel
+            :planets="natal.planets"
+            :cusps="natal.cusps"
+            :asc-lon="natal.ascendant.lon"
+            :aspects="natal.aspects"
+            :inner-planets="sky.planets"
+            :synastry-aspects="aspects"
+          />
+        </div>
 
         <section class="panel">
           <h3 style="margin-top: 0;">{{ t('tr.sky') }}</h3>

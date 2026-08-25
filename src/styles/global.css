@@ -91,6 +91,32 @@ body::after {
   100% { transform: translate(46vw, 30vh) rotate(-24deg); opacity: 0; }
 }
 
+/* 露娜骑扫帚横穿屏幕（彩蛋） */
+.broom-flight {
+  position: fixed;
+  left: 0;
+  z-index: 9992;
+  pointer-events: none;
+  animation: fly-across 7.5s linear forwards;
+}
+.broom-flight svg { animation: broom-bob 0.9s ease-in-out infinite; }
+@keyframes fly-across {
+  0% { transform: translateX(-140px); opacity: 0; }
+  6% { opacity: 1; }
+  94% { opacity: 1; }
+  100% { transform: translateX(110vw); opacity: 0; }
+}
+@keyframes fly-across-flip {
+  0% { transform: translateX(140px) scaleX(-1); opacity: 0; }
+  6% { opacity: 1; }
+  94% { opacity: 1; }
+  100% { transform: translateX(-110vw) scaleX(-1); opacity: 0; }
+}
+@keyframes broom-bob {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-7px) rotate(2deg); }
+}
+
 ::selection { background: rgba(255, 159, 206, 0.4); }
 
 ::-webkit-scrollbar { width: 10px; }

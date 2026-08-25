@@ -1,0 +1,101 @@
+# THE TAROT OF THE BOHEMIANS — CHAPTER XX, SECOND & THIRD LESSONS
+# Papus (Gérard Encausse), 1892; 英译 A. P. Morton (公版)
+# 来源: sacred-texts.com/tarot/tob/tob52.htm 与 tob53.htm
+# 抓取日期: 2026-08-25
+# 说明: 本文件含全部 78 张牌的 Papus 占卜释义（小阿卡纳56 + 大阿卡纳22）。
+#       小阿卡纳按四花色分节，宫廷牌以全名出现，数字牌以 ACE/TWO/.../TEN 出现（归属当前花色）。
+
+== SECOND LESSON: MINOR ARCANA ==
+
+SUIT: SCEPTRES (Creation. Enterprise. Agriculture.)
+
+KING OF SCEPTRES. The King of Sceptres symbolizes a dark man, a friend. He generally represents a married man, the father of a family.
+QUEEN OF SCEPTRES. A dark woman, a friend. Represents a serious woman, a very good counsellor, often the mother of a family.
+KNIGHT OF SCEPTRES. A dark young man, a friend.
+KNAVE OF SCEPTRES. A dark child, a friend. Also represents a message from a near relation.
+ACE OF SCEPTRES. Commencement of an Enterprise.
+TWO. Opposition to the commencement of the Enterprise. The Enterprise is commenced when an unexpected obstacle suddenly prevents its execution.
+THREE. Realization of the commencement of the Enterprise. The basis of the work is now definitely established, and the undertaking can be fearlessly continued.
+FOUR. Obstacles to the Enterprise. Nothing can be accomplished without obstacles. We therefore now find them appearing, and must prepare ourselves to overcome them.
+FIVE. Opposition to the obstacles. Victory after surmounting them.
+SIX. Realization of the opposition. At last the obstacles succeed. Failure of the Enterprise in the midst of its execution.
+SEVEN. Certain success to the Enterprise.
+EIGHT. Opposition to its success. The Enterprise will only partially succeed.
+NINE. Realization of success. Success is continued.
+TEN. Uncertainty in the management of the Enterprise.
+
+SUIT: CUPS (Preservation. Love. Instruction.)
+
+KING OF CUPS. A fair man, a friend. This card also represents a barrister, judge, or ecclesiastic. It symbolizes a Bachelor.
+QUEEN OF CUPS. A fair woman, a friend. The woman loved. The Mistress.
+KNIGHT OF CUPS. A young fair man, a friend. The young man loved. The Lover.
+KNAVE OF CUPS. A fair child. A messenger. Birth.
+ACE OF CUPS. Commencement of a love affair.
+TWO. Opposition to this commencement. Unimportant obstacles raised by one of the lovers.
+THREE. Realization of this commencement. The love is mutual.
+FOUR. Serious obstacles to the love. They arise from other persons, not from the lovers.
+FIVE. Opposition to the obstacles. Victory over the obstacles after a struggle.
+SIX. The obstacles triumph. Love destroyed in the midst of happiness. Widowhood.
+SEVEN. Success assured to the lovers.
+EIGHT. Partial failure of love. Love only partially succeeds.
+NINE. Motherhood.
+TEN. Uncertainty in the management of the love affair.
+
+SUIT: SWORDS (Transformation. Hatred. War.)
+
+KING OF SWORDS. A dark, bad man. He is a soldier, a powerful enemy, who must be distrusted.
+QUEEN OF SWORDS. A dark wicked woman. The card also indicates her actions, gossip and calumnies.
+KNIGHT OF SWORDS. A young, dark man, an enemy. He is also a spy.
+KNAVE OF SWORDS. A child, an enemy. Bad news. Delay.
+ACE OF SWORDS. Commencement of enmity.
+TWO. Opposition to this commencement. The enmity does not last.
+THREE. Realization of the enmity. Hatred.
+FOUR. Opposition to the hatred. Success against the enemy.
+FIVE. Opposition to this opposition. The enemy triumphs at the moment one fancies the victory is secured.
+SIX. Equilibrium of the opposition. The enemy is rendered powerless at last.
+SEVEN. Success assured to the enemy.
+EIGHT. Partial opposition to this success. The enemy only partially triumphs.
+NINE. Certain duration of the hatred.
+TEN. Uncertainty in the enmity.
+
+SUIT: PENTACLES (Development. Money. Trade.)
+
+KING OF PENTACLES. A fair man, inimical or indifferent.
+QUEEN OF PENTACLES. A fair woman, indifferent, or inimical.
+KNIGHT OF PENTACLES. A young, fair man. A stranger. An arrival.
+KNAVE OF PENTACLES. A fair child. A messenger. A letter.
+ACE OF PENTACLES. Commencement of fortune. Inheritance. Gifts. Economy, etc., etc.
+TWO. Opposition to this commencement. Difficulty in well establishing the first landmarks of good fortune.
+THREE. Realization of this commencement of fortune. A small sum.
+FOUR. Opposition of fortune. Loss of money.
+FIVE. Opposition to this opposition. A success coming which will balance the low.
+SIX. Realization of the opposition. Ruin.
+SEVEN. Success assured. A large fortune.
+EIGHT. Partial success. Great loss of money at the moment apparently of definitely securing the fortune.
+NINE. Equilibrium of Equilibrium. A durable fortune.
+TEN. Uncertainty in the fortune. Great success and great reverses.
+
+== THIRD LESSON: MAJOR ARCANA ==
+
+1. The Juggler signifies MALE INQUIRER.
+2. The High Priestess signifies FEMALE INQUIRER.
+3. The Empress signifies ACTION. INITIATIVE.
+4. The Emperor signifies WILL.
+5. The Pope signifies INSPIRATION.
+6. The Lovers signifies LOVE.
+7. The Chariot signifies TRIUMPH. PROVIDENTIAL PROTECTION.
+8. Justice signifies JUSTICE.
+9. The Hermit signifies PRUDENCE.
+10. The Wheel of Fortune signifies FORTUNE. DESTINY.
+11. Strength signifies STRENGTH. FORTITUDE.
+12. The Hanged Man signifies TRIALS. SACRIFICE.
+13. Death signifies DEATH.
+14. Temperance signifies TEMPERANCE. ECONOMY.
+15. The Devil signifies IMMENSE FORCE. ILLNESS.
+16. The Lightning-struck Tower signifies RUIN. DECEPTION.
+17. The Stars signifies HOPE.
+18. The Moon signifies HIDDEN ENEMIES. DANGER.
+19. The Sun signifies MATERIAL HAPPINESS. LUCKY MARRIAGE.
+20. The Judgment signifies CHANGE OF POSITION.
+21. The Foolish Man signifies INCONSIDERATE ACTIONS. MADNESS.
+22. The Universe signifies ASSURED SUCCESS.

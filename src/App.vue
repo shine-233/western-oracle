@@ -46,15 +46,6 @@ function onMouseMove(e: MouseEvent): void {
   document.documentElement.style.setProperty('--par-y', py)
 }
 
-onMounted(() => {
-  const fine = window.matchMedia('(pointer: fine)').matches
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  if (fine && !reduced) {
-    window.addEventListener('mousemove', onMouseMove, { passive: true })
-  }
-  if (!reduced) scheduleShootingStar()
-})
-
 /** 随机流星 */
 let starTimer: number | null = null
 function scheduleShootingStar(): void {
@@ -72,10 +63,51 @@ function spawnShootingStar(): void {
   window.setTimeout(() => el.remove(), 1300)
 }
 
+/** 彩蛋：露娜骑扫帚横穿屏幕 */
+const BROOM_SVG = `<svg width="120" height="44" viewBox="0 0 30 11" shape-rendering="crispEdges">
+  <rect x="2" y="7" width="16" height="1" fill="#8a5a3b"/><rect x="0" y="6" width="3" height="3" fill="#d9a05b"/><rect x="1" y="5" width="2" height="5" fill="#d9a05b"/>
+  <rect x="16" y="4" width="6" height="3" fill="#5a4bbf"/><rect x="20" y="2" width="3" height="6" fill="#6b5bd6"/><rect x="22" y="0" width="4" height="3" fill="#6b5bd6"/><rect x="25" y="1" width="2" height="1" fill="#f5c86e"/>
+  <rect x="17" y="3" width="4" height="1" fill="#ffdcc5"/><rect x="18" y="3" width="1" height="1" fill="#3a2e5c"/>
+</svg>`
+let broomTimer: number | null = null
+function scheduleBroomFlight(): void {
+  broomTimer = window.setTimeout(() => {
+    spawnBroomFlight()
+    scheduleBroomFlight()
+  }, 60000 + Math.random() * 60000)
+}
+function spawnBroomFlight(): void {
+  const el = document.createElement('div')
+  el.className = 'broom-flight'
+  el.innerHTML = BROOM_SVG
+  el.style.top = `${8 + Math.random() * 40}vh`
+  if (Math.random() < 0.5) {
+    el.style.animationName = 'fly-across'
+  } else {
+    el.style.animationName = 'fly-across-flip'
+    el.style.right = '0px'
+  }
+  document.body.appendChild(el)
+  window.setTimeout(() => el.remove(), 8000)
+}
+
+onMounted(() => {
+  const fine = window.matchMedia('(pointer: fine)').matches
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if (fine && !reduced) {
+    window.addEventListener('mousemove', onMouseMove, { passive: true })
+  }
+  if (!reduced) {
+    scheduleShootingStar()
+    scheduleBroomFlight()
+  }
+})
+
 onBeforeUnmount(() => {
   window.removeEventListener('mousemove', onMouseMove)
   if (raf) cancelAnimationFrame(raf)
   if (starTimer !== null) window.clearTimeout(starTimer)
+  if (broomTimer !== null) window.clearTimeout(broomTimer)
 })
 </script>
 

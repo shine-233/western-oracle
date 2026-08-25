@@ -8,6 +8,7 @@ import { sfx } from '../lib/sfx'
 import { t } from '../lib/i18n'
 import AstroWheel from '../components/AstroWheel.vue'
 import BirthForm from '../components/BirthForm.vue'
+import { vTilt } from '../lib/tilt'
 import AiChat from '../components/AiChat.vue'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
@@ -98,14 +99,16 @@ const aiContext = (): string => {
       </section>
 
       <section class="astro-layout" style="margin-top: 18px;">
-        <AstroWheel
-          :planets="chartA.planets"
-          :cusps="chartA.cusps"
-          :asc-lon="chartA.ascendant.lon"
-          :aspects="chartA.aspects"
-          :inner-planets="chartB.planets"
-          :synastry-aspects="aspects"
-        />
+        <div v-tilt="5">
+          <AstroWheel
+            :planets="chartA.planets"
+            :cusps="chartA.cusps"
+            :asc-lon="chartA.ascendant.lon"
+            :aspects="chartA.aspects"
+            :inner-planets="chartB.planets"
+            :synastry-aspects="aspects"
+          />
+        </div>
 
         <section class="panel">
           <h3 style="margin-top: 0;">{{ t('syn.overview') }}</h3>

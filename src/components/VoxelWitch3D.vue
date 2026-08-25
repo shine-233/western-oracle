@@ -22,6 +22,7 @@ let scene: THREE.Scene | null = null
 let camera: THREE.PerspectiveCamera | null = null
 let witchGroup: THREE.Group | null = null
 let starField: THREE.Points | null = null
+let moon: THREE.Mesh | null = null
 let composer: EffectComposer | null = null
 let raf = 0
 let disposed = false
@@ -125,6 +126,13 @@ function build(): void {
   starGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3))
   starField = new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xf5c86e, size: 0.14 }))
   scene.add(starField)
+
+  // ---- 环绕体素月球 ----
+  moon = new THREE.Mesh(
+    new THREE.BoxGeometry(0.7, 0.7, 0.7),
+    new THREE.MeshLambertMaterial({ color: 0xffe3a8 }),
+  )
+  scene.add(moon)
 
   // ---- 地面光晕 ----
   const glow = new THREE.Mesh(
@@ -273,6 +281,11 @@ function animate(): void {
     witchGroup.position.y = Math.sin(t * 1.4) * 0.22 + jumpOffset
   }
   if (starField) starField.rotation.y = t * 0.12
+  if (moon) {
+    moon.position.set(Math.cos(t * 0.55) * 5.4, Math.sin(t * 0.85) * 2.4 + 0.6, Math.sin(t * 0.55) * 5.4)
+    moon.rotation.y = t * 1.4
+    moon.rotation.x = t * 0.7
+  }
 
   if (composer) composer.render()
   else if (renderer && scene && camera) renderer.render(scene, camera)
