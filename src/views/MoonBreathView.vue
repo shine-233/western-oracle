@@ -88,7 +88,7 @@ const ringScale = computed(() => {
   return stepLeft.value / p.secs * 0.28 + 0.72
 })
 /** 星空亮度跟着呼吸走 */
-const skyGlow = computed(() => (running.value ? 0.35 + (Number(ringScale) - 0.72) * 1.4 : 0.55))
+const skyGlow = computed(() => (running.value ? 0.35 + (Number(ringScale.value) - 0.72) * 1.4 : 0.55))
 
 function chime(freq: number): void {
   if (!isSoundOn()) return

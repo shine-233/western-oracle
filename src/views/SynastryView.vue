@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { defineAsyncComponent, nextTick, ref, watch } from 'vue'
+import { defineAsyncComponent, computed, nextTick, ref, watch } from 'vue'
 import { computeNatalChart, crossAspects, type BirthInput, type ChartPlanet, type CrossAspect, type NatalChart } from '../lib/astrology'
 import { PLANETS } from '../data/corpus'
 import { readSynastry, type SynastryReading } from '../lib/interpret'
 import { addHistory } from '../lib/history'
 import { sfx } from '../lib/sfx'
 import { sparkle } from '../lib/sparkle'
-import { t } from '../lib/i18n'
+import { t, locale } from '../lib/i18n'
 import AstroWheel from '../components/AstroWheel.vue'
+import SynastryOrbit3D from '../components/SynastryOrbit3D.vue'
 import BirthForm from '../components/BirthForm.vue'
 import { vTilt } from '../lib/tilt'
 import AiChat from '../components/AiChat.vue'
@@ -15,6 +16,8 @@ import ApprenticeReact from '../components/ApprenticeReact.vue'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
 const MascotCard = defineAsyncComponent(() => import('../components/MascotCard.vue'))
+
+const zh = computed(() => locale.value === 'zh')
 
 const chartA = ref<NatalChart | null>(null)
 const chartB = ref<NatalChart | null>(null)
@@ -149,6 +152,21 @@ const aiContext = (): string => {
             </div>
           </div>
         </section>
+      </section>
+
+      <!-- 双人星轨 3D -->
+      <section class="panel orbit-panel stagger-in" style="margin-top: 18px;">
+        <h3 style="margin-top: 0;">🌌 {{ zh ? '双人星轨 · 夜空叠影' : 'Two skies, one night' }}<span class="tag">3D</span></h3>
+        <p class="hint" style="margin-top: 0;">
+          {{ zh
+            ? 'A 方的行星走内环，B 方走外环；两颗星之间亮起光弧，就是你们的交叉相位。'
+            : 'A\'s planets ride the inner ring, B\'s the outer. Every glowing arc between two stars is a cross-aspect.' }}
+        </p>
+        <SynastryOrbit3D
+          :a-planets="chartA.planets"
+          :b-planets="chartB.planets"
+          :aspects="aspects"
+        />
       </section>
 
       <section class="panel reading-panel stagger-in" style="margin-top: 18px;">

@@ -91,7 +91,8 @@ async function run(userText: string, first = false): Promise<void> {
   startReveal()
 
   if (full === null) {
-    status.value = 'error'
+    // 用户主动点「停止」触发的 abort 不算连接故障，安静收场即可
+    status.value = aborter?.signal.aborted ? 'idle' : 'error'
     if (tail.text === '') messages.value.pop()
   } else {
     // 确保完整文本最终完整呈现

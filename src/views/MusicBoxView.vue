@@ -224,6 +224,204 @@ function removeTune(at: number): void {
   saveJSON('musicbox-tunes', savedTunes.value)
 }
 
+/* ---------- 导出：WAV 音频 + 星谱分享卡 ---------- */
+const exporting = ref(false)
+
+/** 离线渲染当前旋律（复刻在线合成链：三角波主音 ×2 泛音 + 回声） */
+async function renderOffline(): Promise<AudioBuffer> {
+  const stepSec = tempoMs.value / 1000
+  const total = STEPS * stepSec + 1.6
+  const sampleRate = 44100
+  const off = new OfflineAudioContext(2, Math.ceil(total * sampleRate), sampleRate)
+  // 复刻回声链
+  const delay = off.createDelay(1)
+  delay.delayTime.value = 0.28
+  const fb = off.createGain()
+  fb.gain.value = 0.34
+  const wet = off.createGain()
+  wet.gain.value = 0.3
+  delay.connect(fb)
+  fb.connect(delay)
+  delay.connect(wet)
+  wet.connect(off.destination)
+
+  for (let i = 0; i < STEPS; i++) {
+    const n = sequence.value[i]
+    if (n === null) continue
+    const freq = STARS[n]!.freq
+    const t0 = i * stepSec + 0.05
+    // 主音 triangle
+    const osc = off.createOscillator()
+    osc.type = 'triangle'
+    osc.frequency.value = freq
+    const g = off.createGain()
+    g.gain.setValueAtTime(0, t0)
+    g.gain.linearRampToValueAtTime(0.22, t0 + 0.02)
+    g.gain.exponentialRampToValueAtTime(0.001, t0 + Math.min(0.6, stepSec * 2))
+    osc.connect(g)
+    g.connect(off.destination)
+    g.connect(delay)
+    osc.start(t0)
+    osc.stop(t0 + 0.65)
+    // 倍频 shimmer
+    const sh = off.createOscillator()
+    sh.type = 'sine'
+    sh.frequency.value = freq * 2
+    const sg = off.createGain()
+    sg.gain.setValueAtTime(0, t0)
+    sg.gain.linearRampToValueAtTime(0.06, t0 + 0.02)
+    sg.gain.exponentialRampToValueAtTime(0.0005, t0 + 0.5)
+    sh.connect(sg)
+    sg.connect(delay)
+    sh.start(t0)
+    sh.stop(t0 + 0.55)
+  }
+  return off.startRendering()
+}
+
+/** AudioBuffer → 16-bit PCM WAV Blob */
+function bufToWav(buf: AudioBuffer): Blob {
+  const numCh = buf.numberOfChannels
+  const len = buf.length
+  const bytes = 44 + len * numCh * 2
+  const ab = new ArrayBuffer(bytes)
+  const view = new DataView(ab)
+  const wstr = (o: number, s: string): void => {
+    for (let i = 0; i < s.length; i++) view.setUint8(o + i, s.charCodeAt(i))
+  }
+  wstr(0, 'RIFF')
+  view.setUint32(4, bytes - 8, true)
+  wstr(8, 'WAVE')
+  wstr(12, 'fmt ')
+  view.setUint32(16, 16, true)
+  view.setUint16(20, 1, true)
+  view.setUint16(22, numCh, true)
+  view.setUint32(24, buf.sampleRate, true)
+  view.setUint32(28, buf.sampleRate * numCh * 2, true)
+  view.setUint16(32, numCh * 2, true)
+  view.setUint16(34, 16, true)
+  wstr(36, 'data')
+  view.setUint32(40, len * numCh * 2, true)
+  let p = 44
+  const chans: Float32Array[] = []
+  for (let c = 0; c < numCh; c++) chans.push(buf.getChannelData(c))
+  for (let i = 0; i < len; i++) {
+    for (let c = 0; c < numCh; c++) {
+      const v = Math.max(-1, Math.min(1, chans[c]![i]))
+      view.setInt16(p, v < 0 ? v * 0x8000 : v * 0x7fff, true)
+      p += 2
+    }
+  }
+  return new Blob([ab], { type: 'audio/wav' })
+}
+
+async function exportWav(e?: MouseEvent): Promise<void> {
+  if (!sequence.value.some((s) => s !== null) || exporting.value) return
+  exporting.value = true
+  sfxBlip()
+  try {
+    const buf = await renderOffline()
+    const blob = bufToWav(buf)
+    const a = document.createElement('a')
+    a.href = URL.createObjectURL(blob)
+    a.download = `starlight-tune-${new Date().toISOString().slice(0, 10)}.wav`
+    a.click()
+    window.setTimeout(() => URL.revokeObjectURL(a.href), 4000)
+    sfx.ding()
+    if (e) sparkleFromEvent(e, 8)
+  } catch {
+    sfx.pop()
+  } finally {
+    exporting.value = false
+  }
+}
+
+/** 把当前旋律画成一张星谱分享卡 PNG */
+function exportCard(e?: MouseEvent): void {
+  if (!sequence.value.some((s) => s !== null)) return
+  const cv = document.createElement('canvas')
+  cv.width = 900
+  cv.height = 500
+  const g = cv.getContext('2d')
+  if (!g) return
+  // 底色夜空
+  const bg = g.createLinearGradient(0, 0, 900, 500)
+  bg.addColorStop(0, '#151232')
+  bg.addColorStop(1, '#241d52')
+  g.fillStyle = bg
+  g.fillRect(0, 0, 900, 500)
+  // 随机小星
+  g.fillStyle = 'rgba(207,197,255,0.5)'
+  for (let i = 0; i < 90; i++) {
+    g.fillRect(Math.random() * 900, Math.random() * 500, 1.4, 1.4)
+  }
+  // 标题
+  g.fillStyle = '#f5c86e'
+  g.font = '30px "ZCOOL KuaiLe", sans-serif'
+  g.fillText('✦ 星光八音盒', 48, 78)
+  g.font = '13px monospace'
+  g.fillStyle = '#b3a6f7'
+  g.fillText('STARLIGHT MUSIC BOX · WESTERN ORACLE', 48, 104)
+  // 星谱网格
+  const gx = 64
+  const gy = 150
+  const cw = 46
+  const ch = 34
+  g.strokeStyle = 'rgba(179,166,247,0.18)'
+  for (let r = 0; r < STARS.length; r++) {
+    g.beginPath()
+    g.moveTo(gx, gy + r * ch)
+    g.lineTo(gx + cw * STEPS, gy + r * ch)
+    g.stroke()
+  }
+  for (let c = 0; c <= STEPS; c++) {
+    g.beginPath()
+    g.moveTo(gx + c * cw, gy)
+    g.lineTo(gx + c * cw, gy + (STARS.length - 1) * ch)
+    g.stroke()
+  }
+  // 音符点
+  sequence.value.forEach((n, i) => {
+    if (n === null) return
+    const x = gx + i * cw + cw / 2
+    const y = gy + n * ch
+    g.fillStyle = '#ffe3a8'
+    g.shadowColor = '#f5c86e'
+    g.shadowBlur = 14
+    g.beginPath()
+    g.arc(x, y, 9, 0, Math.PI * 2)
+    g.fill()
+    g.shadowBlur = 0
+    g.fillStyle = '#151232'
+    g.font = 'bold 11px sans-serif'
+    g.textAlign = 'center'
+    g.textBaseline = 'middle'
+    g.fillText(STARS[n]!.name[0]!.slice(0, 1), x, y + 1)
+    g.textAlign = 'left'
+    g.textBaseline = 'alphabetic'
+  })
+  // 音符图例
+  STARS.forEach((st, r) => {
+    g.fillStyle = '#8a85b5'
+    g.font = '12px "ZCOOL KuaiLe", sans-serif'
+    g.fillText(`${st.name[0]} ${Math.round(st.freq)}Hz`, 12, gy + r * ch + 4)
+  })
+  // 页脚信息
+  g.fillStyle = '#8a85b5'
+  g.font = '13px monospace'
+  g.fillText(`${Math.round(60000 / tempoMs.value)} BPM · ${new Date().toLocaleDateString('zh-CN')}`, 48, 452)
+  g.fillStyle = '#ff9fce'
+  g.fillText('✧ make a wish, press play', 620, 452)
+
+  const url = cv.toDataURL('image/png')
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `starlight-card-${Date.now()}.png`
+  a.click()
+  sfx.ding()
+  if (e) sparkleFromEvent(e, 8)
+}
+
 onBeforeUnmount(() => {
   stopPlay()
   cancelAnimationFrame(specRaf)
@@ -362,6 +560,12 @@ const dust = Array.from({ length: 26 }, (_, i) => ({
         </button>
         <button class="btn ghost small" :disabled="!sequence.some((s) => s !== null)" @click="saveTune">
           💠 {{ L(['收藏这段', 'Save tune']) }}
+        </button>
+        <button class="btn ghost small" :disabled="!sequence.some((s) => s !== null) || exporting" @click="exportWav($event)">
+          ⬇ {{ exporting ? L(['正在灌录…', 'Rendering…']) : L(['导出 WAV', 'Export WAV']) }}
+        </button>
+        <button class="btn ghost small" :disabled="!sequence.some((s) => s !== null)" @click="exportCard($event)">
+          🌠 {{ L(['星谱分享卡', 'Star-map card']) }}
         </button>
         <label class="tempo-ctl">
           ♪ {{ L(['节拍', 'Tempo']) }}

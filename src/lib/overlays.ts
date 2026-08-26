@@ -288,6 +288,86 @@ function installScrollSkew(): void {
   window.addEventListener('beforeunload', () => cancelAnimationFrame(rafId))
 }
 
+/* ---------- 8. 鼠标揭幕：光标是一盏灯，照亮藏在页面里的星语（mouse reveal） ---------- */
+function installMouseReveal(): void {
+  if (!FINE || REDUCED) return
+
+  const GLYPHS = ['✦', '✧', '⋆', '☽', '☉', '☿', '♀', '♃', '♄', '♆', '♇', '☄']
+  // 聚光灯下才会浮现的「星语」：每次加载随机撒位置
+  const SECRETS = ['今天也值得星星', '答案在路上', '好运已发货', '别急，月亮也在赶路', '你被记挂着一整晚']
+
+  const layer = document.createElement('div')
+  layer.className = 'wo-reveal'
+  layer.setAttribute('aria-hidden', 'true')
+
+  let html = ''
+  for (let i = 0; i < 22; i++) {
+    const g = GLYPHS[i % GLYPHS.length]!
+    const left = (Math.random() * 94 + 2).toFixed(1)
+    const top = (Math.random() * 92 + 3).toFixed(1)
+    const size = (0.7 + Math.random() * 1.5).toFixed(2)
+    const dur = (6 + Math.random() * 9).toFixed(1)
+    const blur = Math.random() < 0.4 ? 'filter:blur(1px);' : ''
+    html += `<i style="left:${left}vw;top:${top}vh;font-size:${size}rem;animation-duration:${dur}s;${blur}">${g}</i>`
+  }
+  for (const s of SECRETS) {
+    const left = (Math.random() * 80 + 6).toFixed(1)
+    const top = (Math.random() * 86 + 6).toFixed(1)
+    const dur = (8 + Math.random() * 6).toFixed(1)
+    html += `<b style="left:${left}vw;top:${top}vh;animation-duration:${dur}s">${s}</b>`
+  }
+  layer.innerHTML = html
+
+  const style = document.createElement('style')
+  style.id = 'wo-mouse-reveal-style'
+  style.textContent = `
+    .wo-reveal {
+      position: fixed; inset: 0; z-index: 40; pointer-events: none;
+      mix-blend-mode: screen; opacity: 0;
+      transition: opacity .5s ease;
+      -webkit-mask-image: radial-gradient(circle var(--wo-r,200px) at var(--wo-mx,-600px) var(--wo-my,-600px), rgba(0,0,0,.95), transparent 72%);
+      mask-image: radial-gradient(circle var(--wo-r,200px) at var(--wo-mx,-600px) var(--wo-my,-600px), rgba(0,0,0,.95), transparent 72%);
+    }
+    .wo-reveal.on { opacity: .8; }
+    .wo-reveal i, .wo-reveal b {
+      position: absolute; color: var(--gold-bright, #ffd76e); font-style: normal; font-weight: 600;
+      text-shadow: 0 0 12px rgba(255,215,110,.55);
+      font-family: var(--cute, inherit); white-space: nowrap;
+      animation: wo-drift ease-in-out infinite alternate;
+    }
+    .wo-reveal b { font-size: .82rem; letter-spacing: .18em; opacity: .92; }
+    @keyframes wo-drift {
+      from { transform: translate(0,0) rotate(-4deg); }
+      to   { transform: translate(10px,-14px) rotate(5deg); }
+    }`
+  document.head.appendChild(style)
+  document.body.appendChild(layer)
+
+  let mx = -600
+  let my = -600
+  let dirty = false
+  const loop = (): void => {
+    if (dirty) {
+      layer.style.setProperty('--wo-mx', `${mx}px`)
+      layer.style.setProperty('--wo-my', `${my}px`)
+      layer.classList.add('on')
+      dirty = false
+    }
+    requestAnimationFrame(loop)
+  }
+  window.addEventListener('mousemove', (e) => {
+    mx = e.clientX
+    my = e.clientY
+    dirty = true
+  }, { passive: true })
+  document.documentElement.addEventListener('mouseleave', () => {
+    layer.classList.remove('on')
+    layer.style.setProperty('--wo-mx', '-600px')
+    layer.style.setProperty('--wo-my', '-600px')
+  })
+  requestAnimationFrame(loop)
+}
+
 /** main.ts 里调用一次 */
 export function installOverlays(): void {
   if (typeof document === 'undefined') return
@@ -299,4 +379,5 @@ export function installOverlays(): void {
   installThemeRipple()
   installNavSfx()
   installScrollSkew()
+  installMouseReveal()
 }

@@ -22,8 +22,8 @@ interface ModDef {
   title: string
   desc: string
   heat: number
-  /** 模块专属签名色（与当值学徒色系一致） */
-  accent: string
+  /** 模块专属签名色（可选：缺省回落金色） */
+  accent?: string
 }
 
 /**
@@ -42,6 +42,7 @@ const GROUPS: { id: string; icon: string; title: string; sub: string; mods: ModD
       { to: '/numerology', glyph: '∴', title: 'nav.numerology', desc: 'mod.numerology.desc', heat: 84 , accent: '#7de8c3' },
       { to: '/synastry', glyph: '☍', title: 'nav.synastry', desc: 'mod.synastry.desc', heat: 82 , accent: '#ff8fb8' },
       { to: '/gesture', glyph: '🖐', title: 'nav.gesture', desc: 'mod.gesture.desc', heat: 72 , accent: '#f5c86e' },
+      { to: '/journey', glyph: '🏔', title: 'nav.journey', desc: 'mod.journey.desc', heat: 90 },
       { to: '/runes', glyph: 'ᛟ', title: 'nav.runes', desc: 'mod.runes.desc', heat: 66 , accent: '#8f8ac2' },
     ],
   },
@@ -77,7 +78,6 @@ const GROUPS: { id: string; icon: string; title: string; sub: string; mods: ModD
     sub: 'home.group.play.sub',
     mods: [
       { to: '/arcade', glyph: '🎲', title: 'nav.arcade', desc: 'mod.arcade.desc', heat: 68 , accent: '#ff8f6e' },
-      { to: '/memory', glyph: '🃏', title: 'nav.memory', desc: 'mod.memory.desc', heat: 58 , accent: '#8ee6d2' },
       { to: '/library', glyph: '📖', title: 'nav.library', desc: 'mod.library.desc', heat: 48 , accent: '#cfd6ff' },
       { to: '/musicbox', glyph: '✦', title: 'nav.musicbox', desc: 'mod.musicbox.desc', heat: 46 , accent: '#7db8ff' },
     ],

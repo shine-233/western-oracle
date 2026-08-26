@@ -227,7 +227,8 @@ function stamp(canvas: string[], sprite: string[], x: number, y: number): void {
 function buildPipCard(suit: MinorSuit, n: number): string[] {
   const canvas: string[] = Array.from({ length: 26 }, () => '')
   for (const [y, row] of BACKDROP[suit]) stamp(canvas, [row], 0, y)
-  for (const [x, y] of PIP_LAYOUT[n]!) stamp(canvas, SUIT_SPRITE[suit], x, y)
+  // 同一数字在不同花色下阵型完全不同（见 PIP_LAYOUTS 的四套哲学）
+  for (const [x, y] of PIP_LAYOUTS[suit][n]!) stamp(canvas, SUIT_SPRITE[suit], x, y)
   return canvas
 }
 

@@ -7,7 +7,7 @@ import { t, toggleLocale, locale } from './lib/i18n'
 import { tt } from './lib/i18nExtra'
 import { vtActive } from './lib/viewTrans'
 
-interface NavItem { to: string; label: string; emoji: string; extra?: boolean }
+interface NavItem { to: string; label: string; emoji: string; extra?: boolean; labelPair?: [string, string] }
 const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
   {
     label: 'navg.divine',
@@ -23,7 +23,7 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
   {
     label: 'navg.oracle',
     items: [
-      { to: '/journey', label: '愚人之旅', emoji: '🜁' },
+      { to: '/journey', label: 'nav.journey', emoji: '🜁', labelPair: ['愚人之旅', 'Fool\'s Journey'] },
       { to: '/runes', label: 'nav.runes', emoji: 'ᛟ' },
       { to: '/palmistry', label: 'nav.palmistry', emoji: '🖐' },
       { to: '/dreams', label: 'nav.dreams', emoji: '🌙' },
@@ -44,7 +44,6 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
     label: 'navg.play',
     items: [
       { to: '/arcade', label: 'nav.arcade', emoji: '🎲' },
-      { to: '/memory', label: 'nav.memory', emoji: '🃏' },
       { to: '/musicbox', label: 'nav.musicbox', emoji: '✦' },
       { to: '/library', label: 'nav.library', emoji: '📖' },
     ],
@@ -245,7 +244,7 @@ onBeforeUnmount(() => {
         </button>
         <div class="nav-menu">
           <RouterLink v-for="m in g.items" :key="m.to" :to="m.to">
-            <span class="mi" aria-hidden="true">{{ m.emoji }}</span>{{ m.extra ? tt(m.label) : t(m.label) }}
+            <span class="mi" aria-hidden="true">{{ m.emoji }}</span>{{ m.labelPair ? (locale === 'zh' ? m.labelPair[0] : m.labelPair[1]) : m.extra ? tt(m.label) : t(m.label) }}
           </RouterLink>
         </div>
       </div>
