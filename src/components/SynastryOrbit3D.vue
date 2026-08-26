@@ -190,7 +190,7 @@ async function initThree(): Promise<void> {
   let velY = 0.0022
   let camR = Math.hypot(camera.position.x, camera.position.z)
   const el = renderer.domElement
-  el.style.touchAction = 'none'
+  el.style.touchAction = 'pan-y' // 竖向滚动还给页面（移动端修复）
   el.style.cursor = 'grab'
   el.addEventListener('pointerdown', (e) => {
     dragging = true

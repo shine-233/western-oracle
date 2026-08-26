@@ -256,7 +256,9 @@ const staticMode = reducedMotion
 .journey-stage {
   position: sticky;
   top: 0;
+  /* dvh：iOS Safari 工具栏收展时 100vh ≠ 可视高，章节标题会被底栏遮住 */
   height: 100vh;
+  height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -366,8 +368,13 @@ const staticMode = reducedMotion
   border-radius: 50%;
   border: 1.5px solid rgba(179, 166, 247, 0.5);
   background: transparent;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+/* 11px 的圆点太小点不中：撑一圈透明命中区到 ~39px（移动端触控达标） */
+.rail-dot::after {
+  content: '';
+  position: absolute;
+  inset: -14px;
 }
 .rail-dot:hover { transform: scale(1.5); border-color: var(--gold-bright); }
 .rail-dot.past { background: rgba(179, 166, 247, 0.55); border-color: transparent; }

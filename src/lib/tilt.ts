@@ -9,14 +9,16 @@ export const vTilt: Directive<HTMLElement, number | undefined> = {
 
     const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    el.addEventListener('mousemove', (e) => {
+    el.addEventListener('pointermove', (e) => {
       if (reduced()) return
+      // 触屏/笔：仅接触时倾斜，避免滚动跟手抖动；鼠标不受影响
+      if (e.pointerType !== 'mouse' && !(e.buttons & 1)) return
       const r = el.getBoundingClientRect()
       const px = (e.clientX - r.left) / r.width - 0.5
       const py = (e.clientY - r.top) / r.height - 0.5
       el.style.transform = `perspective(620px) rotateX(${(-py * max).toFixed(2)}deg) rotateY(${(px * max).toFixed(2)}deg) translateY(-3px)`
     })
-    el.addEventListener('mouseleave', () => {
+    el.addEventListener('pointerleave', () => {
       el.style.transform = ''
     })
   },

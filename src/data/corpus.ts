@@ -1,3 +1,5 @@
+import { signFullTextEn, houseFullTextEn } from './corpusEn'
+import { locale } from '../lib/i18n'
 /**
  * 占星语义层语料库：12 星座 / 12 宫位 / 相位含义 / 扩展星体 / 格局。
  * 所有文案本地内置，无 AI 也能给出成体系的解读；
@@ -347,6 +349,10 @@ export function planetInHouseText(planetKey: string, house: number): string {
 
 /** 星座完整档案（弹窗/展开用） */
 export function signFullText(signIndex: number): string {
+  if (locale.value === 'en') {
+    const en = signFullTextEn(signIndex)
+    if (en) return en
+  }
   const s = SIGNS[signIndex % 12]
   if (!s) return ''
   return [
@@ -360,6 +366,10 @@ export function signFullText(signIndex: number): string {
 
 /** 宫位完整解读文本 */
 export function houseFullText(house: number): string {
+  if (locale.value === 'en') {
+    const en = houseFullTextEn(house)
+    if (en) return en
+  }
   const h = HOUSES[(house || 1) - 1]
   if (!h) return ''
   return `【第 ${h.num} 宫 · ${h.cn}${h.alias ? '（' + h.alias + '）' : ''}】关键词：${h.keywords.join(' / ')}\n${h.theme}`

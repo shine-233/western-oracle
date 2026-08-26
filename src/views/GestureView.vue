@@ -142,8 +142,8 @@ async function enableHand(): Promise<void> {
   }
   if (!loaded) {
     errMsg.value = L(
-      ['三个 CDN 都没能加载手势模型（离线 / 被墙 / 拒绝授权）。已切到鼠标模式。',
-       'All three CDNs failed (offline / blocked / denied). Switched to mouse mode.'],
+      ['三个 CDN 都没能加载手势模型（离线 / 被墙 / 拒绝授权）。已切到触屏/鼠标模式。',
+       'All three CDNs failed (offline / blocked / denied). Switched to touch/mouse mode.'],
     )
     mode.value = 'mouse'
   }
@@ -223,7 +223,7 @@ function updateAim(cx: number, cy: number): void {
 }
 
 /* ---------- 鼠标模式 ---------- */
-function onMouseMove(e: MouseEvent): void {
+function onMouseMove(e: PointerEvent): void {
   if (mode.value !== 'mouse') return
   const rect = stageRef.value?.getBoundingClientRect()
   if (!rect) return
@@ -277,7 +277,7 @@ onBeforeUnmount(() => {
       </button>
       <span v-if="mode === 'loading'" class="g-loading">{{ L(['正在召唤手势精灵…', 'Summoning the hand sprite…']) }}</span>
       <span v-if="mode === 'hand'" class="g-live">● {{ gestureLabel }} — {{ Math.round(charge) }}%</span>
-      <span v-if="mode === 'mouse'" class="g-mouse">{{ L(['鼠标模式：按住蓄力，松手抓牌', 'Mouse: hold to charge, release to grab']) }}</span>
+      <span v-if="mode === 'mouse'" class="g-mouse">{{ L(['触屏 / 鼠标模式：按住蓄力，松手抓牌', 'Touch or mouse: hold to charge, release to grab']) }}</span>
       <button class="btn ghost small" @click="resetReading">{{ L(['重新洗三张', 'Reshuffle three']) }}</button>
     </div>
     <p v-if="errMsg" class="hint g-err">{{ errMsg }}</p>
@@ -286,10 +286,11 @@ onBeforeUnmount(() => {
     <div
       ref="stageRef"
       class="g-stage"
-      @mousemove="onMouseMove"
-      @mousedown="onMouseDown"
-      @mouseup="onMouseUp"
-      @mouseleave="onMouseUp"
+      @pointermove="onMouseMove"
+      @pointerdown.prevent="onMouseDown"
+      @pointerup="onMouseUp"
+      @pointercancel="onMouseUp"
+      @pointerleave="onMouseUp"
     >
       <video ref="videoRef" class="g-video" playsinline muted :class="{ on: mode === 'hand' }" />
 
@@ -344,6 +345,7 @@ onBeforeUnmount(() => {
   position: relative;
   margin-top: 16px;
   max-width: 680px;
+  touch-action: pan-y;
   aspect-ratio: 16 / 10;
   border: 2.5px solid color-mix(in srgb, var(--lavender) 45%, transparent);
   clip-path: polygon(

@@ -924,7 +924,8 @@ html {
   .m-chip,
   .pat-chip,
   .chip-book,
-  .hour-chip {
+  .hour-chip,
+  .cat-chip {
     min-height: 40px;
     min-width: 40px;
   }

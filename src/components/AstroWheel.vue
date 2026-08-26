@@ -185,6 +185,12 @@ const ascTick = computed(() => pt(props.ascLon, R.zodiacOut + 4))
 
 /* ---------- 点击行星：高亮相位线 ---------- */
 const selected = ref<string | null>(null)
+/** 被点选的相位线标题（移动端没有 hover，点线直接读含义） */
+const tappedAspect = ref<string | null>(null)
+
+function tapAspect(title: string): void {
+  tappedAspect.value = tappedAspect.value === title ? null : title
+}
 
 function toggleSelect(name: string | undefined): void {
   if (!name) return
@@ -192,6 +198,8 @@ function toggleSelect(name: string | undefined): void {
 }
 
 const selInfo = computed(() => {
+  // 点了相位线：直接显示这条相位的含义（移动端无 hover 的兜底）
+  if (tappedAspect.value) return tappedAspect.value
   if (!selected.value) return ''
   const p = props.planets.find((x) => x.name === selected.value)
     ?? props.innerPlanets?.find((x) => x.name === selected.value)
@@ -263,6 +271,12 @@ const selInfo = computed(() => {
         :x1="al.x1" :y1="al.y1" :x2="al.x2" :y2="al.y2"
         :stroke="al.color" :stroke-width="0.8 + al.strength * (al.hot ? 2.2 : 0.9)"
         :stroke-dasharray="al.dashed ? '5 4' : undefined"
+        role="button"
+        tabindex="0"
+        :aria-label="al.title"
+        @click.stop="tapAspect(al.title)"
+        @keydown.enter.prevent="tapAspect(al.title)"
+        @keydown.space.prevent="tapAspect(al.title)"
       >
         <title>{{ al.title }}</title>
       </line>
@@ -281,6 +295,12 @@ const selInfo = computed(() => {
         :stroke-width="sl.hot ? 2 : 1"
         :stroke-dasharray="sl.dashed ? '3 5' : '6 3'"
         :opacity="sl.hot ? 0.95 : 0.6"
+        role="button"
+        tabindex="0"
+        :aria-label="sl.title"
+        @click.stop="tapAspect(sl.title)"
+        @keydown.enter.prevent="tapAspect(sl.title)"
+        @keydown.space.prevent="tapAspect(sl.title)"
       >
         <title>{{ sl.title }}</title>
       </line>
@@ -410,7 +430,9 @@ const selInfo = computed(() => {
   animation: syn-pop 0.45s cubic-bezier(0.34, 1.4, 0.64, 1) both;
   animation-delay: calc(var(--i) * 30ms);
   transition: stroke-width 0.2s ease, opacity 0.25s ease;
+  cursor: pointer;
 }
+.syn-line:focus-visible { opacity: 1 !important; stroke-width: 3; }
 .syn-line.muted { opacity: 0.05 !important; animation: none; }
 @keyframes syn-pop {
   from { opacity: 0; stroke-width: 3px; }

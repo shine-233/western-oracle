@@ -5,6 +5,7 @@ import { clearHistory, getHistory } from '../lib/history'
 import { sfx, toggleSound, isSoundOn } from '../lib/sfx'
 import { t } from '../lib/i18n'
 import DecryptTitle from '../components/DecryptTitle.vue'
+import { lowPowerActive, setLowPowerOverride } from '../lib/perf'
 import ThemePicker from '../components/ThemePicker.vue'
 import PixelArcanaCard from '../components/PixelArcanaCard.vue'
 import ApprenticeDossier from '../components/ApprenticeDossier.vue'
@@ -86,6 +87,14 @@ async function test(): Promise<void> {
   res === null ? sfx.toggle() : sfx.ding()
 }
 
+const lowPower = ref(lowPowerActive())
+
+function onToggleLowPower(): void {
+  lowPower.value = !lowPower.value
+  setLowPowerOverride(lowPower.value)
+  lowPower.value ? sfx.ding() : sfx.blip()
+}
+
 function onToggleSound(): void {
   soundOn.value = toggleSound()
 }
@@ -140,6 +149,14 @@ function onClearHistory(): void {
           <small>{{ soundOn ? t('set.soundOnSmall') : t('set.soundOffSmall') }}</small>
         </span>
         <span class="switch" :class="{ on: soundOn }"><i /></span>
+      </button>
+      <button class="pref-row" @click="onToggleLowPower">
+        <span class="pref-icon">{{ lowPower ? '🔋' : '⚡' }}</span>
+        <span class="pref-text">
+          <strong>{{ t('set.lowpower') }}</strong>
+          <small>{{ t('set.lowpowerSmall') }}</small>
+        </span>
+        <span class="switch" :class="{ on: lowPower }"><i /></span>
       </button>
       <button class="pref-row" @click="onClearHistory">
         <span class="pref-icon">🗑️</span>

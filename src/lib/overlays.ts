@@ -7,6 +7,7 @@
  */
 import { sfx } from './sfx'
 import { sparkleFromEvent } from './sparkle'
+import { locale } from './i18n'
 
 const REDUCED =
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -368,6 +369,83 @@ function installMouseReveal(): void {
   requestAnimationFrame(loop)
 }
 
+/* ---------- 9. 长按露娜彩蛋：按住首页水晶卡的头像 600ms，她会跟你说句悄悄话 ---------- */
+const LUNA_WHISPERS: Array<[string, string]> = [
+  ['牌不骗人，人才骗自己。', 'Cards never lie. People do.'],
+  ['今晚早点睡，星星也要下班的。', 'Sleep early tonight. Even the stars clock out.'],
+  ['怕什么，最坏也不过是重洗一次。', 'Worst case? We reshuffle.'],
+  ['今天的风不错，适合把那句话说出口。', 'Good air today — go say the thing.'],
+  ['你被记挂着一整晚，知道吗。', 'You were on someone\'s mind all night. Just so you know.'],
+]
+
+function installLunaPress(): void {
+  if (REDUCED) return
+
+  const style = document.createElement('style')
+  style.id = 'wo-luna-press-style'
+  style.textContent = `
+    .wo-luna-whisper {
+      position: fixed; z-index: 60; pointer-events: none;
+      font-family: var(--cute, inherit); color: #fff;
+      background: rgba(30, 26, 69, .92);
+      border: 2px solid var(--gold, #ffd76e);
+      border-radius: 12px 12px 12px 3px;
+      padding: 8px 14px; font-size: .9rem; line-height: 1.6;
+      max-width: min(260px, 72vw);
+      transform: translate(-50%, -130%);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .45);
+      animation: wo-whisper-in .35s cubic-bezier(.34, 1.56, .64, 1);
+    }
+    .wo-luna-whisper.out { transition: opacity .4s ease, transform .4s ease; opacity: 0; transform: translate(-50%, -165%); }
+    @keyframes wo-whisper-in { from { opacity: 0; transform: translate(-50%, -110%) scale(.7); } }`
+  document.head.appendChild(style)
+
+  let timer = 0
+  let ox = 0
+  let oy = 0
+
+  const clear = (): void => {
+    if (timer) {
+      window.clearTimeout(timer)
+      timer = 0
+    }
+  }
+
+  document.addEventListener('contextmenu', (e) => {
+    if ((e.target as Element | null)?.closest?.('.luna-face')) e.preventDefault()
+  })
+
+  document.addEventListener('pointerdown', (e) => {
+    if (!(e.target as Element | null)?.closest?.('.luna-face')) return
+    ox = e.clientX
+    oy = e.clientY
+    clear()
+    timer = window.setTimeout(() => {
+      timer = 0
+      const pair = LUNA_WHISPERS[Math.floor(Math.random() * LUNA_WHISPERS.length)]!
+      const el = document.createElement('div')
+      el.className = 'wo-luna-whisper'
+      el.textContent = locale.value === 'zh' ? pair[0] : pair[1]
+      el.style.left = `${Math.min(Math.max(ox, 90), innerWidth - 90)}px`
+      el.style.top = `${Math.max(oy, 80)}px`
+      document.body.appendChild(el)
+      sparkleFromEvent(e, 10)
+      sfx.ding()
+      window.setTimeout(() => el.classList.add('out'), 2200)
+      window.setTimeout(() => el.remove(), 2700)
+    }, 600)
+  }, { passive: true })
+
+  const cancel = (e: PointerEvent): void => {
+    if (!timer) return
+    if (e.pointerType !== 'mouse' && Math.hypot(e.clientX - ox, e.clientY - oy) > 18) clear()
+    else if (e.type !== 'pointermove') clear()
+  }
+  ;['pointermove', 'pointerup', 'pointercancel'].forEach((name) =>
+    document.addEventListener(name, cancel as EventListener, { passive: true }),
+  )
+}
+
 /** main.ts 里调用一次 */
 export function installOverlays(): void {
   if (typeof document === 'undefined') return
@@ -380,4 +458,5 @@ export function installOverlays(): void {
   installNavSfx()
   installScrollSkew()
   installMouseReveal()
+  installLunaPress()
 }

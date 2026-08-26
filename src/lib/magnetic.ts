@@ -12,7 +12,7 @@ export const vMagnetic: Directive<HTMLElement, number | undefined> = {
     const strength = typeof binding.value === 'number' ? binding.value : 0.22
     let raf = 0
 
-    const onMove = (e: MouseEvent): void => {
+    const onMove = (e: PointerEvent): void => {
       if (raf) return
       raf = requestAnimationFrame(() => {
         raf = 0
@@ -36,11 +36,11 @@ export const vMagnetic: Directive<HTMLElement, number | undefined> = {
       }, 520)
     }
 
-    el.addEventListener('mousemove', onMove, { passive: true })
-    el.addEventListener('mouseleave', onLeave)
+    el.addEventListener('pointermove', onMove, { passive: true })
+    el.addEventListener('pointerleave', onLeave)
     ;(el as HTMLElement & { __magneticOff?: () => void }).__magneticOff = (): void => {
-      el.removeEventListener('mousemove', onMove)
-      el.removeEventListener('mouseleave', onLeave)
+      el.removeEventListener('pointermove', onMove)
+      el.removeEventListener('pointerleave', onLeave)
       if (raf) cancelAnimationFrame(raf)
     }
   },

@@ -90,10 +90,15 @@ const ringScale = computed(() => {
 /** 星空亮度跟着呼吸走 */
 const skyGlow = computed(() => (running.value ? 0.35 + (Number(ringScale.value) - 0.72) * 1.4 : 0.55))
 
+/** 呼吸提示音共用一个 AudioContext（原来每秒建/毁一个，iOS 有并发上限且浪费） */
+let chimeCtx: AudioContext | null = null
+
 function chime(freq: number): void {
   if (!isSoundOn()) return
   try {
-    const ctx = new AudioContext()
+    if (!chimeCtx || chimeCtx.state === 'closed') chimeCtx = new AudioContext()
+    const ctx = chimeCtx
+    void ctx.resume()
     const osc = ctx.createOscillator()
     osc.type = 'sine'
     osc.frequency.value = freq
@@ -105,7 +110,6 @@ function chime(freq: number): void {
     g.connect(ctx.destination)
     osc.start()
     osc.stop(ctx.currentTime + 1.3)
-    window.setTimeout(() => ctx.close(), 1500)
   } catch {
     /* 音频不可用就算了 */
   }
@@ -147,6 +151,8 @@ function stop(): void {
 
 onBeforeUnmount(() => {
   if (timer !== null) window.clearInterval(timer)
+  void chimeCtx?.close().catch(() => {})
+  chimeCtx = null
 })
 
 /* ---------- 累计星星（localStorage 持久化） ---------- */

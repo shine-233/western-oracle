@@ -1,7 +1,11 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, beforeAll } from 'vitest'
 import { ASPECTS, CHART_POINT_KEYS, HOUSES, PATTERNS_CN, PLANETS, SIGNS, aspectText, houseFullText, planetInHouseText, planetInSignText, signFullText } from '../corpus'
+import { setLocale } from '../../lib/i18n'
 
 describe('astro corpus', () => {
+  beforeAll(() => {
+    setLocale('zh') // 中文语料测试固定中文
+  })
   it('12 星座 / 12 宫位 / 完整星体表', () => {
     expect(SIGNS).toHaveLength(12)
     expect(HOUSES).toHaveLength(12)

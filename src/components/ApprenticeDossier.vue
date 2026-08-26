@@ -75,8 +75,8 @@ function toggleMood(k: MoodKey): void {
     <h3 style="margin: 0 0 4px;">🧙‍♀️ {{ zh ? '学徒图鉴 · 小屋关系网' : 'Apprentice Dossier' }}</h3>
     <p class="hint" style="margin: 0 0 14px;">
       {{ zh
-        ? '露娜的六位小小学徒：点头像看他们的来历、口头禅，以及看到你的占卜结果时会说什么。'
-        : 'Luna\'s six little apprentices — their stories, catchphrases, and what they say when they see your reading.' }}
+        ? '露娜的七位小小学徒：点头像看他们的来历、口头禅，以及看到你的占卜结果时会说什么。'
+        : 'Luna\'s seven little apprentices — their stories, catchphrases, and what they say when they see your reading.' }}
     </p>
 
     <!-- 头像选择器 -->

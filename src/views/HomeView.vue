@@ -12,6 +12,7 @@ import { loadJSON } from '../lib/storage'
 import { vTilt } from '../lib/tilt'
 import { vReveal } from '../lib/reveal'
 import { t, locale } from '../lib/i18n'
+import { tt } from '../lib/i18nExtra'
 import StreakBadge from '../components/StreakBadge.vue'
 
 const VoxelWitch3D = defineAsyncComponent(() => import('../components/VoxelWitch3D.vue'))
@@ -266,8 +267,8 @@ function onLetterMove(e: PointerEvent): void {
   <!-- 🔥 人气榜领奖台 -->
   <section class="panel hall-panel">
     <div class="hall-head">
-      <h3 style="margin: 0;">🔥 {{ t('home.hall.title') }} <span class="hall-en">HALL OF FAME</span></h3>
-      <p class="hint" style="margin: 8px 0 0;">{{ t('home.hall.sub') }}</p>
+      <h3 style="margin: 0;">🔥 {{ tt('hall.title.honest') }} <span class="hall-en">CARD TABLE</span></h3>
+      <p class="hint" style="margin: 8px 0 0;">{{ tt('hall.sub.honest') }}</p>
     </div>
     <div class="podium">
       <RouterLink

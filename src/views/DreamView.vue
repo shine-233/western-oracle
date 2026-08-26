@@ -257,8 +257,8 @@ function removeJournal(i: number): void {
 .dream-page { position: relative; }
 .fog {
   position: fixed;
-  width: 420px;
-  height: 260px;
+  width: min(420px, 92vw);
+  height: min(260px, 42vw);
   border-radius: 50%;
   background: radial-gradient(ellipse at center, rgba(179, 166, 247, 0.1), transparent 65%);
   filter: blur(6px);
@@ -367,6 +367,13 @@ function removeJournal(i: number): void {
   color: var(--ink-dim);
   cursor: pointer;
   transition: color 0.2s, transform 0.2s;
+}
+/* 触屏命中区扩到 ~40px（视觉仍是小 ✕） */
+.jr-del {
+  position: relative;
+  min-width: 40px;
+  min-height: 40px;
+  font-size: 0.9rem;
 }
 .jr-del:hover { color: var(--danger); transform: scale(1.2); }
 .journal-item pre {

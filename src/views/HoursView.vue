@@ -39,6 +39,7 @@ const nowTick = ref(Date.now())
 let timer: number | null = null
 
 const geoBusy = ref(false)
+const geoFail = ref(false)
 
 function recompute(): void {
   hours.value = planetaryHours(new Date(), loc.value.lat, loc.value.lng)
@@ -74,6 +75,8 @@ function useGeo(): void {
     },
     () => {
       geoBusy.value = false
+      geoFail.value = true
+      sfx.blip()
     },
     { timeout: 8000 },
   )
@@ -215,6 +218,11 @@ const CHALDEAN_ORDER = ['Saturn', 'Jupiter', 'Mars', 'Sun', 'Venus', 'Mercury', 
           📍 {{ tt('hours.useGeo') }}
         </button>
       </div>
+      <p v-if="geoFail" class="hint" style="color: var(--danger); margin: 0;">
+        {{ locale === 'zh'
+          ? '定位失败了（权限或信号）。挑一座城市，或手动填经纬度也一样准。'
+          : 'Location failed (permission or signal). Pick a city or enter coordinates — same accuracy.' }}
+      </p>
       <p v-if="!polar" class="hint sun-line">
         ☀ {{ tt('hours.sunrise', { t: sunInfo.rise }) }} &nbsp;&nbsp;
         🌙 {{ tt('hours.sunset', { t: sunInfo.set }) }}

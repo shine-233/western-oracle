@@ -29,3 +29,10 @@ installOverlays()
 installConstella()
 installMotionGlobal()
 installReactPopups()
+
+// PWA：离线缓存注册（sw.js 位于 public/，随构建拷贝到 dist 根）
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {})
+  })
+}

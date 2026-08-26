@@ -73,6 +73,10 @@ const M: Record<string, Pair> = {
   'sr.done': ['已排好今年回归盘。', 'This year\'s return chart is ready.'],
   'sr.until': ['距离你的年度重启还有', 'Your yearly reboot arrives in'],
   'sr.since': ['本次年度重启已过去', 'Your yearly reboot was'],
+
+  /* ---------- 首页 · 推荐桌（诚实版文案，覆盖 i18n.ts 的「人气榜」表述） ---------- */
+  'hall.title.honest': ['今日推荐牌桌', "Today's Card Table"],
+  'hall.sub.honest': ['热度是编辑拍脑袋的手感值，不是统计数据——顺眼哪个进哪个。', 'The "heat" below is an editor\'s gut feeling, not analytics — just pick whatever calls you.'],
 }
 export function tt(key: string, params?: Record<string, string | number>): string {
   const pair = M[key]
