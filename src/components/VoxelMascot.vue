@@ -204,25 +204,34 @@ function build(): void {
   const COLS = Math.max(...def.sprite.map((r) => r.length))
   const ROWS = def.sprite.length
   const S = Math.min(0.62, 8 / Math.max(COLS, ROWS))
-  const geo = new THREE.BoxGeometry(S, S, S)
+    const SUB = 2
+  const s2 = S / SUB
+  const geo = new THREE.BoxGeometry(s2, s2, S)
 
   petGroup = new THREE.Group()
-  const count = voxels.length * 2 // 前后两层厚度
+  const count = voxels.length * SUB * SUB * 2 // 前后两层深塑 × 像素细分
   const mesh = new THREE.InstancedMesh(geo, new THREE.MeshLambertMaterial(), count)
   const m = new THREE.Matrix4()
   const color = new THREE.Color()
 
-  voxels.forEach((v, i) => {
-    const px = (v.x - COLS / 2 + 0.5) * S
-    const py = (ROWS / 2 - v.y - 0.5) * S
-    for (let layer = 0; layer < 2; layer++) {
-      const idx = i * 2 + layer
-      m.setPosition(px, py, (layer - 0.5) * S * 1.1)
-      mesh.setMatrixAt(idx, m)
-      mesh.setColorAt(idx, color.set(v.color).multiplyScalar(layer === 0 ? 1 : 0.72))
-      if (v.isEye) {
-        eyeIndices.push(idx)
-        eyeBaseY.push(py)
+  let idx = 0
+  voxels.forEach((v) => {
+    for (let sx = 0; sx < SUB; sx++) {
+      for (let sy = 0; sy < SUB; sy++) {
+        const px = (v.x - COLS / 2 + 0.5) * S + (sx - (SUB - 1) / 2) * s2
+        const py = (ROWS / 2 - v.y - 0.5) * S + ((SUB - 1 - sy) - (SUB - 1) / 2) * s2
+        for (let layer = 0; layer < 2; layer++) {
+          m.setPosition(px, py, (layer - 0.5) * S * 1.1)
+          mesh.setMatrixAt(idx, m)
+          // 同色像素内的微差明暗 → 观感分辨率显著提升
+          const jitter = v.isEye ? 1 : 0.93 + ((sx * 3 + sy * 5 + layer * 2) % 4) * 0.023
+          mesh.setColorAt(idx, color.set(v.color).multiplyScalar((layer === 0 ? 1 : 0.72) * jitter))
+          if (v.isEye && layer === 0) {
+            eyeIndices.push(idx)
+            eyeBaseY.push(py)
+          }
+          idx++
+        }
       }
     }
   })

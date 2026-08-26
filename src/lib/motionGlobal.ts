@@ -137,6 +137,11 @@ function installAutoMagnetic(): void {
 
 /* ---------- 3. 入场幕帘 ---------- */
 function installCurtain(): void {
+  // overlays.ts 已有自己的百分比 Preloader：避免双幕帘叠影
+  if (document.getElementById('wo-preloader')) {
+    sessionStorage.setItem('wo-intro-done', '1')
+    return
+  }
   if (sessionStorage.getItem('wo-intro-done') || reducedMotion()) {
     sessionStorage.setItem('wo-intro-done', '1')
     return
