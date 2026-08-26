@@ -25,3 +25,15 @@ export function removeKey(key: string): void {
     /* noop */
   }
 }
+
+export function migrateRaw(oldRawKey: string, newKey: string): void {
+  try {
+    const raw = localStorage.getItem(oldRawKey)
+    if (raw === null) return
+    const target = PREFIX + newKey
+    if (localStorage.getItem(target) === null) localStorage.setItem(target, raw)
+    localStorage.removeItem(oldRawKey)
+  } catch {
+    /* 存储不可用时静默降级 */
+  }
+}
