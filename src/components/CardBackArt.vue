@@ -130,6 +130,32 @@ function pickDesign(id: string): number {
 
 const design = computed<Design>(() => DESIGNS[pickDesign(themeId.value)]!)
 
+/**
+ * 每套皮肤的专属染色覆盖（键为图案字符）。
+ * 同一族图案（4/5/5 共用）靠它做出"一眼可辨"的差异：
+ * 敦煌的朱砂驼金 / 玉色的青瓷 / noir 的月白墨色 / 赛博的荧光薄荷 / 哥特的暗紫血樱…
+ * 浅色皮肤（inkpaper/sakura）同时解决金色在纸底上看不清的问题。
+ */
+const TINTS: Record<string, Record<string, string>> = {
+  midnight: {},
+  dunhuang: { H: '#a84a32', D: '#7c3322', L: '#e0a34e', S: '#ffe9c9' },
+  jade: { H: '#2f7d6d', D: '#1f5548', L: '#7de8c3' },
+  noir: { Y: '#d8d8e0', H: '#3c3c48', L: '#9a9ab0', D: '#23232c', S: '#ececf2' },
+  inkpaper: { Y: '#b03131', V: '#3a3530' },
+  cyber: { V: '#4de0c0', P: '#4de0c0' },
+  goth: { V: '#8a5a9e', W: '#ddd0ea', P: '#c04a72' },
+  aegean: { V: '#2e86ab', P: '#ff7fa5' },
+  brass: { V: '#c98a3d', P: '#e0a34e' },
+  candy: { V: '#ff6fae', Y: '#ff6fae' },
+  aurora: {},
+  hanafuda: { Y: '#e05a4e', V: '#2f7d4f' },
+  abyss: { V: '#1f4e5f', Y: '#5ac8b8' },
+  sakura: { V: '#ffb7d5', Y: '#e0567f' },
+}
+
+/** 当前生效的染色（含闪烁点颜色跟随主题点缀色） */
+const tint = computed<Record<string, string>>(() => TINTS[themeId.value] ?? {})
+
 interface Cell {
   x: number
   y: number
@@ -140,25 +166,27 @@ const cells = computed<Cell[]>(() => {
   const out: Cell[] = []
   design.value.art.forEach((row, y) => {
     row.split('').forEach((ch, x) => {
-      const c = design.value.colors[ch]
+      // 皮肤专属染色优先，其次图案自带配色
+      const c = tint.value[ch] ?? design.value.colors[ch]
       if (c) out.push({ x, y, c })
     })
   })
   return out
 })
 
-const COLS = Math.max(...design.value.art.map((r) => r.length))
-const ROWS = design.value.art.length
+/** 必须跟随 design 响应式变化，否则换肤后 viewBox 还是旧尺寸、牌背被压扁 */
+const COLS = computed(() => Math.max(...design.value.art.map((r) => r.length)))
+const ROWS = computed(() => design.value.art.length)
 </script>
 
 <template>
-  <svg
-    class="card-back-art"
-    :viewBox="`0 0 ${COLS} ${ROWS}`"
-    preserveAspectRatio="xMidYMid meet"
-    shape-rendering="crispEdges"
-    aria-hidden="true"
-  >
+    <svg
+      class="card-back-art"
+      :viewBox="`0 0 ${COLS} ${ROWS}`"
+      preserveAspectRatio="xMidYMid meet"
+      shape-rendering="crispEdges"
+      aria-hidden="true"
+    >
     <rect v-for="(cell, i) in cells" :key="i" :x="cell.x" :y="cell.y" width="1.02" height="1.02" :fill="cell.c" />
   </svg>
 </template>

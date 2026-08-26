@@ -22,6 +22,8 @@ interface ModDef {
   title: string
   desc: string
   heat: number
+  /** 模块专属签名色（与当值学徒色系一致） */
+  accent: string
 }
 
 /**
@@ -35,12 +37,12 @@ const GROUPS: { id: string; icon: string; title: string; sub: string; mods: ModD
     title: 'home.group.core',
     sub: 'home.group.core.sub',
     mods: [
-      { to: '/tarot', glyph: '✦', title: 'nav.tarot', desc: 'mod.tarot.desc', heat: 98 },
-      { to: '/astrology', glyph: '☉', title: 'nav.astrology', desc: 'mod.astrology.desc', heat: 96 },
-      { to: '/numerology', glyph: '∴', title: 'nav.numerology', desc: 'mod.numerology.desc', heat: 84 },
-      { to: '/synastry', glyph: '☍', title: 'nav.synastry', desc: 'mod.synastry.desc', heat: 82 },
-      { to: '/gesture', glyph: '🖐', title: 'nav.gesture', desc: 'mod.gesture.desc', heat: 72 },
-      { to: '/runes', glyph: 'ᛟ', title: 'nav.runes', desc: 'mod.runes.desc', heat: 66 },
+      { to: '/tarot', glyph: '✦', title: 'nav.tarot', desc: 'mod.tarot.desc', heat: 98 , accent: '#ff9fce' },
+      { to: '/astrology', glyph: '☉', title: 'nav.astrology', desc: 'mod.astrology.desc', heat: 96 , accent: '#a9c4e8' },
+      { to: '/numerology', glyph: '∴', title: 'nav.numerology', desc: 'mod.numerology.desc', heat: 84 , accent: '#7de8c3' },
+      { to: '/synastry', glyph: '☍', title: 'nav.synastry', desc: 'mod.synastry.desc', heat: 82 , accent: '#ff8fb8' },
+      { to: '/gesture', glyph: '🖐', title: 'nav.gesture', desc: 'mod.gesture.desc', heat: 72 , accent: '#f5c86e' },
+      { to: '/runes', glyph: 'ᛟ', title: 'nav.runes', desc: 'mod.runes.desc', heat: 66 , accent: '#8f8ac2' },
     ],
   },
   {
@@ -49,10 +51,10 @@ const GROUPS: { id: string; icon: string; title: string; sub: string; mods: ModD
     title: 'home.group.soul',
     sub: 'home.group.soul.sub',
     mods: [
-      { to: '/palmistry', glyph: '🖐', title: 'nav.palmistry', desc: 'mod.palmistry.desc', heat: 78 },
-      { to: '/dreams', glyph: '🌙', title: 'nav.dreams', desc: 'mod.dreams.desc', heat: 76 },
-      { to: '/pendulum', glyph: '🜨', title: 'nav.pendulum', desc: 'mod.pendulum.desc', heat: 62 },
-      { to: '/crystal', glyph: '🔮', title: 'nav.crystal', desc: 'mod.crystal.desc', heat: 58 },
+      { to: '/palmistry', glyph: '🖐', title: 'nav.palmistry', desc: 'mod.palmistry.desc', heat: 78 , accent: '#c9a24f' },
+      { to: '/dreams', glyph: '🌙', title: 'nav.dreams', desc: 'mod.dreams.desc', heat: 76 , accent: '#b48ab0' },
+      { to: '/pendulum', glyph: '🜨', title: 'nav.pendulum', desc: 'mod.pendulum.desc', heat: 62 , accent: '#ffd76e' },
+      { to: '/crystal', glyph: '🔮', title: 'nav.crystal', desc: 'mod.crystal.desc', heat: 58 , accent: '#b3a6f7' },
     ],
   },
   {
@@ -61,11 +63,11 @@ const GROUPS: { id: string; icon: string; title: string; sub: string; mods: ModD
     title: 'home.group.sky',
     sub: 'home.group.sky.sub',
     mods: [
-      { to: '/transits', glyph: '⟳', title: 'nav.transits', desc: 'mod.transits.desc', heat: 64 },
-      { to: '/orrery', glyph: '🪐', title: 'nav.orrery', desc: 'mod.orrery.desc', heat: 56 },
-      { to: '/biorhythm', glyph: '📈', title: 'nav.biorhythm', desc: 'mod.biorhythm.desc', heat: 54 },
-      { to: '/moonbreath', glyph: '🌕', title: 'nav.moonbreath', desc: 'mod.moonbreath.desc', heat: 52 },
-      { to: '/hours', glyph: '⏳', title: 'nav.hours', desc: 'mod.hours.desc', heat: 50 },
+      { to: '/transits', glyph: '⟳', title: 'nav.transits', desc: 'mod.transits.desc', heat: 64 , accent: '#ffb37a' },
+      { to: '/orrery', glyph: '🪐', title: 'nav.orrery', desc: 'mod.orrery.desc', heat: 56 , accent: '#7ea6d6' },
+      { to: '/biorhythm', glyph: '📈', title: 'nav.biorhythm', desc: 'mod.biorhythm.desc', heat: 54 , accent: '#6ee8a3' },
+      { to: '/moonbreath', glyph: '🌕', title: 'nav.moonbreath', desc: 'mod.moonbreath.desc', heat: 52 , accent: '#efe6c8' },
+      { to: '/hours', glyph: '⏳', title: 'nav.hours', desc: 'mod.hours.desc', heat: 50 , accent: '#d9b24a' },
     ],
   },
   {
@@ -74,9 +76,9 @@ const GROUPS: { id: string; icon: string; title: string; sub: string; mods: ModD
     title: 'home.group.play',
     sub: 'home.group.play.sub',
     mods: [
-      { to: '/arcade', glyph: '🎲', title: 'nav.arcade', desc: 'mod.arcade.desc', heat: 68 },
-      { to: '/library', glyph: '📖', title: 'nav.library', desc: 'mod.library.desc', heat: 48 },
-      { to: '/musicbox', glyph: '✦', title: 'nav.musicbox', desc: 'mod.musicbox.desc', heat: 46 },
+      { to: '/arcade', glyph: '🎲', title: 'nav.arcade', desc: 'mod.arcade.desc', heat: 68 , accent: '#ff8f6e' },
+      { to: '/library', glyph: '📖', title: 'nav.library', desc: 'mod.library.desc', heat: 48 , accent: '#cfd6ff' },
+      { to: '/musicbox', glyph: '✦', title: 'nav.musicbox', desc: 'mod.musicbox.desc', heat: 46 , accent: '#7db8ff' },
     ],
   },
   {
@@ -85,7 +87,7 @@ const GROUPS: { id: string; icon: string; title: string; sub: string; mods: ModD
     title: 'home.group.east',
     sub: 'home.group.east.sub',
     mods: [
-      { to: '/meihua', glyph: '☯', title: 'nav.meihua', desc: 'mod.meihua.desc', heat: 60 },
+      { to: '/meihua', glyph: '☯', title: 'nav.meihua', desc: 'mod.meihua.desc', heat: 60 , accent: '#e05a4e' },
     ],
   },
 ]
@@ -254,6 +256,7 @@ const greeting = computed(() => {
         v-reveal="i + 1"
         class="podium-card"
         :class="{ champion: rankOf(m) === 1 }"
+        :style="{ '--ac': m.accent }"
       >
         <span class="medal" aria-hidden="true">{{ MEDALS[rankOf(m) - 1] }}</span>
         <span class="rank-line">{{ t('home.hall.rank', { n: rankOf(m) }) }}</span>
@@ -300,6 +303,7 @@ const greeting = computed(() => {
         v-reveal="i % 4"
         v-tilt="7"
         class="oracle-card mod-card"
+        :style="{ '--ac': m.accent }"
       >
         <span class="rank-chip">#{{ rankOf(m) }}</span>
         <span v-if="m.heat >= 80" class="hot-tag">🔥 {{ t('home.card.hot') }}</span>
@@ -500,6 +504,48 @@ const greeting = computed(() => {
 
 /* 模块卡片上的排名徽标 / 热门标签 / 热度条 */
 .mod-card { display: flex; flex-direction: column; }
+.mod-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--ac, var(--gold)), transparent 78%);
+  opacity: 0.9;
+  z-index: 1;
+}
+.mod-card .glyph {
+  color: var(--ac, var(--ink));
+  text-shadow: 0 0 14px color-mix(in srgb, var(--ac, var(--gold)) 45%, transparent);
+}
+.mod-card:hover { border-color: color-mix(in srgb, var(--ac, var(--pink)) 60%, transparent); }
+.podium-card { --ac: var(--gold); }
+.podium-card .glyph {
+  color: var(--ac);
+  text-shadow: 0 0 16px color-mix(in srgb, var(--ac) 50%, transparent);
+}
+.mod-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--ac, var(--gold)), transparent 78%);
+  opacity: 0.9;
+  z-index: 1;
+}
+.mod-card .glyph {
+  color: var(--ac, var(--ink));
+  text-shadow: 0 0 14px color-mix(in srgb, var(--ac, var(--gold)) 45%, transparent);
+}
+.mod-card:hover { border-color: color-mix(in srgb, var(--ac, var(--pink)) 60%, transparent); }
+.podium-card { --ac: var(--gold); }
+.podium-card .glyph {
+  color: var(--ac);
+  text-shadow: 0 0 16px color-mix(in srgb, var(--ac) 50%, transparent);
+}
 .mod-card .rank-chip {
   position: absolute;
   top: 10px;

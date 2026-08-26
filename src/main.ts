@@ -9,6 +9,7 @@ import { vMagnetic } from './lib/magnetic'
 import { installKonami } from './lib/konami'
 import { installOverlays } from './lib/overlays'
 import { initThemes } from './lib/themes'
+import { initSkinFlair } from './lib/skinFlair'
 import { installMotionGlobal } from './lib/motionGlobal'
 import { installReactPopups } from './lib/reactPopups'
 import { installViewTransitions } from './lib/viewTrans'
@@ -19,6 +20,7 @@ const app = createApp(App).use(router)
 app.directive('reveal', vReveal)
 app.directive('magnetic', vMagnetic)
 initThemes()
+initSkinFlair()
 app.mount('#app')
 installKonami()
 installOverlays()

@@ -58,6 +58,8 @@ let ph = Math.PI / 2
 let om = 0
 let wp = 0
 let raf = 0
+/** 组件已卸载标志：拦截卸载后仍会触发的 window 指针回调 */
+let disposed = false
 let prevT = 0
 let swingClock = 0 // 本轮摆动已持续秒数
 let simActive = false
@@ -161,7 +163,7 @@ function loop(t: number): void {
 }
 
 function startSim(): void {
-  if (simActive) return
+  if (simActive || disposed) return
   simActive = true
   prevT = 0
   swingClock = 0
@@ -171,6 +173,23 @@ function startSim(): void {
 }
 
 /* ================= 蓄力玩法（答案先定后演） ================= */
+/** window 级兜底：指针拖出按钮/被元素接管时也能松手 */
+let fallbackUp: (() => void) | null = null
+
+function armFallbackRelease(): void {
+  disarmFallbackRelease()
+  fallbackUp = () => doRelease()
+  window.addEventListener('pointerup', fallbackUp, { once: true })
+  window.addEventListener('pointercancel', fallbackUp, { once: true })
+}
+function disarmFallbackRelease(): void {
+  if (fallbackUp !== null) {
+    window.removeEventListener('pointerup', fallbackUp)
+    window.removeEventListener('pointercancel', fallbackUp)
+    fallbackUp = null
+  }
+}
+
 function startCharge(e?: MouseEvent): void {
   if (phase.value !== 'idle' && phase.value !== 'verdict') return
   answer.value = null
@@ -180,6 +199,7 @@ function startCharge(e?: MouseEvent): void {
   chargeTimer = window.setInterval(() => {
     chargeLevel.value = Math.min(100, chargeLevel.value + 7)
   }, 90)
+  armFallbackRelease()
   void e
 }
 
@@ -193,6 +213,8 @@ function onPointerLeave(e?: MouseEvent): void {
 }
 
 function doRelease(e?: MouseEvent): void {
+  if (phase.value !== 'charging') return
+  disarmFallbackRelease()
   if (chargeTimer !== null) window.clearInterval(chargeTimer)
   chargeTimer = null
   const power = chargeLevel.value / 100
@@ -254,7 +276,7 @@ function onBobMove(e: PointerEvent): void {
 
 function onBobUp(e: PointerEvent): void {
   window.removeEventListener('pointermove', onBobMove)
-  if (!dragging) return
+  if (disposed || !dragging) return
   dragging = false
   if (!grabbed) return // 单击：交给宠物/其他逻辑
   const now = performance.now()
@@ -308,11 +330,14 @@ const swingHint = computed(() => {
 })
 
 onBeforeUnmount(() => {
+  disposed = true
   if (raf) cancelAnimationFrame(raf)
   raf = 0
   simActive = false
   if (chargeTimer !== null) window.clearInterval(chargeTimer)
+  disarmFallbackRelease()
   window.removeEventListener('pointermove', onBobMove)
+  window.removeEventListener('pointerup', onBobUp)
 })
 
 const reducedMotion =
@@ -334,6 +359,8 @@ const verdict = computed(() => (answer.value ? VERDICTS[answer.value] : null))
     <div class="pend-layout">
       <!-- 灵摆舞台 -->
       <section class="panel stage">
+        <i class="stage-ripple" aria-hidden="true" />
+        <i class="stage-ripple r2" aria-hidden="true" />
         <div class="pend-wrap">
           <div ref="pendEl" class="pendulum" :class="'phase-' + phase" @pointerdown.stop>
             <div ref="chainEl" class="chain" />
@@ -352,9 +379,12 @@ const verdict = computed(() => (answer.value ? VERDICTS[answer.value] : null))
           <i :style="{ width: chargeLevel + '%' }" />
         </div>
 
+        <!-- 常驻按钮：v-if 会在按下瞬间把元素移除，导致 pointerup 永远丢失（死锁 bug）。
+             改为 v-show 保持挂载，并另挂 window 级兜底释放。 -->
         <button
-          v-if="phase === 'idle' || phase === 'verdict'"
-          class="btn"
+          v-show="phase === 'idle' || phase === 'verdict' || phase === 'charging'"
+          class="btn charge-btn"
+          :class="{ dim: phase !== 'idle' && phase !== 'verdict' }"
           @pointerdown="startCharge($event)"
           @pointerup="release($event)"
           @pointerleave="onPointerLeave($event)"
@@ -421,6 +451,31 @@ const verdict = computed(() => (answer.value ? VERDICTS[answer.value] : null))
   flex-direction: column;
   align-items: center;
   min-height: 380px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 模块氛围：灵摆底下的占卜涟漪（与全局星野区分开） */
+.stage-ripple {
+  position: absolute;
+  bottom: -60px;
+  left: 50%;
+  width: 340px;
+  height: 120px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  border: 1.5px solid color-mix(in srgb, var(--lavender) 30%, transparent);
+  animation: stage-wave 4.5s ease-out infinite;
+  pointer-events: none;
+}
+.stage-ripple.r2 { animation-delay: 2.2s; }
+@keyframes stage-wave {
+  0% { opacity: 0; transform: translateX(-50%) scale(0.55); }
+  25% { opacity: 0.7; }
+  100% { opacity: 0; transform: translateX(-50%) scale(1.35); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stage-ripple { animation: none; opacity: 0.25; }
 }
 
 .pend-wrap { position: relative; width: 220px; height: 250px; }

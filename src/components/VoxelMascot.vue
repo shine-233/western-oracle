@@ -29,6 +29,8 @@ let petGroup: THREE.Group | null = null
 let starField: THREE.Points | null = null
 let satellite: THREE.Mesh | null = null
 let composer: EffectComposer | null = null
+let bloomPass: UnrealBloomPass | null = null
+let rimLight: THREE.DirectionalLight | null = null
 let raf = 0
 let disposed = false
 let themeWatcher: { disconnect: () => void } | null = null
@@ -79,6 +81,17 @@ interface Burst {
 let bursts: Burst[] = []
 const reducedMotion =
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+/** 简易亮度估算（hex → 0~1），判断当前皮肤是否浅色底 */
+function luminanceOf(hex: string): number {
+  const m = hex.trim().match(/^#?([0-9a-f]{6})$/i)
+  if (!m) return 0
+  const n = parseInt(m[1]!, 16)
+  const r = (n >> 16) & 255
+  const g = (n >> 8) & 255
+  const b = n & 255
+  return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255
+}
 
 function showMood(text: string): void {
   moodText.value = text
@@ -184,6 +197,7 @@ function build(): void {
   const rim = new THREE.DirectionalLight(0xff9fce, 0.85)
   rim.position.set(-6, -2, -4)
   scene.add(rim)
+  rimLight = rim
 
   // ---- 体素宠物 ----
   const voxels = mascotVoxels(def)
@@ -260,15 +274,23 @@ function build(): void {
       0.8,
     )
     composer.addPass(bloom)
+    bloomPass = bloom
     composer.addPass(new OutputPass())
     composer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     composer.setSize(el.clientWidth, el.clientHeight)
   }
 
-  // 皮肤切换：重涂舞台底色
-  themeWatcher = onThemeChange(() => {
-    if (scene) scene.background = new THREE.Color(themeVar('--void-1', '#141132'))
-  })
+  // 皮肤切换：重涂舞台底色；浅色皮肤下提亮轮廓光、压低辉光，宠物才不发灰
+  const applyTheme = (): void => {
+    const bg = themeVar('--void-1', '#141132')
+    if (scene) scene.background = new THREE.Color(bg)
+    const lum = luminanceOf(bg)
+    const light = lum > 0.55
+    if (rimLight) rimLight.intensity = light ? 1.6 : 0.85
+    if (bloomPass) bloomPass.strength = light ? 0.22 : 0.45
+  }
+  themeWatcher = onThemeChange(applyTheme)
+  applyTheme()
 
   nextBlinkAt = clock.getElapsedTime() + 2 + Math.random() * 3
   bindEvents(el)

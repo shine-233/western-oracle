@@ -59,7 +59,8 @@ function ensureAudio(): void {
   feedback.connect(delayNode)
   delayNode.connect(wet)
   wet.connect(ctx.destination)
-  master.connect(ctx.destination)
+  // 注意：master 的唯一出口是 analyser→destination。
+  // 这里若再 connect(ctx.destination) 会与 analyser 路径并联，整体响度 ×2 且有削波风险。
 }
 
 function playNote(freq: number): void {
@@ -207,7 +208,13 @@ function saveTune(): void {
 }
 
 function loadTune(t: SavedTune, e?: MouseEvent): void {
-  sequence.value = [...t.steps]
+  // 脏数据防护：旧版本/损坏的 localStorage 可能含越界索引，播放时会崩
+  const clean = Array.from({ length: STEPS }, (_, i) => {
+    const v = t.steps[i]
+    return typeof v === 'number' && Number.isInteger(v) && v >= 0 && v < STARS.length ? v : null
+  })
+  if (!clean.some((s) => s !== null)) return
+  sequence.value = clean
   sfx.blip()
   if (e) sparkleFromEvent(e, 6)
 }
@@ -217,7 +224,16 @@ function removeTune(at: number): void {
   saveJSON('musicbox-tunes', savedTunes.value)
 }
 
-onBeforeUnmount(stopPlay)
+onBeforeUnmount(() => {
+  stopPlay()
+  cancelAnimationFrame(specRaf)
+  if (litTimer) window.clearTimeout(litTimer)
+  // 关闭本页独立的 AudioContext（sfx.ts 的全局实例不归这里管）
+  void ctx?.close().catch(() => {})
+  ctx = null
+  analyser = null
+  specData = null
+})
 
 /* ---------- 像素频谱可视化 ---------- */
 const specCanvas = ref<HTMLCanvasElement | null>(null)

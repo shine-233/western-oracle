@@ -6,6 +6,7 @@ import { L } from '../data/oracleArcade'
 import { loadJSON } from '../lib/storage'
 import { sparkleFromEvent } from '../lib/sparkle'
 import { sfx } from '../lib/sfx'
+import { addHistory } from '../lib/history'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
 const birth = ref<string>(loadJSON<{ date?: string }>('num-profile', {}).date ?? '')
@@ -118,8 +119,6 @@ const criticalDays = computed(() => {
   const marks: Array<{ offset: number; x: number }> = []
   const list = dayPoints.value
   for (let i = 1; i < list.length; i++) {
-    const prev = valueAt(RHYTHMS[0]!, list[i - 1]!.date)
-    void prev
     // 三条曲线任一过零即记（用符号变化判断）
     for (const r of RHYTHMS) {
       const a = valueAt(r, list[i - 1]!.date)
@@ -153,6 +152,12 @@ function onSubmit(e?: MouseEvent): void {
   submitted.value = true
   sfx.ding()
   if (e) sparkleFromEvent(e, 10)
+  const b = parseBirth()
+  addHistory({
+    type: 'biorhythm',
+    label: '生物节律',
+    summary: `以 ${b!.getFullYear()}-${b!.getMonth() + 1}-${b!.getDate()} 起算，23/28/33 天三节律已展开`,
+  })
 }
 
 /* ---------- SVG 直接拖拽 / 悬停十字线 ---------- */

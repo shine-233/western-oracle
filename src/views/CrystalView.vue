@@ -364,8 +364,8 @@ function ask(e?: MouseEvent): void {
   addHistory({
     type: 'crystal',
     label: zh.value ? '水晶球 · 问事' : 'Crystal Ball · Asking',
-    summary: ${'{'}(question.value.trim() || (zh.value ? '（没写问题）' : '(no question)')){'}'} → ${'}res.omen},
-    detail: res.text ?? '',
+    summary: `${question.value.trim() || (zh.value ? '（没写问题）' : '(no question)')} → ${zh.value ? OMENS[res.omen]![0] : OMENS[res.omen]![1]}`,
+    detail: zh.value ? OMENS[res.omen]![0] : OMENS[res.omen]![1],
   })
   histList.value = log.history
   askCount.value = Object.keys(log.asks).length

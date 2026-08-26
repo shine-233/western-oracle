@@ -7,6 +7,27 @@
   "display": "standalone",
   "background_color": "#0d0b20",
   "theme_color": "#151232",
+  "categories": ["entertainment", "lifestyle"],
+  "shortcuts": [
+    {
+      "name": "塔罗占卜",
+      "short_name": "塔罗",
+      "url": "./#/tarot",
+      "icons": [{ "src": "./favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "西洋占星",
+      "short_name": "占星",
+      "url": "./#/astrology",
+      "icons": [{ "src": "./favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "手势占卜",
+      "short_name": "手势",
+      "url": "./#/gesture",
+      "icons": [{ "src": "./favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    }
+  ],
   "icons": [
     {
       "src": "./favicon.svg",

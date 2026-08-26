@@ -144,7 +144,7 @@ const GOLEM: MascotDef = {
   id: 'golem',
   nameCn: '符文萨满 · Runa',
   nameEn: 'Rune Shaman · Runa',
-  satelliteColor: '#7de8c3',
+  satelliteColor: '#9fd8b4', // 与 owl 的薄荷色拉开一档：苔藓绿
   glowColor: '#5fb8a5',
   eyeChars: ['E'],
   sprite: [
@@ -248,7 +248,7 @@ const MIST: MascotDef = {
   id: 'mist',
   nameCn: '雾语占卜师 · Mist',
   nameEn: 'Mist Speaker · Mist',
-  satelliteColor: '#b3a6f7',
+  satelliteColor: '#8fd0e8', // 与 numi 的薰衣草拉开：雾蓝
   glowColor: '#7de8c3',
   eyeChars: ['E'],
   sprite: [

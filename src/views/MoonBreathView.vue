@@ -3,6 +3,7 @@
 import { computed, onBeforeUnmount, ref } from 'vue'
 import { moonPhase } from '../lib/astrology'
 import { t } from '../lib/i18n'
+import { addHistory } from '../lib/history'
 import { L } from '../data/oracleArcade'
 import { isSoundOn, sfx } from '../lib/sfx'
 import { sparkleFromEvent } from '../lib/sparkle'
@@ -181,6 +182,11 @@ function awardStar(): void {
   }
   log.value.todayCount += 1
   saveLog()
+  addHistory({
+    type: 'moonbreath',
+    label: '月亮呼吸室',
+    summary: `完成一轮 4-4-6 呼吸 ✦ 累计 ${log.value.total} 颗星`,
+  })
 }
 
 /* 月相文案 */

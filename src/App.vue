@@ -323,4 +323,48 @@ onBeforeUnmount(() => {
   transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s;
 }
 .lang-toggle:hover { transform: scale(1.1); border-color: var(--gold-bright); }
+
+/* ---------- 回到顶部 ---------- */
+.back-top {
+  position: fixed;
+  left: 18px;
+  bottom: 18px;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: linear-gradient(160deg, var(--void-2), var(--void-1));
+  border: 2px solid color-mix(in srgb, var(--gold) 55%, transparent);
+  color: var(--gold-bright);
+  cursor: pointer;
+  font-size: 0.85rem;
+  clip-path: polygon(
+    0 8px, 4px 8px, 4px 4px, 8px 4px, 8px 0,
+    calc(100% - 8px) 0, calc(100% - 8px) 4px, calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px,
+    100% calc(100% - 8px), calc(100% - 4px) calc(100% - 8px), calc(100% - 4px) calc(100% - 4px), calc(100% - 8px) calc(100% - 4px), calc(100% - 8px) 100%,
+    8px 100%, 8px calc(100% - 4px), 4px calc(100% - 4px), 4px calc(100% - 8px), 0 calc(100% - 8px)
+  );
+  box-shadow: 4px 4px 0 rgba(10, 8, 30, 0.6);
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s;
+}
+.back-top:hover {
+  transform: translateY(-3px) scale(1.06);
+  border-color: var(--gold-bright);
+}
+.back-top .bt-arrow {
+  font-family: var(--pixel);
+  font-size: 0.55rem;
+}
+.top-fade-enter-active,
+.top-fade-leave-active { transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.top-fade-enter-from,
+.top-fade-leave-to { opacity: 0; transform: translateY(14px); }
+@media (prefers-reduced-motion: reduce) {
+  .back-top { transition: none; }
+  .top-fade-enter-active, .top-fade-leave-active { transition: none; }
+}
 </style>

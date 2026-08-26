@@ -19,7 +19,7 @@ function injectStyles(): void {
   const tag = document.createElement('style')
   tag.textContent = `
 .rp-wrap {
-  position: fixed; right: 18px; bottom: 18px; z-index: 9400;
+  position: fixed; right: 18px; bottom: 86px; z-index: 9400;
   display: flex; align-items: flex-end; gap: 10px;
   max-width: min(88vw, 380px);
   animation: rp-in .45s cubic-bezier(.34,1.56,.64,1);
@@ -85,12 +85,12 @@ function show(detail: { type?: string; label?: string; summary?: string }): void
   wrap.className = 'rp-wrap'
   wrap.style.setProperty('--ac', who.color)
 
-  const sprite = document.createElement('svg')
+  const sprite = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
   sprite.setAttribute('class', 'rp-sprite')
   const def = MASCOTS[who.id]
   if (def) {
     const cols = Math.max(...def.sprite.map((r) => r.length))
-    sprite.setAttribute('viewBox', `0 0 ${cols} 24`)
+    sprite.setAttribute('viewBox', `0 0 ${cols} ${def.sprite.length}`)
     const ns = 'http://www.w3.org/2000/svg'
     for (const v of mascotVoxels(def)) {
       const rect = document.createElementNS(ns, 'rect')

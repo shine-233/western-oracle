@@ -68,6 +68,7 @@ const messages: Record<string, Pair> = {
   'nav.hours': ['行星时刻', 'Planet Hours'],
   'nav.gesture': ['手势占卜', 'Gesture'],
   'app.soundOff': ['关闭音效', 'Mute'],
+  'app.top': ['回到顶部', 'Back to top'],
   'app.soundOn': ['开启音效', 'Unmute'],
   'footer.l1': ['✦ 所有计算均在你的浏览器本地完成，不上传任何数据 ✦', '✦ Everything runs locally in your browser. No data leaves your device. ✦'],
   'footer.l2': ['本站内容用于文化与娱乐目的，请理性看待占卜结果。牌面为 1909 年公版 Rider-Waite-Smith 插图。', 'For cultural & entertainment purposes only. Artwork: public-domain 1909 Rider-Waite-Smith deck.'],
@@ -424,6 +425,7 @@ const messages: Record<string, Pair> = {
   'pet.mist.cheer': ['雾散了！答案比想象中清晰！', 'The fog lifted! The answer is clearer than feared!'],
   'pet.mist.tip1': ['Mist说：问题越模糊，雾就越浓；先把自己问明白。', 'Mist: the vaguer the question, the thicker the fog — ask yourself first.'],
   'pet.mist.tip2': ['Mist说：水晶球不生产答案，它只是让答案提前到货。', 'Mist: the orb doesn\'t make answers; it just delivers them early.'],
+  'pet.mist.bond': ['雾雾把水晶球举到你面前——里面映着你的脸：「这是今天最亮的星。」', 'Mist holds the orb up to you — your face glows inside: "Brightest star today."'],
 
   /* ---------- 今日星历 ---------- */
   'alm.title': ['今日星历', 'Daily Almanac'],

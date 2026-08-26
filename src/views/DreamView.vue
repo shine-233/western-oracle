@@ -159,7 +159,10 @@ function removeJournal(i: number): void {
 </script>
 
 <template>
-  <div class="page-root">
+  <div class="page-root dream-page">
+    <!-- 模块氛围：解梦的雾团（与全局星野区分） -->
+    <i class="fog fog-a" aria-hidden="true" />
+    <i class="fog fog-b" aria-hidden="true" />
     <h2><DecryptTitle :text="zh ? '解梦词典' : 'Dream Dictionary'" /></h2>
     <p class="hint">
       {{ zh
@@ -250,6 +253,32 @@ function removeJournal(i: number): void {
 </template>
 
 <style scoped>
+/* 解梦页雾团：两团缓慢漂移的柔光，页面专属氛围 */
+.dream-page { position: relative; }
+.fog {
+  position: fixed;
+  width: 420px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(179, 166, 247, 0.1), transparent 65%);
+  filter: blur(6px);
+  pointer-events: none;
+  z-index: -1;
+}
+.fog-a { top: 12%; left: -80px; animation: fog-drift-a 26s ease-in-out infinite; }
+.fog-b { bottom: 8%; right: -100px; animation: fog-drift-b 32s ease-in-out infinite; }
+@keyframes fog-drift-a {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.7; }
+  50% { transform: translate(90px, 40px) scale(1.25); opacity: 1; }
+}
+@keyframes fog-drift-b {
+  0%, 100% { transform: translate(0, 0) scale(1.15); opacity: 0.55; }
+  50% { transform: translate(-110px, -30px) scale(0.9); opacity: 0.9; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fog { animation: none; opacity: 0.5; }
+}
+
 .dream-search {
   width: 100%;
   padding: 12px 16px;

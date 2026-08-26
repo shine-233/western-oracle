@@ -44,6 +44,11 @@ const gridW = computed(() => {
   const def = MASCOTS[who.value.id]
   return def ? Math.max(...def.sprite.map((r) => r.length)) : 20
 })
+/** 各精灵行数不同（22~24），硬编码 24 会让矮精灵被等比缩小、基线漂移 */
+const gridH = computed(() => {
+  const def = MASCOTS[who.value.id]
+  return def ? def.sprite.length : 24
+})
 
 /** 气泡入场重放 */
 const bubbleKey = ref(0)
@@ -59,7 +64,7 @@ const MOOD_FACE: Record<MoodKey, string> = { great: '🌟', good: '🌤️', meh
 
 <template>
   <div class="react-wrap">
-    <svg class="react-sprite" :viewBox="`0 0 ${gridW} 24`" role="img" :aria-label="zh ? who.nameZh : who.nameEn">
+    <svg class="react-sprite" :viewBox="`0 0 ${gridW} ${gridH}`" role="img" :aria-label="zh ? who.nameZh : who.nameEn">
       <rect
         v-for="(p, i) in pixels"
         :key="i"

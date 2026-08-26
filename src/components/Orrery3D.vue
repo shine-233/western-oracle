@@ -428,6 +428,11 @@ function bindEvents(el: HTMLElement): void {
       raycastPick(e, el)
     }
   })
+  // 触控被系统接管（来电/通知）时复位，否则拖拽状态卡死
+  el.addEventListener('pointercancel', () => {
+    dragging = false
+    lastInteract = performance.now()
+  })
   el.addEventListener('wheel', (e) => {
     e.preventDefault()
     lastInteract = performance.now()
@@ -472,8 +477,13 @@ onBeforeUnmount(() => {
     const m = o as THREE.Mesh
     if (m.geometry) m.geometry.dispose()
     const mat = m.material as THREE.Material | THREE.Material[] | undefined
-    if (Array.isArray(mat)) mat.forEach((x) => x.dispose())
-    else mat?.dispose()
+    const mats = Array.isArray(mat) ? mat : mat ? [mat] : []
+    for (const x of mats) {
+      // Sprite/Points 的贴图（标签、辉光）也要释放，否则每次进出页面泄漏 GPU 纹理
+      const withMap = x as THREE.Material & { map?: THREE.Texture | null }
+      withMap.map?.dispose()
+      x.dispose()
+    }
   })
   composer?.dispose()
   renderer?.dispose()
@@ -493,7 +503,7 @@ onBeforeUnmount(() => {
   border-radius: 12px;
   overflow: hidden;
   cursor: grab;
-  touch-action: none;
+  touch-action: pan-y;
   background: #0d0b20;
 }
 .orr3d:active { cursor: grabbing; }

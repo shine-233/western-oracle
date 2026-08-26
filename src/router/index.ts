@@ -1,54 +1,78 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import TarotView from '../views/TarotView.vue'
-import AstrologyView from '../views/AstrologyView.vue'
-import SynastryView from '../views/SynastryView.vue'
-import TransitsView from '../views/TransitsView.vue'
-import NumerologyView from '../views/NumerologyView.vue'
-import RunesView from '../views/RunesView.vue'
-import SettingsView from '../views/SettingsView.vue'
-import HistoryView from '../views/HistoryView.vue'
-import LibraryView from '../views/LibraryView.vue'
-import CrystalView from '../views/CrystalView.vue'
-import HoursView from '../views/HoursView.vue'
-import ArcadeView from '../views/ArcadeView.vue'
-import DreamView from '../views/DreamView.vue'
-import PalmistryView from '../views/PalmistryView.vue'
-import MusicBoxView from '../views/MusicBoxView.vue'
-import PendulumView from '../views/PendulumView.vue'
-import OrreryView from '../views/OrreryView.vue'
-import MoonBreathView from '../views/MoonBreathView.vue'
-import BioRhythmView from '../views/BioRhythmView.vue'
-import MeihuaView from '../views/MeihuaView.vue'
-import GestureView from '../views/GestureView.vue'
+import { locale } from '../lib/i18n'
+
+/**
+ * 路由表：仅首页随首屏加载，其余全部懒加载分包；
+ * scrollBehavior 保证切页回顶（浏览器前进/后退保留原位）。
+ */
+const routes = [
+  { path: '/', component: HomeView },
+  { path: '/tarot', component: () => import('../views/TarotView.vue') },
+  { path: '/astrology', component: () => import('../views/AstrologyView.vue') },
+  { path: '/synastry', component: () => import('../views/SynastryView.vue') },
+  { path: '/transits', component: () => import('../views/TransitsView.vue') },
+  { path: '/numerology', component: () => import('../views/NumerologyView.vue') },
+  { path: '/runes', component: () => import('../views/RunesView.vue') },
+  { path: '/library', component: () => import('../views/LibraryView.vue') },
+  { path: '/crystal', component: () => import('../views/CrystalView.vue') },
+  { path: '/hours', component: () => import('../views/HoursView.vue') },
+  { path: '/arcade', component: () => import('../views/ArcadeView.vue') },
+  { path: '/dreams', component: () => import('../views/DreamView.vue') },
+  { path: '/palmistry', component: () => import('../views/PalmistryView.vue') },
+  { path: '/musicbox', component: () => import('../views/MusicBoxView.vue') },
+  { path: '/pendulum', component: () => import('../views/PendulumView.vue') },
+  { path: '/orrery', component: () => import('../views/OrreryView.vue') },
+  { path: '/moonbreath', component: () => import('../views/MoonBreathView.vue') },
+  { path: '/biorhythm', component: () => import('../views/BioRhythmView.vue') },
+  { path: '/meihua', component: () => import('../views/MeihuaView.vue') },
+  { path: '/gesture', component: () => import('../views/GestureView.vue') },
+  { path: '/history', component: () => import('../views/HistoryView.vue') },
+  { path: '/settings', component: () => import('../views/SettingsView.vue') },
+  { path: '/:pathMatch(.*)*', redirect: '/' },
+]
+
+const TITLES: Record<string, [string, string]> = {
+  '/': ['神谕 · 星辰不语，自有答案', 'ORACLE · The stars answer'],
+  '/tarot': ['塔罗占卜', 'Tarot'],
+  '/astrology': ['西洋占星', 'Natal Chart'],
+  '/synastry': ['合盘缘分', 'Synastry'],
+  '/transits': ['行运天象', 'Transits'],
+  '/numerology': ['生命灵数', 'Numerology'],
+  '/runes': ['卢恩符文', 'Runes'],
+  '/library': ['牌库图鉴', 'Deck Library'],
+  '/crystal': ['水晶球', 'Crystal Ball'],
+  '/hours': ['行星时刻', 'Planetary Hours'],
+  '/arcade': ['奇趣占卜坊', 'Oracle Arcade'],
+  '/dreams': ['解梦词典', 'Dream Dictionary'],
+  '/palmistry': ['手相阅览', 'Palmistry'],
+  '/musicbox': ['星光八音盒', 'Music Box'],
+  '/pendulum': ['灵摆占卜', 'Pendulum'],
+  '/orrery': ['实时天象仪', 'Live Orrery'],
+  '/moonbreath': ['月相呼吸房', 'Moon Breath'],
+  '/biorhythm': ['生物节律', 'Biorhythm'],
+  '/meihua': ['梅花易数', 'Plum Blossom'],
+  '/gesture': ['手势占卜', 'Gesture Oracle'],
+  '/history': ['魔法书 · 历史', 'Grimoire'],
+  '/settings': ['设置', 'Settings'],
+}
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes: [
-    { path: '/', component: HomeView },
-    { path: '/tarot', component: TarotView },
-    { path: '/astrology', component: AstrologyView },
-    { path: '/synastry', component: SynastryView },
-    { path: '/transits', component: TransitsView },
-    { path: '/numerology', component: NumerologyView },
-    { path: '/runes', component: RunesView },
-    { path: '/library', component: LibraryView },
-    { path: '/crystal', component: CrystalView },
-    { path: '/hours', component: HoursView },
-    { path: '/arcade', component: ArcadeView },
-    { path: '/dreams', component: DreamView },
-    { path: '/palmistry', component: PalmistryView },
-    { path: '/musicbox', component: MusicBoxView },
-    { path: '/pendulum', component: PendulumView },
-    { path: '/orrery', component: OrreryView },
-    { path: '/moonbreath', component: MoonBreathView },
-    { path: '/biorhythm', component: BioRhythmView },
-    { path: '/meihua', component: MeihuaView },
-    { path: '/gesture', component: GestureView },
-    { path: '/history', component: HistoryView },
-    { path: '/settings', component: SettingsView },
-    { path: '/:pathMatch(.*)*', redirect: '/' },
-  ],
+  routes,
+  scrollBehavior(_to, _from, savedPosition) {
+    // 前进：回顶；后退：浏览器记住的位置
+    return savedPosition ?? { top: 0 }
+  },
+})
+
+router.afterEach((to) => {
+  const pair = TITLES[to.path]
+  if (pair) {
+    document.title = `${pair[locale.value === 'zh' ? 0 : 1]} · 神谕 Western Oracle`
+  } else {
+    document.title = '神谕 Western Oracle'
+  }
 })
 
 export default router

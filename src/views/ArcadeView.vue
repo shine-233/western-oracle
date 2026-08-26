@@ -14,6 +14,7 @@ import {
 } from '../data/oracleArcade'
 import { sparkleFromEvent } from '../lib/sparkle'
 import { sfx } from '../lib/sfx'
+import { addHistory } from '../lib/history'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
 type Tab = 'dice' | 'wheel' | 'sortition'
@@ -61,6 +62,11 @@ function rollDice(e?: MouseEvent): void {
     dicePair.value = { p: PLANET_FACES[pi]!, r: REALM_FACES[ri]! }
     sfx.ding()
     rolling.value = false
+    addHistory({
+      type: 'arcade',
+      label: '占卜骰子',
+      summary: `${diceReading(PLANET_FACES[pi]!, REALM_FACES[ri]!)}`,
+    })
   }, 1500)
 }
 
@@ -113,6 +119,12 @@ function spinWheel(e?: MouseEvent): void {
     wheelResult.value = pick
     sfx.ding()
     spinning.value = false
+    const sec = WHEEL_SECTORS[pick]!
+    addHistory({
+      type: 'arcade',
+      label: '命运转盘',
+      summary: `${sec.emoji} ${sec.zh} —— ${sec.zhLine}`,
+    })
   }, 4200)
 }
 
@@ -142,6 +154,13 @@ function chooseLot(i: number, e: MouseEvent): void {
   slip.value = pendingLots.value[i]!
   sfx.ding()
   sparkleFromEvent(e, 12)
+  const lot = slip.value!
+  addHistory({
+    type: 'arcade',
+    label: '德尔斐神签',
+    summary: `${RANK_LABEL[lot.rank][0]} · ${lot.zhPoem}`,
+    detail: `${lot.zhAdvice}\n${lot.enAdvice}`,
+  })
 }
 </script>
 
