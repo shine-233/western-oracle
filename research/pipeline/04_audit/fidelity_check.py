@@ -305,6 +305,22 @@ def main() -> None:
         for p in rng.sample(region['paragraphs'], min(10, len(region['paragraphs']))):
             f.check(f'lilly_intro[{reg_key}]', p, raw, min_len=80)
 
+    # ========= 第五轮（锚点稳健化 + Robson 卷首）=========
+
+    # --- leo v5（sun/moon 段与 v4 差异区）---
+    raw = load_raw('leo_how_to_judge_nativity_1928_raw.txt')
+    d = json.loads((DATA / 'leo_nativity_v5.json').read_text(encoding='utf-8'))
+    for key in ('sun_in_signs', 'moon_in_signs'):
+        seg = d['sections'][key]['passage']
+        f.check(f'leo_v5[{key}]', seg[len(seg) // 3:][:1800], raw)
+        f.check(f'leo_v5[{key}].tail', seg[-1500:], raw)
+
+    # --- robson 卷首导论 ---
+    raw = load_raw('robson_fixed_stars_1923_raw.txt')
+    d = json.loads((DATA / 'robson_front_matter_v1.json').read_text(encoding='utf-8'))
+    for p in rng.sample(d['introduction']['passages'], min(6, len(d['introduction']['passages']))):
+        f.check('rob_front', p, raw)
+
     print(f'fidelity checked: {f.checked} samples')
     if f.problems:
         print(f'PROBLEMS ({len(f.problems)}):')

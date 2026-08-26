@@ -443,6 +443,27 @@
     "book1_chapter_paragraphs": 273
    },
    "pass": true
+  },
+  "leo_nativity_v5": {
+   "checks": {
+    "sun_len": true,
+    "moon_len": true,
+    "moon_transitions_to_appearance": true,
+    "v4_expansions_kept": true,
+    "aphorisms_still_100": true,
+    "houses_still_11": true
+   },
+   "pass": true
+  },
+  "robson_front_matter_v1": {
+   "checks": {
+    "intro_text": true,
+    "astronomy_anchors": true
+   },
+   "counts": {
+    "intro_passages": 33
+   },
+   "pass": true
   }
  },
  "all_pass": true

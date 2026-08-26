@@ -655,6 +655,35 @@ def audit_lilly_introduction(report: dict) -> None:
     }
 
 
+def audit_leo_v5(report: dict) -> None:
+    d = _load('leo_nativity_v5.json')
+    sec = d['sections']
+    exp = d['expansions']
+    moon_tail = sec['moon_in_signs']['passage'][-600:]
+    checks = {
+        'sun_len': len(sec['sun_in_signs']['passage']) >= 15000,
+        'moon_len': len(sec['moon_in_signs']['passage']) >= 18000,
+        'moon_transitions_to_appearance': bool(re.search(r'rising', moon_tail, re.IGNORECASE)),
+        'v4_expansions_kept': LEO_V4_BLOCKS <= set(exp) and len(exp['planets_rising_in_signs']) == 12,
+        'aphorisms_still_100': len(d['centiloquy']['aphorisms']) == 100,
+        'houses_still_11': len(d['houses']) == 11,
+    }
+    report['leo_nativity_v5'] = {'checks': checks, 'pass': all(checks.values())}
+
+
+def audit_robson_front_matter(report: dict) -> None:
+    d = _load('robson_front_matter_v1.json')
+    intro = d['introduction']['passages']
+    blob = ' '.join(intro).lower()
+    checks = {
+        'intro_text': sum(map(len, intro)) >= 5000,
+        'astronomy_anchors': all(k in blob for k in ('milky way', 'nebul')),
+    }
+    report['robson_front_matter_v1'] = {
+        'checks': checks, 'counts': d['counts'], 'pass': all(checks.values()),
+    }
+
+
 def main() -> None:
     report: dict = {'generated': '2026-08-26', 'datasets': {}}
     audit_tarot(report['datasets'])
@@ -691,6 +720,8 @@ def main() -> None:
     audit_kunz_v4(report['datasets'])
     audit_robson_magic(report['datasets'])
     audit_lilly_introduction(report['datasets'])
+    audit_leo_v5(report['datasets'])
+    audit_robson_front_matter(report['datasets'])
 
     all_pass = all(d['pass'] for d in report['datasets'].values())
     report['all_pass'] = all_pass

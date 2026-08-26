@@ -55,6 +55,8 @@ research/
 │   ├── 02_mine/mine_kunz_birthstones_v4.py    # Kunz v4：前半部五章（迷信源流等）[2026-08-26]
 │   ├── 02_mine/mine_robson_medieval_magic.py  # Robson 魔法章+星陨气象学+数学公式 [2026-08-26]
 │   ├── 02_mine/mine_lilly_introduction.py     # Lilly 前部：序言+Book I 前十六章 [2026-08-26]
+│   ├── 02_mine/mine_leo_nativity_v5.py        # Leo v5：日月段终点锚点稳健化 [2026-08-26]
+│   ├── 02_mine/mine_robson_front_matter.py    # Robson 卷首天文学导论（Ch I）[2026-08-26]
 │   ├── 02_mine/curate_bookt_decans.py  # Golden Dawn Book T 三十六旬对应表（程序化生成+锚点校验）[2026-08-25]
 │   ├── 03_clean/clean_tarot.py         # 清洗：78张结构校验/去重/空值/与站点id集合对齐
 │   ├── 03_clean/clean_tarot_sources.py # 清洗：三源合并对照（waite+papus+mcelroy 78×3）
@@ -97,12 +99,14 @@ research/
     ├── kunz_birthstones_v4.json         # Kunz v4：+迷信源流/护符护身符/护符使用/雕琢宝石/凶吉宝石五章（+26 万字符）[2026-08-26]
     ├── robson_medieval_magic_v1.json    # Robson 魔法章：恒星魔法印记 14 星/月宿魔法/星陨气象学/数学公式 [2026-08-26]
     ├── lilly_introduction_v1.json       # Lilly 前部：题献序言 + Book I 前十六章（行星本质/相位等）[2026-08-26]
+    ├── leo_nativity_v5.json             # Leo v5：日月段终点锚点稳健化（章标题锚定）[2026-08-26]
+    ├── robson_front_matter_v1.json      # Robson 卷首天文学导论（银河/星云/希腊字母表）[2026-08-26]
     ├── tarot_modern_v1.json             # Tarotoo 现代结构化塔罗（78张×love/career/mood/spiritual/yes_no；56数字牌与 Book T 表交叉验证一致）[2026-08-25]
     ├── zodiac_facts_v1.json             # 黄道事实层（12星座：黄经/元素/古典现代守护/日期；古典守护与 Ptolemy 庙宫表互证）[2026-08-25]
     ├── alignment_cn_en_v1.json          # 中文-原文语义对齐（22大牌逐张+小牌规则模板）
     ├── rune_poem_oe_v1.json            # [v1, 已被v2取代] 仅盎格鲁-撒克逊诗
     ├── rune_poems_v2.json              # 清洗后三诗对照（24符文：16个三诗齐全+8个仅OE诗）
-    └── audit_report.json               # 审计报告（all_pass: true, 22 datasets）
+    └── audit_report.json               # 审计报告（all_pass: true, 36 datasets）
 ```
 
 ## 数据字典
@@ -264,6 +268,20 @@ tetrabiblos 全书 ≈90%（B1/B2/B3/B4 正文全收）、lilly ≈64%。
 （含附录卷）、lilly ≈98%。剩余未挖部分均为非内容性材料：图书馆盖章/扫描噪声/
 题页/版权页/出版广告/纯页眉页码带。
 
+### 第五轮（2026-08-26 锚点稳健化 + 最后补漏）
+
+精确逐字节覆盖率终验后：
+
+- leo_nativity_v5.json：moon_in_signs 终点从 v1 依赖回退窗口的脆弱短语锚点
+  （'Personal Appearance and Character'）改为外貌章标题行，norm 增加小节标题
+  页码剥除；内容区间与 v4 相同。
+- robson_front_matter_v1.json：Ch I「The Fixed Stars in Astronomy」天文学导论
+  （恒星距离/银河结构/星云/星等命名/希腊字母表，≈1.6 万字符）——Robson 全书至此完整。
+
+**最终精确覆盖率**（逐字节区间计算）：lilly 99.9% / tetrabiblos 99.0% /
+robson 100% / sepharial 97.8% / kunz 97.5% / leo ≈95.6%。剩余为题页、
+出版广告、图书馆印章与扫描噪声。
+
 ## 复现方式
 
 ```bash
@@ -299,9 +317,11 @@ python research/pipeline/02_mine/mine_leo_nativity_v4.py        # Leo 外貌/上
 python research/pipeline/02_mine/mine_kunz_birthstones_v4.py    # Kunz 前半部五章（v4）
 python research/pipeline/02_mine/mine_robson_medieval_magic.py  # Robson 魔法章/气象学
 python research/pipeline/02_mine/mine_lilly_introduction.py     # Lilly 前部 Book I 前十六章
+python research/pipeline/02_mine/mine_leo_nativity_v5.py        # Leo 日月段锚点稳健化（v5）
+python research/pipeline/02_mine/mine_robson_front_matter.py    # Robson 卷首导论
 python research/pipeline/02_mine/curate_bookt_decans.py  # Book T 三十六旬
-python research/pipeline/04_audit/audit.py               # 审计34数据集（不过则退出码1）
-python research/pipeline/04_audit/fidelity_check.py      # 保真度抽查：586抽样回查原始文献
+python research/pipeline/04_audit/audit.py               # 审计36数据集（不过则退出码1）
+python research/pipeline/04_audit/fidelity_check.py      # 保真度抽查：596抽样回查原始文献
 python research/pipeline/04_audit/qa_scan.py             # 清洗质量扫描（OCR噪声/页眉/编码）
 python research/pipeline/04_audit/export_ts.py           # 导出站点 TS（15个模块）
 ```
@@ -309,7 +329,7 @@ python research/pipeline/04_audit/export_ts.py           # 导出站点 TS（15�
 ### 验证方法论（三层）
 
 1. **确定性**：全部挖掘脚本重跑后数据集 SHA256 逐字节一致（无随机性、无顺序依赖）；
-2. **保真度**：`fidelity_check.py` 按 seed=1901 抽样 586 条，词块化回查原始文献，
+2. **保真度**：`fidelity_check.py` 按 seed=1901 抽样 596 条，词块化回查原始文献，
    命中率阈值 70%（页眉清除造成的"空洞"允许跨洞，超短字段命中 ≥1 块即通过）——
    防止挖掘过程张冠李戴或凭空造文；
 3. **交叉验证**：Tarotoo 56 数字牌行星/星座 ↔ Book T 三十六旬表逐张互证；
@@ -379,8 +399,11 @@ IA=Internet Archive 公版扫描件 OCR；PG=Project Gutenberg。
 - [x] 清洗程序扩容第三批：严格逐字节覆盖率审计驱动，补挖 Tetrabiblos 附录卷
       （含 Ptolemy《Centiloquy》百条格言 87 条独立解析）/ Leo 外貌与上升星座章 /
       Kunz 前半部五章 / Robson 魔法印记与星陨气象学章 / Lilly 序言与 Book I 前十六章；
-      全源覆盖 ≈95–100%，剩余均为题页/广告/扫描噪声等非内容材料；
       audit 34 数据集全绿、fidelity 586 抽样全绿、qa_scan 无残留（2026-08-26）
+- [x] 清洗程序收尾：精确逐字节覆盖率终验（lilly 99.9% / tetrabiblos 99% /
+      robson 100% / sepharial 97.8% / kunz 97.5% / leo ≈95.6%，剩余均为题页/
+      广告/扫描噪声）；Leo 日月段终点锚点稳健化（v5）+ Robson 卷首导论补挖；
+      audit 36 数据集全绿、fidelity 596 抽样全绿、qa_scan 无残留（2026-08-26）
 - [ ] 对齐 v2：小牌逐张人工对齐 + 语义相似度评分
 - [ ] fixed_stars v3：与现代星表交叉补齐黄经与星座（候选方案：HYG database RA/Dec + 岁差计算至 J1923 黄经；注意 HYG 为 CC BY-SA，衍生数据需同许可）
 - [ ] 站点 corpus.ts 语义层接入研究层 v2 引用（lilly 逐座/leo 百条格言/kunz 十二月表）
