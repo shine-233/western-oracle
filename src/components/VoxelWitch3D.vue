@@ -398,6 +398,8 @@ function animate(): void {
     if (jumpVel < 0) jumpVel = Math.max(jumpVel, -0.3)
     jumpOffset = Math.max(0, jumpOffset + jumpVel)
     witchGroup.position.y = Math.sin(t * 1.4) * 0.22 + jumpOffset
+    witchGroup.scale.y = 1 + Math.sin(t * 2) * 0.012
+    witchGroup.rotation.z = Math.sin(t * 0.7) * 0.015
   }
   if (starField) starField.rotation.y = t * 0.12
   if (moon) {

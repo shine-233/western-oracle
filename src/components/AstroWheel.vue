@@ -200,6 +200,8 @@ function toggleSelect(name: string | undefined): void {
 }
 
 const selInfo = computed(() => {
+  // 悬停/聚焦相位线：桌面 hover 预览含义
+  if (hoverAspect.value) return hoverAspect.value
   // 点了相位线：直接显示这条相位的含义（移动端无 hover 的兜底）
   if (tappedAspect.value) return tappedAspect.value
   if (!selected.value) return ''
