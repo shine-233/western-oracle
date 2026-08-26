@@ -14,6 +14,7 @@ import { witchVoxels } from '../data/witchSprite'
 import { sfx } from '../lib/sfx'
 import { t } from '../lib/i18n'
 import { themeVar, onThemeChange } from '../lib/themeColors'
+import { isLowPower } from '../lib/perf'
 
 const container = ref<HTMLDivElement | null>(null)
 const hint = ref(true)
@@ -126,6 +127,7 @@ function showMood(text: string): void {
 }
 
 function build(): void {
+  const low = isLowPower()
   const el = container.value
   if (!el) return
 
@@ -135,8 +137,14 @@ function build(): void {
   camera = new THREE.PerspectiveCamera(42, el.clientWidth / el.clientHeight, 0.1, 100)
   camera.position.set(0, 0.8, 14.5)
 
+  /** 低性能档：小屏 / 低核数 / 减少动效 → 降低像素比与星尘数量 */
+  const low =
+    window.matchMedia('(max-width: 700px)').matches ||
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+    (navigator.hardwareConcurrency ?? 8) <= 4
+
   renderer = new THREE.WebGLRenderer({ antialias: true })
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, low ? 1.5 : 2))
   renderer.setSize(el.clientWidth, el.clientHeight)
   el.appendChild(renderer.domElement)
 
@@ -184,7 +192,7 @@ function build(): void {
   scene.add(witchGroup)
 
   // ---- 环绕星尘 ----
-  const starCount = 90
+  const starCount = low ? 40 : 90
   const positions = new Float32Array(starCount * 3)
   for (let i = 0; i < starCount; i++) {
     const angle = Math.random() * Math.PI * 2
@@ -222,7 +230,7 @@ function build(): void {
     const bloom = new UnrealBloomPass(new THREE.Vector2(el.clientWidth, el.clientHeight), 0.5, 0.65, 0.78)
     composer.addPass(bloom)
     composer.addPass(new OutputPass())
-    composer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    composer.setPixelRatio(Math.min(window.devicePixelRatio, low ? 1.5 : 2))
     composer.setSize(el.clientWidth, el.clientHeight)
   }
 
@@ -437,7 +445,8 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 380px;
   cursor: grab;
-  touch-action: none;
+  /* pan-y：竖向滑动交还给页面滚动，横向拖转吉祥物仍由指针事件处理（移动端滚动锁死修复） */
+  touch-action: pan-y;
   border: 3px solid color-mix(in srgb, var(--lavender) 35%, transparent);
   image-rendering: pixelated;
 }
