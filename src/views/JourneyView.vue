@@ -11,6 +11,7 @@ import { locale } from '../lib/i18n'
 import { sfx } from '../lib/sfx'
 import { sparkleFromEvent } from '../lib/sparkle'
 import { cardImageUrl } from '../data/tarot'
+import { addHistory } from '../lib/history'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
 interface Stage {
@@ -67,6 +68,7 @@ const spacerHeight = `${stageCount * VH_PER_STAGE}vh`
 
 const progress = ref(0)          // 0..1 总进度
 const stageIdx = ref(0)          // 当前章
+let journeyLogged = false        // 抵达终章只入账一次
 const stageFrac = ref(0)         // 章内进度 0..1
 let ticking = false
 
@@ -83,6 +85,17 @@ function onScroll(): void {
     const raw = progress.value * stageCount
     stageIdx.value = Math.min(stageCount - 1, Math.floor(raw))
     stageFrac.value = raw - stageIdx.value
+    // 走到「世界」终点：入账一次旅程（每次会话只记一次）
+    if (stageIdx.value === stageCount - 1 && !journeyLogged) {
+      journeyLogged = true
+      addHistory({
+        type: 'journey',
+        label: locale.value === 'zh' ? '愚人之旅' : 'The Fool\'s Journey',
+        summary: locale.value === 'zh'
+          ? `走完 ${stageCount} 张大阿卡纳的旅程，抵达「${STAGES[stageCount - 1]!.zh}」`
+          : `Completed all ${stageCount} majors and arrived at "${STAGES[stageCount - 1]!.en}"`,
+      })
+    }
     ticking = false
   })
 }

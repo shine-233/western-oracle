@@ -17,6 +17,8 @@ export type HistoryType =
   | 'arcade'
   | 'moonbreath'
   | 'biorhythm'
+  | 'gesture'
+  | 'journey'
 
 export interface HistoryEntry {
   id: string
@@ -75,4 +77,6 @@ export const TYPE_META: Record<HistoryType, { cn: string; glyph: string; color: 
   arcade: { cn: '神签', glyph: '🎲', color: '#ffe3a8' },
   moonbreath: { cn: '呼吸', glyph: '🌕', color: '#b3a6f7' },
   biorhythm: { cn: '节律', glyph: '📈', color: '#7db8ff' },
+  gesture: { cn: '手势', glyph: '🖐', color: '#ff9fce' },
+  journey: { cn: '旅程', glyph: '🜁', color: '#f5c86e' },
 }

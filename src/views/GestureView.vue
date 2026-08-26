@@ -10,6 +10,7 @@ import { computed, onBeforeUnmount, ref } from 'vue'
 import { MAJOR_ARCANA, cardImageUrl } from '../data/tarot'
 import { L } from '../data/oracleArcade'
 import { sfx } from '../lib/sfx'
+import { addHistory } from '../lib/history'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
 type Mode = 'idle' | 'loading' | 'hand' | 'mouse'
@@ -74,6 +75,13 @@ function grabCard(idx: number): void {
   charge.value = 0
   aimed.value = -1
   sfx.ding()
+  if (cards.value.every((x) => x.drawn)) {
+    addHistory({
+      type: 'gesture',
+      label: L(['隔空抽牌 · 三牌', 'Air-draw · Three cards']),
+      summary: cards.value.map((x) => x.nameCn).join(' / '),
+    })
+  }
 }
 
 /* ---------- 摄像头 + MediaPipe ---------- */
