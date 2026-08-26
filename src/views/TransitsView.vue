@@ -196,7 +196,6 @@ const aiContext = (): string => {
       </section>
 
       <MascotCard ref="pet" id="comet" />
-      <MascotCard ref="pet" id="comet" />
       <AiChat :context="aiContext()" :title="t('ai.tr.title')" :intro="t('ai.tr.intro')" />
     </template>
   </div>

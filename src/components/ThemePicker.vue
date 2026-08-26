@@ -26,8 +26,8 @@ function pick(t: OracleTheme, e: MouseEvent): void {
     <p class="hint" style="margin: 0 0 14px;">
       {{
         locale === 'zh'
-          ? '八套完整皮肤，配色、质感、明暗各自统一。选择即刻生效并记住。'
-          : 'Eight complete skins — each internally consistent in palette, texture and mood. Applies instantly and is remembered.'
+          ? '十一套完整皮肤，配色、质感、明暗各自统一。选择即刻生效并记住。'
+          : 'Eleven complete skins — each internally consistent in palette, texture and mood. Applies instantly and is remembered.'
       }}
     </p>
     <div class="theme-grid">

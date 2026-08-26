@@ -5,6 +5,7 @@ import PixelWitch from './components/PixelWitch.vue'
 import { isSoundOn, toggleSound, sfx } from './lib/sfx'
 import { t, toggleLocale, locale } from './lib/i18n'
 import { tt } from './lib/i18nExtra'
+import { vtActive } from './lib/viewTrans'
 
 const soundOn = ref(isSoundOn())
 
@@ -177,7 +178,7 @@ onBeforeUnmount(() => {
 
   <main>
     <RouterView v-slot="{ Component }">
-      <Transition name="page">
+      <Transition :name="vtActive ? 'vt-off' : 'page'">
         <component :is="Component" :key="$route.fullPath" />
       </Transition>
     </RouterView>

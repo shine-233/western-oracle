@@ -11,7 +11,9 @@ import { installOverlays } from './lib/overlays'
 import { initThemes } from './lib/themes'
 import { installMotionGlobal } from './lib/motionGlobal'
 import { installReactPopups } from './lib/reactPopups'
+import { installViewTransitions } from './lib/viewTrans'
 
+installViewTransitions(router)
 const app = createApp(App).use(router)
 app.directive('reveal', vReveal)
 app.directive('magnetic', vMagnetic)

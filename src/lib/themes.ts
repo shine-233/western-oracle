@@ -242,6 +242,105 @@ export const THEMES: OracleTheme[] = [
 `,
   },
   {
+    id: 'hanafuda',
+    nameZh: '花札夜话',
+    nameEn: 'Hanafuda Nights',
+    descZh: '靛蓝纸面与朱红短册，牌桌上的一盏纸灯笼。',
+    descEn: 'Indigo paper and vermilion ribbons — a paper lantern over the card table.',
+    swatch: ['#1a2247', '#e8513f', '#d9b24a'],
+    vars: {
+      '--void-0': '#131a38',
+      '--void-1': '#1a2247',
+      '--void-2': '#232c56',
+      '--void-3': '#2e3968',
+      '--gold': '#e0a63f',
+      '--gold-bright': '#f2c96b',
+      '--pink': '#e8513f',
+      '--pink-soft': '#ef6f5e',
+      '--mint': '#5a9367',
+      '--lavender': '#7f86c2',
+      '--lavender-soft': '#a5aad6',
+      '--ink': '#f3ead8',
+      '--ink-dim': '#a49cc0',
+      '--danger': '#d84a35',
+    },
+    extras: `
+[data-theme='hanafuda'] body {
+  background:
+    radial-gradient(900px 460px at 78% 8%, rgba(232, 81, 63, 0.12), transparent 55%),
+    linear-gradient(172deg, #20294f 0%, #131a38 68%, #0d1229 100%) !important;
+}
+[data-theme='hanafuda'] .starfield { filter: sepia(0.25) hue-rotate(-10deg); }
+`,
+  },
+  {
+    id: 'goth',
+    nameZh: '玫瑰哥特',
+    nameEn: 'Gothic Rose',
+    descZh: '黑曜石教堂里的银烛台与血色玫瑰。',
+    descEn: 'Silver candlesticks and blood roses in an obsidian chapel.',
+    swatch: ['#190d16', '#b3203c', '#b8b3c4'],
+    vars: {
+      '--void-0': '#12090f',
+      '--void-1': '#190d16',
+      '--void-2': '#23121f',
+      '--void-3': '#301828',
+      '--gold': '#b8b3c4',
+      '--gold-bright': '#d6d2e0',
+      '--pink': '#b3203c',
+      '--pink-soft': '#cf4560',
+      '--mint': '#6e8f7c',
+      '--lavender': '#8a6f9e',
+      '--lavender-soft': '#ad95bd',
+      '--ink': '#efe6ee',
+      '--ink-dim': '#a08ea0',
+      '--danger': '#d44848',
+    },
+    extras: `
+[data-theme='goth'] body {
+  background:
+    radial-gradient(1000px 520px at 50% -10%, rgba(179, 32, 60, 0.14), transparent 58%),
+    radial-gradient(700px 380px at 88% 80%, rgba(184, 179, 196, 0.07), transparent 60%),
+    linear-gradient(175deg, #1d1019 0%, #12090f 70%, #0a060a 100%) !important;
+}
+[data-theme='goth'] .starfield { filter: saturate(0.7) brightness(0.92); }
+`,
+  },
+  {
+    id: 'abyss',
+    nameZh: '深海遗城',
+    nameEn: 'Abyssal Ruins',
+    descZh: '沉入海底的星图神殿，发光的水母提灯游过窗前。',
+    descEn: 'A drowned star-temple; bioluminescent jelly-lanterns drift past the window.',
+    swatch: ['#06202e', '#37d3c0', '#ff7e6b'],
+    vars: {
+      '--void-0': '#04141f',
+      '--void-1': '#06202e',
+      '--void-2': '#0a2d40',
+      '--void-3': '#0e3a52',
+      '--gold': '#37d3c0',
+      '--gold-bright': '#7ceee0',
+      '--pink': '#ff7e6b',
+      '--pink-soft': '#ff9f8f',
+      '--mint': '#4de3c2',
+      '--lavender': '#6fb3d9',
+      '--lavender-soft': '#9fd0e8',
+      '--ink': '#e4f6f4',
+      '--ink-dim': '#8ab0bd',
+      '--danger': '#ff6b5e',
+    },
+    extras: `
+[data-theme='abyss'] body {
+  background:
+    radial-gradient(900px 480px at 20% 10%, rgba(55, 211, 192, 0.14), transparent 55%),
+    radial-gradient(800px 420px at 82% 30%, rgba(255, 126, 107, 0.09), transparent 58%),
+    linear-gradient(176deg, #07293a 0%, #04141f 72%, #020b12 100%) !important;
+}
+[data-theme='abyss'] .starfield { filter: hue-rotate(140deg) brightness(1.05); }
+[data-theme='abyss'] ::selection { background: rgba(255, 126, 107, 0.5); }
+`,
+  },
+  {
     id: 'jade',
     nameZh: '翡翠秘教',
     nameEn: 'Emerald Arcanum',
@@ -311,6 +410,18 @@ export function setTheme(id: string): void {
     delete document.documentElement.dataset.theme
   } else {
     document.documentElement.dataset.theme = theme.id
+  }
+  // PWA 浏览器状态栏跟随皮肤底色
+  try {
+    let meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')
+    if (!meta) {
+      meta = document.createElement('meta')
+      meta.name = 'theme-color'
+      document.head.appendChild(meta)
+    }
+    meta.content = theme.vars['--void-1'] ?? '#151232'
+  } catch {
+    /* noop */
   }
   try {
     localStorage.setItem(STORAGE_KEY, theme.id)

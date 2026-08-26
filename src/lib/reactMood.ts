@@ -30,4 +30,5 @@ export const MODULE_APPRENTICE: Record<string, string> = {
   arcade: 'cat',
   musicbox: 'numi',
   biorhythm: 'numi',
+  meihua: 'golem',
 }
