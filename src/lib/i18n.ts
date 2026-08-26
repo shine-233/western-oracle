@@ -56,6 +56,7 @@ const messages: Record<string, Pair> = {
   'nav.orrery': ['天象仪', 'Orrery'],
   'nav.moonbreath': ['呼吸房', 'Breath'],
   'nav.biorhythm': ['节律', 'Biorhythm'],
+  'nav.meihua': ['梅花易数', 'Plum Blossom'],
   'nav.history': ['历史', 'Grimoire'],
   'nav.settings': ['设置', 'Settings'],
   'app.soundOff': ['关闭音效', 'Mute'],
@@ -122,6 +123,7 @@ const messages: Record<string, Pair> = {
   'mod.orrery.desc': ['真实天文历算驱动的太阳系轨道仪：加速时间，点行星看今日星座。', 'A real-ephemeris solar system: fast-forward time, tap planets for today\'s signs.'],
   'mod.moonbreath.desc': ['跟着今夜月相做 4-4-6 呼吸：星环随呼吸胀缩，三轮点亮满天小星星。', 'Breathe 4-4-6 with tonight\'s moon: the ring swells and shrinks; stars light per round.'],
   'mod.biorhythm.desc': ['体力/情绪/智力三条节律波：拖动时间轴，找你的高峰日和临界日。', 'Body/mood/mind waves over 23/28/33 days: scrub the timeline for peaks and critical days.'],
+  'mod.meihua.desc': ['梅花易数：心中浮现一个数，配上出生年月日时，六爻逐条起卦给你看。', 'Plum Blossom numerology: one surfaced number plus your birth time, six lines cast live.'],
   'mod.history.desc': ['每一次占卜都被记进魔法书，随时回看、生成星空分享图。', 'Every reading logged in your grimoire — revisit anytime, export starry share cards.'],
 
   /* ---------- 塔罗 ---------- */

@@ -40,13 +40,6 @@ watch(keyword, (kw) => {
   if (!millerRequested && kw.trim().length >= 2) void loadMiller()
 })
 
-const millerMatches = computed<MillerEntry[]>(() => {
-  const kw = keyword.value.trim().toLowerCase()
-  if (!miller.value || kw.length < 2) return []
-  const hits = miller.value.filter((e) => e.term.toLowerCase().includes(kw))
-  return hits.slice(0, 12)
-})
-
 const filtered = computed(() => {
   const list = searchDreams(keyword.value)
   if (category.value === 'all') return list

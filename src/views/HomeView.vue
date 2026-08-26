@@ -44,6 +44,7 @@ const modules = [
   { to: '/orrery', glyph: '🪐', title: 'nav.orrery', desc: 'mod.orrery.desc' },
   { to: '/moonbreath', glyph: '🌕', title: 'nav.moonbreath', desc: 'mod.moonbreath.desc' },
   { to: '/biorhythm', glyph: '📈', title: 'nav.biorhythm', desc: 'mod.biorhythm.desc' },
+  { to: '/meihua', glyph: '☯', title: 'nav.meihua', desc: 'mod.meihua.desc' },
   { to: '/history', glyph: '📜', title: 'nav.history', desc: 'mod.history.desc' },
 ]
 

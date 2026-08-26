@@ -146,9 +146,6 @@ function glyphPos(i: number): { x: number; y: number } {
   return { x, y }
 }
 
-/* ---------- 当前时辰进度弧：显示这段行星时还剩多少 ---------- */
-const ARC_R = 163
-
 /** 当前时辰已流逝比例 0-1（无当前时辰返回 null） */
 const hourElapsed = computed(() => {
   const h = currentH.value
@@ -157,13 +154,6 @@ const hourElapsed = computed(() => {
   const gone = nowTick.value - h.start.getTime()
   return Math.min(1, Math.max(0, gone / total))
 })
-
-function arcPath(fromDeg: number, toDeg: number): string {
-  const large = toDeg - fromDeg > 180 ? 1 : 0
-  const [sx, sy] = pol(ARC_R, fromDeg)
-  const [ex, ey] = pol(ARC_R, toDeg)
-  return `M${sx.toFixed(1)},${sy.toFixed(1)} A${ARC_R},${ARC_R} 0 ${large} 1 ${ex.toFixed(1)},${ey.toFixed(1)}`
-}
 
 const progressArc = computed(() => {
   const h = currentH.value
