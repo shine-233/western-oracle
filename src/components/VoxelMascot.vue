@@ -544,6 +544,10 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', onResize)
   if (moodTimer !== null) window.clearTimeout(moodTimer)
   if (idleTimer !== null) window.clearTimeout(idleTimer)
+  if (chatterTimer !== null) window.clearInterval(chatterTimer)
+  chatterTimer = null
+  themeWatcher?.disconnect()
+  themeWatcher = null
   for (const b of bursts) {
     b.points.geometry.dispose()
     ;(b.points.material as THREE.PointsMaterial).dispose()

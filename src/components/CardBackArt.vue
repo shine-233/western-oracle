@@ -82,6 +82,27 @@ const STAR_GATE: Design = {
 
 const DESIGNS = [MOON_WITCH, COSMIC_EYE, STAR_GATE]
 
+/**
+ * 主题 → 牌背显式分配：按气质语义匹配且三款均衡（4/5/5）。
+ * 未登记的未来主题自动落哈希兜底。
+ */
+const BACK_BY_THEME: Record<string, number> = {
+  midnight: 0, // 经典紫金夜空配望月巫女
+  dunhuang: 0,
+  jade: 0,
+  noir: 0, // 黑金塔罗配经典牌背
+  inkpaper: 1, // 宣纸禅意配窥视之眼
+  cyber: 1, // 赛博监控之眼
+  goth: 1, // 哥特配窥视之眼
+  aegean: 1, // 海洋文明的荷鲁斯之眼
+  brass: 1, // 黄铜齿轮之眼
+  candy: 2,
+  aurora: 2, // 极光之门
+  hanafuda: 2,
+  abyss: 2,
+  sakura: 2, // 夜樱配星芒之门
+}
+
 const themeId = ref('')
 let observer: MutationObserver | null = null
 
@@ -103,7 +124,11 @@ function hashIdx(id: string): number {
   return h % DESIGNS.length
 }
 
-const design = computed<Design>(() => DESIGNS[hashIdx(themeId.value)]!)
+function pickDesign(id: string): number {
+  return BACK_BY_THEME[id] ?? hashIdx(id)
+}
+
+const design = computed<Design>(() => DESIGNS[pickDesign(themeId.value)]!)
 
 interface Cell {
   x: number

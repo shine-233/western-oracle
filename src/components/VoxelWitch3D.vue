@@ -384,6 +384,8 @@ onBeforeUnmount(() => {
   cancelAnimationFrame(raf)
   window.removeEventListener('resize', onResize)
   if (moodTimer !== null) window.clearTimeout(moodTimer)
+  themeWatcher?.disconnect()
+  themeWatcher = null
   for (const b of bursts) {
     b.points.geometry.dispose()
     ;(b.points.material as THREE.PointsMaterial).dispose()

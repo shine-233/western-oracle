@@ -196,4 +196,32 @@ export const APPRENTICES: ApprenticeProfile[] = [
       oops: { zh: '（彗尾暗了一下）流星雨也有间歇期。蹲一会儿，再起飞。', en: '(tail dims) Even meteor showers pause. Crouch a bit, then lift off again.' },
     },
   },
+  {
+    id: 'mist',
+    glyph: '🔮',
+    color: '#b3a6f7',
+    nameZh: '雾语',
+    nameEn: 'Mist',
+    roleZh: '雾语占卜师 · 抱着水晶球的那位',
+    roleEn: 'Mist Speaker · The one with the orb',
+    traitZh: '说话前先看球；球没动静，就不剧透。',
+    traitEn: 'Checks the orb before speaking. No swirl, no spoilers.',
+    storyZh:
+      '从一场三天都没散的晨雾里走出来，怀里抱着一颗会起雾的水晶球——球里住着"明天的回声"，她只负责转述。露娜遇见她的那天在雾里递了一杯热茶，她喝完就把家安在了小屋门廊，说那里"雾的浓度刚好适合听答案"。问什么她都先闭眼三秒：不是摆架子，是在等球把话说完。',
+    storyEn:
+      'She walked out of a morning fog that refused to lift for three days, holding an orb that mists on command — inside lives "tomorrow\'s echo," and she merely relays it. Luna met her by handing her a cup of hot tea in that same fog. She finished the tea, then settled on the cabin porch: "the mist density here is perfect for listening." She closes her eyes for three seconds before every answer — not attitude; she\'s waiting for the orb to finish talking.',
+    catchZh: '球说了。但今天它想让你自己猜。',
+    catchEn: 'The orb spoke. Today, though, it wants you to guess.',
+    bonds: [
+      { who: '露娜', zh: '那杯茶是雾里唯一暖的东西。我留下了。', en: 'That tea was the only warm thing in the fog. So I stayed.' },
+      { who: 'Runa', zh: '石头朋友不会起雾。聊天很清楚。', en: 'Stone friends never fog up. Conversations stay clear.' },
+      { who: 'Numi', zh: '她想把雾约减成水。球表示抗议。', en: 'Numi tried to reduce my fog into water. The orb objects.' },
+    ],
+    moods: {
+      great: { zh: '（球内金光打旋）雾全开了！这是能见度最高的一天！', en: '(gold light swirls inside) Full clarity! Peak visibility day!' },
+      good: { zh: '（球面微微发亮）薄雾。答案就在后面，走两步就到。', en: '(orb glows faintly) Thin mist. The answer is two steps behind it.' },
+      meh: { zh: '（球面蒙上白纱）今天的信号要慢慢来。急不得。', en: '(white veil over the orb) Weak signal today. No rushing it.' },
+      oops: { zh: '（把球搂进怀里）浓雾不是坏消息，是消息还没到站。', en: '(hugs the orb tight) Thick fog isn\'t bad news — the message just hasn\'t arrived.' },
+    },
+  },
 ]

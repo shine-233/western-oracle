@@ -410,6 +410,14 @@ const messages: Record<string, Pair> = {
   'pet.comet.cheer': ['今日天象已更新！出发！', 'Today\'s sky updated! Let\'s go!'],
   'pet.comet.tip1': ['Comet说：行运是天气，本命盘是气候；出门看天，安家看气候。', 'Comet: transits are weather, charts are climate — dress daily, build wisely.'],
   'pet.comet.tip2': ['Comet说：水逆不可怕，可怕的是把锅全甩给水星。', 'Comet: Mercury retrograde is fine — blaming Mercury for everything is not.'],
+  'pet.title.mist': ['雾语占卜师 · Mist', 'Mist Speaker · Mist'],
+  'pet.mist.jump': ['（抱紧水晶球跳起）球里的星星都在晃！', '(hugs the orb mid-hop) The stars inside are wobbling!'],
+  'pet.mist.spin': ['转圈时雾会散开一秒——别眨眼。', 'The mist clears for one second when I spin. Don\'t blink.'],
+  'pet.mist.wink': ['（隔着水晶球对你眨眼）双筒望远镜效果。', '(winks through the orb) Free telescopic effect.'],
+  'pet.mist.shy': ['（把脸埋到球后面）球说今天不营业……我说了不算。', '(hides behind the orb) The orb says closed today… I just relay.'],
+  'pet.mist.cheer': ['雾散了！答案比想象中清晰！', 'The fog lifted! The answer is clearer than feared!'],
+  'pet.mist.tip1': ['Mist说：问题越模糊，雾就越浓；先把自己问明白。', 'Mist: the vaguer the question, the thicker the fog — ask yourself first.'],
+  'pet.mist.tip2': ['Mist说：水晶球不生产答案，它只是让答案提前到货。', 'Mist: the orb doesn\'t make answers; it just delivers them early.'],
 
   /* ---------- 今日星历 ---------- */
   'alm.title': ['今日星历', 'Daily Almanac'],
