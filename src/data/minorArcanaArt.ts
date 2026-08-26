@@ -129,6 +129,14 @@ const KING: string[] = [
 
 const COURT_TEMPLATE: Record<string, string[]> = { page: PAGE, knight: KNIGHT, queen: QUEEN, king: KING }
 
+/* ---------- 花色纹章（宫廷牌头顶冠饰，四花色形状各异） ---------- */
+const SUIT_CREST: Record<MinorSuit, string[]> = {
+  wands: ['..F..', '.FFF.', '..F..'], // 火羽冠
+  cups: ['U.U.', '.UU.'], // 水滴冠
+  swords: ['I...I', '.III.', '..I..'], // 翼状冕
+  pentacles: ['.AAA.', 'AA.AA'], // 钱环冠
+}
+
 /* ---------- 花色场景背景（稀疏行装饰） ---------- */
 const BACKDROP: Record<MinorSuit, Array<[number, string]>> = {
   wands: [
@@ -186,10 +194,12 @@ function buildCourt(suit: MinorSuit, rank: string): string[] {
   const canvas: string[] = Array.from({ length: Math.max(body.length + 2, 14) }, () => '')
   // 场景点缀
   for (const [y, row] of BACKDROP[suit].slice(0, 2)) stamp(canvas, [row], 0, y)
-  stamp(canvas, body, 0, 0)
-  // 手持花色信物（人物右下）
+  stamp(canvas, body, 0, 1)
+  // 花色纹章：冠部装饰（每花色形状不同）
   const w = Math.max(...body.map((r) => r.length))
-  stamp(canvas, SUIT_SPRITE[suit], w + 1, Math.max(2, body.length - SUIT_SPRITE[suit].length - 1))
+  stamp(canvas, SUIT_CREST[suit], Math.max(0, Math.floor(w / 2) - 2), 0)
+  // 手持花色信物（人物右下）
+  stamp(canvas, SUIT_SPRITE[suit], w + 1, Math.max(2, canvas.length - SUIT_SPRITE[suit].length - 1))
   return canvas
 }
 
