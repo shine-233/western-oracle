@@ -21,6 +21,7 @@ import { loadJSON, saveJSON } from '../lib/storage'
 import CardBackArt from '../components/CardBackArt.vue'
 import DecryptTitle from '../components/DecryptTitle.vue'
 import PhysicsTable from '../components/PhysicsTable.vue'
+import MemoryFlash from '../components/MemoryFlash.vue'
 
 type Tab = 'dice' | 'wheel' | 'sortition' | 'memory'
 const tab = ref<Tab>('dice')
@@ -387,6 +388,10 @@ function flipMem(idx: number, e?: MouseEvent): void {
     <section v-reveal class="panel arcade-panel" style="margin-top: 18px;">
       <h3 style="margin: 0 0 12px; font-family: var(--cute); color: var(--gold-bright); font-weight: 400;">🃏 {{ L(['自由牌桌 · 抓牌解压', 'Free Table · Grab & Fling']) }}</h3>
       <PhysicsTable />
+    </section>
+    <section v-reveal class="panel arcade-panel" style="margin-top: 18px;">
+      <h3 style="margin: 0 0 12px; font-family: var(--cute); color: var(--gold-bright); font-weight: 400;">⚡ {{ L(['记忆闪回 · 四十秒挑战', 'Memory Flash · 40-Second Dash']) }}</h3>
+      <MemoryFlash />
     </section>
     <ApprenticeReact module="arcade" :score="wheelResult !== null ? 85 : 65" />
 </template>

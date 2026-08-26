@@ -207,7 +207,7 @@ function build(): void {
   const COLS = Math.max(...def.sprite.map((r) => r.length))
   const ROWS = def.sprite.length
   const S = Math.min(0.62, 8 / Math.max(COLS, ROWS))
-    const SUB = low ? 2 : 3
+    const SUB = low ? 2 : 4 // 高配 4×4/像素 ≈ 68-92 列网格
   const s2 = S / SUB
   const geo = new THREE.BoxGeometry(s2, s2, S)
 
@@ -217,6 +217,13 @@ function build(): void {
   const m = new THREE.Matrix4()
   const color = new THREE.Color()
 
+  const filled = new Set(voxels.map((v) => `${v.x},${v.y}`))
+  const outlineColor = themeVar('--void-0', '#151232')
+  const hashN = (a: number, b: number): number => {
+    let h = (a * 374761393 + b * 668265263) >>> 0
+    h = (h ^ (h >>> 13)) * 1274126177
+    return ((h ^ (h >>> 16)) >>> 0) / 4294967295
+  }
   let idx = 0
   voxels.forEach((v) => {
     for (let sx = 0; sx < SUB; sx++) {
@@ -226,9 +233,18 @@ function build(): void {
         for (let layer = 0; layer < 2; layer++) {
           m.setPosition(px, py, (layer - 0.5) * S * 1.1)
           mesh.setMatrixAt(idx, m)
-          // 同色像素内的微差明暗 → 观感分辨率显著提升
-          const jitter = v.isEye ? 1 : 0.93 + ((sx * 5 + sy * 3 + layer * 2) % 6) * 0.018
-          mesh.setColorAt(idx, color.set(v.color).multiplyScalar((layer === 0 ? 1 : 0.72) * jitter))
+          // 邻空描边：轮廓利落；内部哈希噪声打破色块感
+          const onEdge =
+            (sx === 0 && !filled.has(`${v.x - 1},${v.y}`)) ||
+            (sx === SUB - 1 && !filled.has(`${v.x + 1},${v.y}`)) ||
+            (sy === 0 && !filled.has(`${v.x},${v.y - 1}`)) ||
+            (sy === SUB - 1 && !filled.has(`${v.x},${v.y + 1}`))
+          if (onEdge && !v.isEye) {
+            mesh.setColorAt(idx, color.set(outlineColor))
+          } else {
+            const jitter = v.isEye ? 1 : 0.94 + hashN(v.x * SUB + sx, v.y * SUB + sy) * 0.12
+            mesh.setColorAt(idx, color.set(v.color).multiplyScalar((layer === 0 ? 1 : 0.74) * jitter))
+          }
           if (v.isEye && layer === 0) {
             eyeIndices.push(idx)
             eyeBaseY.push(py)

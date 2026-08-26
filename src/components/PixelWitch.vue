@@ -375,6 +375,6 @@ onBeforeUnmount(() => {
 @media (max-width: 600px) {
   .witch-corner { right: 8px; bottom: 8px; }
   .witch-sprite { width: 118px; height: auto; }
-  .speech-bubble { max-width: 190px; font-size: 0.85rem; }
+  .speech-bubble { max-width: min(172px, 52vw); font-size: 0.8rem; padding: 9px 12px; }
 }
 </style>

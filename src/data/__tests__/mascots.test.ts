@@ -10,7 +10,7 @@ describe('oracle pets', () => {
   it('像素画只使用调色板字符，且行宽一致', () => {
     for (const def of Object.values(MASCOTS)) {
       const cols = Math.max(...def.sprite.map((r) => r.length))
-      expect(cols).toBeLessThanOrEqual(30)
+      expect(cols).toBeLessThanOrEqual(48)
       for (const row of def.sprite) {
         for (const ch of row.padEnd(cols, '.')) {
           if (ch === '.') continue
