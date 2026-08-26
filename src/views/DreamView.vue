@@ -10,8 +10,10 @@ import {
 } from '../data/dreams'
 import { locale } from '../lib/i18n'
 import { loadJSON, saveJSON } from '../lib/storage'
+import { addHistory } from '../lib/history'
 import { sparkleFromEvent } from '../lib/sparkle'
 import { sfx } from '../lib/sfx'
+import ApprenticeReact from '../components/ApprenticeReact.vue'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
 const zh = computed(() => locale.value === 'zh')
@@ -135,7 +137,20 @@ function saveReading(): void {
   journal.value = [entry, ...journal.value].slice(0, 50)
   saveJSON(JOURNAL_KEY, journal.value)
   sfx.ding()
+  // 同步进占卜历史 + 触发学徒现场点评（梦的信号越积极，学徒越开心）
+  const vibeScore: Record<string, number> = { growth: 88, love: 80, wealth: 66, change: 58, rest: 62, warning: 38 }
+  addHistory({
+    type: 'dream',
+    label: zh.value ? '解梦 · 组合解读' : 'Dream · Blend',
+    summary: entry.items.join(' × '),
+    detail: reading.value,
+  })
+  dreamScore.value = Math.round(picked.value.reduce((s, p) => s + (vibeScore[p.vibe] ?? 55), 0) / picked.value.length)
+  savedOnce.value = true
 }
+
+const dreamScore = ref(60)
+const savedOnce = ref(false)
 
 function removeJournal(i: number): void {
   journal.value.splice(i, 1)
@@ -191,6 +206,7 @@ function removeJournal(i: number): void {
       <Transition name="pop">
         <pre v-if="reading" class="reading mixer-reading">{{ reading }}</pre>
       </Transition>
+      <ApprenticeReact v-if="savedOnce" module="dream" :score="dreamScore" />
     </section>
 
     <!-- 解梦手账 -->

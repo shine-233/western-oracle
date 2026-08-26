@@ -7,6 +7,10 @@
  */
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import * as THREE from 'three'
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
+import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js'
 import { MASCOTS, mascotVoxels } from '../data/mascots'
 import { sfx } from '../lib/sfx'
 import { t } from '../lib/i18n'
@@ -22,6 +26,7 @@ let camera: THREE.PerspectiveCamera | null = null
 let petGroup: THREE.Group | null = null
 let starField: THREE.Points | null = null
 let satellite: THREE.Mesh | null = null
+let composer: EffectComposer | null = null
 let raf = 0
 let disposed = false
 
@@ -207,6 +212,22 @@ function build(): void {
   glow.position.y = (-ROWS * S) / 2 - 0.35
   scene.add(glow)
 
+  // ---- 辉光后处理（与首页露娜同款，尊重 reduced-motion）----
+  if (!reducedMotion) {
+    composer = new EffectComposer(renderer)
+    composer.addPass(new RenderPass(scene, camera))
+    const bloom = new UnrealBloomPass(
+      new THREE.Vector2(el.clientWidth, el.clientHeight),
+      0.45,
+      0.6,
+      0.8,
+    )
+    composer.addPass(bloom)
+    composer.addPass(new OutputPass())
+    composer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    composer.setSize(el.clientWidth, el.clientHeight)
+  }
+
   nextBlinkAt = clock.getElapsedTime() + 2 + Math.random() * 3
   bindEvents(el)
   animate()
@@ -327,6 +348,7 @@ function onResize(): void {
   camera.aspect = el.clientWidth / Math.max(1, el.clientHeight)
   camera.updateProjectionMatrix()
   renderer.setSize(el.clientWidth, el.clientHeight)
+  composer?.setSize(el.clientWidth, el.clientHeight)
 }
 
 const clock = new THREE.Clock()
@@ -369,7 +391,8 @@ function animate(): void {
   }
   tickBursts(now)
 
-  if (renderer && scene && camera) renderer.render(scene, camera)
+  if (composer) composer.render()
+  else if (renderer && scene && camera) renderer.render(scene, camera)
 }
 
 onMounted(build)
@@ -385,6 +408,7 @@ onBeforeUnmount(() => {
     ;(b.points.material as THREE.PointsMaterial).dispose()
   }
   bursts = []
+  composer?.dispose()
   renderer?.dispose()
   renderer?.domElement.remove()
 })

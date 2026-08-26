@@ -55,6 +55,7 @@ const houseModal = ref<number | null>(null)
 useEscClose(() => {
   signModal.value = null
   houseModal.value = null
+  aspectModal.value = null
   if (expandedPlanet.value) expandedPlanet.value = null
 })
 
@@ -84,9 +85,10 @@ function planetDetail(name: string): string {
   return parts.join('\n\n')
 }
 
-/** 相位一览的悬停/点击含义 */
+/** 相位一览的悬停/点击含义（站内弹窗，Esc 可关） */
+const aspectModal = ref<string | null>(null)
 function showAspect(type: string): void {
-  window.alert(aspectText(type))
+  aspectModal.value = type
   sfx.pop()
 }
 
@@ -491,6 +493,15 @@ export default {}
           <div class="modal-panel panel bounce-in">
             <button class="modal-close btn small ghost" @click="houseModal = null">✕ 关闭</button>
             <pre class="reading sign-full">{{ houseFullText(houseModal!) }}</pre>
+          </div>
+        </div>
+      </Transition>
+      <Transition name="modal">
+        <div v-if="aspectModal !== null" class="modal-backdrop" @click.self="aspectModal = null">
+          <div class="modal-panel panel bounce-in">
+            <button class="modal-close btn small ghost" @click="aspectModal = null">✕ 关闭</button>
+            <span class="dc-label">{{ locale === 'zh' ? '相位含义' : 'Aspect' }} · {{ aspectModal }}</span>
+            <pre class="reading sign-full">{{ aspectText(aspectModal!) }}</pre>
           </div>
         </div>
       </Transition>

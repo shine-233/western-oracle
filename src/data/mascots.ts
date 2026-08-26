@@ -244,6 +244,41 @@ const COMET: MascotDef = {
   ],
 }
 
+/* ---------- 水晶 · 雾语占卜师 Mist：兜帽垂纱，怀里抱一颗发光宝珠 ---------- */
+const MIST: MascotDef = {
+  id: 'mist',
+  nameCn: '雾语占卜师 · Mist',
+  nameEn: 'Mist Speaker · Mist',
+  satelliteColor: '#b3a6f7',
+  glowColor: '#7de8c3',
+  eyeChars: ['E'],
+  sprite: [
+    '...........KK.......',
+    '..........KGWK......',
+    '..........KCCK......',
+    '.........KCCCK......',
+    '........KCCHHK......',
+    '.......KCHHHHK......',
+    '.....KCCHHHHCCK.....',
+    '...KCCHHHHHHHHCCK...',
+    '..KKCCHHHHHHHHCCKK..',
+    '...KCCSSSSSSSSCCK...',
+    '...KCSSSSSSSSSSCK...',
+    '...KCSSESSSSSESGK...',
+    '...KCSSSSSSSSSSCK...',
+    '...KCSBSSSSSSBSCK...',
+    '....KSSSSKKSSSSK....',
+    '.....KWDDDDDDWK.....',
+    '....KSWDWWWGDWSK....',
+    '....KDDWWWWGDDDK....',
+    '.....KDDWWWWDDK.....',
+    '.....KDDKKKKDDK.....',
+    '.....KOOK..KOOK.....',
+    '.....KOOK..KOOK.....',
+    '.....KKKK..KKKK.....',
+  ],
+}
+
 export const MASCOTS: Record<string, MascotDef> = {
   cat: CAT,
   owl: OWL,
@@ -251,6 +286,7 @@ export const MASCOTS: Record<string, MascotDef> = {
   golem: GOLEM,
   twins: TWINS,
   comet: COMET,
+  mist: MIST,
 }
 
 export const MASCOT_IDS = Object.keys(MASCOTS)

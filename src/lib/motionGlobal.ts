@@ -29,8 +29,19 @@ function ensureRevealStyles(): void {
   transform: none;
   transition: opacity .6s cubic-bezier(.22,.61,.36,1), transform .68s cubic-bezier(.34,1.3,.64,1);
 }
+.wo-click-spark {
+  position: fixed; z-index: 9998; pointer-events: none;
+  font-size: .85rem; color: #ffe3a8;
+  text-shadow: 0 0 8px rgba(255,200,110,.9);
+  animation: wo-spark .68s cubic-bezier(.16,.84,.44,1) forwards;
+}
+@keyframes wo-spark {
+  from { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+  to { opacity: 0; transform: translate(calc(-50% + var(--dx,0px)), calc(-50% + var(--dy,-20px))) scale(.35); }
+}
 @media (prefers-reduced-motion: reduce) {
   .wo-auto-reveal { opacity: 1; transform: none; }
+  .wo-click-spark { display: none; }
 }
 `
   document.head.appendChild(tag)
@@ -187,7 +198,7 @@ function installCurtain(): void {
 }
 
 /* ---------- 4. 全站卡片 3D 倾斜（委托版，免指令） ---------- */
-const TILT_SEL = '.oracle-card, .daily-card, .lib-card, .theme-card, .alm-item'
+const TILT_SEL = '.oracle-card, .daily-card, .lib-card, .theme-card, .alm-item, .podium-card'
 const TILT_MAX = 7
 
 function installAutoTilt(): void {
@@ -280,6 +291,36 @@ function installHoverSfx(): void {
   })
 }
 
+/* ---------- 7. 点击星屑爆裂（全站生效，装饰性反馈） ---------- */
+function installClickBurst(): void {
+  if (reducedMotion()) return
+  let last = 0
+  document.addEventListener(
+    'pointerdown',
+    (e) => {
+      if (e.button !== 0) return
+      const now = performance.now()
+      if (now - last < 130) return
+      last = now
+      const N = 7
+      for (let i = 0; i < N; i++) {
+        const s = document.createElement('span')
+        s.className = 'wo-click-spark'
+        s.textContent = Math.random() < 0.5 ? '✧' : '⋆'
+        const ang = (Math.PI * 2 * i) / N + Math.random() * 0.5
+        const dist = 26 + Math.random() * 30
+        s.style.setProperty('--dx', `${(Math.cos(ang) * dist).toFixed(1)}px`)
+        s.style.setProperty('--dy', `${(Math.sin(ang) * dist - 12).toFixed(1)}px`)
+        s.style.left = `${e.clientX}px`
+        s.style.top = `${e.clientY}px`
+        document.body.appendChild(s)
+        window.setTimeout(() => s.remove(), 720)
+      }
+    },
+    { passive: true },
+  )
+}
+
 /** 应用启动时调用一次（main.ts） */
 export function installMotionGlobal(): void {
   if (installed) return
@@ -290,4 +331,5 @@ export function installMotionGlobal(): void {
   installAutoTilt()
   installNavScramble()
   installHoverSfx()
+  installClickBurst()
 }

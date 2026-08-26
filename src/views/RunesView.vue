@@ -158,9 +158,11 @@ watch(allRevealed, (done) => {
         :style="{ animationDelay: `${i * 130}ms` }"
         @click="revealStone(i, $event)"
       >
-        <div class="stone-face" :class="{ flipped: revealedStones[i] }">
-          <span v-if="!revealedStones[i]" class="mystery">✦</span>
-          <span v-else class="glyph">{{ d.rune.glyph }}</span>
+        <div class="stone3d" :class="{ flipped: revealedStones[i] }">
+          <div class="stone-face stone-back"><span class="mystery">✦</span></div>
+          <div class="stone-face stone-front">
+            <span class="glyph">{{ d.rune.glyph }}</span>
+          </div>
         </div>
         <figcaption v-if="revealedStones[i]" class="bounce-in">
           <strong>{{ d.rune.nameCn }}</strong>
@@ -228,10 +230,17 @@ watch(allRevealed, (done) => {
   50% { opacity: 0.65; transform: scale(1.06); }
 }
 .dr-text { flex: 1; }
-.stone-face {
+/* 双面卢恩石：点击绕 Y 轴翻转揭示 */
+.stone3d {
+  position: relative;
   width: 92px;
   height: 108px;
   margin: 0 auto;
+  perspective: 480px;
+}
+.stone-face {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -239,11 +248,18 @@ watch(allRevealed, (done) => {
   background: linear-gradient(160deg, #4a4462, #2a2547);
   box-shadow: inset 0 0 0 3px #2e2650, inset 0 0 0 5px rgba(240, 230, 200, 0.18), 6px 6px 0 rgba(10, 8, 30, 0.6);
   border: 3px solid #2e2650;
+  backface-visibility: hidden;
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-.rune-stone:hover .stone-face { transform: translateY(-5px) rotate(-3deg); }
-.rune-stone.open .stone-face { background: linear-gradient(160deg, #565075, #332d58); }
+.stone-back { transform: rotateY(0deg); }
+.stone-front { transform: rotateY(180deg); background: linear-gradient(160deg, #565075, #332d58); }
+.stone3d.flipped .stone-back { transform: rotateY(-180deg); }
+.stone3d.flipped .stone-front { transform: rotateY(0deg); }
+.stone3d { transform-style: preserve-3d; transition: transform 0.55s cubic-bezier(0.45, 0, 0.3, 1.2); }
+.rune-stone:hover .stone3d:not(.flipped) { transform: translateY(-5px) rotate(-3deg); }
 .glyph { font-size: 2.6rem; color: #f0e6c8; text-shadow: 0 2px 0 rgba(0, 0, 0, 0.6); }
+/* 倒转符文：翻面完成后再整体旋转 180° */
+.rune-stone.rev .stone3d.flipped .glyph { display: inline-block; transform: rotate(180deg); }
 .mystery {
   font-size: 1.8rem;
   color: var(--gold-bright);
@@ -253,12 +269,14 @@ watch(allRevealed, (done) => {
   0%, 100% { opacity: 0.4; transform: scale(0.9); }
   50% { opacity: 1; transform: scale(1.15); }
 }
-.rune-stone.rev .stone-face .glyph { display: inline-block; transform: rotate(180deg); }
 .rune-stone figcaption { margin-top: 12px; }
 .rune-stone strong { color: var(--gold-bright); letter-spacing: 0.08em; }
 .rune-stone small { display: block; color: var(--ink-dim); font-size: 0.78rem; margin: 3px 0 8px; }
 .rune-stone p { font-size: 0.88rem; line-height: 1.75; color: var(--ink); margin: 0; }
 .tap-hint { color: var(--ink-dim); opacity: 0.65; font-size: 0.8rem; }
+@media (prefers-reduced-motion: reduce) {
+  .stone3d, .stone-face { transition: none !important; }
+}
 .poem-wrap {
   margin-top: 10px;
   border: 1.5px dashed color-mix(in srgb, var(--gold) 45%, transparent);

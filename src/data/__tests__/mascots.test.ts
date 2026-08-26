@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest'
 import { MASCOT_IDS, MASCOTS, MASCOT_PALETTE, mascotVoxels } from '../mascots'
 
 describe('oracle pets', () => {
-  it('六只吉祥物 id 唯一', () => {
-    expect(MASCOT_IDS).toHaveLength(6)
-    expect(new Set(MASCOT_IDS).size).toBe(6)
+  it('七只吉祥物 id 唯一', () => {
+    expect(MASCOT_IDS).toHaveLength(7)
+    expect(new Set(MASCOT_IDS).size).toBe(7)
   })
 
   it('像素画只使用调色板字符，且行宽一致', () => {

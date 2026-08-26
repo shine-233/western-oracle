@@ -116,21 +116,32 @@ function spinWheel(e?: MouseEvent): void {
   }, 4200)
 }
 
-/* ---------- 神签 ---------- */
+/* ---------- 德尔斐神签：摇筒 → 三签自选其一 ---------- */
 const shaking = ref(false)
 const slip = ref<OracleSlip | null>(null)
+const pendingLots = ref<OracleSlip[] | null>(null)
+const chosenIdx = ref(-1)
 
 function shakeBox(e?: MouseEvent): void {
   if (shaking.value) return
   slip.value = null
+  chosenIdx.value = -1
   shaking.value = true
   sfx.riffle()
   window.setTimeout(() => {
     shaking.value = false
-    slip.value = drawOracleSlip()
-    sfx.ding()
-    if (e) sparkleFromEvent(e, 10)
+    pendingLots.value = [drawOracleSlip(), drawOracleSlip(), drawOracleSlip()]
+    sfx.pop()
+    if (e) sparkleFromEvent(e, 8)
   }, 900)
+}
+
+function chooseLot(i: number, e: MouseEvent): void {
+  if (!pendingLots.value || chosenIdx.value >= 0) return
+  chosenIdx.value = i
+  slip.value = pendingLots.value[i]!
+  sfx.ding()
+  sparkleFromEvent(e, 12)
 }
 </script>
 
@@ -216,8 +227,26 @@ function shakeBox(e?: MouseEvent): void {
           <span class="omi-hole">{{ L(['摇一摇', 'shake me']) }}</span>
         </div>
       </div>
+
+      <!-- 三签自选：命运给你三支，选择权在你 -->
       <Transition name="pop">
-        <div v-if="slip" class="omi-slip" :class="'rank-' + slip.rank">
+        <div v-if="pendingLots && chosenIdx < 0" class="lot-picks">
+          <button
+            v-for="(_lot, i) in pendingLots"
+            :key="i"
+            class="lot-token"
+            :style="{ '--d': i * 0.09 + 's' }"
+            @click="chooseLot(i, $event)"
+          >
+            <span class="lot-glyph">🏺</span>
+            <small>{{ L(['第' + '一二三'[i] + '签', 'Lot ' + (i + 1)]) }}</small>
+          </button>
+        </div>
+      </Transition>
+      <p v-if="pendingLots && chosenIdx < 0" class="hint" style="text-align: center;">{{ L(['三支神签已落在案上——凭直觉选一支翻开', 'Three lots on the table — trust your gut and flip one']) }}</p>
+
+      <Transition name="pop">
+        <div v-if="slip && chosenIdx >= 0" class="omi-slip" :class="'rank-' + slip.rank">
           <strong class="omi-rank">{{ L(RANK_LABEL[slip.rank]) }}</strong>
           <p class="omi-poem">{{ L([slip.zhPoem, slip.enPoem]) }}</p>
           <p class="omi-advice">{{ L([slip.zhAdvice, slip.enAdvice]) }}</p>
@@ -226,7 +255,7 @@ function shakeBox(e?: MouseEvent): void {
       </Transition>
       <div class="arcade-actions">
         <button class="btn ghost small" @click="shakeBox($event)">
-          {{ slip ? L(['再抽一支', 'Draw another lot']) : L(['抽一支神签', 'Draw a lot']) }}
+          {{ slip ? L(['再摇一次', 'Shake again']) : L(['摇一摇签筒', 'Shake the urn']) }}
         </button>
       </div>
     </section>
@@ -250,6 +279,25 @@ function shakeBox(e?: MouseEvent): void {
 .arcade-tab.active { border-color: var(--gold); color: var(--gold-bright); background: rgba(245, 200, 110, 0.12); }
 
 .arcade-panel { margin-top: 16px; padding: 26px; }
+
+/* ---- 神签：三选一 ---- */
+.lot-picks { display: flex; gap: 18px; justify-content: center; margin: 6px 0 10px; }
+.lot-token {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 16px 20px;
+  background: rgba(13, 11, 32, 0.65);
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  cursor: pointer;
+  color: var(--ink-dim);
+  animation: lot-drop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation-delay: var(--d);
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s;
+}
+.lot-token:hover { transform: translateY(-5px) rotate(-2deg); box-shadow: 0 0 18px rgba(245, 200, 110, 0.4); }
+.lot-glyph { font-size: 1.9rem; filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4)); }
+.lot-token small { font-family: var(--pixel); font-size: 0.48rem; letter-spacing: 0.1em; }
+@keyframes lot-drop { from { opacity: 0; transform: translateY(-22px) rotate(6deg); } }
 
 /* ---- 骰子 ---- */
 .dice-stage { display: flex; gap: 30px; justify-content: center; align-items: center; flex-wrap: wrap; perspective: 700px; }

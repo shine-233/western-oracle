@@ -21,7 +21,7 @@ export const MODULE_APPRENTICE: Record<string, string> = {
   synastry: 'twins',
   transits: 'comet',
   dream: 'cat',
-  crystal: 'numi',
+  crystal: 'mist',
   palmistry: 'golem',
   pendulum: 'twins',
   hours: 'comet',

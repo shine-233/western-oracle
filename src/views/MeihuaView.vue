@@ -1,10 +1,12 @@
 <script setup lang="ts">
 /** 梅花易数：心中数字 × 出生年月日时 起卦。六爻逐条显现，动爻高亮，附完整推演过程。 */
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { TRIGRAMS, HEX, castMeihua, type MeihuaCast } from '../data/meihua'
 import { L } from '../data/oracleArcade'
+import { addHistory } from '../lib/history'
 import { sparkleFromEvent } from '../lib/sparkle'
 import { sfx } from '../lib/sfx'
+import ApprenticeReact from '../components/ApprenticeReact.vue'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
 const question = ref('')
@@ -19,6 +21,22 @@ function canCast(): boolean {
   return picked.value !== '' && !!birthDate.value && birthHour.value !== ''
 }
 
+/* ---------- 摇签筒：晃一晃让数字自己跳出来 ---------- */
+const tubeShaking = ref(false)
+
+function shakeTube(e?: MouseEvent): void {
+  if (tubeShaking.value) return
+  tubeShaking.value = true
+  picked.value = ''
+  sfx.riffle()
+  window.setTimeout(() => {
+    picked.value = 1 + Math.floor(Math.random() * 999)
+    tubeShaking.value = false
+    sfx.ding()
+    if (e) sparkleFromEvent(e, 8)
+  }, 950)
+}
+
 function doCast(e?: MouseEvent): void {
   if (!canCast()) return
   const [y, m, d] = birthDate.value.split('-').map(Number)
@@ -30,6 +48,7 @@ function doCast(e?: MouseEvent): void {
     hour: Number(birthHour.value),
   })
   revealed.value = false
+  recorded.value = false
   sfx.riffle()
   // 六爻自下而上逐条显现，最后亮出断语
   window.setTimeout(() => {
@@ -75,6 +94,35 @@ const changedName = computed(() => {
   return HEX[upT.name]?.[loT.name]?.zh ?? null
 })
 
+/* ---------- 断语亮出后：入历史 + 学徒点评 ---------- */
+const recorded = ref(false)
+
+watch(cast, () => (recorded.value = false))
+
+function recordOnce(e?: MouseEvent): void {
+  if (!cast.value || !revealed.value || recorded.value) return
+  recorded.value = true
+  sfx.ding()
+  if (e) sparkleFromEvent(e, 6)
+  addHistory({
+    type: 'meihua',
+    label: `梅花易数 · ${cast.value.hexa.zh}`,
+    question: question.value.trim() || undefined,
+    summary: `${cast.value.upper.sym}${cast.value.lower.sym} ${cast.value.hexa.zh}（动爻${cast.value.moving}）`,
+    detail: [
+      question.value.trim() ? `问题：${question.value.trim()}` : '（未填问项）',
+      `本卦：${cast.value.hexa.zh} · ${L([cast.value.hexa.zhWord, cast.value.hexa.enWord])}`,
+      changedName.value ? `变卦：${changedName.value}` : '',
+    ]
+      .filter(Boolean)
+      .join('\n'),
+  })
+}
+
+watch(revealed, (v) => {
+  if (v) recordOnce()
+})
+
 const HOUR_OPTIONS = Array.from({ length: 24 }, (_, h) => h)
 </script>
 
@@ -108,9 +156,14 @@ const HOUR_OPTIONS = Array.from({ length: 24 }, (_, h) => h)
         <span>{{ L(['你想问的事（可不填）', 'Your question (optional)']) }}</span>
         <input v-model="question" type="text" maxlength="60" :placeholder="L(['比如：这份工作要不要接？', 'e.g. Should I take this job?'])" />
       </label>
-      <button class="btn" style="margin-top: 14px;" :disabled="!canCast()" @click="doCast($event)">
-        ☯ {{ L(['起 卦', 'Cast the hexagram']) }}
-      </button>
+      <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 14px;">
+        <button class="btn" :disabled="!canCast()" @click="doCast($event)">
+          ☯ {{ L(['起 卦', 'Cast the hexagram']) }}
+        </button>
+        <button class="btn ghost small tube-btn" :class="{ shaking: tubeShaking }" :title="L(['不想数字？摇一摇', 'Shake for a number'])" @click="shakeTube($event)">
+          🎋 {{ tubeShaking ? L(['签筒摇晃中…', 'shaking…']) : L(['摇签筒取数', 'Shake the tube']) }}
+        </button>
+      </div>
     </section>
 
     <!-- 卦象 -->
@@ -137,6 +190,11 @@ const HOUR_OPTIONS = Array.from({ length: 24 }, (_, h) => h)
         <Transition name="pop">
           <div v-if="revealed" class="verdict">
             <h3 class="hex-name">「{{ cast.hexa.zh }}」<small>{{ cast.hexa.en }}</small></h3>
+            <div class="trigram-big" aria-hidden="true">
+              <span class="tg tg-upper">{{ cast.upper.sym }}</span>
+              <span class="tg-divider">⁄</span>
+              <span class="tg tg-lower">{{ cast.lower.sym }}</span>
+            </div>
             <p class="hex-word">{{ L([cast.hexa.zhWord, cast.hexa.enWord]) }}</p>
             <dl class="meta">
               <div><dt>{{ L(['上卦', 'Upper']) }}</dt><dd>{{ cast.upper.sym }} {{ cast.upper.name }}（{{ L([cast.upper.nature[0], cast.upper.nature[1]]) }}）</dd></div>
@@ -164,6 +222,8 @@ const HOUR_OPTIONS = Array.from({ length: 24 }, (_, h) => h)
         </p>
       </details>
     </section>
+
+    <ApprenticeReact v-if="recorded && cast" module="meihua" mood="good" />
   </div>
 </template>
 
@@ -215,6 +275,35 @@ const HOUR_OPTIONS = Array.from({ length: 24 }, (_, h) => h)
 
 .verdict .hex-name { margin: 0 0 10px; font-family: var(--cute); font-weight: 400; font-size: 1.5rem; color: var(--gold-bright); }
 .hex-name small { font-size: 0.85rem; color: var(--ink-dim); margin-left: 8px; }
+
+/* 摇签筒 */
+.tube-btn.shaking { animation: tube-shake 0.12s linear infinite; }
+@keyframes tube-shake {
+  0%, 100% { transform: rotate(-3deg) translateY(0); }
+  50% { transform: rotate(3deg) translateY(-2px); }
+}
+
+/* 卦象符号大图（上卦/下卦） */
+.trigram-big {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 2px 0 14px;
+  animation: tg-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes tg-in { from { opacity: 0; transform: scale(0.6) rotate(-6deg); } }
+.tg {
+  font-size: 3rem;
+  line-height: 1;
+  color: var(--gold-bright);
+  text-shadow: 0 0 18px color-mix(in srgb, var(--gold) 60%, transparent);
+  display: inline-block;
+  animation: tg-breathe 3.4s ease-in-out infinite;
+}
+.tg-lower { animation-delay: 1.7s; }
+@keyframes tg-breathe { 50% { transform: translateY(-4px); } }
+.tg-divider { color: var(--ink-dim); opacity: 0.6; font-size: 1.4rem; transform: rotate(12deg); }
+
 .hex-word { line-height: 2; color: var(--ink); margin: 0 0 14px; font-size: 1.02rem; }
 .meta { margin: 0 0 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
 .meta dt { font-size: 0.75rem; color: var(--ink-dim); letter-spacing: 0.15em; }

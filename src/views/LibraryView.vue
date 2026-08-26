@@ -4,7 +4,8 @@ import { ALL_CARDS, cardImageUrl, type Suit, type TarotCard } from '../data/taro
 import { sfx } from '../lib/sfx'
 import { sparkleFromEvent } from '../lib/sparkle'
 import { useEscClose } from '../lib/useEsc'
-import { t } from '../lib/i18n'
+import { t, locale } from '../lib/i18n'
+import { cardMeaning } from '../data/tarotEn'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
 type FilterKey = 'all' | 'major' | Suit
@@ -99,11 +100,11 @@ function open(c: TarotCard, e: MouseEvent): void {
                 <p class="hint">{{ t('c.keywords') }}：{{ detail.keywords.join(' / ') }}</p>
                 <div class="modal-sec">
                   <strong>{{ t('c.upright') }}</strong>
-                  <p class="reading">{{ detail.upright }}</p>
+                  <p class="reading">{{ cardMeaning(detail, locale) }}</p>
                 </div>
                 <div class="modal-sec">
                   <strong>{{ t('c.reversed') }}</strong>
-                  <p class="reading">{{ detail.reversed }}</p>
+                  <p class="reading">{{ cardMeaning(detail, locale, true) }}</p>
                 </div>
               </div>
             </div>

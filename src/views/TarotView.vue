@@ -20,6 +20,7 @@ import DecryptTitle from '../components/DecryptTitle.vue'
 
 const MascotCard = defineAsyncComponent(() => import('../components/MascotCard.vue'))
 import { reflectionFor } from '../data/tarotReflections'
+import { cardMeaning } from '../data/tarotEn'
 
 interface DrawnCard {
   card: TarotCard
@@ -157,7 +158,7 @@ function flipAll(): void {
 /* ---------- 解读 ---------- */
 
 function meaningOf(d: DrawnCard): string {
-  return d.reversed ? d.card.reversed : d.card.upright
+  return cardMeaning(d.card, locale.value, d.reversed)
 }
 
 const ruleReading = computed(() => {
@@ -230,7 +231,7 @@ watch(allFlipped, (done) => {
         <div class="daily-text">
           <span class="dc-label">{{ t('home.dc.card') }}</span>
           <h3 style="margin: 6px 0;">{{ locale === 'zh' ? today.card.nameCn : today.card.name }}{{ today.reversed ? (locale === 'zh' ? ' · 逆位' : ' · Reversed') : '' }}</h3>
-          <p class="reading">{{ today.reversed ? today.card.reversed : today.card.upright }}</p>
+          <p class="reading">{{ cardMeaning(today.card, locale, today.reversed) }}</p>
         </div>
       </div>
     </section>
@@ -383,11 +384,11 @@ watch(allFlipped, (done) => {
                 <p class="hint">{{ t('c.keywords') }}：{{ detail.card.keywords.join(' / ') }}</p>
                 <div class="modal-sec">
                   <strong>{{ t('c.upright') }}</strong>
-                  <p class="reading">{{ detail.card.upright }}</p>
+                  <p class="reading">{{ cardMeaning(detail.card, locale) }}</p>
                 </div>
                 <div class="modal-sec">
                   <strong>{{ t('c.reversed') }}</strong>
-                  <p class="reading">{{ detail.card.reversed }}</p>
+                  <p class="reading">{{ cardMeaning(detail.card, locale, true) }}</p>
                 </div>
                 <details class="sources-box">
                   <summary>{{ t('src.tarot.summary') }}<span class="tag">研究数据</span></summary>

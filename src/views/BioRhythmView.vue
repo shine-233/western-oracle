@@ -154,6 +154,64 @@ function onSubmit(e?: MouseEvent): void {
   sfx.ding()
   if (e) sparkleFromEvent(e, 10)
 }
+
+/* ---------- SVG 直接拖拽 / 悬停十字线 ---------- */
+const svgEl = ref<SVGSVGElement | null>(null)
+const hoverOffset = ref<number | null>(null)
+let scrubbing = false
+
+function clientToOffset(clientX: number): number | null {
+  const el = svgEl.value
+  if (!el) return null
+  const rect = el.getBoundingClientRect()
+  const sx = ((clientX - rect.left) / rect.width) * W
+  const off = Math.round(((sx - PAD_L) / (W - PAD_L - 12)) * WINDOW_DAYS - WINDOW_DAYS / 2)
+  return Math.max(-WINDOW_DAYS / 2, Math.min(WINDOW_DAYS / 2, off))
+}
+
+function svgDown(e: PointerEvent): void {
+  const off = clientToOffset(e.clientX)
+  if (off === null) return
+  scrubbing = true
+  selectedOffset.value = off
+  sfx.blip()
+}
+
+function svgMove(e: PointerEvent): void {
+  const off = clientToOffset(e.clientX)
+  if (off === null) return
+  hoverOffset.value = off
+  if (scrubbing) selectedOffset.value = off
+}
+
+function svgUp(): void {
+  scrubbing = false
+}
+
+function svgLeave(): void {
+  hoverOffset.value = null
+  scrubbing = false
+}
+
+const hoverVals = computed(() =>
+  hoverOffset.value === null
+    ? []
+    : RHYTHMS.map((r) => {
+        const d = new Date()
+        d.setDate(d.getDate() + hoverOffset.value!)
+        return { key: r.key, color: r.color, y: toY(valueAt(r, d) ?? 0), pct: Math.round((((valueAt(r, d) ?? 0) + 1) / 2) * 100) }
+      }),
+)
+
+const hoverDateText = computed(() =>
+  hoverOffset.value === null ? '' : fmtDay(selectedDateFor(hoverOffset.value)),
+)
+
+function selectedDateFor(off: number): Date {
+  const d = new Date()
+  d.setDate(d.getDate() + off)
+  return d
+}
 </script>
 
 <template>
@@ -178,7 +236,16 @@ function onSubmit(e?: MouseEvent): void {
     <template v-if="submitted">
       <!-- 图表 -->
       <section class="panel chart-panel bounce-in">
-        <svg :viewBox="`0 0 ${W} ${H}`" class="bio-svg">
+        <svg
+          ref="svgEl"
+          :viewBox="`0 0 ${W} ${H}`"
+          class="bio-svg"
+          @pointerdown="svgDown"
+          @pointermove="svgMove"
+          @pointerup="svgUp"
+          @pointercancel="svgUp"
+          @pointerleave="svgLeave"
+        >
           <!-- 网格与零轴 -->
           <line :x1="PAD_L" :y1="H / 2" :x2="W - 8" :y2="H / 2" stroke="rgba(179,166,247,0.3)" stroke-width="1" />
           <!-- 临界日标记 -->
@@ -201,8 +268,22 @@ function onSubmit(e?: MouseEvent): void {
             :x1="toX(0)" :y1="10" :x2="toX(0)" :y2="H - 10"
             stroke="#ffe3a8" stroke-width="1.5" opacity="0.9"
           />
-          <!-- 拖动手柄 -->
-          <g class="scrub" @pointerdown.prevent>
+          <!-- 悬停十字线 + 三线读数点 -->
+          <g v-if="hoverOffset !== null" class="hover-x">
+            <line :x1="toX(hoverOffset)" y1="10" :x2="toX(hoverOffset)" :y2="H - 10" stroke="rgba(255,255,255,0.35)" stroke-dasharray="2 4" />
+            <circle
+              v-for="hv in hoverVals"
+              :key="hv.key"
+              :cx="toX(hoverOffset!)"
+              :cy="hv.y"
+              r="4.5"
+              :fill="hv.color"
+              class="hover-dot"
+            />
+            <text :x="Math.min(Math.max(toX(hoverOffset!), PAD_L + 26), W - 40)" y="22" text-anchor="middle" class="hover-date">{{ hoverDateText }}</text>
+          </g>
+          <!-- 拖动手柄（随选中日移动） -->
+          <g class="scrub">
             <line
               :x1="toX(selectedOffset)" :y1="10" :x2="toX(selectedOffset)" :y2="H - 10"
               stroke="#fff" stroke-width="1" opacity="0.55"
@@ -253,7 +334,15 @@ function onSubmit(e?: MouseEvent): void {
 
 <style scoped>
 .chart-panel { margin-top: 16px; }
-.bio-svg { width: 100%; display: block; }
+.bio-svg { width: 100%; display: block; cursor: ew-resize; touch-action: pan-y; user-select: none; }
+.hover-dot { filter: drop-shadow(0 0 5px currentColor); animation: hover-pop 0.18s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes hover-pop { from { r: 0; opacity: 0; } }
+.hover-date {
+  font-family: var(--pixel);
+  font-size: 11px;
+  fill: var(--gold-bright);
+  pointer-events: none;
+}
 .curve {
   filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.15));
   animation: curve-draw 1.4s ease-out both;

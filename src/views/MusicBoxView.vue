@@ -1,8 +1,11 @@
 <script setup lang="ts">
-/** 星光八音盒：点星演奏的生成式音画盒（WebAudio 本地合成，尊重全站静音开关） */
-import { onBeforeUnmount, ref } from 'vue'
-import { isSoundOn } from '../lib/sfx'
+/** 星光八音盒 v2：点星演奏的生成式音画盒。
+ * 新增：AnalyserNode 实时像素频谱、播放时点亮对应北斗星、旋律保存/回放、可调节拍。
+ * （WebAudio 本地合成，尊重全站静音开关） */
+import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { isSoundOn, sfx } from '../lib/sfx'
 import { sparkleFromEvent } from '../lib/sparkle'
+import { loadJSON, saveJSON } from '../lib/storage'
 import { L } from '../data/oracleArcade'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
@@ -29,12 +32,21 @@ const STARS: Star[] = [
 let ctx: AudioContext | null = null
 let master: GainNode | null = null
 let delayNode: DelayNode | null = null
+let analyser: AnalyserNode | null = null
+let specData: Uint8Array | null = null
 
 function ensureAudio(): void {
   if (ctx) return
   ctx = new AudioContext()
   master = ctx.createGain()
   master.gain.value = 0.55
+  // 频谱分析：接在 master 后，柱状可视化用
+  analyser = ctx.createAnalyser()
+  analyser.fftSize = 128 // 64 bins，够像素柱状图用
+  analyser.smoothingTimeConstant = 0.78
+  specData = new Uint8Array(analyser.frequencyBinCount)
+  master.connect(analyser)
+  analyser.connect(ctx.destination)
   // 回声营造"星空感"
   delayNode = ctx.createDelay(1)
   delayNode.delayTime.value = 0.28
@@ -84,9 +96,18 @@ function playNote(freq: number): void {
 /* ---------- 点星演奏 ---------- */
 const ripples = ref<Array<{ id: number; x: number; y: number }>>([])
 let rippleId = 0
+const litStar = ref(-1)
+let litTimer = 0
+
+function lightStar(i: number): void {
+  litStar.value = i
+  if (litTimer) window.clearTimeout(litTimer)
+  litTimer = window.setTimeout(() => (litStar.value = -1), 380)
+}
 
 function strike(star: Star, e?: MouseEvent): void {
   playNote(star.freq)
+  lightStar(STARS.indexOf(star))
   const id = rippleId++
   ripples.value.push({ id, x: star.x, y: star.y })
   window.setTimeout(() => {
@@ -95,12 +116,14 @@ function strike(star: Star, e?: MouseEvent): void {
   if (e) sparkleFromEvent(e, 5)
 }
 
-/* ---------- 十六步自动作曲 ---------- */
+/* ---------- 十六步自动作曲 + 节拍 + 播放点亮 ---------- */
 const STEPS = 16
 const sequence = ref<Array<number | null>>(Array(STEPS).fill(null))
 const playing = ref(false)
 const currentStep = ref(-1)
 let timer: number | null = null
+/** 每步毫秒（可调） */
+const tempoMs = ref(300)
 
 function generate(e?: MouseEvent): void {
   // 随机游走旋律：相邻步优先走邻近音，偶尔跳进，偶尔休止
@@ -124,30 +147,114 @@ function sfxBlip(): void {
   playNote(STARS[0]!.freq * (Math.random() < 0.5 ? 1 : 2))
 }
 
+function startLoop(): void {
+  stopLoopOnly()
+  playing.value = true
+  let step = 0
+  timer = window.setInterval(() => {
+    currentStep.value = step
+    const noteIdx = sequence.value[step]
+    if (noteIdx !== null) {
+      playNote(STARS[noteIdx]!.freq)
+      lightStar(noteIdx)
+    }
+    step = (step + 1) % STEPS
+  }, tempoMs.value)
+}
+function stopLoopOnly(): void {
+  if (timer !== null) window.clearInterval(timer)
+  timer = null
+}
+
 function togglePlay(): void {
   if (playing.value) {
     stopPlay()
     return
   }
   ensureAudio()
-  playing.value = true
-  let step = 0
-  timer = window.setInterval(() => {
-    currentStep.value = step
-    const noteIdx = sequence.value[step]
-    if (noteIdx !== null) playNote(STARS[noteIdx]!.freq)
-    step = (step + 1) % STEPS
-  }, 300)
+  startLoop()
+}
+
+function onTempoChange(): void {
+  if (playing.value) startLoop() // 用新节拍重启循环
 }
 
 function stopPlay(): void {
   playing.value = false
   currentStep.value = -1
-  if (timer !== null) window.clearInterval(timer)
-  timer = null
+  stopLoopOnly()
+}
+
+/* ---------- 旋律收藏（本机） ---------- */
+interface SavedTune {
+  name: string
+  steps: Array<number | null>
+  at: number
+}
+const savedTunes = ref<SavedTune[]>(loadJSON<SavedTune[]>('musicbox-tunes', []))
+
+function saveTune(): void {
+  if (!sequence.value.some((s) => s !== null)) return
+  const tune: SavedTune = {
+    name: L(['小曲', 'Tune']) + ` #${savedTunes.value.length + 1}`,
+    steps: [...sequence.value],
+    at: Date.now(),
+  }
+  savedTunes.value = [tune, ...savedTunes.value].slice(0, 12)
+  saveJSON('musicbox-tunes', savedTunes.value)
+  sfx.ding()
+}
+
+function loadTune(t: SavedTune, e?: MouseEvent): void {
+  sequence.value = [...t.steps]
+  sfx.blip()
+  if (e) sparkleFromEvent(e, 6)
+}
+
+function removeTune(at: number): void {
+  savedTunes.value = savedTunes.value.filter((x) => x.at !== at)
+  saveJSON('musicbox-tunes', savedTunes.value)
 }
 
 onBeforeUnmount(stopPlay)
+
+/* ---------- 像素频谱可视化 ---------- */
+const specCanvas = ref<HTMLCanvasElement | null>(null)
+let specRaf = 0
+
+function drawSpec(): void {
+  specRaf = requestAnimationFrame(drawSpec)
+  const cv = specCanvas.value
+  if (!cv || !analyser || !specData) return
+  analyser.getByteFrequencyData(specData as Uint8Array<ArrayBuffer>)
+  const g = cv.getContext('2d')
+  if (!g) return
+  const W = cv.width
+  const H = cv.height
+  g.clearRect(0, 0, W, H)
+  const bins = specData.length
+  const cellW = 8
+  const cols = Math.min(bins, Math.floor(W / cellW))
+  for (let i = 0; i < cols; i++) {
+    // 低频在前，取对数感：跳过纯静默高段
+    const v = specData[i]! / 255
+    const hPx = Math.max(v > 0.02 ? 4 : 0, Math.round(v * H))
+    if (hPx <= 0) continue
+    // 高度量化到 6px 网格 → 像素阶梯感
+    const q = Math.max(1, Math.round(hPx / 6)) * 6
+    for (let yy = 0; yy < q; yy += 6) {
+      const frac = 1 - yy / H
+      g.fillStyle = yy < 6 ? '#ffe3a8' : frac > 0.5 ? 'rgba(245,200,110,0.85)' : 'rgba(179,166,247,0.75)'
+      g.fillRect(i * cellW + 1, H - yy - 6, cellW - 2, 4)
+    }
+  }
+}
+
+onBeforeUnmount(() => cancelAnimationFrame(specRaf))
+
+onMounted(() => {
+  drawSpec()
+})
 
 /* ---------- 背景飘落星屑 ---------- */
 const dust = Array.from({ length: 26 }, (_, i) => ({
@@ -190,12 +297,15 @@ const dust = Array.from({ length: 26 }, (_, i) => ({
           stroke="#ffe3a8"
         />
         <!-- 星体 -->
-        <g v-for="(s, i) in STARS" :key="i" class="star" @click="strike(s, $event)">
+        <g v-for="(s, i) in STARS" :key="i" class="star" :class="{ lit: litStar === i }" @click="strike(s, $event)">
           <circle :cx="s.x" :cy="s.y" :r="18" class="halo" :style="{ animationDelay: i * 0.45 + 's' }" />
           <circle :cx="s.x" :cy="s.y" r="7" fill="#ffe3a8" class="core" />
           <text :x="s.x" :y="s.y + 30" text-anchor="middle" class="star-name">{{ L(s.name).split('·')[1] ?? '' }}</text>
         </g>
       </svg>
+
+      <!-- 实时像素频谱（播放/点星时跳动） -->
+      <canvas ref="specCanvas" width="640" height="52" class="spec-canvas" aria-hidden="true"></canvas>
 
       <!-- 作曲机 -->
       <div class="sequencer">
@@ -221,6 +331,22 @@ const dust = Array.from({ length: 26 }, (_, i) => ({
         <button class="btn" @click="togglePlay">
           {{ playing ? L(['■ 停止', '■ Stop']) : L(['▶ 播放', '▶ Play']) }}
         </button>
+        <button class="btn ghost small" :disabled="!sequence.some((s) => s !== null)" @click="saveTune">
+          💠 {{ L(['收藏这段', 'Save tune']) }}
+        </button>
+        <label class="tempo-ctl">
+          ♪ {{ L(['节拍', 'Tempo']) }}
+          <input type="range" min="180" max="520" step="20" v-model.number="tempoMs" @change="onTempoChange" />
+        </label>
+      </div>
+
+      <!-- 旋律收藏架 -->
+      <div v-if="savedTunes.length" class="tune-shelf">
+        <span class="shelf-label">{{ L(['💠 收藏的曲子', '💠 Saved tunes']) }}</span>
+        <span v-for="t in savedTunes" :key="t.at" class="tune-chip" :title="L(['点按载入 · 长按名可删', 'click to load'])">
+          <button class="tune-load" @click="loadTune(t, $event)">♪ {{ t.name }}</button>
+          <button class="tune-del" @click="removeTune(t.at)">✕</button>
+        </span>
       </div>
     </section>
 
@@ -241,6 +367,70 @@ const dust = Array.from({ length: 26 }, (_, i) => ({
 .star { cursor: pointer; }
 .star .core { filter: drop-shadow(0 0 6px rgba(255, 227, 168, 0.9)); transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); transform-origin: center; transform-box: fill-box; }
 .star:hover .core { transform: scale(1.5); }
+/* 播放点亮：星星被奏响时放大爆闪 */
+.star.lit .core {
+  transform: scale(2.1);
+  filter: drop-shadow(0 0 16px #fff) drop-shadow(0 0 30px rgba(255, 227, 168, 0.9));
+}
+.star.lit .halo { fill: rgba(255, 240, 200, 0.5); animation: none; }
+.star.lit .star-name { fill: #ffe3a8; opacity: 1; }
+
+.spec-canvas {
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  height: 52px;
+  margin: 4px auto 0;
+  image-rendering: pixelated;
+  opacity: 0.95;
+}
+
+.tempo-ctl {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--ink-dim);
+}
+.tempo-ctl input[type='range'] { width: 110px; accent-color: var(--gold); cursor: ew-resize; }
+
+.tune-shelf {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 14px;
+}
+.shelf-label { font-size: 0.8rem; color: var(--ink-dim); }
+.tune-chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1.5px solid rgba(245, 200, 110, 0.45);
+  border-radius: 999px;
+  overflow: hidden;
+  animation: chip-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes chip-in { from { opacity: 0; transform: scale(0.7); } }
+.tune-load {
+  border: none;
+  background: transparent;
+  color: var(--gold-bright);
+  padding: 5px 6px 5px 13px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.tune-load:hover { background: rgba(245, 200, 110, 0.15); }
+.tune-del {
+  border: none;
+  background: transparent;
+  color: var(--ink-dim);
+  padding: 5px 10px 5px 4px;
+  cursor: pointer;
+  font-size: 0.72rem;
+}
+.tune-del:hover { color: var(--danger); }
 .halo {
   fill: rgba(255, 227, 168, 0.14);
   animation: halo-breathe 3s ease-in-out infinite;

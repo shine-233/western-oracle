@@ -12,6 +12,7 @@ import { initThemes } from './lib/themes'
 import { installMotionGlobal } from './lib/motionGlobal'
 import { installReactPopups } from './lib/reactPopups'
 import { installViewTransitions } from './lib/viewTrans'
+import { installConstella } from './lib/constella'
 
 installViewTransitions(router)
 const app = createApp(App).use(router)
@@ -21,5 +22,6 @@ initThemes()
 app.mount('#app')
 installKonami()
 installOverlays()
+installConstella()
 installMotionGlobal()
 installReactPopups()

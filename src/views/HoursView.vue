@@ -155,14 +155,18 @@ const hourElapsed = computed(() => {
   return Math.min(1, Math.max(0, gone / total))
 })
 
-const progressArc = computed(() => {
-  const h = currentH.value
-  const el2 = hourElapsed.value
-  if (!h || el2 === null || !h.daytime && false) return ''
-  void el2
-  return ''
-})
-void progressArc
+/* ---------- 时辰流逝弧：内环一圈，随时间慢慢合拢 ---------- */
+const R_PROG = R_IN - 16
+const PROG_C = 2 * Math.PI * R_PROG
+
+/* ---------- 昼夜天色：钟面背后的天空渐变随昼夜切换 ---------- */
+const isDayNow = computed(() => currentH.value?.daytime ?? true)
+const skyTop = computed(() =>
+  isDayNow.value ? 'rgba(245,200,110,0.16)' : 'rgba(107,91,214,0.20)',
+)
+const skyBottom = computed(() =>
+  isDayNow.value ? 'rgba(255,227,168,0.04)' : 'rgba(30,26,69,0.55)',
+)
 
 /* ---------- 吉时推荐 ---------- */
 const pickCat = ref<string | null>(null)
@@ -234,6 +238,14 @@ const CHALDEAN_ORDER = ['Saturn', 'Jupiter', 'Mars', 'Sun', 'Venus', 'Mercury', 
 
         <div class="clock-wrap">
           <svg class="clock" viewBox="0 0 340 340" role="img" :aria-label="tt('hours.title')">
+            <defs>
+              <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" :stop-color="skyTop" class="sky-stop" />
+                <stop offset="100%" :stop-color="skyBottom" class="sky-stop" />
+              </linearGradient>
+            </defs>
+            <!-- 昼夜天色底 -->
+            <circle :cx="CX" :cy="CY" :r="R_IN - 4" fill="url(#skyGrad)" class="sky-disc" />
             <!-- 刻度环底 -->
             <circle :cx="CX" :cy="CY" :r="(R_IN + R_OUT) / 2" fill="none" stroke="transparent" />
             <g v-for="h in hours" :key="'s' + h.index">
@@ -256,6 +268,17 @@ const CHALDEAN_ORDER = ['Saturn', 'Jupiter', 'Mars', 'Sun', 'Venus', 'Mercury', 
             <!-- 日出/日落方位标 -->
             <text :x="CX - 10" y="16" class="sun-mark">☀ {{ sunInfo.rise }}</text>
             <text :x="CX + 6" y="332" class="moon-mark">🌙 {{ sunInfo.set }}</text>
+            <!-- 当前时辰流逝弧 -->
+            <circle
+              v-if="hourElapsed !== null"
+              :cx="CX" :cy="CY" :r="R_PROG"
+              fill="none"
+              class="progress-arc"
+              :stroke-dasharray="String(PROG_C)"
+              :stroke-dashoffset="String(PROG_C * (1 - hourElapsed))"
+              transform-origin="center"
+              :transform="`rotate(-90 ${CX} ${CY})`"
+            />
           </svg>
 
           <div class="clock-center">
@@ -346,6 +369,20 @@ const CHALDEAN_ORDER = ['Saturn', 'Jupiter', 'Mars', 'Sun', 'Venus', 'Mercury', 
 }
 .seg-glyph.dim { opacity: 0.55; }
 .sun-mark, .moon-mark { font-size: 13px; fill: var(--ink-dim); text-anchor: middle; }
+
+/* 昼夜天色盘：颜色切换带过渡 */
+.sky-stop { transition: stop-color 1.6s ease; }
+.sky-disc { opacity: 0.9; }
+
+/* 当前时辰流逝弧 */
+.progress-arc {
+  stroke: var(--gold-bright);
+  stroke-width: 3;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--gold) 70%, transparent));
+  transition: stroke-dashoffset 1.4s ease;
+  pointer-events: none;
+}
 
 .clock-center {
   position: absolute;

@@ -373,6 +373,144 @@ export const THEMES: OracleTheme[] = [
 [data-theme='jade'] .starfield { filter: hue-rotate(60deg) brightness(0.96); }
 `,
   },
+  {
+    id: 'noir',
+    nameZh: '黑金塔罗',
+    nameEn: 'Tarot Noir',
+    descZh: '装饰艺术式的黑与金：发丝描线、鎏金衬线，牌桌上的高级感。',
+    descEn: 'Art-deco black & brass — hairline gold frames and serif poise.',
+    swatch: ['#141009', '#d9b96e', '#a8342a'],
+    vars: {
+      '--void-0': '#0c0a08',
+      '--void-1': '#141009',
+      '--void-2': '#1c160d',
+      '--void-3': '#262013',
+      '--gold': '#b08d3f',
+      '--gold-bright': '#d9b96e',
+      '--pink': '#a8342a',
+      '--pink-soft': '#c25045',
+      '--mint': '#6e7d4f',
+      '--lavender': '#8a7a55',
+      '--lavender-soft': '#b3a37c',
+      '--ink': '#f2e8d0',
+      '--ink-dim': '#a5946f',
+      '--danger': '#d4503f',
+    },
+    extras: `
+[data-theme='noir'] body {
+  background:
+    radial-gradient(900px 480px at 50% -12%, rgba(217, 185, 110, 0.09), transparent 60%),
+    linear-gradient(175deg, #171209 0%, #0c0a08 70%, #070503 100%) !important;
+}
+[data-theme='noir'] .panel {
+  box-shadow:
+    inset 0 0 0 1px rgba(217, 185, 110, 0.30),
+    inset 0 0 0 5px rgba(12, 10, 8, 0.92),
+    inset 0 0 0 6px rgba(217, 185, 110, 0.16),
+    6px 6px 0 rgba(5, 4, 2, 0.8);
+}
+[data-theme='noir'] h2, [data-theme='noir'] h3 { letter-spacing: 0.14em; }
+[data-theme='noir'] .divider-star { color: var(--gold-bright); text-shadow: 0 0 14px rgba(217, 185, 110, 0.65); }
+[data-theme='noir'] .starfield { filter: grayscale(0.55) brightness(0.85); }
+[data-theme='noir'] ::selection { background: rgba(217, 185, 110, 0.42); }
+`,
+  },
+  {
+    id: 'sakura',
+    nameZh: '夜樱物语',
+    nameEn: 'Sakura Nights',
+    descZh: '春夜庭院，花瓣乘着风落进星野里。',
+    descEn: 'A spring-night garden where petals drift into the stars.',
+    swatch: ['#20121e', '#f27ba0', '#86b28a'],
+    vars: {
+      '--void-0': '#170d15',
+      '--void-1': '#20121e',
+      '--void-2': '#2a1826',
+      '--void-3': '#35202f',
+      '--gold': '#e3a687',
+      '--gold-bright': '#f4c1a4',
+      '--pink': '#f27ba0',
+      '--pink-soft': '#f79cbc',
+      '--mint': '#86b28a',
+      '--lavender': '#b48ab0',
+      '--lavender-soft': '#d0aed0',
+      '--ink': '#fbeef4',
+      '--ink-dim': '#bd9cb4',
+      '--danger': '#e06a7e',
+    },
+    extras: `
+[data-theme='sakura'] body {
+  background:
+    radial-gradient(1000px 520px at 80% -10%, rgba(242, 123, 160, 0.14), transparent 58%),
+    linear-gradient(174deg, #2a1626 0%, #170d15 70%, #0e0710 100%) !important;
+}
+[data-theme='sakura'] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(7px 5px at 8% 12%, rgba(255, 183, 206, 0.55), transparent 62%),
+    radial-gradient(6px 4px at 32% 46%, rgba(255, 203, 222, 0.45), transparent 62%),
+    radial-gradient(8px 5px at 58% 24%, rgba(255, 183, 206, 0.40), transparent 62%),
+    radial-gradient(6px 4px at 78% 60%, rgba(255, 203, 222, 0.50), transparent 62%),
+    radial-gradient(7px 5px at 91% 36%, rgba(255, 183, 206, 0.42), transparent 62%),
+    radial-gradient(6px 4px at 18% 74%, rgba(255, 203, 222, 0.44), transparent 62%);
+  animation: wo-sakura-fall 26s linear infinite;
+}
+@keyframes wo-sakura-fall {
+  from { background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0; }
+  to { background-position: -90px 1080px, 60px 1080px, -40px 1080px, 80px 1080px, -70px 1080px, 50px 1080px; }
+}
+[data-theme='sakura'] .starfield { filter: hue-rotate(-28deg) brightness(1.02); }
+@media (prefers-reduced-motion: reduce) {
+  [data-theme='sakura'] body::after { animation: none; }
+}
+`,
+  },
+  {
+    id: 'aegean',
+    nameZh: '爱琴海正午',
+    nameEn: 'Aegean Noon',
+    descZh: '第二套浅色皮肤：白墙、深蓝穹顶与正午的太阳光斑。',
+    descEn: 'The second light skin: whitewash, sea-blue domes and noon sun.',
+    swatch: ['#f6fbfd', '#1f7a94', '#e2647a'],
+    vars: {
+      '--void-0': '#eef6f8',
+      '--void-1': '#f6fbfd',
+      '--void-2': '#ffffff',
+      '--void-3': '#ddeff4',
+      '--gold': '#1f7a94',
+      '--gold-bright': '#14586e',
+      '--pink': '#e2647a',
+      '--pink-soft': '#ef8296',
+      '--mint': '#2fa08a',
+      '--lavender': '#5a7fb5',
+      '--lavender-soft': '#7d9cc9',
+      '--ink': '#123039',
+      '--ink-dim': '#527682',
+      '--danger': '#cf4f42',
+    },
+    extras: `
+[data-theme='aegean'] body {
+  background:
+    radial-gradient(1100px 520px at 78% -12%, rgba(31, 122, 148, 0.16), transparent 58%),
+    linear-gradient(170deg, #eaf6fa 0%, #f6fbfd 55%, #dceff5 100%) !important;
+  color-scheme: light;
+}
+[data-theme='aegean'] .starfield { opacity: 0.28; filter: hue-rotate(165deg) saturate(1.2); }
+[data-theme='aegean'] .panel,
+[data-theme='aegean'] .alm-item {
+  background: rgba(255, 255, 255, 0.82) !important;
+  border-color: rgba(90, 127, 181, 0.38) !important;
+}
+[data-theme='aegean'] .site-header {
+  background: rgba(246, 251, 253, 0.92) !important;
+}
+[data-theme='aegean'] ::selection { background: rgba(47, 160, 138, 0.35); }
+`,
+  },
 ]
 
 const STORAGE_KEY = 'wo-theme'
@@ -389,6 +527,115 @@ function injectStyles(): void {
       .join('\n')
     parts.push(`[data-theme='${t.id}'] {\n${varLines}\n}\n${t.extras ?? ''}`)
   }
+  // 各皮肤的签名级装饰：让每套主题拥有结构性的独特记号，而非仅换色
+  parts.push(`
+/* ---- inkpaper：朱砂印章 ---- */
+[data-theme='inkpaper'] .panel { position: relative; }
+[data-theme='inkpaper'] .panel::before {
+  content: '神';
+  position: absolute; top: 10px; right: 12px;
+  width: 26px; height: 26px;
+  display: grid; place-items: center;
+  font-family: var(--cute); font-size: 0.85rem; color: #f6ece0;
+  background: #b03a2e; border-radius: 5px;
+  transform: rotate(6deg);
+  box-shadow: inset 0 0 0 1.5px rgba(246, 236, 224, 0.55);
+  opacity: 0.85;
+}
+/* ---- cyber：扫描线 + 霓虹角标 ---- */
+[data-theme='cyber'] .panel {
+  background-image: repeating-linear-gradient(0deg, transparent 0 3px, rgba(0, 229, 255, 0.035) 3px 4px);
+}
+[data-theme='cyber'] .panel::before {
+  content: '';
+  position: absolute; inset: -2px;
+  pointer-events: none;
+  border-top: 2px solid var(--gold); border-left: 2px solid var(--gold);
+  width: 18px; height: 18px;
+  filter: drop-shadow(0 0 4px var(--gold));
+}
+/* ---- hanafuda：花札花角 ---- */
+[data-theme='hanafuda'] .panel::before {
+  content: '❀';
+  position: absolute; top: 8px; left: 12px;
+  color: var(--pink); font-size: 1rem; opacity: 0.8;
+  text-shadow: 0 0 8px rgba(232, 81, 63, 0.5);
+}
+[data-theme='hanafuda'] .panel::after {
+  content: '❀';
+  position: absolute; bottom: 8px; right: 12px;
+  color: var(--gold); font-size: 0.8rem; opacity: 0.65;
+}
+/* ---- goth：银烛光晕 + 花体角饰 ---- */
+[data-theme='goth'] .panel {
+  box-shadow: inset 0 0 34px rgba(179, 32, 60, 0.09), 0 0 20px rgba(184, 179, 196, 0.08);
+}
+[data-theme='goth'] .panel::before {
+  content: '❦';
+  position: absolute; top: 8px; right: 14px;
+  color: var(--pink); font-size: 0.95rem; opacity: 0.7;
+  animation: goth-flicker 3.4s ease-in-out infinite;
+}
+@keyframes goth-flicker { 0%, 100% { opacity: 0.7; } 42% { opacity: 0.32; } 47% { opacity: 0.75; } 73% { opacity: 0.45; } }
+/* ---- abyss：上浮气泡 ---- */
+[data-theme='abyss'] .panel {
+  background-image:
+    radial-gradient(circle at 88% 18%, rgba(125, 238, 195, 0.16) 0 3px, transparent 4px),
+    radial-gradient(circle at 93% 38%, rgba(125, 238, 195, 0.11) 0 2px, transparent 3px),
+    radial-gradient(circle at 84% 58%, rgba(159, 208, 232, 0.13) 0 2.5px, transparent 3.5px),
+    radial-gradient(circle at 90% 78%, rgba(125, 238, 195, 0.09) 0 2px, transparent 3px);
+}
+/* ---- dunhuang：石青描边 + 飞天锦色内衬 ---- */
+[data-theme='dunhuang'] .panel {
+  border-color: rgba(217, 164, 65, 0.55) !important;
+  background-image: linear-gradient(180deg, rgba(63, 111, 168, 0.07), transparent 30%);
+  box-shadow: inset 0 0 0 1.5px rgba(79, 158, 120, 0.28);
+}
+/* ---- candy：波点马戏帐篷 ---- */
+[data-theme='candy'] .panel {
+  background-image: radial-gradient(rgba(255, 158, 203, 0.16) 2px, transparent 2.6px);
+  background-size: 16px 16px;
+}
+/* ---- brass：铆钉双框 ---- */
+[data-theme='brass'] .panel {
+  box-shadow:
+    inset 0 0 0 2px rgba(201, 151, 63, 0.35),
+    inset 0 0 0 5px rgba(23, 18, 8, 0.9),
+    inset 0 0 0 6.5px rgba(201, 151, 63, 0.28);
+}
+[data-theme='brass'] .panel::before {
+  content: '';
+  position: absolute; top: 7px; left: 7px; right: auto;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f0c469, #8a6a25);
+  box-shadow: calc(100% + 0px) 0 #8a6a25;
+}
+/* ---- jade：藤蔓角饰 + 幽绿内晕 ---- */
+[data-theme='jade'] .panel {
+  box-shadow: inset 0 0 40px rgba(102, 217, 163, 0.07);
+}
+[data-theme='jade'] .panel::before {
+  content: '☘';
+  position: absolute; bottom: 8px; right: 12px;
+  color: var(--mint); font-size: 0.9rem; opacity: 0.55;
+}
+/* ---- aurora：帐顶极光带 ---- */
+[data-theme='aurora'] .panel {
+  position: relative; overflow: hidden;
+}
+[data-theme='aurora'] .panel::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, #67e8f9, #86efac, #8ab8ff, #67e8f9);
+  background-size: 300% 100%;
+  animation: aurora-drift 7s linear infinite;
+  opacity: 0.75;
+}
+@keyframes aurora-drift { to { background-position: 300% 0; } }
+@media (prefers-reduced-motion: reduce) {
+  [data-theme='goth'] .panel::before, [data-theme='aurora'] .panel::before { animation: none; }
+}
+`)
   const tag = document.createElement('style')
   tag.id = 'wo-themes'
   tag.textContent = parts.join('\n')

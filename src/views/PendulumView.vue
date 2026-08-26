@@ -48,7 +48,6 @@ const VERDICTS: Record<Answer, { zh: string; en: string; zhLine: string; enLine:
 /* ================= 物理引擎：阻尼球面单摆 ================= */
 // 状态：th=离铅垂线夹角(rad)，ph=方位角(0=屏幕左右摆, PI/2=朝向/远离你的前后摆)
 // om=dθ/dt，wp=dφ/dt。半隐式欧拉积分。
-const PIVOT_Y = 12 // 悬点像素
 const LEN = 150 // 摆长像素
 const G_L = 9.2 // g/L，决定固有周期
 const DAMP_T = 0.62 // 角向阻尼

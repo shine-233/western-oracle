@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * 皮肤选择器：五套风格各自统一的整套皮肤，一键切换、即时生效、本地记忆。
+ * 皮肤选择器：十四套风格各自统一的整套皮肤，一键切换、即时生效、本地记忆。
  * 组件自包含（含标题文案与样式），不依赖全局 i18n 词条。
  */
 import { ref } from 'vue'
@@ -26,8 +26,8 @@ function pick(t: OracleTheme, e: MouseEvent): void {
     <p class="hint" style="margin: 0 0 14px;">
       {{
         locale === 'zh'
-          ? '十一套完整皮肤，配色、质感、明暗各自统一。选择即刻生效并记住。'
-          : 'Eleven complete skins — each internally consistent in palette, texture and mood. Applies instantly and is remembered.'
+          ? '十四套完整皮肤，配色、质感、明暗各自统一，卡背也会跟着换装。选择即刻生效并记住。'
+          : 'Fourteen complete skins — each internally consistent in palette, texture and mood; card backs re-skin too. Applies instantly and is remembered.'
       }}
     </p>
     <div class="theme-grid">

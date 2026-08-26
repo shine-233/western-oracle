@@ -1,11 +1,81 @@
 <script setup lang="ts">
-/** 实时太阳系天象仪：用真实天文历算的黄经驱动轨道动画。可加速时间，点击星体看详情。 */
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+/** 实时太阳系天象仪：用真实天文历算的黄经驱动轨道动画。可加速时间，点击星体看详情。
+ * v2：新增 three.js 真 3D 视角（球体行星/土星环/轨道拖尾/拖拽旋转缩放），平面星图保留为 HUD。 */
+import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import { computeNatalChart } from '../lib/astrology'
 import { L } from '../data/oracleArcade'
 import { sparkleFromEvent } from '../lib/sparkle'
 import { sfx } from '../lib/sfx'
 import DecryptTitle from '../components/DecryptTitle.vue'
+
+const Orrery3D = defineAsyncComponent(() => import('../components/Orrery3D.vue'))
+const MascotCard = defineAsyncComponent(() => import('../components/MascotCard.vue'))
+
+const viewMode = ref<'3d' | '2d'>('3d')
+
+/* ---------- 3D 视角：拖拽倾斜 + 滚轮缩放（OrbitControls 的轻量平替） ---------- */
+const REDUCED =
+  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+function clamp(v: number, lo: number, hi: number): number {
+  return Math.min(hi, Math.max(lo, v))
+}
+
+const BASE_TILT_X = 8
+const tiltX = ref(0)
+const tiltY = ref(0)
+const zoom = ref(1)
+const orbitDragging = ref(false)
+let lastPX = 0
+let lastPY = 0
+let downPX = 0
+let downPY = 0
+
+const stageStyle = computed(() => ({
+  transform: `perspective(950px) rotateX(${(BASE_TILT_X + tiltX.value).toFixed(2)}deg) rotateY(${tiltY.value.toFixed(2)}deg) scale(${zoom.value.toFixed(3)})`,
+}))
+
+function onStageDown(e: PointerEvent): void {
+  if (REDUCED || e.button !== 0) return
+  orbitDragging.value = true
+  lastPX = e.clientX
+  lastPY = e.clientY
+  downPX = e.clientX
+  downPY = e.clientY
+  try {
+    ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+  } catch {
+    /* noop */
+  }
+}
+
+function onStageMove(e: PointerEvent): void {
+  if (!orbitDragging.value) return
+  const dx = e.clientX - lastPX
+  const dy = e.clientY - lastPY
+  lastPX = e.clientX
+  lastPY = e.clientY
+  tiltY.value = clamp(tiltY.value + dx * 0.25, -30, 30)
+  tiltX.value = clamp(tiltX.value - dy * 0.16, -14, 42)
+}
+
+function onStageUp(): void {
+  if (!orbitDragging.value) return
+  orbitDragging.value = false
+  tiltX.value = 0
+  tiltY.value = 0
+}
+
+function onStageWheel(e: WheelEvent): void {
+  if (REDUCED) return
+  zoom.value = clamp(zoom.value * (e.deltaY < 0 ? 1.08 : 0.93), 0.62, 1.6)
+}
+
+/** 拖拽超过阈值就不当作点选行星 */
+function wasDrag(e?: MouseEvent): boolean {
+  if (!e || !downPX) return false
+  return Math.hypot(e.clientX - downPX, e.clientY - downPY) > 6
+}
 
 interface Body {
   key: string
@@ -73,6 +143,16 @@ function setSpeed(i: number): void {
   sfx.blip()
 }
 
+function setMode(m: '3d' | '2d'): void {
+  viewMode.value = m
+  sfx.blip()
+}
+
+/** 3D 组件的点选事件（无鼠标事件对象） */
+function pick3d(key: string): void {
+  pick(key)
+}
+
 /* ---------- 星历计算（节流：每 tick 一次） ---------- */
 const positions = computed(() => {
   void simTime.value // 建立响应依赖
@@ -113,6 +193,7 @@ const selectedKey = ref<string | null>(null)
 const selected = computed(() => positions.value.find((p) => p.key === selectedKey.value))
 
 function pick(key: string, e?: MouseEvent): void {
+  if (wasDrag(e)) return
   selectedKey.value = selectedKey.value === key ? null : key
   sfx.blip()
   if (e) sparkleFromEvent(e, 5)
@@ -143,27 +224,50 @@ function localeTag(): string {
     <div class="orr-layout">
       <!-- 轨道图 -->
       <section class="panel stage">
-        <svg viewBox="0 0 580 580" class="orr-svg">
-          <!-- 白羊座标记在正上方 -->
-          <text :x="CX" :y="26" text-anchor="middle" class="aries-mark">♈ 0°</text>
-          <!-- 轨道圈 -->
-          <circle v-for="b in BODIES" :key="'o' + b.key" :cx="CX" :cy="CY" :r="b.orbit" class="orbit-ring" />
-          <!-- 太阳 -->
-          <circle :cx="CX" :cy="CY" r="18" fill="#ffd76e" class="sun-core" />
-          <!-- 行星 -->
-          <g
-            v-for="p in positions"
-            :key="p.key"
-            class="planet"
-            :class="{ sel: selectedKey === p.key }"
-            @click="pick(p.key, $event)"
-          >
-            <circle :cx="p.x" :cy="p.y" r="14" fill="transparent" />
-            <circle :cx="p.x" :cy="p.y" r="7.5" :fill="p.color" class="dot" />
-            <text :x="p.x" :y="p.y + 1" text-anchor="middle" dominant-baseline="central" class="glyph">{{ p.glyph }}</text>
-            <text v-if="p.retro" :x="p.x + 11" :y="p.y - 9" class="retro-mark">℞</text>
-          </g>
-        </svg>
+        <div class="mode-row">
+          <button class="mode-chip" :class="{ on: viewMode === '3d' }" @click="setMode('3d')">🪐 3D {{ L(['天象仪', 'Orrery']) }}</button>
+          <button class="mode-chip" :class="{ on: viewMode === '2d' }" @click="setMode('2d')">✧ {{ L(['平面星图', 'Flat chart']) }}</button>
+        </div>
+
+        <!-- 真 3D：three.js 球体行星，拖拽环绕 / 滚轮缩放 / 点选星球 -->
+        <Orrery3D v-if="viewMode === '3d'" :bodies="positions" :selected="selectedKey" @pick="pick3d" />
+
+        <!-- 平面视图（保留倾斜拖拽彩蛋） -->
+        <div
+          v-show="viewMode === '2d'"
+          class="orr-stage"
+          :class="{ dragging: orbitDragging }"
+          :style="stageStyle"
+          @pointerdown="onStageDown"
+          @pointermove="onStageMove"
+          @pointerup="onStageUp"
+          @pointercancel="onStageUp"
+          @wheel.prevent="onStageWheel"
+        >
+          <svg viewBox="0 0 580 580" class="orr-svg">
+            <!-- 白羊座标记在正上方 -->
+            <text :x="CX" :y="26" text-anchor="middle" class="aries-mark">♈ 0°</text>
+            <!-- 轨道圈 -->
+            <circle v-for="b in BODIES" :key="'o' + b.key" :cx="CX" :cy="CY" :r="b.orbit" class="orbit-ring" />
+            <!-- 太阳 -->
+            <circle :cx="CX" :cy="CY" r="18" fill="#ffd76e" class="sun-core" />
+            <!-- 行星 -->
+            <g
+              v-for="p in positions"
+              :key="p.key"
+              class="planet"
+              :class="{ sel: selectedKey === p.key }"
+              @click="pick(p.key, $event)"
+            >
+              <circle :cx="p.x" :cy="p.y" r="14" fill="transparent" />
+              <circle :cx="p.x" :cy="p.y" r="7.5" :fill="p.color" class="dot" />
+              <text :x="p.x" :y="p.y + 1" text-anchor="middle" dominant-baseline="central" class="glyph">{{ p.glyph }}</text>
+              <text v-if="p.retro" :x="p.x + 11" :y="p.y - 9" class="retro-mark">℞</text>
+            </g>
+          </svg>
+        </div>
+        <p v-if="viewMode === '2d'" class="stage-hint">{{ L(['拖拽倾斜视角 · 滚轮缩放 · 点行星看详情', 'drag to tilt · scroll to zoom · tap planets']) }}</p>
+        <p v-else class="stage-hint">{{ L(['拖拽环绕太阳系 · 滚轮拉近拉远 · 点星球看详情', 'drag to orbit the sun · scroll to zoom · tap planets']) }}</p>
 
         <div class="time-bar">
           <span class="sim-date">{{ fmtDate }}</span>
@@ -206,6 +310,7 @@ function localeTag(): string {
             </p>
           </div>
         </Transition>
+        <MascotCard id="owl" :height="190" />
       </section>
     </div>
   </div>
@@ -221,7 +326,44 @@ function localeTag(): string {
 @media (max-width: 860px) { .orr-layout { grid-template-columns: 1fr; } }
 
 .stage { display: flex; flex-direction: column; align-items: center; }
-.orr-svg { width: 100%; max-width: 560px; }
+.mode-row { display: flex; gap: 8px; margin-bottom: 12px; }
+.mode-chip {
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(179, 166, 247, 0.35);
+  background: transparent;
+  color: var(--ink-dim);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.mode-chip:hover { color: var(--gold-bright); border-color: var(--gold); }
+.mode-chip.on { background: rgba(245, 200, 110, 0.14); border-color: var(--gold); color: var(--gold-bright); }
+.orr-stage {
+  width: 100%;
+  max-width: 560px;
+  transform-style: preserve-3d;
+  will-change: transform;
+  cursor: grab;
+  touch-action: pan-y;
+  transition: transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.orr-stage.dragging {
+  cursor: grabbing;
+  transition: none;
+}
+.stage-hint {
+  margin: 10px 0 0;
+  font-family: var(--pixel);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-dim);
+  opacity: 0.75;
+}
+@media (prefers-reduced-motion: reduce) {
+  .orr-stage { transition: none; }
+}
+.orr-svg { width: 100%; display: block; }
 .aries-mark { fill: var(--gold-bright); font-size: 14px; opacity: 0.85; }
 .orbit-ring {
   fill: none;

@@ -40,7 +40,7 @@ export const RUNES: Rune[] = [
   { glyph: 'ᛒ', name: 'Berkano', nameCn: '贝尔卡诺', translit: 'B', keywords: ['萌芽', '孕育'], upright: '桦树抽新芽，新计划、新生命或新关系温柔萌发。', reversed: '成长受抑或操之过急，给嫩芽遮一阵风。' },
   { glyph: 'ᛖ', name: 'Ehwaz', nameCn: '艾瓦兹', translit: 'E', keywords: ['骏马', '信任'], upright: '人马一体的默契协作，可靠的伙伴让路变宽。', reversed: '信任裂痕或节奏不合，先修关系再赶路。' },
   { glyph: 'ᛗ', name: 'Mannaz', nameCn: '曼纳兹', translit: 'M', keywords: ['人性', '自我'], upright: '照见自我的明镜，以谦逊与智慧经营人际。', reversed: '自我膨胀或盲从他人，回到你自己的坐标。' },
-  { glyph: 'ᛚ', name: 'Laguz', nameCn: '拉古兹', translit: 'L', keywords: ['流水', '直觉'], upright: '顺流而下的直觉之旅，跟随感受去往该去的地方。', reversed: '逆流硬游或情绪搁浅，允许自己随波片刻。' },
+  { glyph: 'ᛚ', name: 'Laguz', nameCn: '拉古兹', translit: 'L', keywords: ['流水', '直觉'], upright: '顺流而下的直觉之旅程——跟着感受走，别跟水较劲。', reversed: '逆流硬游或情绪搁浅，允许自己随波片刻。' },
   { glyph: 'ᛜ', name: 'Ingwaz', nameCn: '英格瓦兹', translit: 'NG', keywords: ['种子', '完成'], upright: '一颗种子安静地成熟，阶段性的圆满近在咫尺。此符文正反同义。', reversed: null },
   { glyph: 'ᛞ', name: 'Dagaz', nameCn: '达加兹', translit: 'D', keywords: ['破晓', '顿悟'], upright: '黎明破晓的顿悟时刻，豁然开朗就在今天。此符文正反同义。', reversed: null },
   { glyph: 'ᛟ', name: 'Othala', nameCn: '奥瑟拉', translit: 'O', keywords: ['家园', '传承'], upright: '祖传的土地与根脉，从来处汲取前行的力量。', reversed: '传统成包袱或根基动摇，取舍传承是你的功课。' },

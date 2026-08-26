@@ -2,7 +2,19 @@
 import { loadJSON, removeKey, saveJSON } from './storage'
 import { recordDivination } from './streak'
 
-export type HistoryType = 'tarot' | 'rune' | 'numerology' | 'astrology' | 'synastry' | 'transit'
+export type HistoryType =
+  | 'tarot'
+  | 'rune'
+  | 'numerology'
+  | 'astrology'
+  | 'synastry'
+  | 'transit'
+  | 'dream'
+  | 'pendulum'
+  | 'meihua'
+  | 'palmistry'
+  | 'crystal'
+  | 'arcade'
 
 export interface HistoryEntry {
   id: string
@@ -53,4 +65,10 @@ export const TYPE_META: Record<HistoryType, { cn: string; glyph: string; color: 
   transit: { cn: '行运', glyph: '⟳', color: '#7de8c3' },
   numerology: { cn: '灵数', glyph: '∴', color: '#b3a6f7' },
   rune: { cn: '符文', glyph: 'ᛟ', color: '#a9c4e8' },
+  dream: { cn: '解梦', glyph: '☾', color: '#ff9fce' },
+  pendulum: { cn: '灵摆', glyph: '☯', color: '#b3a6f7' },
+  meihua: { cn: '梅花', glyph: '☯', color: '#e05d5d' },
+  palmistry: { cn: '手相', glyph: '☽', color: '#ffd76e' },
+  crystal: { cn: '水晶', glyph: '✧', color: '#7de8c3' },
+  arcade: { cn: '神签', glyph: '🎲', color: '#ffe3a8' },
 }
