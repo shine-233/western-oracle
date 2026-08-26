@@ -7,10 +7,12 @@ describe('oracle pets', () => {
     expect(new Set(MASCOT_IDS).size).toBe(7)
   })
 
-  it('像素画只使用调色板字符，且行宽一致', () => {
+  it('像素画只使用调色板字符，行宽一致，且达到高密度规格（≥40×46，≤64）', () => {
     for (const def of Object.values(MASCOTS)) {
       const cols = Math.max(...def.sprite.map((r) => r.length))
-      expect(cols).toBeLessThanOrEqual(48)
+      expect(cols).toBeGreaterThanOrEqual(40)
+      expect(def.sprite.length).toBeGreaterThanOrEqual(46)
+      expect(cols).toBeLessThanOrEqual(64)
       for (const row of def.sprite) {
         for (const ch of row.padEnd(cols, '.')) {
           if (ch === '.') continue
@@ -18,6 +20,11 @@ describe('oracle pets', () => {
         }
       }
     }
+  })
+
+  it('七只吉祥物剪影互不相同（防止重绘时模板覆盖个性）', () => {
+    const sigs = Object.values(MASCOTS).map((d) => d.sprite.join('|'))
+    expect(new Set(sigs).size).toBe(7)
   })
 
   it('每只吉祥物都有眼睛（可眨眼）且体素非空', () => {
