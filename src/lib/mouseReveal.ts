@@ -33,7 +33,7 @@ export function installMouseReveal(): void {
   const style = document.createElement('style')
   style.textContent = `
 .mouse-reveal-layer{
-  position:fixed; inset:0; z-index:1; pointer-events:none;
+  position:fixed; inset:0; z-index:-1; pointer-events:none;
   opacity:0; transition:opacity .6s ease;
   -webkit-mask-image:radial-gradient(circle var(--mr-r,170px) at var(--mr-x,-500px) var(--mr-y,-500px), #000 30%, transparent 75%);
   mask-image:radial-gradient(circle var(--mr-r,170px) at var(--mr-x,-500px) var(--mr-y,-500px), #000 30%, transparent 75%);

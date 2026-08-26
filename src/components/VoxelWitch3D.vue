@@ -1,10 +1,11 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 /**
  * 露娜的 3D 体素模型：由 2D 像素画数据拉伸成体素。
  * 互动：拖拽旋转 / 滚轮缩放 / 闲置自转 / 环绕星尘粒子
  *      + 眨眼与 wink 表情 / 点击触发跳跃·旋转·害羞动作 / UnrealBloom 辉光后处理。
  */
 import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { MAX_DPR } from '../lib/device'
 import * as THREE from 'three'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
@@ -141,7 +142,8 @@ function build(): void {
   camera.position.set(0, 0.8, 14.5)
 
   renderer = new THREE.WebGLRenderer({ antialias: true })
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, low ? 1.5 : 2))
+
+renderer.setPixelRatio(Math.min(MAX_DPR, low ? 1.5 : 2))
   renderer.setSize(el.clientWidth, el.clientHeight)
   el.appendChild(renderer.domElement)
 
@@ -227,7 +229,7 @@ function build(): void {
     const bloom = new UnrealBloomPass(new THREE.Vector2(el.clientWidth, el.clientHeight), 0.5, 0.65, 0.78)
     composer.addPass(bloom)
     composer.addPass(new OutputPass())
-    composer.setPixelRatio(Math.min(window.devicePixelRatio, low ? 1.5 : 2))
+    composer.setPixelRatio(Math.min(MAX_DPR, low ? 1.5 : 2))
     composer.setSize(el.clientWidth, el.clientHeight)
   }
 

@@ -35,11 +35,7 @@ export const THEMES: OracleTheme[] = [
     radial-gradient(90px 50px at 6% 100%, rgba(255, 159, 206, 0.05), transparent 70%),
     linear-gradient(160deg, var(--void-2), var(--void-1));
 }
-[data-theme='midnight'] body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 0;
+[data-theme='midnight'] -index: -1;
   pointer-events: none;
   background-image:
     radial-gradient(1.5px 1.5px at 12% 22%, rgba(245, 200, 110, 0.5), transparent 100%),
@@ -473,11 +469,7 @@ export const THEMES: OracleTheme[] = [
     radial-gradient(1000px 520px at 80% -10%, rgba(242, 123, 160, 0.14), transparent 58%),
     linear-gradient(174deg, #2a1626 0%, #170d15 70%, #0e0710 100%) !important;
 }
-[data-theme='sakura'] body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 0;
+[data-theme='sakura'] -index: -1;
   pointer-events: none;
   background-image:
     radial-gradient(7px 5px at 8% 12%, rgba(255, 183, 206, 0.55), transparent 62%),

@@ -1,10 +1,11 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 /**
  * 真·3D 天象仪（three.js）：九星真实球体 + 土星环 + 轨道拖尾 + 星野。
  * 拖拽旋转视角（带惯性阻尼）· 滚轮缩放 · 点星球选中 · UnrealBloom 辉光。
  * 行星黄经由父组件的星历计算驱动，本组件只负责"演"。
  */
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { MAX_DPR } from '../lib/device'
 import * as THREE from 'three'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
@@ -139,7 +140,8 @@ function build(): void {
   camera.position.set(0, 0, camZ)
 
   renderer = new THREE.WebGLRenderer({ antialias: true })
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+
+renderer.setPixelRatio(MAX_DPR)
   renderer.setSize(el.clientWidth, el.clientHeight)
   el.appendChild(renderer.domElement)
 

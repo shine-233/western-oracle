@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 /**
  * 水晶球 · 今日一问（体素 3D 版）
  * - Three.js：玻璃球内悬浮 ~150 颗体素星尘，整体可拖拽旋转、滚轮推拉
@@ -19,6 +19,7 @@ const MascotCard = defineAsyncComponent(() => import('../components/MascotCard.v
 const mistPet = ref<InstanceType<typeof MascotCard> | null>(null)
 
 import type * as THREE_NS from 'three'
+import { MAX_DPR } from '../lib/device'
 import { addHistory } from '../lib/history'
 
 const question = ref('')
@@ -99,7 +100,8 @@ async function initThree(): Promise<void> {
   camera.position.set(0, 0, 7.2)
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+
+renderer.setPixelRatio(MAX_DPR)
   renderer.setSize(W(), H())
   mount.appendChild(renderer.domElement)
 

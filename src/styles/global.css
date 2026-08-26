@@ -78,7 +78,7 @@ body::after {
 /* 流星 */
 .shooting-star {
   position: fixed;
-  z-index: 9991;
+  z-index: 1;
   width: 90px;
   height: 3px;
   pointer-events: none;
@@ -95,7 +95,7 @@ body::after {
 .broom-flight {
   position: fixed;
   left: 0;
-  z-index: 9992;
+  z-index: 1;
   pointer-events: none;
   animation: fly-across 7.5s linear forwards;
 }
@@ -139,6 +139,8 @@ h1, h2, h3 {
 
 /* ---------- 导航 ---------- */
 .site-header {
+  position: relative;
+  z-index: 50;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -413,7 +415,7 @@ footer.site-footer {
 /* ---------- 星屑粒子 ---------- */
 .sparkle-particle {
   position: fixed;
-  z-index: 9999;
+  z-index: 1500;
   pointer-events: none;
   color: var(--gold-bright);
   font-size: 12px;
@@ -430,14 +432,15 @@ footer.site-footer {
 }
 .cursor-trail {
   position: fixed;
-  z-index: 9998;
+  z-index: 1500;
   pointer-events: none;
   color: var(--pink-soft);
-  font-size: 10px;
+  font-size: 8px;
+  opacity: 0.55;
   animation: trail-fade 0.6s ease-out forwards;
 }
 @keyframes trail-fade {
-  0% { opacity: 0.9; transform: scale(1); }
+  0% { opacity: 0.55; transform: scale(1); }
   100% { opacity: 0; transform: scale(0.1) translateY(10px); }
 }
 
@@ -743,6 +746,8 @@ body {
   padding-right: env(safe-area-inset-right);
 }
 .site-header {
+  position: relative;
+  z-index: 50;
   padding-top: max(16px, env(safe-area-inset-top));
 }
 footer.site-footer {
@@ -938,4 +943,14 @@ html {
     /* iOS 聚焦时若字号 <16px 会强制缩放页面 */
     font-size: 16px;
   }
+}
+
+/* ---------- 层级规范：正文压过环境装饰（流星/扫帚 z:1），指针微效果(z:1500)低于弹窗(2000) ---------- */
+main {
+  position: relative;
+  z-index: 2;
+}
+footer.site-footer {
+  position: relative;
+  z-index: 2;
 }

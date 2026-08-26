@@ -187,6 +187,8 @@ const ascTick = computed(() => pt(props.ascLon, R.zodiacOut + 4))
 const selected = ref<string | null>(null)
 /** 被点选的相位线标题（移动端没有 hover，点线直接读含义） */
 const tappedAspect = ref<string | null>(null)
+/** 悬停/聚焦中的相位线标题（命中克隆上报，桌面 hover 预览用） */
+const hoverAspect = ref<string | null>(null)
 
 function tapAspect(title: string): void {
   tappedAspect.value = tappedAspect.value === title ? null : title
@@ -260,7 +262,7 @@ const selInfo = computed(() => {
       <text v-for="cl in cuspLines" :key="'hn' + cl.num" :x="cl.numX" :y="cl.numY" text-anchor="middle" dominant-baseline="central" fill="#b0a9d6" font-size="13">{{ cl.num }}</text>
     </g>
 
-    <!-- 本命相位线 -->
+    <!-- 本命相位线（可见线） -->
     <g>
       <line
         v-for="(al, i) in aspectLines"
@@ -271,18 +273,32 @@ const selInfo = computed(() => {
         :x1="al.x1" :y1="al.y1" :x2="al.x2" :y2="al.y2"
         :stroke="al.color" :stroke-width="0.8 + al.strength * (al.hot ? 2.2 : 0.9)"
         :stroke-dasharray="al.dashed ? '5 4' : undefined"
+      >
+        <title>{{ al.title }}</title>
+      </line>
+      <!-- 透明粗命中克隆：1~3px 的细线在触屏上根本点不中，用 14px 隐形线接住点击/悬停 -->
+      <line
+        v-for="(al, i) in aspectLines"
+        :key="'asph' + i"
+        class="asp-hit"
+        :x1="al.x1" :y1="al.y1" :x2="al.x2" :y2="al.y2"
+        stroke="#fff"
+        stroke-opacity="0"
+        stroke-width="14"
         role="button"
         tabindex="0"
         :aria-label="al.title"
         @click.stop="tapAspect(al.title)"
+        @mouseenter="hoverAspect = al.title"
+        @mouseleave="hoverAspect = null"
+        @focus="hoverAspect = al.title"
+        @blur="hoverAspect = null"
         @keydown.enter.prevent="tapAspect(al.title)"
         @keydown.space.prevent="tapAspect(al.title)"
-      >
-        <title>{{ al.title }}</title>
-      </line>
+      />
     </g>
 
-    <!-- 合盘/行运交叉相位虚线 -->
+    <!-- 合盘/行运交叉相位虚线（可见线） -->
     <g>
       <line
         v-for="(sl, i) in synastryLines"
@@ -295,15 +311,29 @@ const selInfo = computed(() => {
         :stroke-width="sl.hot ? 2 : 1"
         :stroke-dasharray="sl.dashed ? '3 5' : '6 3'"
         :opacity="sl.hot ? 0.95 : 0.6"
+      >
+        <title>{{ sl.title }}</title>
+      </line>
+      <!-- 命中克隆同上 -->
+      <line
+        v-for="(sl, i) in synastryLines"
+        :key="'synh' + i"
+        class="asp-hit"
+        :x1="sl.x1" :y1="sl.y1" :x2="sl.x2" :y2="sl.y2"
+        stroke="#fff"
+        stroke-opacity="0"
+        stroke-width="14"
         role="button"
         tabindex="0"
         :aria-label="sl.title"
         @click.stop="tapAspect(sl.title)"
+        @mouseenter="hoverAspect = sl.title"
+        @mouseleave="hoverAspect = null"
+        @focus="hoverAspect = sl.title"
+        @blur="hoverAspect = null"
         @keydown.enter.prevent="tapAspect(sl.title)"
         @keydown.space.prevent="tapAspect(sl.title)"
-      >
-        <title>{{ sl.title }}</title>
-      </line>
+      />
     </g>
 
     <!-- 外环行星 -->

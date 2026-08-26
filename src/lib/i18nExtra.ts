@@ -60,6 +60,8 @@ const M: Record<string, Pair> = {
   'lore.title': ['行星时是怎么来的', 'Where planet hours come from'],
   'lore.p1': ['七颗古典行星按「迦勒底次序」轮值：土、木、火、日、金、水、月，一段一小时。黎明第一个小时的值守星就是当天的日主——周日归太阳，周一归月亮，往后排。', 'Seven classical planets take turns in Chaldean order — Saturn, Jupiter, Mars, Sun, Venus, Mercury, Moon — one per hour. The ruler of the first hour after sunrise rules the whole day: Sunday belongs to the Sun, Monday to the Moon, and so on.'],
   'lore.p2': ['白天和黑夜各自均分成 12 段，所以夏天的行星时长、冬天的短。它量的是太阳的时间，不是钟表的时间。', 'Daylight and night are each split into 12 parts, so summer hours run long and winter ones short. This is the sun\'s clock, not the wall clock.'],
+  'lore.p3': ['值守星还分「日」和「时」两层：每天第一个小时的值守星，同时也是当天的日主——周日太阳、周一月亮、周二火星、周三水星、周四木星、周五金星、周六土星。这就是一周七天的出处：先有行星日，后有星期。', 'Rulers work two shifts: the planet heading the first hour also rules the whole day — Sunday the Sun, Monday the Moon, Tuesday Mars, Wednesday Mercury, Thursday Jupiter, Friday Venus, Saturday Saturn. That\'s where the seven-day week comes from: planetary days first, weekdays second.'],
+  'lore.p4': ['为什么顺序偏偏是土、木、火、日、金、水、月？古人按「离我们越远越尊贵」排座次，土星最远坐头把交椅，这套座次叫迦勒底次序。每个小时的值守星从当日日主起往下轮一位，轮满七天恰好回到原点——一个自带闭环的星历钟表。', 'Why Saturn, Jupiter, Mars, Sun, Venus, Mercury, Moon? The ancients seated planets by distance — farthest sits most noble — a lineup called the Chaldean order. Each hour rotates one seat from the day\'s ruler, closing the loop exactly every seven days. A self-winding celestial clock.'],
   'lore.tip': ['用法很简单：先挑要做的事，看环上哪几段亮了，挑顺路的一段去办。不必掐秒。', 'How to use: pick what you need doing, watch which segments glow, and go during one of them. No stopwatch needed.'],
 
   /* ---------- 太阳回归盘 ---------- */
@@ -73,6 +75,7 @@ const M: Record<string, Pair> = {
   'sr.done': ['已排好今年回归盘。', 'This year\'s return chart is ready.'],
   'sr.until': ['距离你的年度重启还有', 'Your yearly reboot arrives in'],
   'sr.since': ['本次年度重启已过去', 'Your yearly reboot was'],
+  'sr.hint2': ['读法三步：回归上升=这一年的出场方式；回归太阳落宫=主舞台；再挑两三个与本命成相位的行星当年度关键词。别贪多，三个足够讲完一年的故事。', 'How to read, three steps: SR Ascendant = how you show up; SR Sun house = the main stage; then pick two or three SR planets aspecting your natal chart as yearly keywords. Three is enough to tell a whole year.'],
 
   /* ---------- 首页 · 推荐桌（诚实版文案，覆盖 i18n.ts 的「人气榜」表述） ---------- */
   'hall.title.honest': ['今日推荐牌桌', "Today's Card Table"],
