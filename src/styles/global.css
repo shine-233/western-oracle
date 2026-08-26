@@ -64,15 +64,15 @@ body {
   background-attachment: fixed;
 }
 
-/* 极淡 CRT 扫描线 */
+/* 极淡 CRT 扫描线（浅色皮肤经 --crt-line/--crt-o 换成同色系细线） */
 body::after {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 9990;
-  background: repeating-linear-gradient(0deg, rgba(10, 8, 30, 0.22) 0 1px, transparent 1px 3px);
-  opacity: 0.35;
+  background: repeating-linear-gradient(0deg, var(--crt-line, rgba(10, 8, 30, 0.22)) 0 1px, transparent 1px 3px);
+  opacity: var(--crt-o, 0.35);
 }
 
 /* 流星 */

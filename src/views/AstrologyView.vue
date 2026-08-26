@@ -150,7 +150,7 @@ const localReading = computed(() => {
 
   const lines = [
     `你的太阳在${sun ? `${sun.signCn}第${sun.house}宫` : '—'}，月亮在${moon ? `${moon.signCn}第${moon.house}宫` : '—'}，上升${asc}。`,
-    `元素分布以「${dominantEl ? ELEMENT_CN[dominantEl[0]!] : '—'}」为主导——${dominantEl ? EL_TEXT[dominantEl[0]!] : ''}。`,
+    `元素分布以「${dominantEl ? ELEMENT_CN[dominantEl[0]!] : '—'}」为主导，${dominantEl ? EL_TEXT[dominantEl[0]!] : ''}。`,
     ...topAspects.map((a) => {
       const cnA = PLANETS[a.body1]?.cn ?? a.body1
       const cnB = PLANETS[a.body2]?.cn ?? a.body2
@@ -534,7 +534,7 @@ export default {}
 
         <p class="hint" style="margin: 20px 0 8px;">
           {{ locale === 'zh'
-            ? 'Alan Leo《How to Judge a Nativity》三段讲义：十二宫总论、太阳与月亮落座——维多利亚时代的口吻，读个氛围。'
+            ? 'Alan Leo《How to Judge a Nativity》三段讲义：十二宫总论、太阳与月亮落座。维多利亚时代的口吻，读个氛围。'
             : 'Three lectures from Alan Leo’s “How to Judge a Nativity”: the twelve houses, the Sun and the Moon through the signs.' }}
         </p>
         <div class="leo-tabs">

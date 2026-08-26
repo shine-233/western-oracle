@@ -353,6 +353,8 @@ const selInfo = computed(() => {
         @keydown.space.prevent="toggleSelect(p.name)"
       >
         <line :x1="p.dotX" :y1="p.dotY" :x2="p.x" :y2="p.y" stroke="#f5c86e" stroke-width="0.7" opacity="0.5" />
+        <circle :cx="p.dotX" :cy="p.dotY" r="12" fill="#fff" fill-opacity="0" pointer-events="all" />
+        <circle :cx="p.x" :cy="p.y" r="14" fill="#fff" fill-opacity="0" pointer-events="all" />
         <circle :cx="p.dotX" :cy="p.dotY" r="3" fill="#ffe3a8">
           <title>{{ p.name }} {{ p.signCn }} {{ p.degText }}{{ p.retro ? ' ℞' : '' }}</title>
         </circle>
@@ -377,6 +379,8 @@ const selInfo = computed(() => {
         @keydown.enter.prevent="toggleSelect(p.name)"
         @keydown.space.prevent="toggleSelect(p.name)"
       >
+        <circle :cx="p.dotX" :cy="p.dotY" r="12" fill="#fff" fill-opacity="0" pointer-events="all" />
+        <circle :cx="p.x" :cy="p.y" r="13" fill="#fff" fill-opacity="0" pointer-events="all" />
         <circle :cx="p.dotX" :cy="p.dotY" r="2.6" fill="#7de8c3">
           <title>{{ p.name }} {{ p.signCn }} {{ p.degText }}</title>
         </circle>

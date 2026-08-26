@@ -84,6 +84,8 @@ export const THEMES: OracleTheme[] = [
     radial-gradient(1100px 500px at 75% -10%, rgba(176, 58, 46, 0.08), transparent 60%),
     linear-gradient(160deg, #f6eedd 0%, #efe3cc 55%, #e9dbbd 100%) !important;
   color-scheme: light;
+  --crt-line: rgba(139, 115, 78, 0.13);
+  --crt-o: 0.2;
 }
 [data-theme='inkpaper'] .starfield { opacity: 0.16; filter: sepia(0.7); }
 [data-theme='inkpaper'] .panel,
@@ -519,6 +521,8 @@ export const THEMES: OracleTheme[] = [
     radial-gradient(1100px 520px at 78% -12%, rgba(31, 122, 148, 0.16), transparent 58%),
     linear-gradient(170deg, #eaf6fa 0%, #f6fbfd 55%, #dceff5 100%) !important;
   color-scheme: light;
+  --crt-line: rgba(31, 122, 148, 0.12);
+  --crt-o: 0.18;
 }
 [data-theme='aegean'] .starfield { opacity: 0.28; filter: hue-rotate(165deg) saturate(1.2); }
 [data-theme='aegean'] .panel,

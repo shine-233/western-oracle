@@ -269,7 +269,7 @@ function setFilter(k: FilterKey): void {
 
     <p v-if="filtered.length === 0" class="hint empty-hint">
       {{ entries.length === 0
-        ? (zh ? '还没有任何记录。去问点什么吧——星星在等你的第一个问题。✧' : 'No records yet. Go ask something — the stars are waiting for your first question. ✧')
+        ? (zh ? '还没有任何记录。去问点什么吧，星星在等你的第一个问题。✧' : 'No records yet. Go ask something — the stars are waiting for your first question. ✧')
         : (zh ? '这个组合下没有匹配的记录，换个关键词试试。' : 'Nothing matches here — try another keyword.') }}
     </p>
 
