@@ -10,11 +10,12 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js'
-import { witchVoxels } from '../data/witchSprite'
+import { isLowEnd } from '../lib/perf'
+import { witchVoxels, WITCH_W, WITCH_H } from '../data/witchSprite'
 import { sfx } from '../lib/sfx'
 import { t } from '../lib/i18n'
 import { themeVar, onThemeChange } from '../lib/themeColors'
-import { isLowPower } from '../lib/perf'
+import { lowPowerActive } from '../lib/perf'
 
 const container = ref<HTMLDivElement | null>(null)
 const hint = ref(true)
@@ -29,6 +30,8 @@ let groundGlow: THREE.Mesh | null = null
 let composer: EffectComposer | null = null
 let raf = 0
 let disposed = false
+let inView = true
+let io: IntersectionObserver | null = null
 let themeWatcher: { disconnect: () => void } | null = null
 
 let dragging = false
@@ -127,7 +130,7 @@ function showMood(text: string): void {
 }
 
 function build(): void {
-  const low = isLowPower()
+  const low = lowPowerActive()
   const el = container.value
   if (!el) return
 
@@ -136,12 +139,6 @@ function build(): void {
 
   camera = new THREE.PerspectiveCamera(42, el.clientWidth / el.clientHeight, 0.1, 100)
   camera.position.set(0, 0.8, 14.5)
-
-  /** 低性能档：小屏 / 低核数 / 减少动效 → 降低像素比与星尘数量 */
-  const low =
-    window.matchMedia('(max-width: 700px)').matches ||
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
-    (navigator.hardwareConcurrency ?? 8) <= 4
 
   renderer = new THREE.WebGLRenderer({ antialias: true })
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, low ? 1.5 : 2))
@@ -158,9 +155,9 @@ function build(): void {
 
   // ---- 体素女巫 ----
   const voxels = witchVoxels()
-  const COLS = 20
-  const ROWS = 23
-  const S = 0.52
+  const COLS = WITCH_W
+  const ROWS = WITCH_H
+  const S = 0.44
   const geo = new THREE.BoxGeometry(S, S, S)
 
   witchGroup = new THREE.Group()
@@ -223,8 +220,8 @@ function build(): void {
   glow.position.y = -ROWS * S * 0.5 - 0.4
   scene.add(glow)
 
-  // ---- 辉光后处理（尊重 reduced-motion）----
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  // ---- 辉光后处理（尊重 reduced-motion；低端机/省流模式跳过，bloom 在 dpr2 下开销大）----
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && !isLowEnd()) {
     composer = new EffectComposer(renderer)
     composer.addPass(new RenderPass(scene, camera))
     const bloom = new UnrealBloomPass(new THREE.Vector2(el.clientWidth, el.clientHeight), 0.5, 0.65, 0.78)
@@ -345,6 +342,14 @@ function bindEvents(el: HTMLElement): void {
     { passive: false },
   )
   window.addEventListener('resize', onResize)
+  // 离屏门控：滚出视口就停渲染
+  io = new IntersectionObserver(
+    (es) => {
+      inView = es[0]?.isIntersecting ?? true
+    },
+    { threshold: 0.02 },
+  )
+  io.observe(el)
 }
 
 function onResize(): void {
@@ -360,6 +365,11 @@ const clock = new THREE.Clock()
 function animate(): void {
   if (disposed) return
   raf = requestAnimationFrame(animate)
+  // 离屏/后台挂起：跳过渲染但保持时钟新鲜，回来时不跳帧
+  if (!inView || document.hidden) {
+    clock.getDelta()
+    return
+  }
   const t = clock.getElapsedTime()
 
   // 自动眨眼
@@ -411,9 +421,11 @@ function setEyeScaleLive(s: number): void {
 onMounted(build)
 
 onBeforeUnmount(() => {
-  disposed = true
-  cancelAnimationFrame(raf)
-  window.removeEventListener('resize', onResize)
+disposed = true
+cancelAnimationFrame(raf)
+window.removeEventListener('resize', onResize)
+io?.disconnect()
+io = null
   if (moodTimer !== null) window.clearTimeout(moodTimer)
   themeWatcher?.disconnect()
   themeWatcher = null

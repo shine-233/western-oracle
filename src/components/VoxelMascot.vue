@@ -14,7 +14,9 @@ import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js'
 import { MASCOTS, mascotVoxels } from '../data/mascots'
 import { sfx } from '../lib/sfx'
 import { t } from '../lib/i18n'
+import { lowPowerActive } from '../lib/perf'
 import { themeVar, onThemeChange } from '../lib/themeColors'
+import { isLowEnd } from '../lib/perf'
 import { addAffection, levelOf, getPoints, SECRET_LINES } from '../lib/affection'
 
 const props = withDefaults(defineProps<{ id: string; height?: number }>(), { height: 230 })
@@ -175,6 +177,7 @@ return new THREE.BoxGeometry(0.5, 0.5, 0.5)
 }
 
 function build(): void {
+  const low = lowPowerActive()
   const el = container.value
   const def = MASCOTS[props.id]
   if (!el || !def) return
@@ -186,7 +189,7 @@ function build(): void {
   camera.position.set(0, 0.7, 12)
 
   renderer = new THREE.WebGLRenderer({ antialias: true })
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, low ? 1.5 : 2))
   renderer.setSize(el.clientWidth, el.clientHeight)
   el.appendChild(renderer.domElement)
 
@@ -242,7 +245,7 @@ function build(): void {
   scene.add(petGroup)
 
   // ---- 环绕星尘 ----
-  const starCount = 56
+  const starCount = low ? 24 : 56
   const positions = new Float32Array(starCount * 3)
   for (let i = 0; i < starCount; i++) {
     const angle = Math.random() * Math.PI * 2
@@ -272,8 +275,8 @@ function build(): void {
   glow.position.y = (-ROWS * S) / 2 - 0.35
   scene.add(glow)
 
-  // ---- 辉光后处理（与首页露娜同款，尊重 reduced-motion）----
-  if (!reducedMotion) {
+  // ---- 辉光后处理（与首页露娜同款，尊重 reduced-motion；低端机跳过）----
+  if (!reducedMotion && !isLowEnd()) {
     composer = new EffectComposer(renderer)
     composer.addPass(new RenderPass(scene, camera))
     const bloom = new UnrealBloomPass(
@@ -285,7 +288,7 @@ function build(): void {
     composer.addPass(bloom)
     bloomPass = bloom
     composer.addPass(new OutputPass())
-    composer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    composer.setPixelRatio(Math.min(window.devicePixelRatio, low ? 1.5 : 2))
     composer.setSize(el.clientWidth, el.clientHeight)
   }
 
@@ -615,6 +618,7 @@ function bindEvents(el: HTMLElement): void {
     { passive: false },
   )
   window.addEventListener('resize', onResize)
+  if (renderer) viewIO.observe(renderer.domElement)
 }
 
 function markInteract(): void {
@@ -644,10 +648,22 @@ function onResize(): void {
 
 const clock = new THREE.Clock()
 let lastEyeScale = 1
+let inView = true
+const viewIO = new IntersectionObserver(
+  (es) => {
+    inView = es[0]?.isIntersecting ?? true
+  },
+  { threshold: 0.02 },
+)
 function animate(): void {
-  if (disposed) return
-  raf = requestAnimationFrame(animate)
-  const now = clock.getElapsedTime()
+if (disposed) return
+raf = requestAnimationFrame(animate)
+// 离屏/后台挂起：跳过渲染但时钟保持新鲜
+if (!inView || document.hidden) {
+clock.getDelta()
+return
+}
+const now = clock.getElapsedTime()
 
   // 自动眨眼（偶尔连眨两下）
   if (!asleep.value && now > nextBlinkAt && now > blinkUntil) {
@@ -760,9 +776,10 @@ satellite.rotation.set(now * 2.6, now * 0.9, 0.4) // 彗核疾旋
 onMounted(build)
 
 onBeforeUnmount(() => {
-  disposed = true
-  cancelAnimationFrame(raf)
-  window.removeEventListener('resize', onResize)
+disposed = true
+cancelAnimationFrame(raf)
+window.removeEventListener('resize', onResize)
+viewIO.disconnect()
   if (moodTimer !== null) window.clearTimeout(moodTimer)
   if (idleTimer !== null) window.clearTimeout(idleTimer)
   if (chatterTimer !== null) window.clearInterval(chatterTimer)

@@ -10,6 +10,7 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js'
+import { isLowEnd } from '../lib/perf'
 
 export interface OrreryBody {
   key: string
@@ -277,8 +278,8 @@ function build(): void {
   )
   scene.add(stars)
 
-  /* ---- 辉光后处理 ---- */
-  if (!reducedMotion) {
+  /* ---- 辉光后处理（低端机/省流自动跳过）---- */
+  if (!reducedMotion && !isLowEnd()) {
     composer = new EffectComposer(renderer)
     composer.addPass(new RenderPass(scene, camera))
     const bloom = new UnrealBloomPass(
@@ -357,10 +358,22 @@ function placePlanets(): void {
 }
 
 let haloPulse = 0
+let inView = true
+const viewIO = new IntersectionObserver(
+  (es) => {
+    inView = es[0]?.isIntersecting ?? true
+  },
+  { threshold: 0.02 },
+)
 function animate(): void {
-  if (disposed) return
-  raf = requestAnimationFrame(animate)
-  const dt = Math.min(clock.getDelta(), 0.05)
+if (disposed) return
+raf = requestAnimationFrame(animate)
+// 离屏/后台挂起：跳过渲染但时钟保持新鲜（回来不跳帧）
+if (!inView || document.hidden) {
+clock.getDelta()
+return
+}
+const dt = Math.min(clock.getDelta(), 0.05)
 
   placePlanets()
 
@@ -439,6 +452,7 @@ function bindEvents(el: HTMLElement): void {
     camZTarget = Math.max(13, Math.min(52, camZTarget + e.deltaY * 0.02))
   }, { passive: false })
   window.addEventListener('resize', onResize)
+viewIO.observe(el)
 }
 
 const raycaster = new THREE.Raycaster()
@@ -470,9 +484,10 @@ function onResize(): void {
 onMounted(build)
 
 onBeforeUnmount(() => {
-  disposed = true
-  cancelAnimationFrame(raf)
-  window.removeEventListener('resize', onResize)
+disposed = true
+cancelAnimationFrame(raf)
+window.removeEventListener('resize', onResize)
+viewIO.disconnect()
   scene?.traverse((o) => {
     const m = o as THREE.Mesh
     if (m.geometry) m.geometry.dispose()

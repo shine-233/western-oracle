@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { sparkle, sparkleFromEvent } from '../lib/sparkle'
 import { sfx } from '../lib/sfx'
-import { WITCH_PALETTE, WITCH_SPRITE } from '../data/witchSprite'
+import { WITCH_PALETTE, WITCH_SPRITE, WITCH_FACE, WITCH_W, WITCH_H } from '../data/witchSprite'
 
 const PALETTE = WITCH_PALETTE
 const SPRITE = WITCH_SPRITE
+const F = WITCH_FACE
 
 interface Pixel {
   x: number
@@ -21,9 +22,42 @@ SPRITE.forEach((row, y) => {
   })
 })
 
-const CELL = 7
-const WIDTH = 20 * CELL
-const HEIGHT = SPRITE.length * CELL
+const CELL = 8
+const WIDTH = WITCH_W * CELL
+const HEIGHT = WITCH_H * CELL
+
+/* ---------- 表情引擎：idle / blink / happy / shy / wow ---------- */
+type Mood = 'idle' | 'blink' | 'happy' | 'shy' | 'wow'
+const mood = ref<Mood>('idle')
+let moodTimer: number | null = null
+let blinkTimer: number | null = null
+
+function setMood(m: Mood, ms: number): void {
+  if (moodTimer !== null) window.clearTimeout(moodTimer)
+  mood.value = m
+  moodTimer = window.setTimeout(() => (mood.value = 'idle'), ms)
+}
+
+/** 随机眨眼：单眨为主，偶尔连眨两下 */
+function blinkLoop(): void {
+  const delay = 2400 + Math.random() * 3200
+  blinkTimer = window.setTimeout(() => {
+    if (mood.value === 'idle') {
+      setMood('blink', 140)
+      if (Math.random() < 0.28) {
+        window.setTimeout(() => {
+          if (mood.value === 'idle') setMood('blink', 120)
+        }, 220)
+      }
+    }
+    blinkLoop()
+  }, delay)
+}
+
+/** 眼皮覆盖高度：普通眨眼全闭，害羞只眯上半 */
+const lidH = computed(() => (mood.value === 'shy' ? F.eyeL.h / 2 : F.eyeL.h))
+const lidsOn = computed(() => mood.value === 'blink' || mood.value === 'shy' || mood.value === 'happy')
+const blushOn = computed(() => mood.value === 'happy' || mood.value === 'shy')
 
 const TIPS = [
   '星星今天也在偷偷看你哦 ✦',
@@ -68,6 +102,8 @@ function say(text: string): void {
 
 function onClick(event: MouseEvent): void {
   if (dragMoved) return
+  setMood('happy', 950)
+  sfx.ding()
   say(TIPS[Math.floor(Math.random() * TIPS.length)]!)
   sparkle(event.clientX, event.clientY, 10)
 }
@@ -130,6 +166,7 @@ function onDragEnd(): void {
   dragging.value = false
   savePos()
   if (dragMoved) {
+    setMood('shy', 1200)
     say(L_DIZZY[Math.floor(Math.random() * L_DIZZY.length)]!)
     sfx.blip()
   }
@@ -137,6 +174,7 @@ function onDragEnd(): void {
 
 function onDbl(event: MouseEvent): void {
   if (dragMoved) return
+  setMood('wow', 1150)
   sparkleFromEvent(event, 16)
   sfx.ding()
   say(SURPRISE[Math.floor(Math.random() * SURPRISE.length)]!)
@@ -155,7 +193,11 @@ const SURPRISE = [
 
 onMounted(() => {
   window.setTimeout(() => (visible.value = true), 600)
-  window.setTimeout(() => say('嗨！我是小巫女露娜，点我可以听星星的悄悄话～'), 1600)
+  window.setTimeout(() => {
+    setMood('happy', 1000)
+    say('嗨！我是小巫女露娜，点我可以听星星的悄悄话～')
+  }, 1600)
+  blinkLoop()
   // 定时自言自语
   chatterTimer = window.setInterval(() => {
     if (!bubbleOpen.value) say(TIPS[Math.floor(Math.random() * TIPS.length)]!)
@@ -166,6 +208,8 @@ onBeforeUnmount(() => {
   if (typeTimer !== null) window.clearInterval(typeTimer)
   if (closeTimer !== null) window.clearTimeout(closeTimer)
   if (chatterTimer !== null) window.clearInterval(chatterTimer)
+  if (blinkTimer !== null) window.clearTimeout(blinkTimer)
+  if (moodTimer !== null) window.clearTimeout(moodTimer)
 })
 </script>
 
@@ -202,10 +246,38 @@ onBeforeUnmount(() => {
         :height="HEIGHT"
         shape-rendering="crispEdges"
       >
-        <rect v-for="(p, i) in pixels" :key="i" :x="p.x * CELL" :y="p.y * CELL" :width="CELL" :height="CELL" :fill="p.fill" />
-        <!-- 眨眼眼皮：覆盖在两个眼睛像素上 -->
-        <rect class="eyelid" :x="7 * CELL" :y="11 * CELL" :width="CELL" :height="CELL" :fill="PALETTE.S" />
-        <rect class="eyelid" :x="12 * CELL" :y="11 * CELL" :width="CELL" :height="CELL" :fill="PALETTE.S" />
+        <rect v-for="(p, i) in pixels" :key="'p' + i" :x="p.x * CELL" :y="p.y * CELL" :width="CELL" :height="CELL" :fill="p.fill" />
+
+        <!-- 表情层：眼皮（眨眼全闭 / 害羞害羞眯上半） -->
+        <g v-if="lidsOn">
+          <rect :x="F.eyeL.x * CELL" :y="F.eyeL.y * CELL" :width="F.eyeL.w * CELL" :height="lidH * CELL" :fill="PALETTE.S" />
+          <rect :x="F.eyeR.x * CELL" :y="F.eyeR.y * CELL" :width="F.eyeR.w * CELL" :height="lidH * CELL" :fill="PALETTE.S" />
+        </g>
+        <!-- 开心：眼睛变成弯弯的缝（下排保留一点瞳色） -->
+        <g v-if="mood === 'happy'">
+          <rect :x="F.eyeL.x * CELL" :y="(F.eyeL.y + 1) * CELL" :width="F.eyeL.w * CELL" :height="CELL / 2" :fill="PALETTE.E" />
+          <rect :x="F.eyeR.x * CELL" :y="(F.eyeR.y + 1) * CELL" :width="F.eyeR.w * CELL" :height="CELL / 2" :fill="PALETTE.E" />
+        </g>
+        <!-- 惊讶：嘴巴变 O -->
+        <rect
+          v-if="mood === 'wow'"
+          :x="F.mouth.x * CELL"
+          :y="F.mouth.y * CELL"
+          :width="F.mouth.w * CELL"
+          :height="2 * CELL"
+          rx="3"
+          :fill="PALETTE.E"
+        />
+        <!-- 腮红加强：开心 / 害羞 -->
+        <g v-if="blushOn">
+          <rect :x="F.blushL.x * CELL" :y="F.blushL.y * CELL" :width="F.blushL.w * CELL" :height="CELL" :fill="PALETTE.B" opacity="0.75" />
+          <rect :x="F.blushR.x * CELL" :y="F.blushR.y * CELL" :width="F.blushR.w * CELL" :height="CELL" :fill="PALETTE.B" opacity="0.75" />
+        </g>
+        <!-- 惊讶头顶感叹号 -->
+        <g v-if="mood === 'wow'" class="wow-mark">
+          <rect :x="23 * CELL" :y="4 * CELL" :width="CELL" :height="3 * CELL" :fill="PALETTE.G" />
+          <rect :x="23 * CELL" :y="8 * CELL" :width="CELL" :height="CELL" :fill="PALETTE.G" />
+        </g>
       </svg>
     </button>
   </div>
@@ -248,10 +320,11 @@ onBeforeUnmount(() => {
   50% { translate: 0 -7px; }
 }
 
-.eyelid { opacity: 0; animation: blink 4.6s infinite; }
-@keyframes blink {
-  0%, 91%, 100% { opacity: 0; }
-  93%, 97% { opacity: 1; }
+.wow-mark { animation: wow-jump 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes wow-jump {
+  0% { opacity: 0; transform: translateY(6px) scale(0.5); }
+  60% { opacity: 1; transform: translateY(-3px) scale(1.15); }
+  100% { opacity: 1; transform: none; }
 }
 
 .orbit-star {
@@ -302,7 +375,7 @@ onBeforeUnmount(() => {
 
 @media (max-width: 600px) {
   .witch-corner { right: 8px; bottom: 8px; }
-  .witch-sprite { width: 100px; height: auto; }
+  .witch-sprite { width: 118px; height: auto; }
   .speech-bubble { max-width: 190px; font-size: 0.85rem; }
 }
 </style>

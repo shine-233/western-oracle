@@ -189,7 +189,8 @@ async function initThree(): Promise<void> {
   let velY = 0
   let camZ = 7.2
   const el = renderer.domElement
-  el.style.touchAction = 'none'
+  // pan-y：竖向滚动还给页面；单指拖转/双指捏合仍走下面的 pointer 事件
+  el.style.touchAction = 'pan-y'
 
   const pointers = new Map<number, { x: number; y: number }>()
   let pinchDist = 0
@@ -278,8 +279,19 @@ async function initThree(): Promise<void> {
     spinBoost = v
   }
   let raf = 0
+  let inView = true
+  const tickIO = new IntersectionObserver(
+    (es) => {
+      inView = es[0]?.isIntersecting ?? true
+    },
+    { threshold: 0.02 },
+  )
+  tickIO.observe(el)
   const tick = (): void => {
     if (disposed) return
+    raf = requestAnimationFrame(tick)
+    // 离屏/后台挂起：不渲染省 GPU
+    if (!inView || document.hidden) return
     if (!dragging && !reducedMotion) {
       group.rotation.y += 0.0035 * spinBoost + velY
       group.rotation.x = Math.min(1.1, Math.max(-1.1, group.rotation.x + velX))
@@ -292,7 +304,6 @@ async function initThree(): Promise<void> {
     const breathe = 1 + Math.sin(performance.now() * 0.0011) * 0.02 * spinBoost
     dust.scale.setScalar(breathe)
     renderer.render(scene, camera)
-    raf = requestAnimationFrame(tick)
   }
 
   const onResize = (): void => {
@@ -311,6 +322,7 @@ async function initThree(): Promise<void> {
   disposeScene = (): void => {
     disposed = true
     cancelAnimationFrame(raf)
+    tickIO.disconnect()
     window.removeEventListener('resize', onResize)
     mo.disconnect()
     el.removeEventListener('pointerdown', onDown)
