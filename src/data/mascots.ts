@@ -104,7 +104,7 @@ const OWL: MascotDef = {
   ],
 }
 
-/* ---------- 灵数 · 数字魔法使 Numi：薄荷尖帽 + 荧光绿波波头 ---------- */
+/* ---------- 灵数 · 数字魔法使 Numi：薄荷尖帽 + 荧光绿金绳双马尾 ---------- */
 const NUMI: MascotDef = {
   id: 'numi',
   nameCn: '数字魔法使 · Numi',
@@ -124,13 +124,12 @@ const NUMI: MascotDef = {
     '..KKNNNNNNNNNNNNKK..',
     '...KVVSSSSSSSSVVK...',
     '...KVSSSSSSSSSSVK...',
-    '...KVSSESSSSSESVK...',
-    '...KVSSSSSSSSSSVK...',
-    '...KVSBSSSSSSBSVK...',
-    '....KSSSSKKSSSSK....',
-    '.....KWLLLLLLWK.....',
+    '.GGKVSSESSSSSESVKGG.',
+    '.V.KSSSSSSSSSSSSK.V.',
+    'V..KSSBSSSSSSBSSK..V',
+    '.V..KSSSSKKSSSSK..V.',
+    '.V..KWLLLLLLWK..V..',
     '....KSWLLLLLLWSK....',
-    '....KLLLLLLLLLLK....',
     '.....KLLLLLLLLK.....',
     '.....KLLLGGGLLK.....',
     '.....KLLKKKKLLK.....',

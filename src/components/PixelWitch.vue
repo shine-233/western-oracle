@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
-import { sparkle } from '../lib/sparkle'
+import { sparkle, sparkleFromEvent } from '../lib/sparkle'
+import { sfx } from '../lib/sfx'
 import { WITCH_PALETTE, WITCH_SPRITE } from '../data/witchSprite'
 
 const PALETTE = WITCH_PALETTE
@@ -66,9 +67,91 @@ function say(text: string): void {
 }
 
 function onClick(event: MouseEvent): void {
+  if (dragMoved) return
   say(TIPS[Math.floor(Math.random() * TIPS.length)]!)
   sparkle(event.clientX, event.clientY, 10)
 }
+
+/* ---------- 拖拽搬家（live2d 招牌交互）：位置记忆，松手喊晕 ---------- */
+const POS_KEY = 'wo-luna-pos'
+const posX = ref<number | null>(null)
+const posY = ref<number | null>(null)
+const dragging = ref(false)
+let dragMoved = false
+let grabDX = 0
+let grabDY = 0
+let startX = 0
+let startY = 0
+
+try {
+  const raw = JSON.parse(localStorage.getItem(POS_KEY) ?? 'null') as { x: number; y: number } | null
+  if (raw && typeof raw.x === 'number' && typeof raw.y === 'number') {
+    posX.value = Math.min(Math.max(raw.x, 4), window.innerWidth - WIDTH - 8)
+    posY.value = Math.min(Math.max(raw.y, 4), window.innerHeight - HEIGHT - 8)
+  }
+} catch {
+  /* ignore */
+}
+
+function savePos(): void {
+  try {
+    localStorage.setItem(POS_KEY, JSON.stringify({ x: posX.value ?? -1, y: posY.value ?? -1 }))
+  } catch {
+    /* ignore */
+  }
+}
+
+function onDragStart(e: PointerEvent): void {
+  const corner = (e.currentTarget as HTMLElement).closest('.witch-corner') as HTMLElement | null
+  if (!corner) return
+  const rect = corner.getBoundingClientRect()
+  if (posX.value === null || posY.value === null) {
+    posX.value = rect.left
+    posY.value = rect.top
+  }
+  grabDX = e.clientX - posX.value!
+  grabDY = e.clientY - posY.value!
+  startX = e.clientX
+  startY = e.clientY
+  dragMoved = false
+  dragging.value = true
+  ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+}
+
+function onDragMove(e: PointerEvent): void {
+  if (!dragging.value) return
+  if (Math.hypot(e.clientX - startX, e.clientY - startY) > 8) dragMoved = true
+  posX.value = Math.min(Math.max(e.clientX - grabDX, 4), window.innerWidth - WIDTH - 8)
+  posY.value = Math.min(Math.max(e.clientY - grabDY, 4), window.innerHeight - HEIGHT - 8)
+}
+
+function onDragEnd(): void {
+  if (!dragging.value) return
+  dragging.value = false
+  savePos()
+  if (dragMoved) {
+    say(L_DIZZY[Math.floor(Math.random() * L_DIZZY.length)]!)
+    sfx.blip()
+  }
+}
+
+function onDbl(event: MouseEvent): void {
+  if (dragMoved) return
+  sparkleFromEvent(event, 16)
+  sfx.ding()
+  say(SURPRISE[Math.floor(Math.random() * SURPRISE.length)]!)
+}
+
+const L_DIZZY = [
+  '哇啊——帽子要飞了！',
+  '搬家中……扫帚还在后面！',
+  '轻一点啦，星星都被你摇下来了。',
+]
+const SURPRISE = [
+  '✦ 双击有惊喜——被你发现啦！',
+  '星星雨！今天运气+1！',
+  '再双击一下，我就要飘起来了～',
+]
 
 onMounted(() => {
   window.setTimeout(() => (visible.value = true), 600)
@@ -87,14 +170,28 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="witch-corner" :class="{ visible }">
+  <div
+    class="witch-corner"
+    :class="{ visible, dragging: dragging }"
+    :style="posX !== null && posY !== null ? { left: posX + 'px', top: posY + 'px', right: 'auto', bottom: 'auto' } : undefined"
+  >
     <transition name="bubble">
       <div v-if="bubbleOpen" class="speech-bubble">
         {{ typedText }}<span class="caret">▌</span>
       </div>
     </transition>
 
-    <button class="witch-btn" aria-label="小巫女露娜" @click="onClick">
+    <button
+      class="witch-btn"
+      aria-label="小巫女露娜"
+      title="拖动我可以搬家 · 双击有惊喜 · 点击听悄悄话"
+      @click="onClick"
+      @dblclick="onDbl"
+      @pointerdown="onDragStart"
+      @pointermove="onDragMove"
+      @pointerup="onDragEnd"
+      @pointercancel="onDragEnd"
+    >
       <span class="orbit-star s1">✦</span>
       <span class="orbit-star s2">✧</span>
       <span class="orbit-star s3">⋆</span>
@@ -130,11 +227,13 @@ onBeforeUnmount(() => {
   pointer-events: none;
 }
 .witch-corner.visible { opacity: 1; transform: none; pointer-events: auto; }
+.witch-corner.dragging .witch-btn { animation: none; cursor: grabbing; }
+.witch-corner.dragging { z-index: 1200; }
 
 .witch-btn {
   background: none;
   border: none;
-  cursor: pointer;
+  cursor: grab;
   padding: 0;
   animation: witch-bob 3.2s ease-in-out infinite;
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);

@@ -39,6 +39,11 @@ let downTime = 0
 let targetRotY = 0.5
 let targetRotX = 0.12
 let idleTimer: number | null = null
+/** 目光跟随：闲置且鼠标在画布上时，身体轻轻转向光标 */
+let idleYaw = 0
+let gazeX = 0
+let gazeY = 0
+let gazeUntil = 0
 
 /** 眨眼状态 */
 let eyeIndices: number[] = []
@@ -268,6 +273,7 @@ function doAction(): void {
       break
     case 'spin':
       targetRotY += Math.PI * 2
+      idleYaw += Math.PI * 2
       showMood(t('mood.spin'))
       break
     case 'wink':
@@ -294,9 +300,19 @@ function bindEvents(el: HTMLElement): void {
     el.setPointerCapture(e.pointerId)
   })
   el.addEventListener('pointermove', (e) => {
-    if (!dragging) return
+    if (!dragging) {
+      // 非拖拽时的目光跟随采样
+      const rect = el.getBoundingClientRect()
+      if (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom) {
+        gazeX = ((e.clientX - rect.left) / rect.width - 0.5) * 2
+        gazeY = ((e.clientY - rect.top) / rect.height - 0.5) * 2
+        gazeUntil = performance.now() + 2600
+      }
+      return
+    }
     targetRotY += (e.clientX - lastX) * 0.012
     targetRotX = Math.max(-0.6, Math.min(0.6, targetRotX + (e.clientY - lastY) * 0.008))
+    idleYaw = targetRotY
     lastX = e.clientX
     lastY = e.clientY
   })
@@ -347,7 +363,14 @@ function animate(): void {
   setEyeScaleLive(eyesClosed ? 0.1 : 1)
 
   if (witchGroup) {
-    if (!dragging) targetRotY += 0.0045
+    if (!dragging) {
+      idleYaw += 0.0045
+      const gazing = performance.now() < gazeUntil
+      const wantY = gazing ? idleYaw + gazeX * 0.95 : idleYaw
+      const wantX = gazing ? Math.max(-0.45, Math.min(0.55, 0.12 + gazeY * 0.3)) : targetRotX
+      targetRotY += (wantY - targetRotY) * 0.09
+      targetRotX += (wantX - targetRotX) * 0.07
+    }
     witchGroup.rotation.y += (targetRotY - witchGroup.rotation.y) * 0.12
     witchGroup.rotation.x += (targetRotX - witchGroup.rotation.x) * 0.12
     // 悬浮 + 跳跃物理

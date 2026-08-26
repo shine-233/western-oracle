@@ -95,9 +95,9 @@ export const APPRENTICES: ApprenticeProfile[] = [
     traitZh: '会把任何东西加到个位数，包括开心。',
     traitEn: 'Will reduce anything to a single digit — including happiness.',
     storyZh:
-      '从一本被撕掉的日历里出生的小魔女，薄荷色尖帽下藏着一头荧光绿波波头。毕达哥拉斯教了她约减，她回赠一个拥抱，顺便数清了老先生的胡子：恰好 9 缕。现在住在算盘第 13 档上，裙摆上的数字会随心情换。',
+      '从一本被撕掉的日历里出生的小魔女，薄荷色尖帽下翘着一对荧光绿双马尾，用两根金色发绳扎的——她说 2 是"关系之数"，所以马尾必须成对。毕达哥拉斯教了她约减，她回赠一个拥抱，顺便数清了老先生的胡子：恰好 9 缕。现在住在算盘第 13 档上，裙摆上的数字会随心情换。',
     storyEn:
-      'A little mage born from a torn-off calendar, mint hat over neon-green bob hair. Pythagoras taught her reduction; she repaid him with a hug and counted his beard: exactly 9 strands. She sleeps on the 13th abacus bead; the digits on her skirt change with her mood.',
+      'A little mage born from a torn-off calendar — under her mint hat, a pair of neon-green twin tails tied with two gold ribbons. "Two is the number of relationships," she insists, "so tails come in pairs." Pythagoras taught her reduction; she repaid him with a hug and counted his beard: exactly 9 strands. She sleeps on the 13th abacus bead; the digits on her skirt change with her mood.',
     catchZh: '万事皆可约减！除了快乐，快乐要加倍！',
     catchEn: 'Everything reduces! Except joy — joy multiplies!',
     bonds: [
