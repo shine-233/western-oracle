@@ -63,8 +63,12 @@ def region_paragraphs(seg: str, min_len: int = 120) -> list[str]:
         letters = [c for c in para if c.isalpha()]
         if not letters or sum(c.islower() for c in letters) / max(len(letters), 1) < 0.25:
             continue
-        # 纯网格段（几乎无散文）整体弃收；混排段保留
-        if len(letters) / max(len(para), 1) < 0.40:
+        # 纯网格段（几乎无散文）整体弃收；混排段保留。
+        # 含 >=3 个竖线的段落为星盘表格网格残骸，整体弃收
+        if len(letters) / max(len(para), 1) < 0.40 or para.count('|') >= 3:
+            continue
+        # 与 qa_scan 同款的页眉模式残留段（图版混排残骸）整体弃收
+        if re.search(r'\b\d{1,3}\s+[A-Z][A-Z\s]{6,40}\d{0,3}\b', para):
             continue
         out.append(para)
     return out

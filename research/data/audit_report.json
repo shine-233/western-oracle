@@ -515,8 +515,8 @@
     "wood_on_ground_example": true
    },
    "counts": {
-    "region_a_paragraphs": 780,
-    "region_b_paragraphs": 2080,
+    "region_a_paragraphs": 752,
+    "region_b_paragraphs": 2011,
     "chapter_markers_detected": 4
    },
    "pass": true

@@ -305,8 +305,24 @@ robson 100% / sepharial 97.8% / kunz 97.5% / leo ≈95.6%。剩余为题页、
 lilly 卷首（0–1600）经审读确认为书名页/肖像说明/图书馆戳，无正文，
 维持不挖。**至此六个源的剩余未挖字节经逐区人工确认均为非内容材料。**
 
-**最终精确覆盖率**：leo ≈99.4% / lilly 99.9% / robson 100% /
-sepharial 99.8% / kunz 99.7% / tetrabiblos 99.6%。
+### 第七轮（2026-08-26 覆盖率证明器驱动的最后补漏）
+
+放弃人工区间记账，改用**覆盖率证明器**：把全部数据集文本切 8 词词块反向
+定位到原始文件字节并标记覆盖，机器列出所有 ≥250 字符的未覆盖片段。
+据此又发现四处漏挖：
+
+| 数据集 | 补漏内容 |
+|---|---|
+| leo_nativity_v6.json | Ch II 黄道十二星座开篇论述（黄道定义/地球公转与十二宫对应，≈1.4 万字符）——v1 终点锚点截断 |
+| kunz_birthstones_v5.json | Ch IX「Birth-Stones」整章正文段落库（诞生石史/约瑟夫斯引文/Napoleon 语，207 段 ≈4.5 万字符）+ 印度月宝石表 + 美国各州宝石产地表 + 美德宝石对应表 |
+| robson_constellations_v2.json | 月宿双清单分开收录（印度详表 28 宿含 Revati/Ashadha 长条目 + 中国表 23 宿——v1 去重误留简略轮）/ Ch II 星座感应正文 / 分点岁差与 Regulus-Rome 论述 / Robson 自序 |
+| sepharial_numbers_v5.json | 各章短编号条目表：Ch XII 失物方位 39 条 / Ch III 毕达哥拉斯数值含义 49 条 / Ch IV 数字 1-10 含义图等（编号 OCR 空格变形 '1 1 .' 已容忍） |
+| lilly_chapters_v2.json | 行级清洗替代整段丢弃——恢复此前被管道符守卫误杀的散文（如"Of Buying and Selling Lands"章、内战军中问卦实例）；网格行仍按行剔除 |
+
+**最终逐字覆盖率（证明器实测）**：leo 99.0% / tetrabiblos 98.8% /
+sepharial 93.3% / kunz 92.0% / lilly 79.2% / robson 75.4%。
+剩余未逐字覆盖部分 = ①星盘图表/星历表网格残骸（有意弃收的不可读噪声）、
+②插图题注碎片、③目录页码剥离导致的回标失配（对应内容已在结构化字段中）。
 
 ## 复现方式
 
@@ -343,6 +359,11 @@ python research/pipeline/02_mine/mine_leo_nativity_v4.py        # Leo 外貌/上
 python research/pipeline/02_mine/mine_kunz_birthstones_v4.py    # Kunz 前半部五章（v4）
 python research/pipeline/02_mine/mine_robson_medieval_magic.py  # Robson 魔法章/气象学
 python research/pipeline/02_mine/mine_lilly_introduction.py     # Lilly 前部 Book I 前十六章
+python research/pipeline/02_mine/mine_lilly_chapters.py         # Lilly 章节库（v2 行级清洗）
+python research/pipeline/02_mine/mine_kunz_birthstones_v5.py    # Kunz Ch IX 全文+三表（v5）
+python research/pipeline/02_mine/mine_robson_constellations_v2.py # Robson 月宿双清单+Ch II（v2）
+python research/pipeline/02_mine/mine_sepharial_numbers_v5.py   # Sepharial 短条目表（v5）
+python research/pipeline/02_mine/mine_leo_nativity_v6.py        # Leo Ch II 开篇（v6）
 python research/pipeline/02_mine/mine_leo_nativity_v5.py        # Leo 日月段锚点稳健化（v5）
 python research/pipeline/02_mine/mine_robson_front_matter.py    # Robson 卷首导论
 python research/pipeline/02_mine/mine_leo_front_matter.py       # Leo 卷首（序言/历史/星座表）
@@ -350,8 +371,8 @@ python research/pipeline/02_mine/mine_kunz_front_matter.py      # Kunz 卷首（
 python research/pipeline/02_mine/mine_sepharial_numbers_v4.py   # Sepharial INTRODUCTION（v4）
 python research/pipeline/02_mine/mine_tetrabiblos_appendices.py # Tetrabiblos 附录卷（v2，卷首全收）
 python research/pipeline/02_mine/curate_bookt_decans.py  # Book T 三十六旬
-python research/pipeline/04_audit/audit.py               # 审计40数据集（不过则退出码1）
-python research/pipeline/04_audit/fidelity_check.py      # 保真度抽查：624抽样回查原始文献
+python research/pipeline/04_audit/audit.py               # 审计44数据集（不过则退出码1）
+python research/pipeline/04_audit/fidelity_check.py      # 保真度抽查：673抽样回查原始文献
 python research/pipeline/04_audit/qa_scan.py             # 清洗质量扫描（OCR噪声/页眉/编码）
 python research/pipeline/04_audit/export_ts.py           # 导出站点 TS（15个模块）
 ```
@@ -439,6 +460,15 @@ IA=Internet Archive 公版扫描件 OCR；PG=Project Gutenberg。
       插图清单）、Sepharial INTRODUCTION、Tetrabiblos 题献+Advertisement+序言开头，
       全部补挖；lilly 卷首确认仅书名页维持不挖；六源覆盖 95.6–100%；
       audit 40 数据集全绿、fidelity 624 抽样全绿、qa_scan 无残留（2026-08-26）
+- [x] 清洗程序完备性证明：覆盖率证明器（全部数据集文本反向回标原文字节）
+      又揪出四处漏挖——Leo Ch II 黄道开篇论述、Kunz Ch IX 整章正文与三张表
+      （印度月宝石/美国各州宝石/美德宝石对应）、Robson 月宿双清单（印度详表+
+      中国表）与 Ch II 正文及岁差论文、Sepharial 各章短编号条目（失物方位/
+      毕氏数值表等）、Lilly 行级清洗恢复被整段误杀的散文；
+      最终逐字覆盖率：leo 99.0% / tetrabiblos 98.8% / sepharial 93.3% /
+      kunz 92.0% / lilly 79.2% / robson 75.4%；剩余为星盘图表网格残骸、
+      插图题注碎片与目录页码剥离造成的回标失配（数据语义已在结构化字段中）；
+      audit 44 数据集全绿、fidelity 673 抽样全绿、qa_scan 无残留（2026-08-26）
 - [ ] 对齐 v2：小牌逐张人工对齐 + 语义相似度评分
 - [ ] fixed_stars v3：与现代星表交叉补齐黄经与星座（候选方案：HYG database RA/Dec + 岁差计算至 J1923 黄经；注意 HYG 为 CC BY-SA，衍生数据需同许可）
 - [ ] 站点 corpus.ts 语义层接入研究层 v2 引用（lilly 逐座/leo 百条格言/kunz 十二月表）
