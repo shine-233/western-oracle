@@ -63,6 +63,9 @@ const messages: Record<string, Pair> = {
   'navg.oracle': ['神谕', 'Oracles'],
   'navg.sky': ['星象台', 'Sky Lab'],
   'navg.play': ['神秘园', 'Playground'],
+  'navg.east': ['东厢', 'Eastern Wing'],
+  'nav.crystal': ['水晶球', 'Crystal Ball'],
+  'nav.hours': ['行星时刻', 'Planet Hours'],
   'app.soundOff': ['关闭音效', 'Mute'],
   'app.soundOn': ['开启音效', 'Unmute'],
   'footer.l1': ['✦ 所有计算均在你的浏览器本地完成，不上传任何数据 ✦', '✦ Everything runs locally in your browser. No data leaves your device. ✦'],
@@ -146,6 +149,8 @@ const messages: Record<string, Pair> = {
   'home.group.sky.sub': ['头顶的实时星空', 'The live sky overhead'],
   'home.group.play': ['神秘乐园', 'Mystic Playground'],
   'home.group.play.sub': ['玩着玩着就有了答案', 'Answers through play'],
+  'home.group.east': ['东厢 · 东方术数', 'Eastern Wing'],
+  'home.group.east.sub': ['来自东方的古老占法，供对比把玩', 'Ancient eastern arts, kept for comparison'],
 
   /* ---------- 塔罗 ---------- */
   'tarot.title': ['塔罗占卜', 'Tarot'],

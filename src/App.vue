@@ -7,6 +7,51 @@ import { t, toggleLocale, locale } from './lib/i18n'
 import { tt } from './lib/i18nExtra'
 import { vtActive } from './lib/viewTrans'
 
+interface NavItem { to: string; label: string; emoji: string; extra?: boolean }
+const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
+  {
+    label: 'navg.divine',
+    items: [
+      { to: '/tarot', label: 'nav.tarot', emoji: '✦' },
+      { to: '/astrology', label: 'nav.astrology', emoji: '☉' },
+      { to: '/synastry', label: 'nav.synastry', emoji: '☍' },
+      { to: '/numerology', label: 'nav.numerology', emoji: '∴' },
+      { to: '/transits', label: 'nav.transits', emoji: '⟳' },
+    ],
+  },
+  {
+    label: 'navg.oracle',
+    items: [
+      { to: '/runes', label: 'nav.runes', emoji: 'ᛟ' },
+      { to: '/palmistry', label: 'nav.palmistry', emoji: '🖐' },
+      { to: '/dreams', label: 'nav.dreams', emoji: '🌙' },
+      { to: '/pendulum', label: 'nav.pendulum', emoji: '🜨' },
+      { to: '/crystal', label: 'crystal.nav', emoji: '🔮', extra: true },
+    ],
+  },
+  {
+    label: 'navg.sky',
+    items: [
+      { to: '/orrery', label: 'nav.orrery', emoji: '🪐' },
+      { to: '/hours', label: 'hours.nav', emoji: '⏳', extra: true },
+      { to: '/moonbreath', label: 'nav.moonbreath', emoji: '🌕' },
+      { to: '/biorhythm', label: 'nav.biorhythm', emoji: '📈' },
+    ],
+  },
+  {
+    label: 'navg.play',
+    items: [
+      { to: '/arcade', label: 'nav.arcade', emoji: '🎲' },
+      { to: '/musicbox', label: 'nav.musicbox', emoji: '✦' },
+      { to: '/library', label: 'nav.library', emoji: '📖' },
+    ],
+  },
+  {
+    label: 'navg.east',
+    items: [{ to: '/meihua', label: 'nav.meihua', emoji: '☯' }],
+  },
+]
+
 const soundOn = ref(isSoundOn())
 
 /** 顶部滚动进度条 */
@@ -147,24 +192,16 @@ onBeforeUnmount(() => {
   <header class="site-header">
     <RouterLink to="/" class="brand">🧙‍♀️ {{ t('app.brand') }}<span class="en">WESTERN ORACLE</span></RouterLink>
     <nav class="site-nav">
-      <RouterLink to="/tarot">{{ t('nav.tarot') }}</RouterLink>
-      <RouterLink to="/astrology">{{ t('nav.astrology') }}</RouterLink>
-      <RouterLink to="/synastry">{{ t('nav.synastry') }}</RouterLink>
-      <RouterLink to="/transits">{{ t('nav.transits') }}</RouterLink>
-      <RouterLink to="/numerology">{{ t('nav.numerology') }}</RouterLink>
-      <RouterLink to="/runes">{{ t('nav.runes') }}</RouterLink>
-      <RouterLink to="/library">{{ t('nav.library') }}</RouterLink>
-      <RouterLink to="/crystal">🔮 {{ tt('crystal.nav') }}</RouterLink>
-      <RouterLink to="/hours">⏳ {{ tt('hours.nav') }}</RouterLink>
-      <RouterLink to="/arcade">🎲 {{ t('nav.arcade') }}</RouterLink>
-      <RouterLink to="/dreams">🌙 {{ t('nav.dreams') }}</RouterLink>
-      <RouterLink to="/palmistry">🖐 {{ t('nav.palmistry') }}</RouterLink>
-      <RouterLink to="/musicbox">✦ {{ t('nav.musicbox') }}</RouterLink>
-      <RouterLink to="/pendulum">🜨 {{ t('nav.pendulum') }}</RouterLink>
-      <RouterLink to="/orrery">🪐 {{ t('nav.orrery') }}</RouterLink>
-      <RouterLink to="/moonbreath">🌕 {{ t('nav.moonbreath') }}</RouterLink>
-      <RouterLink to="/biorhythm">📈 {{ t('nav.biorhythm') }}</RouterLink>
-      <RouterLink to="/meihua">☯ {{ t('nav.meihua') }}</RouterLink>
+      <div v-for="g in NAV_GROUPS" :key="g.label" class="nav-group">
+        <button type="button" class="nav-trigger" :aria-label="t(g.label)">
+          <span>{{ t(g.label) }}</span><i class="caret" aria-hidden="true">▾</i>
+        </button>
+        <div class="nav-menu">
+          <RouterLink v-for="m in g.items" :key="m.to" :to="m.to">
+            <span class="mi" aria-hidden="true">{{ m.emoji }}</span>{{ m.extra ? tt(m.label) : t(m.label) }}
+          </RouterLink>
+        </div>
+      </div>
       <RouterLink to="/history">{{ t('nav.history') }}</RouterLink>
       <RouterLink to="/settings">{{ t('nav.settings') }}</RouterLink>
       <button class="lang-toggle" :title="locale === 'zh' ? 'Switch to English' : '切换到中文'" @click="onToggleLocale">
