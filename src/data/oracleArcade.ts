@@ -1,4 +1,4 @@
-/** 奇趣占卜坊：占卜骰子 · 命运转盘 · 神签求签。数据与文案自包含，纯本地。 */
+/** 奇趣占卜坊：占卜骰子 · 命运转盘 · 德尔斐神谕签筒。数据与文案自包含，纯本地。 */
 import { locale } from '../lib/i18n'
 
 export function L(pair: [string, string]): string {
@@ -65,18 +65,18 @@ export const WHEEL_SECTORS: WheelSector[] = [
   { emoji: '⚔️', zh: '考验', en: 'Trial', zhLine: '会有一件小事不顺。它只负责试音，不负责定调，别加戏。', enLine: 'One small thing will snag. It tests the waters; it does not decide the weather.', color: '#ffb37a' },
 ]
 
-/* ================= 神签 ================= */
+/* ================= 神谕签筒（德尔斐 Cleromancy 抽签） ================= */
 
-export type FortuneRank = 'daikichi' | 'kichi' | 'suekichi' | 'kyo'
+export type FortuneRank = 'blessed' | 'favored' | 'quiet' | 'turning'
 
 export const RANK_CN: Record<FortuneRank, string> = {
-  daikichi: '大吉',
-  kichi: '吉',
-  suekichi: '末吉',
-  kyo: '凶转吉',
+  blessed: '星佑',
+  favored: '眷顾',
+  quiet: '静好',
+  turning: '逆转',
 }
 
-export interface OmikujiSlip {
+export interface OracleSlip {
   rank: FortuneRank
   zhPoem: string
   enPoem: string
@@ -85,25 +85,25 @@ export interface OmikujiSlip {
   lucky: string
 }
 
-export const OMIKUJI_POOL: OmikujiSlip[] = [
-  { rank: 'daikichi', zhPoem: '云开月正明，何须问路程', enPoem: 'Clouds part, moonlight pours — no need to ask the way', zhAdvice: '等的那件事有动静了，主动推一把就成了。', enAdvice: 'The thing you wait on stirs. One push from you settles it.', lucky: '东南方 · 下午茶时间' },
-  { rank: 'daikichi', zhPoem: '春水初生时，行舟自不迟', enPoem: 'Spring rivers rise; boats sail unforced', zhAdvice: '顺势而为的一天，别人递来的台阶可以上。', enAdvice: 'Go with the flow today; take the step someone offers.' , lucky: '东方 · 清晨' },
-  { rank: 'kichi', zhPoem: '静水流千里，深潭藏大鱼', enPoem: 'Still water travels far; deep pools hide big fish', zhAdvice: '少说多做，今天的运气藏在低调里。', enAdvice: 'Talk less, do more — luck hides in low profile today.', lucky: '北方 · 黄昏' },
-  { rank: 'kichi', zhPoem: '旧枝发新芽，回望笑此花', enPoem: 'Old branch buds anew; you will smile at this bloom', zhAdvice: '翻出一件半途而废的事，捡起来，这次能成。', enAdvice: 'Pick one abandoned project back up. This time it takes.', lucky: '西方 · 午后' },
-  { rank: 'suekichi', zhPoem: '薄雾锁山径，缓步亦可行', enPoem: 'Mist locks the path; slow steps still arrive', zhAdvice: '急事放缓，缓事做细。傍晚之后运势回升。', enAdvice: 'Slow the urgent, refine the slow. Luck climbs after dusk.', lucky: '南方 · 夜里' },
-  { rank: 'suekichi', zhPoem: '灯下影成双，茶凉再续汤', enPoem: 'Lamplight doubles your shadow; refill the cooled tea', zhAdvice: '今天适合收尾不适合开局，把手头的事清一清。', enAdvice: 'Close loops rather than open new ones today.', lucky: '家中 · 任意时刻' },
-  { rank: 'kyo', zhPoem: '风紧莫扬帆，系舟自安然', enPoem: 'When wind bites, tie the sail; anchored, all is well', zhAdvice: '所谓凶，只是今天不宜硬来。躲开争执，明天就是转机。', enAdvice: '"Ill" only means do not force it today. Dodge arguments; tomorrow turns.', lucky: '原地 · 睡个好觉' },
+export const ORACLE_POOL: OracleSlip[] = [
+  { rank: 'blessed', zhPoem: '云开月正明，何须问路程', enPoem: 'Clouds part, moonlight pours — no need to ask the way', zhAdvice: '等的那件事有动静了，主动推一把就成了。', enAdvice: 'The thing you wait on stirs. One push from you settles it.', lucky: '东南方 · 下午茶时间' },
+  { rank: 'blessed', zhPoem: '春水初生时，行舟自不迟', enPoem: 'Spring rivers rise; boats sail unforced', zhAdvice: '顺势而为的一天，别人递来的台阶可以上。', enAdvice: 'Go with the flow today; take the step someone offers.' , lucky: '东方 · 清晨' },
+  { rank: 'favored', zhPoem: '静水流千里，深潭藏大鱼', enPoem: 'Still water travels far; deep pools hide big fish', zhAdvice: '少说多做，今天的运气藏在低调里。', enAdvice: 'Talk less, do more — luck hides in low profile today.', lucky: '北方 · 黄昏' },
+  { rank: 'favored', zhPoem: '旧枝发新芽，回望笑此花', enPoem: 'Old branch buds anew; you will smile at this bloom', zhAdvice: '翻出一件半途而废的事，捡起来，这次能成。', enAdvice: 'Pick one abandoned project back up. This time it takes.', lucky: '西方 · 午后' },
+  { rank: 'quiet', zhPoem: '薄雾锁山径，缓步亦可行', enPoem: 'Mist locks the path; slow steps still arrive', zhAdvice: '急事放缓，缓事做细。傍晚之后运势回升。', enAdvice: 'Slow the urgent, refine the slow. Luck climbs after dusk.', lucky: '南方 · 夜里' },
+  { rank: 'quiet', zhPoem: '灯下影成双，茶凉再续汤', enPoem: 'Lamplight doubles your shadow; refill the cooled tea', zhAdvice: '今天适合收尾不适合开局，把手头的事清一清。', enAdvice: 'Close loops rather than open new ones today.', lucky: '家中 · 任意时刻' },
+  { rank: 'turning', zhPoem: '风紧莫扬帆，系舟自安然', enPoem: 'When wind bites, tie the sail; anchored, all is well', zhAdvice: '所谓逆转，只是今天不宜硬来。躲开争执，明天就是转机。', enAdvice: '"Ill" only means do not force it today. Dodge arguments; tomorrow turns.', lucky: '原地 · 睡个好觉' },
 ]
 
 /** 加权抽签：大吉稍稀有，凶转吉最少见 */
-const OMIKUJI_WEIGHTS = [2, 2.4, 3, 2.6, 3, 2.5, 1.2]
+const ORACLE_WEIGHTS = [2, 2.4, 3, 2.6, 3, 2.5, 1.2]
 
-export function drawOmikuji(): OmikujiSlip {
-  const total = OMIKUJI_WEIGHTS.reduce((s, w) => s + w, 0)
+export function drawOracleSlip(): OracleSlip {
+  const total = ORACLE_WEIGHTS.reduce((s, w) => s + w, 0)
   let roll = Math.random() * total
-  for (let i = 0; i < OMIKUJI_POOL.length; i++) {
-    roll -= OMIKUJI_WEIGHTS[i]!
-    if (roll <= 0) return OMIKUJI_POOL[i]!
+  for (let i = 0; i < ORACLE_POOL.length; i++) {
+    roll -= ORACLE_WEIGHTS[i]!
+    if (roll <= 0) return ORACLE_POOL[i]!
   }
-  return OMIKUJI_POOL[OMIKUJI_POOL.length - 1]!
+  return ORACLE_POOL[ORACLE_POOL.length - 1]!
 }

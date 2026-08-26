@@ -6,24 +6,24 @@ import {
   REALM_FACES,
   WHEEL_SECTORS,
   diceReading,
-  drawOmikuji,
+  drawOracleSlip,
   L,
   type DieFace,
   type FortuneRank,
-  type OmikujiSlip,
+  type OracleSlip,
 } from '../data/oracleArcade'
 import { sparkleFromEvent } from '../lib/sparkle'
 import { sfx } from '../lib/sfx'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
-type Tab = 'dice' | 'wheel' | 'omikuji'
+type Tab = 'dice' | 'wheel' | 'sortition'
 const tab = ref<Tab>('dice')
 
 const RANK_LABEL: Record<FortuneRank, [string, string]> = {
-  daikichi: ['大吉', 'Great Luck'],
-  kichi: ['吉', 'Luck'],
-  suekichi: ['末吉', 'Small Luck'],
-  kyo: ['凶转吉', 'Turns Fine'],
+  blessed: ['星佑', 'Star-Blessed'],
+  favored: ['眷顾', 'Favored'],
+  quiet: ['静好', 'Quiet Grace'],
+  turning: ['逆转', 'The Turning'],
 }
 
 function switchTab(next: Tab): void {
@@ -118,7 +118,7 @@ function spinWheel(e?: MouseEvent): void {
 
 /* ---------- 神签 ---------- */
 const shaking = ref(false)
-const slip = ref<OmikujiSlip | null>(null)
+const slip = ref<OracleSlip | null>(null)
 
 function shakeBox(e?: MouseEvent): void {
   if (shaking.value) return
@@ -127,7 +127,7 @@ function shakeBox(e?: MouseEvent): void {
   sfx.riffle()
   window.setTimeout(() => {
     shaking.value = false
-    slip.value = drawOmikuji()
+    slip.value = drawOracleSlip()
     sfx.ding()
     if (e) sparkleFromEvent(e, 10)
   }, 900)
@@ -146,7 +146,7 @@ function shakeBox(e?: MouseEvent): void {
     <div class="arcade-tabs">
       <button class="arcade-tab" :class="{ active: tab === 'dice' }" @click="switchTab('dice')">🎲 {{ L(['占卜骰子', 'Dice']) }}</button>
       <button class="arcade-tab" :class="{ active: tab === 'wheel' }" @click="switchTab('wheel')">🎡 {{ L(['命运转盘', 'Wheel']) }}</button>
-      <button class="arcade-tab" :class="{ active: tab === 'omikuji' }" @click="switchTab('omikuji')">🥠 {{ L(['神签', 'Omikuji']) }}</button>
+      <button class="arcade-tab" :class="{ active: tab === 'sortition' }" @click="switchTab('sortition')">🏺 {{ L(['德尔斐神签', 'Delphic Lots']) }}</button>
     </div>
 
     <!-- 骰子 -->
@@ -207,12 +207,13 @@ function shakeBox(e?: MouseEvent): void {
       </Transition>
     </section>
 
-    <!-- 神签 -->
-    <section v-if="tab === 'omikuji'" class="panel arcade-panel bounce-in">
+    <!-- 德尔斐神签 -->
+    <section v-if="tab === 'sortition'" class="panel arcade-panel bounce-in">
+      <p class="hint" style="margin-top: 0;">{{ L(['古希腊德尔斐圣所的抽签占卜（Cleromancy）：心念一事，从圣签筒中抽出你的神谕。', 'Cleromancy at Delphi: hold a question in mind, then draw your lot from the sacred urn.']) }}</p>
       <div class="omi-stage">
         <div class="omi-box" :class="{ shake: shaking }" @click="shakeBox($event)">
           <div class="omi-sticks"><i v-for="n in 9" :key="n" /></div>
-          <span class="omi-hole">{{ L(['摇我', 'shake']) }}</span>
+          <span class="omi-hole">{{ L(['摇一摇', 'shake me']) }}</span>
         </div>
       </div>
       <Transition name="pop">
@@ -225,7 +226,7 @@ function shakeBox(e?: MouseEvent): void {
       </Transition>
       <div class="arcade-actions">
         <button class="btn ghost small" @click="shakeBox($event)">
-          {{ slip ? L(['再求一签', 'Draw another']) : L(['求一支签', 'Draw a slip']) }}
+          {{ slip ? L(['再抽一支', 'Draw another lot']) : L(['抽一支神签', 'Draw a lot']) }}
         </button>
       </div>
     </section>
