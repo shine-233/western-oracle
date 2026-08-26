@@ -10,6 +10,7 @@ import { installKonami } from './lib/konami'
 import { installOverlays } from './lib/overlays'
 import { initThemes } from './lib/themes'
 import { installMotionGlobal } from './lib/motionGlobal'
+import { installReactPopups } from './lib/reactPopups'
 
 const app = createApp(App).use(router)
 app.directive('reveal', vReveal)
@@ -19,10 +20,4 @@ app.mount('#app')
 installKonami()
 installOverlays()
 installMotionGlobal()
-
-// PWA：生产环境注册 Service Worker（离线缓存 + 可安装）
-if (import.meta.env.PROD && 'serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => {})
-  })
-}
+installReactPopups()

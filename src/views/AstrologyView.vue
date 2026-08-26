@@ -21,6 +21,7 @@ import { findSolarReturn } from '../lib/solarReturn'
 import { ASPECT_CN, crossAspects, type CrossAspect } from '../lib/astrology'
 import AstroWheel from '../components/AstroWheel.vue'
 import AiChat from '../components/AiChat.vue'
+import ApprenticeReact from '../components/ApprenticeReact.vue'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
 const MascotCard = defineAsyncComponent(() => import('../components/MascotCard.vue'))
@@ -470,6 +471,7 @@ export default {}
       </section>
 
       <MascotCard ref="pet" id="owl" />
+      <ApprenticeReact module="astrology" :score="Math.min(95, 55 + (chart.patterns?.length ?? 0) * 9)" />
       <AiChat :context="aiContext" :title="t('ai.astro.title')" :intro="t('ai.astro.intro')" />
     </template>
 

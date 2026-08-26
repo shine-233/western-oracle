@@ -43,6 +43,23 @@ const M: Record<string, Pair> = {
   'hours.goodFor': ['宜', 'Good for'],
   'hours.avoid': ['避', 'Avoid'],
   'hours.polarHint': ['今天太阳不升不落，行星时休息。', 'Polar day/night today — planet hours are off duty.'],
+  'hours.pickTitle': ['想做点什么？帮你把对应的时段点亮', 'What are you up to? Let me light up the good hours'],
+  'hours.matchHint': ['亮着的 {n} 段都合适，挑一段顺路的。', '{n} glowing hour(s) fit — take whichever is convenient.'],
+
+  /* ---------- 行星时·活动分类 ---------- */
+  'cat.deal': ['谈合作 · 签约', 'Deals & signing'],
+  'cat.love': ['恋爱 · 和好', 'Love & making up'],
+  'cat.study': ['学习 · 考试', 'Study & exams'],
+  'cat.fight': ['运动 · 硬仗', 'Workouts & battles'],
+  'cat.career': ['汇报 · 露脸', 'Pitch & exposure'],
+  'cat.rest': ['休息 · 顾家', 'Rest & family'],
+  'cat.tidy': ['断舍离 · 理账', 'Declutter & accounts'],
+
+  /* ---------- 行星时·小知识 ---------- */
+  'lore.title': ['行星时是怎么来的', 'Where planet hours come from'],
+  'lore.p1': ['七颗古典行星按「迦勒底次序」轮值：土、木、火、日、金、水、月，一段一小时。黎明第一个小时的值守星就是当天的日主——周日归太阳，周一归月亮，往后排。', 'Seven classical planets take turns in Chaldean order — Saturn, Jupiter, Mars, Sun, Venus, Mercury, Moon — one per hour. The ruler of the first hour after sunrise rules the whole day: Sunday belongs to the Sun, Monday to the Moon, and so on.'],
+  'lore.p2': ['白天和黑夜各自均分成 12 段，所以夏天的行星时长、冬天的短。它量的是太阳的时间，不是钟表的时间。', 'Daylight and night are each split into 12 parts, so summer hours run long and winter ones short. This is the sun\'s clock, not the wall clock.'],
+  'lore.tip': ['用法很简单：先挑要做的事，看环上哪几段亮了，挑顺路的一段去办。不必掐秒。', 'How to use: pick what you need doing, watch which segments glow, and go during one of them. No stopwatch needed.'],
 
   /* ---------- 太阳回归盘 ---------- */
   'sr.title': ['太阳回归盘 · Solar Return', 'Solar Return Chart'],
@@ -173,6 +190,17 @@ export const PLANET_AVOID: Record<string, Pair> = {
   Venus: ['催债、撕破脸', 'Debt collecting, confrontations'],
   Mercury: ['拍板重大决定（信息易变）', 'Final decisions (info shifts)'],
   Moon: ['做长远承诺', 'Long-term commitments'],
+}
+
+/** 吉时推荐：活动 → 值守星 */
+export const ACTIVITY_PLANETS: Record<string, string[]> = {
+  deal: ['Jupiter', 'Mercury'],
+  love: ['Venus'],
+  study: ['Mercury', 'Jupiter'],
+  fight: ['Mars'],
+  career: ['Sun'],
+  rest: ['Moon'],
+  tidy: ['Saturn'],
 }
 
 export const CRYSTAL_GOODFOR: Pair[] = [

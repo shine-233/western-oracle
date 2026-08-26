@@ -251,6 +251,43 @@ function installNavSfx(): void {
   }, { passive: true })
 }
 
+/* ---------- 7. 滚动速度倾斜（快速滚动时内容轻微斜切，awwwards 手感） ---------- */
+function installScrollSkew(): void {
+  if (REDUCED || !FINE) return
+  // 只斜切内容区 <main>；#app 里含 fixed 星野层，transform 会产生新的包含块导致其失效
+  const app = document.querySelector('main')
+  if (!app) return
+
+  let lastY = window.scrollY
+  let skew = 0
+  let rafId = 0
+  let ticking = false
+
+  const loop = (): void => {
+    const y = window.scrollY
+    const delta = y - lastY
+    lastY = y
+    // 速度 → 目标倾斜角，限幅 ±2.2deg
+    const target = Math.max(-2.2, Math.min(2.2, delta * 0.06))
+    skew += (target - skew) * 0.12
+    if (Math.abs(skew) < 0.01 && delta === 0) {
+      app.style.transform = ''
+      ticking = false
+      return
+    }
+    app.style.transform = `skewY(${skew.toFixed(3)}deg)`
+    rafId = requestAnimationFrame(loop)
+  }
+  const kick = (): void => {
+    if (!ticking) {
+      ticking = true
+      rafId = requestAnimationFrame(loop)
+    }
+  }
+  window.addEventListener('scroll', kick, { passive: true })
+  window.addEventListener('beforeunload', () => cancelAnimationFrame(rafId))
+}
+
 /** main.ts 里调用一次 */
 export function installOverlays(): void {
   if (typeof document === 'undefined') return
@@ -261,4 +298,5 @@ export function installOverlays(): void {
   installTabWitch()
   installThemeRipple()
   installNavSfx()
+  installScrollSkew()
 }

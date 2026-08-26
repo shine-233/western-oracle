@@ -22,12 +22,22 @@ const omenText = ref('')
 const goodText = ref('')
 const hourWin = ref('')
 const askCount = ref(0)
+const histList = ref<CrystalHistItem[]>([])
+void histList
 
 const zh = computed(() => locale.value === 'zh')
 
 interface CrystalLog {
   date: string
   asks: Record<string, { omen: number; good: number; hour: number }>
+  /** 跨天保留的解答历史（最新在前，最多 8 条） */
+  history?: CrystalHistItem[]
+}
+
+interface CrystalHistItem {
+  at: string
+  q: string
+  omen: number
 }
 const LOG_KEY = 'wo.crystal'
 
@@ -39,9 +49,14 @@ function todayKey(): string {
 function loadLog(): CrystalLog {
   try {
     const raw = JSON.parse(localStorage.getItem(LOG_KEY) ?? 'null') as CrystalLog | null
-    if (raw && raw.date === todayKey() && raw.asks) return raw
+    if (raw && raw.date === todayKey() && raw.asks) {
+      return { ...raw, history: Array.isArray(raw.history) ? raw.history : [] }
+    }
+    // 跨天：重置当日计数但保留历史
+    const old = raw?.history ?? []
+    return { date: todayKey(), asks: {}, history: old }
   } catch { /* ignore */ }
-  return { date: todayKey(), asks: {} }
+  return { date: todayKey(), asks: {}, history: [] }
 }
 
 function saveLog(log: CrystalLog): void {
@@ -335,7 +350,12 @@ function ask(e?: MouseEvent): void {
   const log = loadLog()
   const res = log.asks[key] ?? pickAnswer(seedStr)
   log.asks[key] = res
+  log.history = [
+    { at: new Date().toLocaleString('zh-CN', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }), q: question.value.trim() || (zh.value ? '（没写问题）' : '(no question)'), omen: res.omen },
+    ...(log.history ?? []),
+  ].slice(0, 8)
   saveLog(log)
+  histList.value = log.history
   askCount.value = Object.keys(log.asks).length
 
   const delay = reducedMotion ? 250 : 2200
@@ -355,6 +375,8 @@ function ask(e?: MouseEvent): void {
 
 onMounted(() => {
   initThree()
+  // 恢复历史记录展示
+  histList.value = loadLog().history ?? []
 })
 onBeforeUnmount(() => {
   disposeScene?.()
@@ -401,6 +423,14 @@ const askLabel = computed(() => (gazing.value ? tt('crystal.gazing') : tt('cryst
         <p v-if="askCount > 0" class="hint count-hint">
           {{ tt('crystal.count', { n: askCount }) }}
         </p>
+
+        <TransitionGroup v-if="histList.length > 0" name="omen-pop" tag="ul" class="hist-list">
+          <li v-for="(it, i) in histList" :key="it.at + i" class="hist-row">
+            <small class="hr-at">{{ it.at }}</small>
+            <span class="hr-q">{{ it.q }}</span>
+            <em class="hr-a">{{ zh ? OMENS[it.omen]![0] : OMENS[it.omen]![1] }}</em>
+          </li>
+        </TransitionGroup>
       </div>
     </section>
   </div>
@@ -444,6 +474,31 @@ const askLabel = computed(() => (gazing.value ? tt('crystal.gazing') : tt('cryst
 .omen-sub { margin: 4px 0; color: var(--ink); font-size: 0.92rem; }
 .omen-hint { margin: 10px 0 0; color: var(--ink-dim); font-size: 0.8rem; font-style: italic; }
 .count-hint { margin-top: 4px; opacity: 0.75; }
+
+.hist-list {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+.hist-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 3px 12px;
+  padding: 9px 13px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--lavender) 6%, var(--void-0));
+  border: 1.5px solid color-mix(in srgb, var(--lavender) 22%, transparent);
+  transition: border-color 0.2s, transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.hist-row:hover { transform: translateX(4px); border-color: color-mix(in srgb, var(--lavender) 55%, transparent); }
+.hr-at { grid-column: 1 / -1; font-family: var(--pixel); font-size: 0.5rem; letter-spacing: 0.1em; color: var(--ink-dim); }
+.hr-q { font-size: 0.86rem; color: var(--lavender-soft); }
+.hr-a { grid-column: 1 / -1; font-style: normal; font-size: 0.82rem; line-height: 1.7; color: var(--ink-dim); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
 .omen-pop-enter-active { transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
 .omen-pop-enter-from { opacity: 0; transform: translateY(14px) scale(0.92); }

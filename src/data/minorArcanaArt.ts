@@ -129,6 +129,34 @@ const KING: string[] = [
 
 const COURT_TEMPLATE: Record<string, string[]> = { page: PAGE, knight: KNIGHT, queen: QUEEN, king: KING }
 
+/* ---------- 花色场景背景（稀疏行装饰） ---------- */
+const BACKDROP: Record<MinorSuit, Array<[number, string]>> = {
+  wands: [
+    [3, '.....F......F......'],
+    [5, '..F........F.......'],
+    [18, '....MMMMMMMMMMMM...'],
+    [20, '..MM...........MM..'],
+  ],
+  cups: [
+    [4, '...U.....U.....U...'],
+    [17, '..UUUUUUUUUUUUUU...'],
+    [19, '.UUUUUUUUUUUUUUUU..'],
+    [21, '..UU..UUUU..UU.U...'],
+  ],
+  swords: [
+    [5, '..IIII....IIII.....'],
+    [8, '......IIII.....II..'],
+    [16, '..IIII.....IIII....'],
+  ],
+  pentacles: [
+    [4, '..T....T.....T.....'],
+    [7, '....A.....A........'],
+    [10, 'T...T....T......T..'],
+    [15, '....T.A.....T......'],
+    [20, '..T.....T.....T....'],
+  ],
+}
+
 /* ---------- 组装 ---------- */
 
 function stamp(canvas: string[], sprite: string[], x: number, y: number): void {
@@ -147,13 +175,22 @@ function stamp(canvas: string[], sprite: string[], x: number, y: number): void {
 
 function buildPipCard(suit: MinorSuit, n: number): string[] {
   const canvas: string[] = Array.from({ length: 26 }, () => '')
+  for (const [y, row] of BACKDROP[suit]) stamp(canvas, [row], 0, y)
   for (const [x, y] of PIP_LAYOUT[n]!) stamp(canvas, SUIT_SPRITE[suit], x, y)
   return canvas
 }
 
 function buildCourt(suit: MinorSuit, rank: string): string[] {
   const accent = suit === 'wands' ? 'F' : suit === 'cups' ? 'U' : suit === 'swords' ? 'I' : 'A'
-  return COURT_TEMPLATE[rank]!.map((r) => r.split('Z').join(accent))
+  const body = COURT_TEMPLATE[rank]!.map((r) => r.split('Z').join(accent))
+  const canvas: string[] = Array.from({ length: Math.max(body.length + 2, 14) }, () => '')
+  // 场景点缀
+  for (const [y, row] of BACKDROP[suit].slice(0, 2)) stamp(canvas, [row], 0, y)
+  stamp(canvas, body, 0, 0)
+  // 手持花色信物（人物右下）
+  const w = Math.max(...body.map((r) => r.length))
+  stamp(canvas, SUIT_SPRITE[suit], w + 1, Math.max(2, body.length - SUIT_SPRITE[suit].length - 1))
+  return canvas
 }
 
 /** 解析牌 id（如 'wands-7'、'cups-queen'）→ 像素画；非小阿卡纳返回 null */

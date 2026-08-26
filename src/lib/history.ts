@@ -26,6 +26,9 @@ export function getHistory(): HistoryEntry[] {
 
 export function addHistory(entry: Omit<HistoryEntry, 'id' | 'createdAt'>): void {
   recordDivination()
+  window.dispatchEvent(
+    new CustomEvent('wo-divination', { detail: { type: entry.type, label: entry.label, summary: entry.summary } }),
+  )
   const list = getHistory()
   list.unshift({
     ...entry,

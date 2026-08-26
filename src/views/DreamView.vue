@@ -9,6 +9,7 @@ import {
   type DreamEntry,
 } from '../data/dreams'
 import { locale } from '../lib/i18n'
+import { loadJSON, saveJSON } from '../lib/storage'
 import { sparkleFromEvent } from '../lib/sparkle'
 import { sfx } from '../lib/sfx'
 import DecryptTitle from '../components/DecryptTitle.vue'
@@ -120,6 +121,33 @@ const reading = computed(() => {
   }
   return [openers[top]!, ...lines, closers[top]!].join('\n')
 })
+
+/* ---------- 解梦手账（本机保存） ---------- */
+interface JournalEntry {
+  date: string
+  items: string[]
+  text: string
+}
+const JOURNAL_KEY = 'dream-journal'
+const journal = ref<JournalEntry[]>(loadJSON<JournalEntry[]>(JOURNAL_KEY, []))
+const showJournal = ref(false)
+
+function saveReading(): void {
+  if (!reading.value || picked.value.length === 0) return
+  const entry: JournalEntry = {
+    date: new Date().toLocaleString(locale.value === 'zh' ? 'zh-CN' : 'en-US', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }),
+    items: picked.value.map((p) => (locale.value === 'zh' ? p.zh : p.en)),
+    text: reading.value,
+  }
+  journal.value = [entry, ...journal.value].slice(0, 50)
+  saveJSON(JOURNAL_KEY, journal.value)
+  sfx.ding()
+}
+
+function removeJournal(i: number): void {
+  journal.value.splice(i, 1)
+  saveJSON(JOURNAL_KEY, journal.value)
+}
 </script>
 
 <template>
@@ -154,7 +182,10 @@ const reading = computed(() => {
     <section class="panel dream-mixer stagger-in">
       <div class="mixer-head">
         <h3 style="margin: 0;">{{ zh ? '🧪 组合解梦' : '🧪 Dream Blender' }}<span class="tag">{{ picked.length }}/3</span></h3>
-        <button v-if="picked.length" class="btn ghost small" @click="picked = []">{{ zh ? '清空' : 'Clear' }}</button>
+        <div style="display: flex; gap: 8px;">
+          <button v-if="reading" class="btn ghost small" @click="saveReading">{{ zh ? '📒 存入手账' : '📒 Save' }}</button>
+          <button v-if="picked.length" class="btn ghost small" @click="picked = []">{{ zh ? '清空' : 'Clear' }}</button>
+        </div>
       </div>
       <TransitionGroup name="pick" tag="div" class="picked-row">
         <span v-for="p in picked" :key="p.id" class="picked-chip" @click="togglePick(p)">
@@ -169,27 +200,20 @@ const reading = computed(() => {
       </Transition>
     </section>
 
-    <!-- Miller 扩展词典（1901 公版，懒加载） -->
-    <section
-      v-if="millerLoading || millerMatches.length > 0 || (millerRequested && !millerLoading && keyword.trim().length >= 2 && millerMatches.length === 0)"
-      class="panel miller-panel"
-    >
-      <div class="mixer-head">
-        <h3 style="margin: 0;">
-          📜 {{ zh ? 'Miller 扩展词典 · 1901' : 'Miller Extended Dictionary · 1901' }}
-          <span class="tag">公版 · 英文检索</span>
-        </h3>
-        <small v-if="miller" class="hint" style="margin: 0;">{{ miller.length }} entries</small>
-      </div>
-      <p v-if="millerLoading" class="hint" style="margin: 10px 0 0;">{{ zh ? '正在召唤 125 年前的梦…' : 'Summoning dreams from 1901…' }}</p>
-      <ul v-else-if="millerMatches.length" class="miller-list">
-        <li v-for="m in millerMatches" :key="m.term">
-          <strong>{{ m.term }}</strong>
-          <p>{{ m.meanings[0] }}</p>
-          <p v-if="m.meanings[1]" class="miller-more">{{ m.meanings[1] }}</p>
-        </li>
-      </ul>
-      <p v-else class="hint" style="margin: 10px 0 0;">{{ zh ? 'Miller 词典里没有匹配的英文词条——试试 snake、water、teeth 这类词。' : 'No match in Miller — try English words like snake, water, teeth.' }}</p>
+    <!-- 解梦手账 -->
+    <section v-if="journal.length" class="panel stagger-in journal-panel">
+      <button class="btn ghost small journal-toggle" @click="showJournal = !showJournal; sfx.blip()">
+        📒 {{ zh ? `解梦手账（${journal.length}）` : `Dream journal (${journal.length})` }} {{ showJournal ? '▲' : '▼' }}
+      </button>
+      <TransitionGroup v-if="showJournal" name="pick" tag="div" class="journal-list">
+        <article v-for="(j, i) in journal" :key="j.date + i" class="journal-item">
+          <header>
+            <small>{{ j.date }} · {{ j.items.join(' × ') }}</small>
+            <button class="jr-del" @click="removeJournal(i)">✕</button>
+          </header>
+          <pre class="reading">{{ j.text }}</pre>
+        </article>
+      </TransitionGroup>
     </section>
 
     <!-- 词条网格 -->
@@ -288,23 +312,30 @@ const reading = computed(() => {
 .pop-leave-active { transition: all 0.15s ease; }
 .pop-leave-to { opacity: 0; }
 
-/* ---------- Miller 扩展词典 ---------- */
-.miller-panel { margin-top: 16px; border-color: color-mix(in srgb, var(--gold) 35%, transparent); }
-.miller-list {
-  list-style: none;
-  margin: 12px 0 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 10px;
-}
-.miller-list li {
-  padding: 10px 12px;
+.journal-panel { margin-top: 16px; }
+.journal-toggle { border: none; }
+.journal-list { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
+.journal-item {
+  padding: 12px 14px;
   background: rgba(13, 11, 32, 0.6);
-  border-left: 3px solid var(--gold);
+  border-left: 3px solid var(--pink);
   border-radius: 8px;
 }
-.miller-list strong { color: var(--gold-bright); font-family: var(--cute); font-weight: 400; }
-.miller-list p { margin: 4px 0 0; font-size: 0.82rem; line-height: 1.75; color: var(--ink); }
-.miller-list p.miller-more { opacity: 0.72; font-size: 0.76rem; }
+.journal-item header { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; }
+.journal-item small { color: var(--ink-dim); font-family: var(--pixel); font-size: 0.55rem; letter-spacing: 0.1em; }
+.jr-del {
+  border: none;
+  background: transparent;
+  color: var(--ink-dim);
+  cursor: pointer;
+  transition: color 0.2s, transform 0.2s;
+}
+.jr-del:hover { color: var(--danger); transform: scale(1.2); }
+.journal-item pre {
+  margin: 0;
+  white-space: pre-wrap;
+  font-family: inherit;
+  line-height: 1.9;
+  font-size: 0.86rem;
+}
 </style>

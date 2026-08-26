@@ -186,6 +186,100 @@ function installCurtain(): void {
   window.setTimeout(hide, 2200) // 兜底：最多 2.2s 必揭幕
 }
 
+/* ---------- 4. 全站卡片 3D 倾斜（委托版，免指令） ---------- */
+const TILT_SEL = '.oracle-card, .daily-card, .lib-card, .theme-card, .alm-item'
+const TILT_MAX = 7
+
+function installAutoTilt(): void {
+  if (!window.matchMedia('(pointer: fine)').matches || reducedMotion()) return
+  let active: HTMLElement | null = null
+  let raf = 0
+
+  document.addEventListener(
+    'pointermove',
+    (e) => {
+      if (!active || raf) return
+      raf = requestAnimationFrame(() => {
+        raf = 0
+        if (!active) return
+        const me = e as MouseEvent
+        const rect = active.getBoundingClientRect()
+        const px = (me.clientX - rect.left) / rect.width - 0.5
+        const py = (me.clientY - rect.top) / rect.height - 0.5
+        active.style.transform = `perspective(620px) rotateY(${(px * TILT_MAX * 2).toFixed(2)}deg) rotateX(${(-py * TILT_MAX * 2).toFixed(2)}deg) translateY(-3px)`
+      })
+    },
+    { passive: true },
+  )
+
+  document.addEventListener('pointerover', (e) => {
+    const t = (e.target as HTMLElement)?.closest?.(TILT_SEL) as HTMLElement | null
+    if (t && t !== active && !t.classList.contains('no-tilt')) {
+      active = t
+      t.style.transition = 'transform .12s ease-out'
+      t.style.willChange = 'transform'
+    }
+  })
+
+  document.addEventListener('pointerout', (e) => {
+    const t = (e.target as HTMLElement)?.closest?.(TILT_SEL) as HTMLElement | null
+    if (t && t === active) {
+      t.style.transition = 'transform .55s cubic-bezier(.34,1.56,.64,1)'
+      t.style.transform = ''
+      window.setTimeout(() => {
+        t.style.willChange = ''
+        t.style.transition = ''
+      }, 560)
+      active = null
+    }
+  })
+}
+
+/* ---------- 5. 导航文字解码悬浮（赛博感 signature move） ---------- */
+const SCRAMBLE_CHARS = '✦✧⋆STARORACLUMEN'
+function installNavScramble(): void {
+  if (reducedMotion()) return
+  document.addEventListener('pointerover', (e) => {
+    const a = (e.target as HTMLElement)?.closest?.('.site-nav a') as HTMLElement | null
+    if (!a || a.dataset.scrambling === '1') return
+    const original = a.textContent ?? ''
+    if (!original) return
+    a.dataset.scrambling = '1'
+    let frame = 0
+    const total = Math.min(10, original.length + 4)
+    const timer = window.setInterval(() => {
+      frame++
+      const reveal = Math.floor((frame / total) * original.length)
+      let out = ''
+      for (let i = 0; i < original.length; i++) {
+        out +=
+          i < reveal
+            ? original[i]!
+            : SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)]!
+      }
+      a.textContent = out
+      if (frame >= total) {
+        window.clearInterval(timer)
+        a.textContent = original
+        delete a.dataset.scrambling
+      }
+    }, 28)
+  })
+}
+
+/* ---------- 6. 悬浮微音效（委托版，静音自动失效） ---------- */
+function installHoverSfx(): void {
+  let last = 0
+  document.addEventListener('pointerover', (e) => {
+    const t = (e.target as HTMLElement)?.closest?.('.btn, .filter-chip, .pref-row, .site-nav a')
+    if (!t) return
+    const now = performance.now()
+    if (now - last < 110) return
+    last = now
+    void import('./sfx').then(({ sfx }) => sfx.tick())
+  })
+}
+
 /** 应用启动时调用一次（main.ts） */
 export function installMotionGlobal(): void {
   if (installed) return
@@ -193,4 +287,7 @@ export function installMotionGlobal(): void {
   installCurtain()
   installAutoReveal()
   installAutoMagnetic()
+  installAutoTilt()
+  installNavScramble()
+  installHoverSfx()
 }

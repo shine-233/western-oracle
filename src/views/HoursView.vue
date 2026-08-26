@@ -14,7 +14,7 @@ import {
   type PlanetaryHour,
 } from '../lib/planetaryHours'
 import { loadJSON, saveJSON } from '../lib/storage'
-import { tt } from '../lib/i18nExtra'
+import { tt, ACTIVITY_PLANETS } from '../lib/i18nExtra'
 import { PLANET_GOOD, PLANET_AVOID } from '../lib/i18nExtra'
 import { locale } from '../lib/i18n'
 import { sfx } from '../lib/sfx'
@@ -145,6 +145,32 @@ function glyphPos(i: number): { x: number; y: number } {
   const [x, y] = pol((R_IN + R_OUT) / 2, i * 15 + 7.5)
   return { x, y }
 }
+
+/* ---------- 吉时推荐 ---------- */
+const pickCat = ref<string | null>(null)
+
+const matchedIndexes = computed(() => {
+  if (!pickCat.value) return new Set<number>()
+  const rulers = ACTIVITY_PLANETS[pickCat.value] ?? []
+  return new Set(
+    hours.value.filter((h) => rulers.includes(h.ruler)).map((h) => h.index),
+  )
+})
+
+function toggleCat(id: string): void {
+  pickCat.value = pickCat.value === id ? null : id
+  sfx.blip()
+  if (pickCat.value && matchedIndexes.value.size > 0) {
+    // 自动选中第一个「还没过去」的合适时辰
+    const nowH = currentPlanetHour(hours.value)
+    const candidates = hours.value.filter((h) => matchedIndexes.value.has(h.index))
+    const future = candidates.find((h) => nowH && h.index >= nowH.index) ?? candidates[0]!
+    selected.value = future
+  }
+}
+
+const CAT_IDS = Object.keys(ACTIVITY_PLANETS)
+const CHALDEAN_ORDER = ['Saturn', 'Jupiter', 'Mars', 'Sun', 'Venus', 'Mercury', 'Moon']
 </script>
 
 <template>
@@ -173,6 +199,21 @@ function glyphPos(i: number): { x: number; y: number } {
       </p>
 
       <template v-if="!polar">
+        <div class="cat-row" role="group">
+          <button
+            v-for="id in CAT_IDS"
+            :key="id"
+            class="cat-chip"
+            :class="{ on: pickCat === id }"
+            @click="toggleCat(id)"
+          >
+            {{ tt('cat.' + id) }}
+          </button>
+        </div>
+        <p v-if="pickCat && matchedIndexes.size > 0" class="hint match-hint">
+          ✧ {{ tt('hours.matchHint', { n: matchedIndexes.size }) }}
+        </p>
+
         <div class="clock-wrap">
           <svg class="clock" viewBox="0 0 340 340" role="img" :aria-label="tt('hours.title')">
             <!-- 刻度环底 -->
@@ -181,7 +222,7 @@ function glyphPos(i: number): { x: number; y: number } {
               <path
                 :d="segPath(h.index - 1)"
                 class="seg"
-                :class="[h.daytime ? 'day' : 'night', { now: currentH?.index === h.index, sel: selected?.index === h.index }]"
+                :class="[h.daytime ? 'day' : 'night', { now: currentH?.index === h.index, sel: selected?.index === h.index, match: matchedIndexes.has(h.index) }]"
                 @click="pick(h, $event)"
               >
                 <title>{{ zhName(h.ruler) }} · {{ rangeText(h) }}</title>
@@ -222,6 +263,24 @@ function glyphPos(i: number): { x: number; y: number } {
         </Transition>
       </template>
       <p v-else class="hint">{{ tt('hours.polarHint') }}</p>
+    </section>
+
+    <!-- 行星时小知识 -->
+    <section v-if="!polar" class="panel lore-panel">
+      <h3 style="margin-top: 0;">✦ {{ tt('lore.title') }}</h3>
+      <p class="lore-p">{{ tt('lore.p1') }}</p>
+      <div class="chaldean-row">
+        <span
+          v-for="(p, i) in CHALDEAN_ORDER"
+          :key="p"
+          class="chald-chip"
+          :style="{ animationDelay: i * 0.08 + 's' }"
+        >
+          <i>{{ glyphOf(p) }}</i>{{ zhName(p) }}
+        </span>
+      </div>
+      <p class="lore-p">{{ tt('lore.p2') }}</p>
+      <p class="lore-tip">✧ {{ tt('lore.tip') }}</p>
     </section>
   </div>
 </template>
@@ -284,6 +343,68 @@ function glyphPos(i: number): { x: number; y: number } {
 .cc-glyph { font-style: normal; font-size: 2.6rem; line-height: 1; color: var(--gold-bright); filter: drop-shadow(0 0 10px color-mix(in srgb, var(--gold) 55%, transparent)); }
 .clock-center strong { font-family: var(--cute); color: var(--gold-bright); font-weight: 400; font-size: 1.05rem; letter-spacing: 0.08em; }
 .clock-center small { color: var(--ink-dim); font-size: 0.78rem; }
+
+/* ---------- 吉时推荐 chips ---------- */
+.cat-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.cat-chip {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 2px solid color-mix(in srgb, var(--lavender) 40%, transparent);
+  background: color-mix(in srgb, var(--lavender) 8%, var(--void-0));
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-family: var(--cute);
+  letter-spacing: 0.05em;
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.cat-chip:hover { transform: translateY(-2px); border-color: var(--pink); }
+.cat-chip.on {
+  border-color: var(--mint);
+  color: var(--mint);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--mint) 40%, transparent);
+}
+.match-hint { margin: 10px 0 0; color: var(--mint); }
+.seg.match {
+  fill: color-mix(in srgb, var(--mint) 20%, var(--void-0));
+  stroke: color-mix(in srgb, var(--mint) 70%, transparent);
+  animation: seg-match 1.8s ease-in-out infinite;
+}
+@keyframes seg-match {
+  0%, 100% { filter: drop-shadow(0 0 2px color-mix(in srgb, var(--mint) 35%, transparent)); }
+  50% { filter: drop-shadow(0 0 9px color-mix(in srgb, var(--mint) 75%, transparent)); }
+}
+
+/* ---------- 小知识面板 ---------- */
+.lore-panel { margin-top: 20px; }
+.lore-p { line-height: 2; color: var(--ink); font-size: 0.94rem; margin: 10px 0; }
+.chaldean-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+.chald-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 13px;
+  border-radius: 999px;
+  font-size: 0.86rem;
+  background: color-mix(in srgb, var(--gold) 9%, var(--void-0));
+  border: 1.5px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  opacity: 0;
+  animation: chald-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.chald-chip i { font-style: normal; color: var(--gold-bright); font-size: 1.05rem; }
+@keyframes chald-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.8); }
+  to { opacity: 1; transform: none; }
+}
+.lore-tip {
+  margin: 12px 0 0;
+  padding: 11px 15px;
+  border-radius: 10px;
+  border: 2px dashed color-mix(in srgb, var(--mint) 50%, transparent);
+  color: var(--ink-dim);
+  font-size: 0.88rem;
+  line-height: 1.9;
+}
 
 .detail-box {
   margin-top: 18px;

@@ -162,6 +162,7 @@ onBeforeUnmount(() => {
       <RouterLink to="/pendulum">🜨 {{ t('nav.pendulum') }}</RouterLink>
       <RouterLink to="/orrery">🪐 {{ t('nav.orrery') }}</RouterLink>
       <RouterLink to="/moonbreath">🌕 {{ t('nav.moonbreath') }}</RouterLink>
+      <RouterLink to="/biorhythm">📈 {{ t('nav.biorhythm') }}</RouterLink>
       <RouterLink to="/history">{{ t('nav.history') }}</RouterLink>
       <RouterLink to="/settings">{{ t('nav.settings') }}</RouterLink>
       <button class="lang-toggle" :title="locale === 'zh' ? 'Switch to English' : '切换到中文'" @click="onToggleLocale">
