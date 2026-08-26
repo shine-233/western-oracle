@@ -87,36 +87,56 @@ let lastVideoTime = -1
 let grabHoldUntil = 0
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
+/** 多 CDN 回退：jsDelivr 主源，unpkg 备源，npmmirror 国内镜像 */
+const CDN_BASES = [
+  'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14',
+  'https://unpkg.com/@mediapipe/tasks-vision@0.10.14',
+  'https://registry.npmmirror.com/@mediapipe/tasks-vision/0.10.14/files',
+]
+
 async function enableHand(): Promise<void> {
   if (mode.value === 'loading' || mode.value === 'hand') return
   errMsg.value = ''
   mode.value = 'loading'
-  try {
-    if (!navigator.mediaDevices?.getUserMedia) throw new Error('no-mediaDevices')
-    const BASE = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14'
-    const vision: any = await import(/* @vite-ignore */ `${BASE}/vision_bundle.mjs`)
-    const fileset = await vision.FilesetResolver.forVisionTasks(`${BASE}/wasm`)
-    landmarker = await vision.HandLandmarker.createFromOptions(fileset, {
-      baseOptions: {
-        modelAssetPath:
-          'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task',
-        delegate: 'GPU',
-      },
-      runningMode: 'VIDEO',
-      numHands: 1,
-    })
-    stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480, facingMode: 'user' } })
-    const v = videoRef.value!
-    v.srcObject = stream
-    await v.play()
-    mode.value = 'hand'
-    sfx.ding()
-    requestAnimationFrame(tickHand)
-  } catch (e) {
-    errMsg.value =
-      e instanceof Error && e.message === 'no-mediaDevices'
-        ? L(['这个浏览器不支持摄像头。', 'Camera not supported in this browser.'])
-        : L(['模型或摄像头没能就绪（离线 / 拒绝授权）。已切到鼠标模式。', 'Model or camera unavailable (offline / denied). Switched to mouse mode.'])
+  let loaded = false
+  for (const BASE of CDN_BASES) {
+    try {
+      if (!navigator.mediaDevices?.getUserMedia) throw new Error('no-mediaDevices')
+      const vision: any = await import(/* @vite-ignore */ `${BASE}/vision_bundle.mjs`)
+      const fileset = await vision.FilesetResolver.forVisionTasks(`${BASE}/wasm`)
+      landmarker = await vision.HandLandmarker.createFromOptions(fileset, {
+        baseOptions: {
+          modelAssetPath:
+            'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task',
+          delegate: 'GPU',
+        },
+        runningMode: 'VIDEO',
+        numHands: 1,
+      })
+      stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480, facingMode: 'user' } })
+      const v = videoRef.value!
+      v.srcObject = stream
+      await v.play()
+      mode.value = 'hand'
+      sfx.ding()
+      requestAnimationFrame(tickHand)
+      loaded = true
+      break
+    } catch (e) {
+      if (e instanceof Error && e.message === 'no-mediaDevices') {
+        errMsg.value = L(['这个浏览器不支持摄像头。', 'Camera not supported in this browser.'])
+        mode.value = 'mouse'
+        return
+      }
+      landmarker = null
+      continue // 换下一个 CDN
+    }
+  }
+  if (!loaded) {
+    errMsg.value = L(
+      ['三个 CDN 都没能加载手势模型（离线 / 被墙 / 拒绝授权）。已切到鼠标模式。',
+       'All three CDNs failed (offline / blocked / denied). Switched to mouse mode.'],
+    )
     mode.value = 'mouse'
   }
 }

@@ -314,7 +314,18 @@ const dust = Array.from({ length: 26 }, (_, i) => ({
           stroke="var(--gold-bright)"
         />
         <!-- 星体 -->
-        <g v-for="(s, i) in STARS" :key="i" class="star" :class="{ lit: litStar === i }" @click="strike(s, $event)">
+        <g
+          v-for="(s, i) in STARS"
+          :key="i"
+          class="star"
+          :class="{ lit: litStar === i }"
+          role="button"
+          tabindex="0"
+          :aria-label="`${L(s.name)} ${L(['演奏', 'play'])}`"
+          @click="strike(s, $event)"
+          @keydown.enter.prevent="strike(s)"
+          @keydown.space.prevent="strike(s)"
+        >
           <circle :cx="s.x" :cy="s.y" :r="18" class="halo" :style="{ animationDelay: i * 0.45 + 's' }" />
           <circle :cx="s.x" :cy="s.y" r="7" fill="var(--gold-bright)" class="core" />
           <text :x="s.x" :y="s.y + 30" text-anchor="middle" class="star-name">{{ L(s.name).split('·')[1] ?? '' }}</text>

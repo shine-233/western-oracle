@@ -67,6 +67,7 @@ const messages: Record<string, Pair> = {
   'nav.crystal': ['水晶球', 'Crystal Ball'],
   'nav.hours': ['行星时刻', 'Planet Hours'],
   'nav.gesture': ['手势占卜', 'Gesture'],
+  'nav.memory': ['记忆翻牌', 'Memory'],
   'app.soundOff': ['关闭音效', 'Mute'],
   'app.top': ['回到顶部', 'Back to top'],
   'app.soundOn': ['开启音效', 'Unmute'],
@@ -136,6 +137,7 @@ const messages: Record<string, Pair> = {
   'mod.history.desc': ['每一次占卜都被记进魔法书，随时回看、生成星空分享图。', 'Every reading logged in your grimoire — revisit anytime, export starry share cards.'],
   'mod.crystal.desc': ['体素水晶球：拖拽旋转、滚轮推近，凝视到雾气炸开就是答案。', 'A voxel orb: drag to spin, wheel to zoom — gaze until the mist bursts with your answer.'],
   'mod.gesture.desc': ['摄像头手势抽牌：张掌蓄力、食指瞄准、握拳抓牌；无摄像头自动切鼠标模式。', 'Camera-free-will drawing: palm to charge, point to aim, fist to seize; falls back to mouse.'],
+  'mod.memory.desc': ['塔罗记忆翻牌：12 张牌背里找回 6 对大阿卡纳，步数越少越强。', 'Tarot memory match: six pairs hidden in twelve backs — fewer moves, more glory.'],
   'mod.hours.desc': ['行星时刻钟：按传统行星时规则标出今天每个小时的守护星与宜忌。', 'Planetary hours clock: each hour\'s ruling planet and what it favors, the classical way.'],
 
   /* ---------- 首页 · 人气榜 ---------- */

@@ -15,9 +15,13 @@ import {
 import { sparkleFromEvent } from '../lib/sparkle'
 import { sfx } from '../lib/sfx'
 import { addHistory } from '../lib/history'
+import { ALL_CARDS, cardImageUrl } from '../data/tarot'
+import { shuffle } from '../lib/random'
+import { loadJSON, saveJSON } from '../lib/storage'
+import CardBackArt from '../components/CardBackArt.vue'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
-type Tab = 'dice' | 'wheel' | 'sortition'
+type Tab = 'dice' | 'wheel' | 'sortition' | 'memory'
 const tab = ref<Tab>('dice')
 
 const RANK_LABEL: Record<FortuneRank, [string, string]> = {
@@ -162,6 +166,71 @@ function chooseLot(i: number, e: MouseEvent): void {
     detail: `${lot.zhAdvice}\n${lot.enAdvice}`,
   })
 }
+
+/* ---------- 记忆圣所：塔罗翻牌配对 ---------- */
+const MEM_PAIRS = 8
+interface MemCard {
+  uid: number
+  cardId: string
+  nameCn: string
+}
+const memDeck = ref<MemCard[]>([])
+const memOpen = ref<number[]>([])
+const memMatched = ref<Set<string>>(new Set())
+const memMoves = ref(0)
+const memLock = ref(false)
+const memBest = ref<number | null>(loadJSON<number | null>('wo-memory-best', null))
+const memWon = ref(false)
+
+function newMemory(e?: MouseEvent): void {
+  const picks = shuffle(ALL_CARDS.filter((c) => c.arcana === 'major')).slice(0, MEM_PAIRS)
+  const doubled = [...picks, ...picks]
+  memDeck.value = shuffle(doubled).map((c, uid) => ({ uid, cardId: c.id, nameCn: c.nameCn }))
+  memOpen.value = []
+  memMatched.value = new Set()
+  memMoves.value = 0
+  memLock.value = false
+  memWon.value = false
+  sfx.riffle()
+  if (e) sparkleFromEvent(e, 10)
+}
+
+function memUp(idx: number): boolean {
+  return memOpen.value.includes(idx) || memMatched.value.has(memDeck.value[idx]!.cardId)
+}
+
+function flipMem(idx: number, e?: MouseEvent): void {
+  if (memLock.value || memUp(idx)) return
+  memOpen.value.push(idx)
+  sfx.flip()
+  if (e) sparkleFromEvent(e, 4)
+  if (memOpen.value.length < 2) return
+
+  memMoves.value++
+  memLock.value = true
+  const [a, b] = [memOpen.value[0]!, memOpen.value[1]!]
+  const ca = memDeck.value[a]!
+  const cb = memDeck.value[b]!
+  window.setTimeout(() => {
+    if (ca.cardId === cb.cardId) {
+      memMatched.value.add(ca.cardId)
+      sfx.ding()
+      if (memMatched.value.size === MEM_PAIRS) {
+        memWon.value = true
+        sfx.whoosh()
+        sparkleFromEvent({ clientX: innerWidth / 2, clientY: innerHeight / 3 }, 24)
+        if (memBest.value === null || memMoves.value < memBest.value) {
+          memBest.value = memMoves.value
+          saveJSON('wo-memory-best', memMoves.value)
+        }
+      }
+    }
+    memOpen.value = []
+    memLock.value = false
+  }, ca.cardId === cb.cardId ? 420 : 780)
+}
+
+
 </script>
 
 <template>
@@ -177,6 +246,7 @@ function chooseLot(i: number, e: MouseEvent): void {
       <button class="arcade-tab" :class="{ active: tab === 'dice' }" @click="switchTab('dice')">🎲 {{ L(['占卜骰子', 'Dice']) }}</button>
       <button class="arcade-tab" :class="{ active: tab === 'wheel' }" @click="switchTab('wheel')">🎡 {{ L(['命运转盘', 'Wheel']) }}</button>
       <button class="arcade-tab" :class="{ active: tab === 'sortition' }" @click="switchTab('sortition')">🏺 {{ L(['德尔斐神签', 'Delphic Lots']) }}</button>
+      <button class="arcade-tab" :class="{ active: tab === 'memory' }" @click="switchTab('memory')">🃏 {{ L(['记忆圣所', 'Memory']) }}</button>
     </div>
 
     <!-- 骰子 -->
@@ -277,6 +347,40 @@ function chooseLot(i: number, e: MouseEvent): void {
           {{ slip ? L(['再摇一次', 'Shake again']) : L(['摇一摇签筒', 'Shake the urn']) }}
         </button>
       </div>
+    </section>
+
+    <!-- 记忆圣所 -->
+    <section v-if="tab === 'memory'" class="panel arcade-panel bounce-in">
+      <div class="mem-stats">
+        <span>{{ L(['步数', 'Moves']) }}：<strong>{{ memMoves }}</strong></span>
+        <span>{{ L(['配对', 'Pairs']) }}：{{ memMatched.size }}/8</span>
+        <span v-if="memBest !== null">{{ L(['最佳', 'Best']) }}：<strong class="best">{{ memBest }}</strong></span>
+        <button class="btn ghost small" @click="newMemory($event)">↻ {{ L(['重新洗牌', 'Reshuffle']) }}</button>
+      </div>
+
+      <Transition name="pop">
+        <p v-if="memWon" class="reading mem-win">
+          {{ L([`🎉 ${memMoves} 步通关！大阿卡纳记住了你的手法。`, `🎉 Cleared in ${memMoves} moves — the Majors approve of your technique.`]) }}
+        </p>
+      </Transition>
+
+      <div class="mem-grid">
+        <button
+          v-for="(c, i) in memDeck"
+          :key="c.uid"
+          class="mem-card"
+          :class="{ up: memUp(i), done: memMatched.has(c.cardId) }"
+          @click="flipMem(i, $event)"
+        >
+          <span class="mem-inner">
+            <span class="face back"><CardBackArt /></span>
+            <span class="face front"><img :src="cardImageUrl(c.cardId)" :alt="c.nameCn" loading="lazy" draggable="false" /></span>
+          </span>
+        </button>
+      </div>
+      <p v-if="memDeck.length === 0" style="text-align:center;">
+        <button class="btn" @click="newMemory($event)">{{ L(['开始挑战 · 8 对大阿卡纳', 'Start · 8 pairs of Majors']) }}</button>
+      </p>
     </section>
   </div>
     <ApprenticeReact module="arcade" :score="wheelResult !== null ? 85 : 65" />
@@ -445,4 +549,73 @@ function chooseLot(i: number, e: MouseEvent): void {
 @media (prefers-reduced-motion: reduce) {
   .cube, .wheel-svg, .omi-box.shake, .omi-sticks i { animation: none !important; transition-duration: 0.01s !important; }
 }
+
+/* ---- 记忆圣所 ---- */
+.mem-stats {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+  color: var(--ink-dim);
+}
+.mem-stats strong { color: var(--gold-bright); font-family: var(--cute); }
+.mem-stats .best { text-shadow: 0 0 8px rgba(255,227,168,0.6); }
+.mem-win {
+  text-align: center;
+  border: 1.5px dashed var(--gold);
+  border-radius: 10px;
+  padding: 10px 14px;
+  max-width: 460px;
+  margin: 0 auto 14px;
+}
+.mem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(74px, 96px));
+  gap: 12px;
+  justify-content: center;
+}
+.mem-card {
+  aspect-ratio: 118 / 190;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  perspective: 600px;
+}
+.mem-inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.34, 1.2, 0.4, 1);
+}
+.mem-card.up .mem-inner, .mem-card.done .mem-inner { transform: rotateY(180deg); }
+.mem-card.done .mem-inner { opacity: 0.55; }
+.mem-face, .face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 9px;
+  overflow: hidden;
+}
+.face.back {
+  background:
+    radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--pink) 22%, transparent), transparent 60%),
+    repeating-linear-gradient(45deg, #221d4e 0 7px, #191542 7px 14px);
+  border: 2px solid #2e2650;
+}
+.mem-card.up .face.back, .mem-card.done .face.back { border-color: var(--gold); }
+.face.front { transform: rotateY(180deg); background: #efe6d0; }
+.face.front img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mem-card:hover .mem-inner { transform: translateY(-4px); }
+.mem-card.up:hover .mem-inner, .mem-card.done:hover .mem-inner { transform: rotateY(180deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .mem-inner { transition-duration: 0.01s; }
+}
+
 </style>

@@ -1,5 +1,6 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+﻿import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import JourneyView from '../views/JourneyView.vue'
 import { locale } from '../lib/i18n'
 
 /**
@@ -9,6 +10,7 @@ import { locale } from '../lib/i18n'
 const routes = [
   { path: '/', component: HomeView },
   { path: '/tarot', component: () => import('../views/TarotView.vue') },
+{ path: '/journey', component: JourneyView },
   { path: '/astrology', component: () => import('../views/AstrologyView.vue') },
   { path: '/synastry', component: () => import('../views/SynastryView.vue') },
   { path: '/transits', component: () => import('../views/TransitsView.vue') },
@@ -27,6 +29,7 @@ const routes = [
   { path: '/biorhythm', component: () => import('../views/BioRhythmView.vue') },
   { path: '/meihua', component: () => import('../views/MeihuaView.vue') },
   { path: '/gesture', component: () => import('../views/GestureView.vue') },
+  { path: '/memory', component: () => import('../views/MemoryView.vue') },
   { path: '/history', component: () => import('../views/HistoryView.vue') },
   { path: '/settings', component: () => import('../views/SettingsView.vue') },
   { path: '/:pathMatch(.*)*', redirect: '/' },

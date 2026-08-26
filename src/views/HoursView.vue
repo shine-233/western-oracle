@@ -253,16 +253,21 @@ const CHALDEAN_ORDER = ['Saturn', 'Jupiter', 'Mars', 'Sun', 'Venus', 'Mercury', 
                 :d="segPath(h.index - 1)"
                 class="seg"
                 :class="[h.daytime ? 'day' : 'night', { now: currentH?.index === h.index, sel: selected?.index === h.index, match: matchedIndexes.has(h.index) }]"
+                role="button"
+                tabindex="0"
+                :aria-label="`${zhName(h.ruler)} · ${rangeText(h)}`"
                 @click="pick(h, $event)"
+                @keydown.enter.prevent="pick(h)"
+                @keydown.space.prevent="pick(h)"
               >
                 <title>{{ zhName(h.ruler) }} · {{ rangeText(h) }}</title>
               </path>
               <text
                 class="seg-glyph"
+                aria-hidden="true"
                 :class="{ dim: !(currentH?.index === h.index || selected?.index === h.index) }"
                 :x="glyphPos(h.index - 1).x"
                 :y="glyphPos(h.index - 1).y + 5"
-                @click="pick(h, $event)"
               >{{ glyphOf(h.ruler) }}</text>
             </g>
             <!-- 日出/日落方位标 -->

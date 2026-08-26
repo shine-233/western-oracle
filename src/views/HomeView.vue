@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { dailyCard, cardImageUrl } from '../data/tarot'
 import { cardMeaning } from '../data/tarotEn'
@@ -77,6 +77,7 @@ const GROUPS: { id: string; icon: string; title: string; sub: string; mods: ModD
     sub: 'home.group.play.sub',
     mods: [
       { to: '/arcade', glyph: '🎲', title: 'nav.arcade', desc: 'mod.arcade.desc', heat: 68 , accent: '#ff8f6e' },
+      { to: '/memory', glyph: '🃏', title: 'nav.memory', desc: 'mod.memory.desc', heat: 58 , accent: '#8ee6d2' },
       { to: '/library', glyph: '📖', title: 'nav.library', desc: 'mod.library.desc', heat: 48 , accent: '#cfd6ff' },
       { to: '/musicbox', glyph: '✦', title: 'nav.musicbox', desc: 'mod.musicbox.desc', heat: 46 , accent: '#7db8ff' },
     ],
@@ -153,6 +154,26 @@ const greeting = computed(() => {
   if (h < 18) return t('home.greeting.afternoon')
   return t('home.greeting.evening')
 })
+
+/* ---------- 隐秘星笺：mask 跟随指针（rAF 节流） ---------- */
+const letterEl = ref<HTMLElement | null>(null)
+const mx = ref(50)
+const my = ref(42)
+let letterRaf = 0
+let lx = 50
+let ly = 42
+function onLetterMove(e: PointerEvent): void {
+  const el = letterEl.value
+  if (!el || letterRaf) return
+  const rect = el.getBoundingClientRect()
+  lx = ((e.clientX - rect.left) / rect.width) * 100
+  ly = ((e.clientY - rect.top) / rect.height) * 100
+  letterRaf = requestAnimationFrame(() => {
+    mx.value = Math.max(0, Math.min(100, lx))
+    my.value = Math.max(0, Math.min(100, ly))
+    letterRaf = 0
+  })
+}
 </script>
 
 <template>
@@ -273,6 +294,29 @@ const greeting = computed(() => {
   </section>
 
   <div style="display: flex; justify-content: center; margin: 16px 0 4px;" />
+
+  <!-- 🌙 隐秘星笺：mouse-reveal 月光显影 -->
+  <section ref="letterEl" class="panel secret-letter" @pointermove="onLetterMove" @pointerdown="onLetterMove">
+    <div class="sl-base">
+      <h3 style="margin: 0">🌙 {{ locale === 'zh' ? '隐秘星笺' : 'SECRET LETTER' }} <span class="hall-en">{{ locale === 'zh' ? 'MOUSE REVEAL' : '' }}</span></h3>
+      <p class="hint" style="margin: 8px 0 0">
+        {{ locale === 'zh'
+            ? '月光只照亮你指尖的位置——移动指针（触屏划过），读出今晚的密语。'
+            : 'Moonlight only lights where you point — move to read tonight\'s secret.' }}
+      </p>
+      <p class="sl-ghost" aria-hidden="true">✦ ✧ ⋆ ✦ ✧ ⋆ ✦ ✧ ⋆ ✦ ✧ ⋆</p>
+    </div>
+    <div class="sl-hidden" :style="{ '--mx': mx + '%', '--my': my + '%' }" aria-hidden="false">
+      <p class="sl-rune">{{ rune.rune.glyph }}</p>
+      <p class="sl-line">
+        {{ locale === 'zh' ? '今夜符文 · ' : 'Tonight\'s rune · ' }}
+        <strong>{{ locale === 'zh' ? rune.rune.nameCn : rune.rune.name }}</strong>
+        {{ rune.reversed ? (locale === 'zh' ? '（倒转）' : ' (reversed)') : '' }}
+      </p>
+      <p class="sl-sub">{{ rune.reversed ? rune.rune.reversed ?? rune.rune.upright : rune.rune.upright }}</p>
+      <p class="sl-num">{{ locale === 'zh' ? '幸运数字' : 'Lucky number' }} · <b>{{ almanac.luckyNumber }}</b></p>
+    </div>
+  </section>
 
   <!-- 露娜的 3D 小屋 -->
   <section class="panel voxel-panel">
@@ -501,6 +545,50 @@ const greeting = computed(() => {
   opacity: 0.65;
 }
 .group-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+
+/* ---------- 隐秘星笺（mouse-reveal） ---------- */
+.secret-letter {
+  position: relative;
+  margin-top: 26px;
+  overflow: hidden;
+  min-height: 210px;
+  cursor: crosshair;
+}
+.sl-base { position: relative; z-index: 1; pointer-events: none; }
+.sl-ghost {
+  margin: 18px 0 0;
+  letter-spacing: 0.6em;
+  color: var(--ink-dim);
+  opacity: 0.35;
+  user-select: none;
+}
+.sl-hidden {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 26px;
+  text-align: center;
+  background:
+    radial-gradient(420px 200px at 50% 0%, color-mix(in srgb, var(--gold) 10%, transparent), transparent 70%),
+    linear-gradient(165deg, color-mix(in srgb, var(--void-3) 92%, transparent), var(--void-1));
+  -webkit-mask-image: radial-gradient(circle 140px at var(--mx, 50%) var(--my, 42%), #000 32%, transparent 74%);
+  mask-image: radial-gradient(circle 140px at var(--mx, 50%) var(--my, 42%), #000 32%, transparent 74%);
+  pointer-events: none;
+}
+.sl-rune {
+  margin: 0;
+  font-size: 2.6rem;
+  line-height: 1;
+  color: #f0e6c8;
+  text-shadow: 0 0 20px rgba(240, 230, 200, 0.55);
+}
+.sl-line { margin: 8px 0 4px; color: var(--gold-bright); }
+.sl-line strong { font-weight: 400; }
+.sl-sub { margin: 0; color: var(--ink); font-size: 0.9rem; line-height: 1.75; max-width: 560px; margin-inline: auto; }
+.sl-num { margin: 8px 0 0; font-family: var(--pixel); font-size: 0.58rem; letter-spacing: 0.12em; color: var(--pink-soft); }
+.sl-num b { color: var(--pink); }
 
 /* 模块卡片上的排名徽标 / 热门标签 / 热度条 */
 .mod-card { display: flex; flex-direction: column; }

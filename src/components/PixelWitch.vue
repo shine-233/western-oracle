@@ -235,6 +235,7 @@ onBeforeUnmount(() => {
   border: none;
   cursor: grab;
   padding: 0;
+  touch-action: none;
   animation: witch-bob 3.2s ease-in-out infinite;
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
   filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.5));

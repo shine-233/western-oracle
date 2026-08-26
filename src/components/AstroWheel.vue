@@ -293,7 +293,12 @@ const selInfo = computed(() => {
         :key="p.name"
         class="planet-node"
         :class="{ faded: selected && p.name !== selected }"
+        role="button"
+        tabindex="0"
+        :aria-label="`${p.name} ${p.signCn} ${p.degText}${p.retro ? ' ℞' : ''}`"
         @click.stop="toggleSelect(p.name)"
+        @keydown.enter.prevent="toggleSelect(p.name)"
+        @keydown.space.prevent="toggleSelect(p.name)"
       >
         <line :x1="p.dotX" :y1="p.dotY" :x2="p.x" :y2="p.y" stroke="#f5c86e" stroke-width="0.7" opacity="0.5" />
         <circle :cx="p.dotX" :cy="p.dotY" r="3" fill="#ffe3a8">
@@ -313,7 +318,12 @@ const selInfo = computed(() => {
         :key="'in-' + p.name"
         class="planet-node"
         :class="{ faded: selected && p.name !== selected }"
+        role="button"
+        tabindex="0"
+        :aria-label="`${p.name} ${p.signCn} ${p.degText}`"
         @click.stop="toggleSelect(p.name)"
+        @keydown.enter.prevent="toggleSelect(p.name)"
+        @keydown.space.prevent="toggleSelect(p.name)"
       >
         <circle :cx="p.dotX" :cy="p.dotY" r="2.6" fill="#7de8c3">
           <title>{{ p.name }} {{ p.signCn }} {{ p.degText }}</title>

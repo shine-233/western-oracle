@@ -694,6 +694,14 @@ textarea:focus-visible {
     drop-shadow(4px 4px 0 color-mix(in srgb, var(--btn-line) 85%, transparent)),
     0 0 0 3px color-mix(in srgb, var(--gold-bright) 80%, transparent);
 }
+
+/* 键盘可达性：SVG 内的可聚焦控件（星盘扇区/行星/音符星等）统一像素虚线焦点环 */
+svg [role='button']:focus-visible,
+svg [tabindex='0']:focus-visible {
+  outline: 2px dashed var(--gold-bright);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
 .site-nav a:focus-visible {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--pink) 70%, transparent);
 }

@@ -30,13 +30,32 @@ let lastPX = 0
 let lastPY = 0
 let downPX = 0
 let downPY = 0
+/** 双指捏合缩放（移动端） */
+const ptrs = new Map<number, { x: number; y: number }>()
+let pinchStart = 0
+let pinchStartZoom = 1
+let usedPinch = false
 
 const stageStyle = computed(() => ({
   transform: `perspective(950px) rotateX(${(BASE_TILT_X + tiltX.value).toFixed(2)}deg) rotateY(${tiltY.value.toFixed(2)}deg) scale(${zoom.value.toFixed(3)})`,
 }))
 
+function ptrDist(): number {
+  const list = [...ptrs.values()]
+  return Math.hypot(list[0]!.x - list[1]!.x, list[0]!.y - list[1]!.y)
+}
+
 function onStageDown(e: PointerEvent): void {
+  ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY })
+  if (ptrs.size === 1) usedPinch = false
   if (REDUCED || e.button !== 0) return
+  if (ptrs.size === 2) {
+    pinchStart = ptrDist()
+    pinchStartZoom = zoom.value
+    usedPinch = true
+    orbitDragging.value = false
+    return
+  }
   orbitDragging.value = true
   lastPX = e.clientX
   lastPY = e.clientY
@@ -50,6 +69,12 @@ function onStageDown(e: PointerEvent): void {
 }
 
 function onStageMove(e: PointerEvent): void {
+  if (!ptrs.has(e.pointerId)) return
+  ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY })
+  if (ptrs.size >= 2 && pinchStart > 0) {
+    zoom.value = clamp(pinchStartZoom * (ptrDist() / pinchStart), 0.62, 1.6)
+    return
+  }
   if (!orbitDragging.value) return
   const dx = e.clientX - lastPX
   const dy = e.clientY - lastPY
@@ -59,11 +84,14 @@ function onStageMove(e: PointerEvent): void {
   tiltX.value = clamp(tiltX.value - dy * 0.16, -14, 42)
 }
 
-function onStageUp(): void {
-  if (!orbitDragging.value) return
-  orbitDragging.value = false
-  tiltX.value = 0
-  tiltY.value = 0
+function onStageUp(e: PointerEvent): void {
+  ptrs.delete(e.pointerId)
+  if (ptrs.size < 2) pinchStart = 0
+  if (ptrs.size === 0) {
+    orbitDragging.value = false
+    tiltX.value = 0
+    tiltY.value = 0
+  }
 }
 
 function onStageWheel(e: WheelEvent): void {
@@ -71,8 +99,9 @@ function onStageWheel(e: WheelEvent): void {
   zoom.value = clamp(zoom.value * (e.deltaY < 0 ? 1.08 : 0.93), 0.62, 1.6)
 }
 
-/** 拖拽超过阈值就不当作点选行星 */
+/** 拖拽/捏合超过阈值就不当作点选行星 */
 function wasDrag(e?: MouseEvent): boolean {
+  if (usedPinch) return true
   if (!e || !downPX) return false
   return Math.hypot(e.clientX - downPX, e.clientY - downPY) > 6
 }
@@ -257,7 +286,12 @@ function localeTag(): string {
               :key="p.key"
               class="planet"
               :class="{ sel: selectedKey === p.key }"
+              role="button"
+              tabindex="0"
+              :aria-label="`${L([p.zh, p.en])} · ${p.signCn} ${p.degText}${p.retro ? ' ℞' : ''}`"
               @click="pick(p.key, $event)"
+              @keydown.enter.prevent="pick(p.key)"
+              @keydown.space.prevent="pick(p.key)"
             >
               <circle :cx="p.x" :cy="p.y" r="14" fill="transparent" />
               <circle :cx="p.x" :cy="p.y" r="7.5" :fill="p.color" class="dot" />
@@ -266,7 +300,7 @@ function localeTag(): string {
             </g>
           </svg>
         </div>
-        <p v-if="viewMode === '2d'" class="stage-hint">{{ L(['拖拽倾斜视角 · 滚轮缩放 · 点行星看详情', 'drag to tilt · scroll to zoom · tap planets']) }}</p>
+        <p v-if="viewMode === '2d'" class="stage-hint">{{ L(['拖拽倾斜 · 滚轮/双指缩放 · 点行星看详情', 'drag to tilt · wheel / pinch to zoom · tap planets']) }}</p>
         <p v-else class="stage-hint">{{ L(['拖拽环绕太阳系 · 滚轮拉近拉远 · 点星球看详情', 'drag to orbit the sun · scroll to zoom · tap planets']) }}</p>
 
         <div class="time-bar">

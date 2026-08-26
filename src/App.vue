@@ -23,6 +23,7 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
   {
     label: 'navg.oracle',
     items: [
+      { to: '/journey', label: '愚人之旅', emoji: '🜁' },
       { to: '/runes', label: 'nav.runes', emoji: 'ᛟ' },
       { to: '/palmistry', label: 'nav.palmistry', emoji: '🖐' },
       { to: '/dreams', label: 'nav.dreams', emoji: '🌙' },
@@ -43,6 +44,7 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
     label: 'navg.play',
     items: [
       { to: '/arcade', label: 'nav.arcade', emoji: '🎲' },
+      { to: '/memory', label: 'nav.memory', emoji: '🃏' },
       { to: '/musicbox', label: 'nav.musicbox', emoji: '✦' },
       { to: '/library', label: 'nav.library', emoji: '📖' },
     ],
