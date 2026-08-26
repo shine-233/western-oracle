@@ -50,6 +50,11 @@ research/
 │   ├── 02_mine/mine_leo_nativity_v3.py        # Leo v3：元素星座/行星升起/太阳相位/结论章 [2026-08-26]
 │   ├── 02_mine/mine_kunz_birthstones_v3.py    # Kunz v3：宗教用途/医疗用途两整章 [2026-08-26]
 │   ├── 02_mine/mine_lilly_chapters.py         # Lilly 章节库：Book II 逐宫问事+Book III/IV 本命盘 [2026-08-26]
+│   ├── 02_mine/mine_tetrabiblos_appendices.py # Tetrabiblos 附录卷：前言/Almagest 摘录/Centiloquy 百条 [2026-08-26]
+│   ├── 02_mine/mine_leo_nativity_v4.py        # Leo v4：外貌规则/上升星座/Ch VII·VIII 章头 [2026-08-26]
+│   ├── 02_mine/mine_kunz_birthstones_v4.py    # Kunz v4：前半部五章（迷信源流等）[2026-08-26]
+│   ├── 02_mine/mine_robson_medieval_magic.py  # Robson 魔法章+星陨气象学+数学公式 [2026-08-26]
+│   ├── 02_mine/mine_lilly_introduction.py     # Lilly 前部：序言+Book I 前十六章 [2026-08-26]
 │   ├── 02_mine/curate_bookt_decans.py  # Golden Dawn Book T 三十六旬对应表（程序化生成+锚点校验）[2026-08-25]
 │   ├── 03_clean/clean_tarot.py         # 清洗：78张结构校验/去重/空值/与站点id集合对齐
 │   ├── 03_clean/clean_tarot_sources.py # 清洗：三源合并对照（waite+papus+mcelroy 78×3）
@@ -87,6 +92,11 @@ research/
     ├── leo_nativity_v3.json             # Leo v3：四元素星座深义/行星升起 12 座/太阳相位/Apheta/结论章 [2026-08-26]
     ├── kunz_birthstones_v3.json         # Kunz v3：宗教用途 255 段/医疗用途 143 段 [2026-08-26]
     ├── lilly_chapters_v1.json           # Lilly 章节库：Book II 逐宫问事 + Book III/IV 本命盘（≈94 万字符）[2026-08-26]
+    ├── tetrabiblos_appendices_v1.json   # Tetrabiblos 附录卷：前言/Almagest 摘录/Centiloquy 87 条/星图说明 [2026-08-26]
+    ├── leo_nativity_v4.json             # Leo v4：+外貌规则/上升星座/Ch VII 守护星/Ch VIII 健康寿限 [2026-08-26]
+    ├── kunz_birthstones_v4.json         # Kunz v4：+迷信源流/护符护身符/护符使用/雕琢宝石/凶吉宝石五章（+26 万字符）[2026-08-26]
+    ├── robson_medieval_magic_v1.json    # Robson 魔法章：恒星魔法印记 14 星/月宿魔法/星陨气象学/数学公式 [2026-08-26]
+    ├── lilly_introduction_v1.json       # Lilly 前部：题献序言 + Book I 前十六章（行星本质/相位等）[2026-08-26]
     ├── tarot_modern_v1.json             # Tarotoo 现代结构化塔罗（78张×love/career/mood/spiritual/yes_no；56数字牌与 Book T 表交叉验证一致）[2026-08-25]
     ├── zodiac_facts_v1.json             # 黄道事实层（12星座：黄经/元素/古典现代守护/日期；古典守护与 Ptolemy 庙宫表互证）[2026-08-25]
     ├── alignment_cn_en_v1.json          # 中文-原文语义对齐（22大牌逐张+小牌规则模板）
@@ -237,6 +247,23 @@ Robson 星座/月宿目录整块跳过等），第二批扩容：
 **第三轮后整体覆盖情况**：leo ≈72%、kunz ≈51%、robson ≈64%、sepharial ≈86%、
 tetrabiblos 全书 ≈90%（B1/B2/B3/B4 正文全收）、lilly ≈64%。
 
+### 第四轮扩容数据集（2026-08-26 第三批 remine）
+
+严格覆盖率审计（逐字节区间比对）发现第三批后仍余五块未挖，全部补齐：
+
+| 数据集 | 新增内容 | 说明 |
+|---|---|---|
+| tetrabiblos_appendices_v1.json | Ashmand 译者前言/导论 + Almagest 摘录 + 纬度表/升交表说明 + **Ptolemy《Centiloquy》百条格言**（87/100 条独立编号，13 条编号行 OCR 损毁、正文并入相邻条）+ 黄道平面星图说明（≈9.5 万字符） | Centiloquy 用罗马数字序列匹配解析（容忍 'VI..'/'I,' 标点变形与编辑距离 1 编号腐蚀），缺失清单随数据记录 |
+| leo_nativity_v4.json | 外貌规则两节 / THE RISING SIGN 章 / Ch VII「The Ruling Planet」章头 / Ch VIII「Health & Length of Life」章头（+8.5 万字符） | 此前 v3 误从行星升起章起跳，遗漏了 213603–296144 区块 |
+| kunz_birthstones_v4.json | 前半部五章：迷信源流 / 护符护身符 / 护符使用 / 雕琢宝石 / 凶吉宝石（+26 万字符） | 运行页眉定位；图版铭文残片已滤除。至此除书首题页外全书覆盖 |
+| robson_medieval_magic_v1.json | 恒星魔法印记 14 星（Rules 石草配方 + Image 形象效应）/ 月宿魔法 / **Astro-Meteorology 恒星气象效应章** / 书末数学公式组 | 星名 OCR 腐蚀以印章图版页正确拼写为证归一（Aldebaran/Algol/Arcturus 等） |
+| lilly_introduction_v1.json | 题献/致读者/序言（目录页行滤除）+ Book I 前十六章（七政本质/黄道总论/宫位/相位词汇等）（≈12.6 万字符） | 星座描述章之前的全部 Book I 内容 |
+
+**第四轮后整体覆盖情况**：leo ≈96%（仅余出版广告页）、kunz ≈95%（仅余书首题页/
+版权页）、robson ≈99%（仅余卷首扫描噪声）、sepharial ≈98%、tetrabiblos ≈100%
+（含附录卷）、lilly ≈98%。剩余未挖部分均为非内容性材料：图书馆盖章/扫描噪声/
+题页/版权页/出版广告/纯页眉页码带。
+
 ## 复现方式
 
 ```bash
@@ -267,9 +294,14 @@ python research/pipeline/02_mine/mine_sepharial_numbers_v3.py   # Sepharial 19 �
 python research/pipeline/02_mine/mine_leo_nativity_v3.py        # Leo 扩容区块（v3）
 python research/pipeline/02_mine/mine_kunz_birthstones_v3.py    # Kunz 宗教/医疗章（v3）
 python research/pipeline/02_mine/mine_lilly_chapters.py         # Lilly 章节库
+python research/pipeline/02_mine/mine_tetrabiblos_appendices.py # Tetrabiblos 附录卷+Centiloquy
+python research/pipeline/02_mine/mine_leo_nativity_v4.py        # Leo 外貌/上升章（v4）
+python research/pipeline/02_mine/mine_kunz_birthstones_v4.py    # Kunz 前半部五章（v4）
+python research/pipeline/02_mine/mine_robson_medieval_magic.py  # Robson 魔法章/气象学
+python research/pipeline/02_mine/mine_lilly_introduction.py     # Lilly 前部 Book I 前十六章
 python research/pipeline/02_mine/curate_bookt_decans.py  # Book T 三十六旬
-python research/pipeline/04_audit/audit.py               # 审计29数据集（不过则退出码1）
-python research/pipeline/04_audit/fidelity_check.py      # 保真度抽查：489抽样回查原始文献
+python research/pipeline/04_audit/audit.py               # 审计34数据集（不过则退出码1）
+python research/pipeline/04_audit/fidelity_check.py      # 保真度抽查：586抽样回查原始文献
 python research/pipeline/04_audit/qa_scan.py             # 清洗质量扫描（OCR噪声/页眉/编码）
 python research/pipeline/04_audit/export_ts.py           # 导出站点 TS（15个模块）
 ```
@@ -277,7 +309,7 @@ python research/pipeline/04_audit/export_ts.py           # 导出站点 TS（15�
 ### 验证方法论（三层）
 
 1. **确定性**：全部挖掘脚本重跑后数据集 SHA256 逐字节一致（无随机性、无顺序依赖）；
-2. **保真度**：`fidelity_check.py` 按 seed=1901 抽样 489 条，词块化回查原始文献，
+2. **保真度**：`fidelity_check.py` 按 seed=1901 抽样 586 条，词块化回查原始文献，
    命中率阈值 70%（页眉清除造成的"空洞"允许跨洞，超短字段命中 ≥1 块即通过）——
    防止挖掘过程张冠李戴或凭空造文；
 3. **交叉验证**：Tarotoo 56 数字牌行星/星座 ↔ Book T 三十六旬表逐张互证；
@@ -344,6 +376,11 @@ IA=Internet Archive 公版扫描件 OCR；PG=Project Gutenberg。
       Sepharial 19 章/Leo 元素与行星升起章/Kunz 宗教医疗章/Lilly Book II+III/IV 章节库；
       整体覆盖 leo≈72% kunz≈51% robson≈64% sepharial≈86% tetrabiblos≈90% lilly≈64%；
       audit 29 数据集全绿、fidelity 489 抽样全绿、qa_scan 无残留（2026-08-26）
+- [x] 清洗程序扩容第三批：严格逐字节覆盖率审计驱动，补挖 Tetrabiblos 附录卷
+      （含 Ptolemy《Centiloquy》百条格言 87 条独立解析）/ Leo 外貌与上升星座章 /
+      Kunz 前半部五章 / Robson 魔法印记与星陨气象学章 / Lilly 序言与 Book I 前十六章；
+      全源覆盖 ≈95–100%，剩余均为题页/广告/扫描噪声等非内容材料；
+      audit 34 数据集全绿、fidelity 586 抽样全绿、qa_scan 无残留（2026-08-26）
 - [ ] 对齐 v2：小牌逐张人工对齐 + 语义相似度评分
 - [ ] fixed_stars v3：与现代星表交叉补齐黄经与星座（候选方案：HYG database RA/Dec + 岁差计算至 J1923 黄经；注意 HYG 为 CC BY-SA，衍生数据需同许可）
 - [ ] 站点 corpus.ts 语义层接入研究层 v2 引用（lilly 逐座/leo 百条格言/kunz 十二月表）

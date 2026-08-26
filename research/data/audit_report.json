@@ -359,6 +359,90 @@
     "chapter_markers_detected": 4
    },
    "pass": true
+  },
+  "tetrabiblos_appendices_v1": {
+   "checks": {
+    "front_matter": true,
+    "almagest_extract": true,
+    "tables_extracts": true,
+    "centiloquy_ge_85": true,
+    "centiloquy_text": true,
+    "planisphere": true
+   },
+   "counts": {
+    "front_matter_paragraphs": 77,
+    "almagest_passages": 12,
+    "tables_passages": 60,
+    "centiloquy_aphorisms": 87,
+    "planisphere_passages": 12,
+    "centiloquy_missing": [
+     15,
+     38,
+     42,
+     43,
+     48,
+     50,
+     52,
+     53,
+     58,
+     68,
+     79,
+     82,
+     86
+    ]
+   },
+   "pass": true
+  },
+  "leo_nativity_v4": {
+   "checks": {
+    "v4_blocks": true,
+    "v4_min_len": true,
+    "v3_expansions_kept": true,
+    "aphorisms_still_100": true,
+    "houses_still_11": true
+   },
+   "pass": true
+  },
+  "kunz_birthstones_v4": {
+   "checks": {
+    "five_early_chapters": true,
+    "early_totals": true,
+    "sentiments_kept": true,
+    "crystal_kept": true,
+    "religious_kept": true
+   },
+   "pass": true
+  },
+  "robson_medieval_magic_v1": {
+   "checks": {
+    "star_magic_ge_12": true,
+    "star_magic_anchors": true,
+    "seals_present": true,
+    "mansions_magic": true,
+    "meteorology": true,
+    "meteorology_weather_words": true,
+    "formulae": true
+   },
+   "counts": {
+    "magic_fixed_stars": 14,
+    "seals_passages": 1,
+    "mansions_magic_passages": 28,
+    "meteorology_passages": 23,
+    "formulae_passages": 51
+   },
+   "pass": true
+  },
+  "lilly_introduction_v1": {
+   "checks": {
+    "preface": true,
+    "chapters_count": true,
+    "planets_chapter": true
+   },
+   "counts": {
+    "preface_paragraphs": 108,
+    "book1_chapter_paragraphs": 273
+   },
+   "pass": true
   }
  },
  "all_pass": true

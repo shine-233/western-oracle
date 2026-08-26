@@ -259,6 +259,52 @@ def main() -> None:
         for p in rng.sample(region['paragraphs'], min(14, len(region['paragraphs']))):
             f.check(f'lilly_chapters[{reg_key}]', p, raw, min_len=80)
 
+    # ========= 第四轮扩容（第三批 remine）=========
+
+    # --- tetrabiblos 附录卷（含 Centiloquy 条目）---
+    raw = load_raw('tetrabiblos_ashmand_full_1822_raw.txt')
+    d = json.loads((DATA / 'tetrabiblos_appendices_v1.json').read_text(encoding='utf-8'))
+    for sec in ('ashmand_front_matter', 'almagest_extract', 'tables_and_extracts',
+                'planisphere_appendix'):
+        for p in rng.sample(d[sec]['passages'], min(3, len(d[sec]['passages']))):
+            f.check(f'tet_app[{sec}]', p, raw)
+    for a in rng.sample(d['centiloquy']['aphorisms'], 12):
+        f.check(f"tet_cq[{a['no']}]", a['text'], raw, min_len=40)
+
+    # --- leo v4 新区块 ---
+    raw = load_raw('leo_how_to_judge_nativity_1928_raw.txt')
+    d = json.loads((DATA / 'leo_nativity_v4.json').read_text(encoding='utf-8'))
+    for key in ('appearance_rules', 'rising_sign', 'ch7_ruling_planet',
+                'ch8_health_length_of_life'):
+        seg = d['expansions'][key]['passage']
+        f.check(f'leo_v4[{key}]', seg[len(seg) // 3:][:1800], raw)
+
+    # --- kunz v4 前部五章 ---
+    raw = load_raw('kunz_curious_lore_precious_stones_1913_raw.txt')
+    d = json.loads((DATA / 'kunz_birthstones_v4.json').read_text(encoding='utf-8'))
+    for ch_key in ('superstitions', 'talismans_amulets', 'talismanic_use',
+                   'engraved_carved_gems', 'ominous_luminous_stones'):
+        pas = d['chapters'][ch_key]['passages']
+        for p in rng.sample(pas, min(5, len(pas))):
+            f.check(f'kunz_v4[{ch_key}]', p, raw)
+
+    # --- robson 魔法/气象 ---
+    raw = load_raw('robson_fixed_stars_1923_raw.txt')
+    d = json.loads((DATA / 'robson_medieval_magic_v1.json').read_text(encoding='utf-8'))
+    for x in rng.sample(d['magic_fixed_stars'], min(6, len(d['magic_fixed_stars']))):
+        f.check(f"rob_magic[{x['name']}].rules", x['rules'], raw, min_len=25)
+        f.check(f"rob_magic[{x['name']}].image", x['image_effect'], raw, min_len=40)
+    for sec in ('lunar_mansions_magic', 'astro_meteorology', 'mathematical_formulae'):
+        for p in rng.sample(d[sec]['passages'], min(4, len(d[sec]['passages']))):
+            f.check(f'rob_{sec}', p, raw)
+
+    # --- lilly introduction ---
+    raw = load_raw('lilly_christian_astrology_1647_raw.txt')
+    d = json.loads((DATA / 'lilly_introduction_v1.json').read_text(encoding='utf-8'))
+    for reg_key, region in d['regions'].items():
+        for p in rng.sample(region['paragraphs'], min(10, len(region['paragraphs']))):
+            f.check(f'lilly_intro[{reg_key}]', p, raw, min_len=80)
+
     print(f'fidelity checked: {f.checked} samples')
     if f.problems:
         print(f'PROBLEMS ({len(f.problems)}):')

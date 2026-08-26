@@ -1,0 +1,563 @@
+{
+ "dataset": "tetrabiblos_appendices",
+ "version": "v1",
+ "generated": "2026-08-26",
+ "source": {
+  "work": "Ptolemy, Tetrabiblos (Ptolemy’s Quadripartite)",
+  "translation": "J.M. Ashmand, 1822",
+  "rights": "public domain",
+  "origin": "Internet Archive OCR (ptolemys-tetrabiblos-j-m-ashmand)",
+  "note": "Book I–IV 之外的 Ashmand 版全部内容：译者前言/Almagest 摘录/表册说明/Ptolemy《Centiloquy》百条格言/黄道平面星图说明"
+ },
+ "counts": {
+  "front_matter_paragraphs": 77,
+  "almagest_passages": 12,
+  "tables_passages": 60,
+  "centiloquy_aphorisms": 87,
+  "planisphere_passages": 12
+ },
+ "ashmand_front_matter": {
+  "passages": [
+   "logers, that the planets, having been ob- served to produce certain effects, were consequently dedicated to the several personages whose names they respectively beaf.",
+   "into the councils of princes, it guided the policy of na- tions, and ruled the daily actions of individuals. All this is attested by the records of every nation which has",
+   "Darius Hystaspis, sont 520 B. C., and assisted Hystaspes, the father of Darius, in reforming the Magi, of whom the said Hystaspes waa Master. Newton adds, p. 352, that “about the same time with Hys- “ taspes and Zoroaster, lived also Ostanes, another eminent Magus : “ Pliny places him under Darius Hystaspis, and Suidas makes him “ the follower of Zoroaster: he came into Greece with Xerxes about “480 B. C., and seems to be the Otanes of Herodotus. In his book, ‘‘ called the Octateuchus, he taught the same doctrine of the Daity “as Zoroaster.” | Having quoted thus far from Newton, it scems proper to subjoin. \"the following extract from the “ Ancient Universal History :’—‘ In “the reign of Gushtasp” [the oriental name of Darius Hystaspis], “ King of Persia, flourished a celebrated astrologer, whose name was ‘‘ Gjamasp, surnamed Al Hakim, or the wise. The most credible ““ writers say that he was the brother of King Gusbtasp, and his con- “ fidant and chief minister. He is said to have predicted the coming “* of the Messiah ; and some treatises under his name are yet current ‘in the East. Dr. Thomas Hyde, in speaking of this philosopher, “‘ cites a passage from a very ancient author, having before told us “ that this author asserted there had been among the Persians ten “‘ doctors of such consummate wisdom as the whole world could not “ boast the like. He then gives the author’s words: ‘ Of these, the “‘ © sixth was Gjamasp, an astrologer, who was counsellor to Hystas- “‘ pis. He is the author of a book intitled Judicia Gjamaspis, in “which is contained his judgement on the planetary conjunctions. ‘“‘‘ And therein he gave notice that Jesus should appear; that Mo- “‘*hammed should be born; that the Magian religion should be ““abolished, &c.; nor did any astrologer ever come up to him.’ “[E hb. Mucj. apud Hyde}. Of this book there is an Arabic ver- “ sion, the title of which runs thus; The Book of the Philosopher",
+   "a history, and by none more fully than by those of Eng- land. Yet, with these striking facts before their eyes, the present generation seem never, until now, to have",
+   "* he published it A. D. 1280. In the preface of his version it is said “‘ that, after the times of Zoroaster, or Zerdusht, reigned Gushtasp, “the son of Lohrasp*, a very powerful prince; and that in his reigu “* flourished in the city of Balch, on the borders of Chorassan, a most “excellent philosopher, whose name was Gjamasp, author of this “‘ book ; wherein is contained an account of all the great conjunctions “ of the planets which had happened before his time, and which were “to happen in succeeding ages; and wherein the appearances of “now religions and the rise of new monarchies were exactly set “down. This author, throughout his whole piece, styles Zerdusht, or “ Zoroaster, our Prophet. [D’Herbelot, Bibl. Orient. Art. Gjamasb.]} “ The notion of predicting the rise and progress of religions from the “¢ grand conjunctions of the planets, has been likewise propagated in “‘ our western parts: Cardan was a bold assertor of this doctrine. ‘The modern Persians are still great votaries of astrology, and al- “ though they distinguish between it and astronomy, they have but ‘one word to express astronomer and astrologer; viz. manegjim, “ which is exactly equivalent to the Greek word a¢gsdeyee. Of all the ‘‘ provinces of Persia, Chorassan is the most famous for producing ‘‘ great men in that art ; and in Chorassan there is a little town called “‘ Genabed, and in that town a certain family which, for 6 or 700 “‘ years past, has produced the most famous astrologers in Persia ; ** and the king’s astrologer is always either a native of Genabed, or “one brought up there. Sir John Chardin affirms that the appoint- “‘ ments in his time for these sages amounted to six millions of French “ livres per annum.—Albumazar of Balch (scholar of Alkendi, a Jew, ‘‘ who was professor of judicial astrology at Bagdad, in the Caliphate",
+   "* This seems to be a mistake of the Arabian author, for Gushtasp was identical with Darius Hystaspis, and Lohrasp [otherwise Cy- axares] was father of Darius the Mede, who was overcome by Cyrus, 536 B.C.—Sce Newton.",
+   "it was one) could have been for so many ages supported. Among a-thousand persons who now treat the mention of Astrology with supercilious ridicule, there is scarcely one who knows distinctly what it is he laughs at, or on what plea his ancestors should stand excused for having, in their day, contemplated with respect the unfortunate object of modern derision.",
+   "‘‘ of Almamoum*) became wonderfully famous. He wrote expressly ‘from the Persian astrologers, and it may be from the works of “ Gjamasp, since he also reports a prediction of the coming of Christ “in the following words: viz. ‘In the sphere of Persia, saith Aben",
+   "“ * maiden, she holding two ears of corn in her hand, and a child in “<< her arm: she feedeth him, and giveth him suck, &c. This maiden,’ ‘saith Albumazar, ‘we call Adrenedefa, the pure Virgin. She “‘ “ bringeth up a child in a place which is called Abrie [the Hebrew “* land], and the child’s name is called Eisi [Jesus].’ This made “‘ Albertus Magnus believe that our Saviour, Christ, was born in ‘“‘ Virgo; and therefore Cardinal Alliac, erecting our Lord’s nativity “ by his description, casteth this sign into the horoscope. But the “ meaning of Albumazar was, saith Friar Bacon, that the said virgin “‘ was born, the Sun being in that sign, and so it is noted in the oa- “ Jendar; and that she was to bring up her son in the Hebrew land. “‘[Mr. John Gregory’s Notes on various Passages of Seiprel Ancient Universal History, vol. 5, pp. 415 to 419.",
+   "dern disrepute of the science; for mankind have usually, in every successive age, exercised great industry in tracing all previous customs, however trifling or obso- lete, and in examining all sorts of creeds, however un- important or erroneous, whenever there has appeared any striking connection between such matters and his- torical facts; and, since astrology is most unquestion- ably blended intimately with history, it therefore be- comes necessary to seek for some further hypothesis, by which this ignorance and indifference may be accounted for.",
+   "Perhaps astrology has been conceived to have borne the same relation to astronomy as alchymy did to chy- mistry. If such has been the notion, it has certainly been adopted in error, for a modern chymist is still almost an alchymist: it is true that he no longer delays his work in deference to the planets, nor does he now try to make’ gold, nor to distil the elixir of earthly immor- tality; but nevertheless he still avails himself, to a cer- tain degree, of the same rules and the same means as those of the old alchymist: he is still intent upon the subtle processes of Nature, and still imitates her as far as he can. He reduces the diamond to charcoal by an operation analogous to that by which the alchymist sought to transmute fead into gold; and he mainly dif- fers from the alchymist only in having assured himself that there is a point beyond which Nature forbids fac- similes. Not so slightly, however, does the astronomer differ from the astrologer, but toto celo: the astrologer considered the heavenly bodies and their motions merely as the mechanism wherewith he was to weave the tissue of his predictions; and astronomy is no more an inte- gral part of astrology, than the loom is of the web which",
+   "has beer woven by it. To have an idea of what alchy- my was, it is sufficient to have an idea of chymistry; but astronomy, in itself, will never give a notion of astro- logy, which requirea additional and distinct considera- tion.",
+   "It may be urged, that in the present day a general idea of this by-gone and disused science is quite sufficient for every body not professedly antiquarian. Such an- asaertion would doubtless never be controverted, pro-. vided the proposed general idea might comprehend the truth. But the present actual general idea of astrology is by no means so comprehensive; indeed, nothing can well be. more inaccurate, or even more false: it seems to have been adopted not from the elements of the science itself, but from trite observations made by writers against the science; and. consequently the werld now wonders at the lamentable defect of understanding that could ever have permitted belief in it—forgetting that astrology has been consigned to neglect, not in consequence of",
+   "any prima facie palpability in its imputed fallacies, nor - Indeed of any special skill or acuteness on the part of its professed adversaries, but rather in consequence of the sudden and astonishing growth of other undoubted sciences, with which it has been presumed to be incom- patible, and which during the thousands of yeara of the",
+   "The words “ professed adversaries,” which have just now been used, are of course not intended to be. applied to those mighty explorers of Nature’s laws and man’s powers, who, in their lofty career, may have made an incidental swoop at the pretensions of astrology. Di- rectly engaged in more exact pursuits, they stopped not to dissect this their casual prey, which, after having been thus struck by eagles, was left to regale crows and daws, and these, in their convivial loquacity, accused their unfortunate victim of crimes incapable of being com- mitted, and of offences which had never been imagined. Of the real faults of their victim these garrulous bipeds seem not to have been aware, or, if aware, they seem to have considered them as not sufficiently prominent. Nor was this want of candour or information absolutely con- fined to the mere vulgar herd of vituperative scribblers, for even the sparkling essay against astrology, written by -",
+   "‘‘ bodies, ought, perhaps, not to be despised*. The theory of the tides, * for example, is altogether an astrological doctrine, and, long before “ the days of Sir Isaac Newton, was as well understood as it is at this “moment. The correspondence alleged by the ancient physicians “to exist between the positions of the Moon and the stages of various ‘‘ diseases, is so far from being rejected by the modern faculty, that “ it has been openly maintainedt}.” The writer then recounts sundry incidents, asserted by the astrologers to be dependent on the Moon, and he adds these words: “The fact of these allegations might be so ‘easily ascertained, that it is surprising they should still be pro- ‘¢ nounced incredible, and denied rather than contradicted.”",
+   "‘+ Dr, Mead on the Influence of the Sun and Moon upon Human ‘Bodies. See also Edinb. Rev. vol. 12, p. 36—Balfour on Sol-Lanar “Influence.” Blachwood’s Magazine for Dec. 18%1, Part 2, No. 59.",
+   "Voltaire (in his.irrepressible desire to convince the world that he was au fait.in every thing), proves only that the writer, though the most generally informed man of his time, had mistaken the really assailable points of the object of his attack.",
+   "The author of the present Translation has No intention | now of either advocating or impugning the doctrines of the science of which his Translation discourses: his purpose is a different one. He has that sort of respect for ‘‘the dead, which are already dead,” which, although it does not incline him to “praise” them “ more than “ the living, which are yet alive,” is still sufficient to incite him to endeavour to avert the imputation of idiot credulity, to which their faith in astrology seems now to subject them in the general opinion of the enlightened ‘‘ living.” And, while he disclaims all idea of presum- _ing to offer any argument on either side of the question, as to the validity of the science, he must still, at the same time, confess his admiration of the ingenuity and contrivance manifest in its construction, and avow his readiness to believe’ that all its harmonized complica- tions might have easily held dominion over some of the strongest minds in that darker period when it flourished.",
+   "_ In executing here the desire of attempting to vindi- cate the ancient credence in astrology, an elaborate dis- quisition would surely be not only unnecessary, but mis- placed: it seems sufficient to refer the reader to the work of which the following is a translation, and. to these undisputed facts,—that the science was formerly inculcated by the highest and most erudite authorities of the period,—that it was insisted on by votaries in all parts of the world, attesting and producing instances of . its truth ;—and, moreover, that it was so finely and beau-",
+   "tifully put together, as to cause the only deficiency of one small, though most important, link in its whole _ chain of argument, to be undetected by dull minds, and readily supplied by enthusiastic genius. For centuries after centuries all branches of learning were either made subservient to astrology, or carried on in close alliarice with it; and many of the illustrious names which it re- calls to our recollection are gratefully reverenced even. by modern science. The genius of Roger Bacon, al- though he was the first of that school of natural phi- losophy which acknowledges none but experimented truths, was nevertheless bowed to the doctrines of ju- dicial astrology; and his greater Namesake, who after an interval of several centuries succeeded to him in giv- ing proper direction to the mental energy, was still an arguer in favour of celestial influences: it may be, there- fore, fairly inferred, that the subtle spell which had strength to enthrall “stuff” so “stern,” could have been of no weak or vulgar order, but that it was sufficiently potent and refined to interest and amuse even the pre- sent age*. |",
+   "“ Certainly, if man may ever found his glory on the achievements of his wisdom, he may reasonably exultin the discoveries of astro- ‘‘ nomy ; but the knowledge which avails us has been created solely ‘‘ by the absurdities which it has extirpated. Delusion became the ‘* basis of truth. Horoscopes and nativities have taught us to trace * the planet in its sure and silent path; and the acquirements which, “ of all others, now testify the might of the human intellect, derived “‘ their origin from weakness and credulity” (p. 181). Again; “ As- “ trology, like alchymy, derives no protection from sober reason ; yet, 4 with all its vanity and idleness, it was not a corrupting weakness.",
+   "» Jn this little volume will be found the. whole: of the elements of astrology, and the entire ground-work of those stupendous tomes in folio and quarto on the same - subject, which were produced in myriads during the 16th and 17th centuries, for the due mystification of the then world. The present volume is addressed equally to the general reader, as well as to the votary of pure astrology, if any such there be: to the one it offers amusement; for the other, it should contain the mest glowing interest. Even to the speculative metaphysi- cian it will furnish food for contemplation ; for, in ad- | dition to its peculiar hypothesis of cause and effect, it developes many of those apparent incongruities of character so often united in the same individual: and this developement, even although adapted to the doc- . trine of the stars, still merits attention; inasmuch ag the phenomena of which it treats (in whatever way they may be produced or regulated) will ever remain in actual existence. _ ‘The only English translation of Ptolemy's Tetrabiblos ; hitherto published, appears to have been first set forth",
+   "“Tokens, predictions, prognostics, possess a psychological reality. “ All events are but the consummation of preceding causes, clearly - felt, but not distinctly apprehended. When the strain is sounded, « the most untutored listener can tell that it will end with the key- “ note, though he cannot explain why each successive bar.must at “ last lead to the concluding chord. The omen embodies the pre-— “ sentiment, and receives its consistency from our hopes or fears.” pe 208.",
+   "It may, perhaps, be difficult to assent to all of the propositions in- volved in these extracts; but there are among them some which are ' clearly unquestionable.",
+   "in 1701, under the name of “The Quadripartite.” That publication has been long removed from general sale; and its gross mis-interpretation of the author, caused by the carelessness or ignorance of Whalley and his assist- ants, by whom it was produced, has rendered most of its pages unintelligible: its absence is, therefore, scarce- ly to be regretted. The second edition of the same translation, professing to be “ revised, corrected, and “improved,” and published by Browne and Sibley, in 1786, was not, in any one instance, purified from the blunders and obscurities which disgraced its predecessor: it seems, in fact, less excusable than the former edition, of which it was merely a reprint, without being. at all corrected, not even in certain typographical errata which the former printer had been zealous enough to point out in his final page. Even this second publica- tion, worthless as it intrinsically is, can rarely now be ‘met with, and, like the former, only at a very heavy",
+   ". ‘The present Translation has been made from Proclus’ 8 Greek Paraphrase of Ptolemy’s original text: the edi- tion followed is that of the Elzevirs, dated in 1635*.",
+   "' © This edition was printed i in double eohuiau one containing Pro- clus’s Greek Paraphrase, the other the Latin translation of Leo Allatius; and William Lilly (no light authority in these matters) thus wrote of it in the year 1647: “ Indeed Ptolemy hath been printed in “ folio, in quarto, in octavo, in sixteens: that lately printed at Ley- “den” [where the Elzevirs were establistred] “I conceive to be ‘most exact; it was performed by Allatius.” To the said edition is prefixed an anonymous address to the reader, in Latin, and to the following effect :—",
+   "“‘ work, which, having hitherto existed only in Greek*, is now, in its Latin dress, accessible to the curiosity of all persons. This Para- ‘* phrase of Proclus on the Tetrabiblos of Ptolemy was translated a “ few years ago by Leo Allatius, a Greek by birth, eminently skilled “ in the learning of his own nation, as well as in Latin literature, ‘‘ and already celebrated for other writings in both languages. He “ lives, I have understood, in Rome, in the family of Cardinal Biscia, ‘‘ and holds some office in the Vatican Library. He undertook this “* present work, however, for his own private gratification, and that “of certain friends; but when writings compiled with this view ‘‘ have once quitted their author's hands, it will often happen that “ they have also, at the same time, escaped his controul. So this “ offspring of Allatius, having emerged from Rome, arrived at Ve- - “nice, from whence it was forwarded to me by a certain great per- _ “ sonage of illustrious rank, in order that I might cause it to be ‘printed. The names of Ptolemy and Proclus, so celebrated among “mathematicians and philosophers, besides the subject of the work “ itself, seemed to me a sufficient warrant for committing it to the “press. Whereupon] delayed not to avail myself of the advantages « J possessed in having access to our excellent and most accurate ‘‘ typographers, the Elzevirs, and I ¢arnestly solicited them to pub- “ lish it: they, in their love for the commonwealth of letters, took “upon themselves the charge of printing it in the-form you see. “ You will learn from it, inquisitive Reader, how much power the “stars have over the atmosphere and all sublunary things : for the",
+   "® This assertion is applicable only to Proclus’s Paraphrase. There were s¢veral prior translations of the original Tetrabiblos in Latin and Arabic; and it appears by an extract from thé Bibliotheca . Greeca of Fabricius [which will be found in a subsequent page], that a Latin version, done from the Arabic, was printed at Venice as early as the year 1493. :",
+   "doubtful passages. The editions thus inspected were that by Camerarius, printed at Nuremberg in 1535; . that by Melancthon, printed at Basle in 1553; and that",
+   "“ stars, and those brighter bodies of heaven, must not be imagined “to be idle. The whole doctrine of the stars is not, however, here “ treated of, but enly that distinct part of it which the Greeks call | “ judicial and prognostic, and which, while confined within certain “ limits, is as entertaining as it is useful; and is partly considered to “ be agreeable to nature. But should it pretend to subject to the skies “‘ such things as do not depend thereupon, and should it invite us to “‘ foresee by the stars such things as are above the weakness of our “‘ apprehension, it will assuredly deserve to be reprehended as.a vain ‘and empty art, which has been demonstrated in many learned “ books by the great Picus of Mirandola. The Chaidteans, Geneth- “ liaos, and Planetarians, have been always held in disrepute, because “they professed to know not only more than they actually did know, - “ but also more than is allowed to man to know. Even Ptolemy, _ “ while he employs himself in this present work upon the Doctrine of “ Nativities, is scarcely free from the charge of superstition and va- _“‘ nity: perhaps, in a Pagan, this may be forgiven; but it is hardly “to be tolerated, that persons professing Christianity should be led ““away by such an empty study, in which there is no solid utility, “ and the whole pleasure of which is puerile. Finally, I warn you “that some persons doubt whether this was really produced by ‘‘ Ptolemy®: nevertheless, it has certainly appeared to Porphyry and “ Proclus (who were doubtless great philosophers, although hostile “ to the Christian faith) to be worthy of receiving elucidation by their “Commentaries upon itt. Peruse it, however, friendly reader, with - “ caution, having first shaken off the weakness of credulity, for the “‘ sinew of wisdom is not te believe rashly. Farewell.”",
+   ". * The reader is again referred to the extract from Fabricius (insert- ed in a snbsequent page), contajning that learned person's account of this book among the other works of Ptolemy.",
+   "by. acta printed, with his own ehormous commen- ‘tries, at Lyons, in 1581. Independently of ‘these re- ferences, the presenf translation has been collated with the Latin of Leo Allatius, and with two other Latin translations: one printed at Basle, together with a tran- slation of the .Almagest in 1541; the other by itself at Perugio, in 1646*. The Translator has devoted all this ‘extreme‘cdre and attention to his labours, in the wish to render Ptolemy’s astro-judicial doctrine into English as ‘purely and perfectly as possible; and, with the same ‘view, he:has likewise added, in an Appendix, certain ‘extracts from such parts of the Almagest as were found to’ be referred to in'the present work. Further illustra- tion'is also given by notes gathered from the “‘Primum \"© Mobile” of Placidust, and from a variety of other",
+   "ing Leo Allatius, it may be shaerved that he was appointed Keeper of the Vatican Library by Pope Alexander VII, with whom he was in: high favour. Itis said of him, that he hada pen with which he had written Greek for forty: years, and that he shed tears on losing it. Another story of him states, that the Pope. bad often urged him to take holy orders, that he might be advanced in the church, and one day asked him why he had not done so: “ Because,” said ee ‘I would be free to marry.”—“ Why, then, do you not marry %”",
+   "'* This transtation from the Perugio press has been serviceable: in presenting certain various readings; but it does not seem to podiléss any other peculiar merit. It professes to be a translation fromthe original text of Ptolemy; and so likewise does the translation printed at Basle, as above quoted. ~",
+   "t It appears by the printed works of this author, that co was named Didacus Placidus de Titis. He wasa native of Bologna; by pro- fession 2 monk,.and was styled Mathematician to the Archdake E.eo-",
+   "It seems improper to close this Preface (notwithstand- ing the bulk it has already attained), without annexing the following short notice of the life and works of the",
+   "Claudius Ptolemy was born at Pelusium, in Agypt, and became an illustrious disciple of the school of Alexandria, in which city he flourished during the reign of Adrian and that of Antoninus Pius. The date of his birth has been commonly assigned to the 70th year of the Christian zra; but the accuracy of this date seems questionable ; for he has himself noted in one part of hig works, that Antoninus reigned twenty-three years. He must have, therefore, survived that prince; and, as it is not probable that he continued his scientific labours until after ninety years of age, which he must have done had he been born about the year 70, because Antoninus © died in the year 161, it seems that his birth would be more properly ascribed to some later period. Moreover, it is asserted by the Arabians, that he died in the 78th year of his age; and a similar statement is also made by Luca Gauricus, in the dedication of his version of the Almagest* tu Dominico Palavicini: Gauricus has,",
+   "pold William of Austria. He wrote in the earlier part of the 17th century, and his work, now cited, is considered to contain the most successful application of Ptolemy’s astrological rules to practice.. The original is cxtremely scarce; but a new English ee: by Cooper, may be had of the Publishers of this work.",
+   "‘Pigléimy hds récdtded tint he observed, at Alexan- atfa, ‘an eclipse of the Moon, in the $th year of Adrian ; . awd that he iidde many observations upon the fixed M6xs in tie Qd year of Antoninus Pius: whence it may bé condladéd, that his observations upon the heavens Wére principally made during the period from A.D. 125 - to A.D. 140, or thereabouts; ‘and it also follows, of course, that thé supposition, eutértained by some au-",
+   "thors, of liis fdentity with the Ptolemy who was always in attendance updén Galba, as his personal astrologer, atid who promiséd Otho that lie should survive Nero dnd obtain the empire, is entirély without foundation®. To Gauricus’s version of the Almagest there is algo anothet dedication, addressed to Pope Sixtus, and com-",
+   "“ vegid stirpe oriindum,” and explaining that he had, “with a truly regal mind,” applied himself to the sciences, because the ancient Sceptre of the Ptolemies had previously passed into the hands of Cleopatra, and hectuse the kingdom of Aigypt had been since reduced to the state of a Roman provincé. The authentic de- tdils of the circumstances of Ptolemy’ 8 life are, however, extreniély few. It is said that he was distinguished ditiong the Greeks by the epithets “‘ most wise,” and “ most divine,” on account of his great learning ; and, according to thé Preface to Whalléy’s translation of thé Tettabiblos, the Arabians report that “he was extreme-",
+   "“ly abstemious, and rode much on horseback ; adding, that although he .was “ spruce in apparel,” yet his breath was not remarkable for an agreeable odour.",
+   "The errors of the Ptolemaic theory of the universe have now been long discarded; but there are many points in which modern sciences, and modern astrono- my in particular, have reaped incalculable benefits from thé labours and researches of its great founder. He has preserved and transmitted to us the observations and principal discoveries of remoter periods, and has — enriched aud augmented them with his own. He cor- rected Hipparchus’s catalogue of the fixed stars, and formed tables for the calculation and regulation of the motions of the Sun, Moon, and planets. He was, in fact, the first who collected the scattered and detached observations of Aristotle, Hipparchus, Posidonius, and others on the ceconomy of the world, and digested them into a system, which he set forth in his Meyzay Duvragic, - or Great Construction, divided into thirteen books, and called, after him, the Ptolemaic System. This and all his other astronomical works are founded upon the hy- pothesis, that the earth -is at rest in- the centre of the universe, and that the heavenly ‘bodies; stars, and pla- nets, all move round it in solid orbs, whose motions are all directed by one primum mobile, or first mover, of which he discourses at large in the ‘“ Great Construc- “tion.” In that work he also treats of the figure and divisions of the earth, of the right and oblique ascensions of the heavenly bodies, and of the motions of the Sun, Moon, and planets ; and he gives tables for finding their situations, latitudes, longitudes, and motions: he treats also of eclipses, and the methods of computing them ; and he discourses of the fixed .stars, of which he fur-",
+   "It has been truly said, that “ Ptolemy’s order, false. “as it was, enabled observers to give a plausible ac- ‘ count of the motions of the Sun and Moon, to foretell “ eclipses, and to improve geographyt+;” or, in other words, that it represented the actual phenomena of the heavens as they really appear to a spectator on the earth. It is, therefore, clear that Ptolemy’s astrology is just as applicable to modern and improved esronomy as it was to his ownt.",
+   "* In France, about the beginning of the 16th century, Oronce Finé, the Royal Reader, attempted, under the patronage of Francis I, to produce an astronomical clock, in which every thing moved accord- © ing to the principles of Ptolemy. It was kept, about fifty years ago, in the monastery of St. Geneviéve, at-Paris. In Lilly’s Catalogue of",
+   "{ The objection which has been arged against astrology, that the — signs are continually moving from their positions, cannot invalidate this conclusion. That objection has, -in fact, no real existence ; for Ptolemy seems to have been aware of this motion of the signs, and has fully provided for it in the 25th Chapter of the 1st Book of the Tetrabiblos. From that’ chapter it is clear that the respective in- fluences he ascribes to the twelve signs (or divisions of the zodiac) were considered by him as appurtenant to the places they occupied, and not to the stars of which they were composed. He has expressly and repeatedly declared that the point of the vernal equinox is ever the beginning of the zodiac, and that the 30 degrees following it ever | retain the same virtue as that which he has in this work attributed to Aries, although the stars furming Aries may have quitted those degrees: the next 80 degrees are still to be accounted as Taurus, and so of the rest. There is abundant proof throughout the Tetrabi-",
+   "‘Tn the year 827? the .“ Great Construction” was Stabs. slated by the ‘Arabians into ‘their own language, and:.by., them communicated to Europe. It is through them,that it has been usually known by the name. of the Almagest. In the 13th century, the Emperor Frederic. II caused it. to be translated from the Arabic into Latin, and Sacro- bosco+ was \"consequently enabled to write his famous, work upon the sphere. It wasnot, however, until abont, the end of the 15th century that, the as Great, Construc;. “ tion” was translated into Latin from the original, text; and this important service was rendered to science by, Purbach, a professor of philosophy at Vienna, “who learned the Greek tongue at the instigation of Cardinal _ Bessarion. By means of this translation, the Epheme-. rides ‘of George Miller, surnamed Regiomontanus, a — ‘disciple of Purbach’s, were first composed. The Greek | text of the Almagest, or Great Construction, was first, | published. ‘at Basle, by Simon Gryneus, 3 in 1598;. and. it . was again ‘printed at the same place in. L551, with. cer tain other works of Ptolemy{.. The rest of Ptelemy’s works connected with astronomy, and now extant, are _ the Tetrabiblos, or Four Books of the Influence of the. States (now tranglated) ; ; the Protloany. or Fruit, of his Ban",
+   "¢ This, scientific, man was a Mathurine Prigy and § a proteagor i in the University. of Paris: he died i in 1256. Iti is pointed o out in the Edin. , burgh Review, No. 68 that he was ‘a native of Yorkshire,. and. bis... real name John ‘Holywood, euphonized, in Paris, into,Sacroboseo, | |",
+   "Four, Books, being,.a-kind: of. supplement to: ‘ea eens =< and. the Significations of. the:Fixed! Stars: Tlie last.is! merely, a, daily calendar; shewing the risingacand settingsv-",
+   "“ pertitum, sive quatuar libri de anotel.smatibus et: jyrlidiis axtrorarm, ab “ Syrum (h). Greece primum editi a_Joachimo Camerarie, cum-ver-- “‘ sione sua. daorum: priorum.jibroram, et :preécipuorum ¢ retiquis lo- “ corgm,; Norimb, 1536, 4te.x—Hine eum versione Phil. Melancthont¢;",
+   ", “* qui in prafat..ad Erasmum Ebneram.Senatorem Nobrichbergunsent _ © testatur se.editionem ,Camerani.muliis mendia purgasse;.tum(nu- “* meros.in Jocis. anbaticis tam doseeci-quam.Letini textus emendwnser “« Basil, 155%, Sv0.—rLattnecpridem verterat-Aipidens Tebabiinns, ‘sive ‘« latino-barbaré ex Hispanica versione, Alfoasi Castel Régis-jusse; “ ex Arahico (i) confecté,: Vertit et Antonina Gogava;, Lovan. 1548, “‘ 4tes.Patayii, 1658, 12m05 Pragse, 1616, 19mo.. Commentario il? “ lustvavit: Hheron. Cardanus. prioribus duobas libris Camerarii; posté- “‘ rioribuls,: Gogaver:-versione ‘servatd, Basil; 1554,+fol.; 1579% fol. ; “* Lugd..1556,.8ve, et m Cardani.opp.—Georgii Vallé-commentarius; “ anno..1502 editus,: nihilaliud- est, quamr‘Latina versio scholidruni “‘ Grecorun, sive, exegesees jejunse ~Démophili: in tetrabiblon, quae “cum Porphyrii:sixve Antiooht-isagoge,. Greece et Latine; addits': “‘ Hieron. Wolfii versione, lucem vidit Basil 1559;'fol.” In‘his scho- “ liis Dogotheus allegatur,:p. 49,-110, et 439 ;“ Cleopatra; p.'88';' Pdr- ‘‘ phyrias Philosophus, p. 169.: Meminit et auetor Petosiridis'ac Ne: ° . “* copa, p. 118 :—rsyes 3s wadaiep reeNexete (ita leg. pro yeferut p.’1 12)\" “* gn Diblocignsuveryne eget ce Uacpedeying afetdaven-wpoyvecme®:' Pit” “ rapbrasin tetrabibli a, Mrecla concinnatar Gracoe edidit Mélancthin,” ‘* Basil. 1554, Bva-:, Grane et Latine:cum)-versione'suh Zed Allativs'” “« Lug: Batawo16544, 8vo.:; Leegus Ptolemsi:e codtee Greco MS.",
+   "+ This was perhaps a reprint of the edition of 1635, ae whick the present translation has been made ; unless there may have been.. an error of the press in stating 1654 instead .of 1635, which seems.. probable, as the edition of 1635 is unnoticed by. Fabricius.",
+   ". of the stars, and the nature of the weather thereby pro- .. duced. There are likewise extant his’ geographical . work (which has rendered important service to modern geographers), and also his celebrated book on Har- monics, or the Theory of Sound.",
+   "‘‘in collegio Corporis Christi Oxon. feliciter restituit Seldenus, p. “85 ad Marmora Arundeliana. Haly Heben Rodoan Arabis com- “ mentarium laudat Cardanus, cum Demophilo Latine editum.”",
+   "“‘ (h) Schol. Graec. Mgerqure: re Xuge o Mrorspasoe re AiCasov, woos ov xas “6 wag adAacauTe Tacag Weaypsaresae neecepavacer, Atyoue's de viv8g we Kie~ ** }agas auTo Te Te Tuge ovepsa. Addo Oe ors & wEwAacast, aAr’ sal eog ny wre © ay base xa Sa tourer rer padnuaren**.’’",
+   "“ (i) Selden. Uxor Hebr. p. 342. Gxtcran de Alphonsi Regis “ cur§ in promovenda, Arabica Quadripartiti versione, vide, si placet, — “Nic: Antonium in Bibl, veteri Hispana, t. 2, p. 55. vel Acta Erad. “ A. 1697, p. 302. Latina versio ex Arabico facta lucem vidit Venet. “1498, fol... Viderit porro Gassendus, qui in Philosophia Epicuri, — . “ubi contra Astrologos disputat. t. 2, p. 501, contendit tetrabiblon _ ‘“‘ indignum esse Ptolemei genio et subdititium. Equidem Jo. Pico “« judice, 1. 1, contra Astrologos, p. 286, Ptolemeus malorum sive “A potelesmaticoram est optimus.”",
+   "* It will be seen by the preceding note, that Proclus’s Puraphrads of the Tetrabiblos should properly be considered as superior to the other readings. of that book ; since it appears, on the authority of © Fabricius, that Melancthon, after having been at the pains of cor- | recting and republishing, in 1553 (with his own emendations); the- ‘ edition of Camerarius, containing the reputed original text, stHt © deemed it advisable, in the following year, to edite Proolus’s Para-. phrase. This Paraphrase must, therefore, nevessarily have had claims. _ to his attention not found in the text he had previously edited.",
+   "** “* Ptolemy addresses the book to Syrus, to whom he has also “ addressed all his other treatises. Some say that this name of Syrus “‘ was feigned; others, that it was not feigned, but that he was a “ physician, and educated in these sciences.”",
+   "st pReRacR, xxvii ‘Sea in the year 410. He studied at Alexandria and ‘at Athens, and. became very eminent among the later Platonists. He succeeded Syrianus, a celebrated phi-— losopher, in the rectorship of the Platonic school at Athens, and died there in 485*. He was a most volu- minous author, in poetry as well as in prose. Among his works there are Hymns to the Sun, to Venus, and to the Muses; Commentaries upon several pieces of ‘Plato, and upon Ptolemy’s Tetrabiblos}+; an Epitome or Compendium of all the Astronomical Precepts de- monstratéd in the Almagest; and Elements of Theology -and Natural Philosophy.—He was in dispute with the Christians on the question of the eternity of the world, which he undertook to prove in eighteen elaborate ar- -guments.—A late writer in a certain periodical work has erroneously identified him with another Proclas, who was in favour with the Emperor Anastasius, and who destroyed the ships of Vitalianus, when besieging Constantinople in 514, by burning them. with narent bra- zen or: or dana",
+   "* Chalmers’s Biographical Dictionary. | ‘t It will, of course, be understood that this Commentary i is distinot from his Paraphrase, now translated. \\",
+   "1. A NEW METHOD of with Ease and Ex- ppedition, by-which the true Value of the Unkatten Quantity is fousid ‘With- out previous Reduction; with a Supplement, containing two other Methods wf Solving Equations, derived from the sanre Pritrciple. By Tikorniitfs HotpraeD. 4to, price 7s.",
+   "2. on INVOLUTION , being a new ‘Method of Extracting the Roots of Equations and Numbers, by Arithmetieal “Rules ; with Historical Facts relating to the Invention. By P. NicHonsow. 810, price 6s.",
+   "3. ANALYTICAL and ESSAYS ; consisting of— Continued Fractions—Figurate Numbers=san entire new Method of the Trans- formation ef Equations, Determination of their Limits, the Extraction df their Roats, and their consequent Depression, by an easier Method than thét hitherto practised ; together with the Decomposition of Quantities into others ofa given Form. The whole of the Rules resulting from the Theory bey such, that the Operations performed by them are completely divested of",
+   "also added, Essays on the Method of Finite Differences—-Indeterminate Equa- tions-—and the Combinatorial Analysis; the method of treating the whole of these subjects being either new, or rendered more obvious by a clearer eXfila- mation. By P. Nicwo.gon, Author of several Analytical Works. S8vo, 12s.",
+   "4 The RUDIMENTS of ALGEBRA; in which the Subjects are expli- citly treated in a new Manner, the Theory rendered clear, and the Practiee more expeditious than hitherto. For the use of Schools, and the assistancé of those who have not had the advantage of a -master; as also to prepare tisé student to read the higher branches of the mathematics with less difficulty. Ry. Niguonson. 12mo, price 7s. 6d.",
+   "5. on ALGEBRA, containing the Fundamenta! Principles of this. Art,and a variety of Problems in the most impottant Branches of the Mathematics ; also New Rules for finding the Roots of Equations, anti ‘fod- Getermining the Lengths of Curved Lines, &c. By German Buxton. Price 10s, 8vo, boards.",
+   "ticularly for erecting Figures of Nativities, and for ascertaining the Arcs of Di- rection, &c. ; illustrated by an engraved Plate of a Nativity, drawn according to the Planisphere, exhibiting all the Heavenly Bodies in their actual Situations at the Time of Birth (as indicated by their Declinations and Circles of Posi- tion) ; shewing also their several Aspects and Directions properly displayed and measured. Other Plates will likewise be annexed, representing the In- struments and Scales for correctly laying down this Planisphere, the whole use and application of which will be fully detailed in the Treatise.— Vide Note, p. 146 of this book.",
+   "An extensive Collection of ancient and modern Alchemical, Architectural, Astrological, Astronomical, Botanical, Chemical, Mathematical, Mechanical, _ Medical, Military, Nautical, Occult, Philosophical, Surgical, general Scientific and miscellaneous Books, in various Languages, both foreign and domestic, are on Sale for Ready Money. —",
+   ". ss manip ; . BOOKL. fe CHAP. . vo mae i. Preem . IL Knowledge may be nga by Astronomy ton gartain Extent 3 ait That Prescience is usefu * - * ll -: IV. The Influences of the Planetary ( Orbs - .. . 19 V. Benefics and Malefics - - - - 21 “VI. Masculine and Feminine - - « - . tbid. . WIL Diurnal and Nocturnal - ~ - - : 22 - WILL. The Influence of Position with regard to the Sun - -B IX. The Influence of the fixed Stars ? 7, ‘- 24 - X. Constellations North of the Zodiac - - ° 28 : XI. Constellations South of the Zodiac « - : 30 . KIT. The Annual Seasons = - - - - 31: XIIL: The Influence of the Four Angles - - ° $2 HIV. Tropicat, Equioctial, Fixed, and Bicorpores! Sigas - 34 KV. Masculine and Feminine Signs - - . 85 MVI. Mutual Configurations of the Signs - ° -. 36 EVII. Signs commanding and obeyin ° : : b VIII. Signs beholding each other, a nd ofequal Pawes = ~_—sibid. - XIX. Signs inconjunct - - - ‘= 40 XX. Houses of the Planets - ° - - - 41 XXI. The Triplicities ? - - - : 43 XXII, Exaltations - - - - - 45 SAI. The Disposition of the Terms - - - - RXV. The Terms (according to Ptolemy) - ° - 5! XV. The Places and Degrees of every Planet 53 XXXVI. Faces; Chariots, and other similar Attributes of the Planets 54 XVI. Application, Separation, and other Faculties. - - 55 BOOK I. ee » 1. General Division of the Subject - - - 58 Il. Peculiarities observable throughout every entire Climate _ 60 Ill. The Familiarity of the Regions of the Earth with the is plicities and the Plea 62 a The Familiarity of the Regions of the Barth with “the _ fixed Starg ; - 76 \"MV. Mode of particular Prediction in Belipses - ibid.",
+   "- RL The Regions or Cquntries to be considered as hebte to be : comprehended i in the Event “Wl. The Time and Period of the Event . . VIIL The Genus, Class, or Kind, liable to be affected IX. The Quality and Nature of the Effect - X. Colours in Eclipses, Comets, and similar Phenomena XI, The New Moon of the Year - - -",
+   "V. The Parents - - _ V1. Brothers and Sisters - VII. Male or Female - VIII. Twins - TX. Monstrous or defective Births X. Children not reared - XI. The Duration of Life - XII. The Prorogatory Places",
+   "Page 5, line 24, for “ last mentioned,” read “ of the seasons.” —— 8, the following addition should be made to the note; viz.— Cicero, in cap. 20, lib. 2, De Nat. Deor. also alludes to ‘ another great year, as being completed on the return of the Sun, Moon, and the five planets, to some original con- figuration, “‘ inter se, confectis omnium spatiis ;” and of that revolution he says, ‘‘ que quam longa sit, magna quasstio “est; esse vero certam et definitam, necesse est.” Again, in writing of Hortensius, he says, “Is est magnus et “ verus annus, quo eadem positio cali siderumque que elm “ maximé est, rursum existet; isque annus horum, quos “ yocamus, annorum XII. M.pcccLiv. complectitur.” But in the “ Somnium Scipionis” his words are, “ tum signis “ omnibus ad idem principium stellisque revocatis, expletam “annum habeto.” It thus appears, that of three different cycles or periods, each was considered by Cicero.as form- ing a great year, although that which he has contemplated in Scipio’s Dream is the only one equivalent to the “ entire “return” of “all the heavenly bodies,” adverted to by Ptolemy. -——- 27. Incorroboration of the conjecture hazarded in the iste) as to the etymology of Antares, it. may be observed, that an authentic word, Anteros, the name of a deity in alliance with Cupid, has been similarly compounded: viz. from . als pro, and Bgee Cupido. -—— 40, line7 of the notes, for “new [aspects called,” read “ new “ aspects [called.” ~——— 41, line 19 of the note, for “ Apology,” read “ Astrological “ Discourse.” —— 43, line 15, for “is nearest,” read “is placed nearest.” —— 57, line 10, for “holds,” read “ hold.” —— 61, line 2, for “who are here,” read “ who (as natives of these countries) are.” .—— 62, line 11, for “‘ domesticated,” read “ domiciliated.” —— 638, line 18, for “‘The four quadrants,” read “Of the four quad- rants,” —— 68, The note requires the following addition :—It seems, how- ever, that the Jows were charged with atheism by other",
+   "Grotius de Verit. Relig. Christ. Lib. 2, § 2. . Page 69, in note, for “ copies,” read “ editions.” —— 71, line 5, for “These females shun the addresses of men, as | the Amazons did of old,” read “These females, like the ‘ Amazons, shun the addresses of men.”",
+   "——— 111. The conjectural etymology of the word Animodar, ha- garded in the note, is erroneous ; the word being evident- ly derived from the Greek anew, extraho.",
+   "N.B. By an inadvertence, the name of a city in Italy has — erre- neously quoted in the Preface, and in the notea to the. Tran-. slation, as “ Perugio,” instead of “ Perugia.”"
+  ]
+ },
+ "almagest_extract": {
+  "passages": [
+   "nitude of the day will be ascertained by numbering the times between the Sun’s zodiacal degree and the degrce diametri- ‘cally opposite, in the succession of the signs; and that of the night, by numbering the times, from the: degree diame- trically opposite to the Sun, onwards, in the order of the signs, to the degree actually occupied by the Sun: because, by dividing the respective amounts of these times so obtain- ed, by fifteen, the number of equatorial hours. belonging - to each space will be exhibited ;, and if the division be made by twelve, instead of fifteen, the result will shew the num- - bers of degrees equivalent to one temporal hour of either of the said spaces respectively*. ‘The magnitude of any temporal hour may be, however, more easily found by referring to the annexed Table of As-' censions, and taking the difference between the respective aggregate numbers, inserted therein under the heads of the equinoctial parallel or right sphere, and: of any. particular climate for which the magnitude of the temporal hour is required ; and, if the said hour be a diurnal hour, the ag-- gregate times as stated against the zodiacal degree occupied by the Sun; but, if nocturnal, those stated against the de- gree diametrically opposite, are to be compared; and the sixth part of the difference between them is to be added, if rn * Thus (according to the Table inscrted at p. 223), in the climate or latitude of Lower Egypt, the times of ascension between the first point of Gemini and the first point of Sagittarius, diametrically oppo- site, are 205° 18’, which, being divided by 15, give 13 hours 41'mi- nutes and a fraction of equatoriat‘time, as the length of:the day of the first point of Gemini. And the same number of times of aseen- sion, divided by 12, give 17° 6’ and a fraction of the equator, as the length of the diurnal temporal hour. ‘In the latitude of Southern Britain, the times of ascension between the same points as above- mentioned are 236° 2’, which, divided by 15, give 15 hours 44 mi- nutes and a fraction of equatorial time as the length of the day of the first point of Gemini; and, if divided by 12, they produce 19° 40’ and a fraction of the cquator, as the length of the diurnal femporal hour.",
+   "the said degtee be in the northern signs, to the fifteen times of an equatorial hour; but subtracted therefrom, if in the southern signs. The amountthus obtained will be the re- quired number of degrees of the temporal hour in question*. And if it-be required to reduce the temporal hours of any -given day or night, in a certain climate, into equatorial ‘hours, they must be multiplied by their proper horary times, whether diurnal or nocturnal, as the case may be; the pro- .duct is then to be divided by fifteen, and the quotient will necessarily be the number of equatorial hours in the climate - in question, on the given day or nightt. On the other",
+   "* Thus, the aggregate times of ascension, in a right sphere, of the first point of Gemini are 57° 44’; and, in the climate of Lower Z:gypt, 45° 5’: the sixth part of the difference between them is 2° 6' and a fraction, which, added.to 15°, again makes the diurnal temporal hour of the first point of Gemini equal to 17° 6’ and a fraction of the equa- tor. In the climate of Southern Britain, the aggregate times of as- cension of the first point of Gemini are 29° 43’: the sixth part of the difference between that sum and 57° 44’ of right ascension is 4° 40 and a fraction, which, added to 15°, makes the diurnal temporal hour of the first point of Gemini, in South Britain, equal to 19° 40’ and a fraction of the equator, as before shewn.",
+   "the latitude of Alexandria - - - - - 13 41°18: ame sae Diurnal horary times of the first point of Gemini in the ae ‘latitude of Southern Britain... - = - - = 19° 40’ 10” Number of temporal hours ee >: Bi 22,",
+   "hand, equatorial hours are also to be reduced inito temporal hours by being multiplied by fifteen, the product of which is to be divided by the horary times proper to the given a or night in the said climate. |",
+   "_ The degree ascending in the ecliptic, at any given tem- ‘poral hour, may also be ascertained by multiplying the num- ber of temporal hours since sunrise, if the given hour be diurnal, but if nocturnal, since sunset, by their proper ho- rary times ; and the product is to be added, in the succes- ston of the signs, to the aggregate number (as shewn by the ascensions proper to the climate) of the Sun’s degree, if the given hour he diurnal, but, if nocturnal, to that of the de- gree diametrically opposite, and that particular degree of the ecliptic which “shall correspond with the total number thus found in the ascensions of the climate will be the degree then ascending®.",
+   "But, in order to ascertain the degree on sane meridian above the earth, the number of temporal hours since the preceding noon are also to be multiplied by their proper horary times, and the product is to be added to the aggregate number of the Sun’s right ascension; and that degree of the ecliptic, with which the. total number as found in the aggregate times of right ascension shall carrespond, wl then be on the me- ndjiant. The degree on the oriental horizon will, however,",
+   "* Let the first point of Gemini be on the meridian above the earth ; the number of temporal hours since sunrise will then be 6, by which - 17° 6’ 30” are to be multiplied. ‘The product will be 102239’: this, added to 45° 5’, the aggregate number of the first point of Gemini in the latitude of Alexandria, will give 147° 44’, which, in the ascen- sions of the eHimate in question, will correspond to the Sd degree of Vifgo, and shew that to be the degree ascending. In the latitude of _ Southern Britain the total number would still amount to the same ; viz. 147° 44’, but it would shew 7° and about 30’ of Virgo to be as- cending. ;",
+   "also shew what degree occupies the meridian; for, by sub- tracting 90 times (the amount of the quadrant) from the aggregate number ascribed to the said ascending degree in the Table proper to the-climate, the number so reduced will be found, in the aggregate times of the Table of Right As- cension, to correspond with the degree on the meridian. And again, on the other hand, by adding 90 to the aggregate times ascribed by right ascension to the degree on the me ridian above the earth, the degree ascending may be obtain-",
+   "The Sun always preserves an equal distance in equatorial hours from all parts of the same meridian ; but his distance in equatorial hours from different meridians varies according",
+   "andria, will give 51° 19, which, added to the right ascension of the first point of Gemini, make 109° 3', shewing the 18th degree of Can- cer on the meridian. In the latitude of Southern Britain, these hours would produce 59°, which, added to the right ascension, would make 116° 44’, and shew the 25th degree of Cancer on the meridian.",
+   "* Thus, in the latitude of Alexagdria, when the first point of Ge- mini is three temporal howrs past the meridian, the “16th degree of Libra will be on the ascendant, and the aggregate times of ascension of that, degree in the said latitude are 199° 3’: by subtracting 90 from this sum, the remainder will be 109° 3’, the right ascensi-y of the mid-heaven answering to the 18th degree of Cancer. the latitude of Southern Britain, the 18th degree of Libra would be on the as- cendant, of which degree the aggregate times of ascension in that latitude are 206° 44’, from which, if 90 be subtracted, the remainder will be 116° 44’, the right ascension of the mid-heaven answering to the 25th degree of Cancer.—The converse of these operations seems too obvious to need explanation."
+  ]
+ },
+ "tables_and_extracts": {
+  "passages": [
+   "ty Sphere under pk eaten the Equator, Lat 51° 30’ N Diurnal Arc Diurnat Are SIGNS = 12 Hours. . p16 He. 30 Mts 5 Times | dgere- | Times) Aggre+ Limes) Augre",
+   "“> The foregoing extracts have been made to shew the entire agreement between the astronomy of the Tetrabiblos and that of the Almagest. The Tables herein given from the latter work, are, of course, now superseded by others of modern ‘calculation, infinitely more complete.",
+   "I, JupGmMENT must be regulated by thyself, as well as ‘by the science ; for it 1s not possible that particular forms of events should be declared by any person, however scientific ; since the understanding conceives only a certain general idea of some sensibfe event, and not its particular form. It is, therefore, necessary for him who practises herein to adopt inference. They only: who are inspired by the deity can pre- dict particulars.",
+   "II. When an enquirer shall make mature search into an expected event, there will be found no material difference between the event itself and his idea of it.",
+   "# Moxon’s Mathematical Dictionary says, that the “Centiloquium — “ is a book containing one hundred astrological aphorisms, common- “ly ascribed to Ptolemy, as its author, but by some to Hermes Tris- ‘““ megistus.” This account, however, seems to be inaccurate ; for the CentiJoquy attributed to Osiris’s cotemporary and counsellor (eulogized by Lilly as having been “one of the-wisest of all mortal.",
+   "by. the name of the Kagwoc, or “ Fruit of the Tetrabiblos.” Whether this latter Centiloquy be really the work of Ptolemy is another ques- tion: it has been usually edited as his, but some of the aphorisms seem to relate to horary questions only, which are not adverted to in",
+   "V. A skilful person, acquainted with the nature of the stars, is enabled to avert many of their effects, and to prepare himself for those effects before they arrive.",
+   "VI.. It is advantageous to make choice of days and hours at a time well constituted by the nativity. Should the time be adverse, the choice will in no respect avail, however fa- vourable an issue it may chance to promise.",
+   "VII. The mingled influences of the stars can be under- stood by no one who has not previously acquired knowledge of the combinations and. varieties existing in. nature. |",
+   "IX. In their generation and corruption forms are influ- enced iby the celestial forms, of which the framers of talis- mans consequently avail themselves, by observing the in- | gresses of the stars thereupon.",
+   "X. In the election of days and hours, make use of the malefics, to the same moderate extent as the skilful physt- cian would use poisons in ofder to perform cures.",
+   "XII. Love and hatred prohibit the’ true accomplishment of.judgments ; and, inasmuch as they lessen the most im- portant, so likewise they magnify the most trivial things. .",
+   "are the ascendants of that kingdom’s: enemies. But the angles and succedent houses are the ascendants of its friends. It is the same in all doctrines and institutions. _",
+   "_-XVI. When the benefics may be controuled in the eighth house, they bring. mischief by means of good men :. if, on the other hand, they he well. affected, they will a mis- chief. XVII. .Give no eacsicn as to the future life ne an aged",
+   "XVIII. If, while a benefic may ascend, both. the lumi- naries should be in the same minute*, the native will be equaily. and’ highly, prosperous in all things which can befal him. So, likewise, if the luminaries be mutually opposed by the east and west... But the contrary effect.will: be pro- duced, should a.malefic be on the ascendant. -",
+   "XXI. When the Moon may be in. Scorpio or Pisces, pur- gation may be advantageously used, provided the lord of the ascendant be coupled with some star posited below the earth. If he be coupled with a star placed above the earth, * the potion swallowed will be vomited up.",
+   "XXII. Neither put on nor lay aside any garment for the first time, when the Moon may be located in Leo. And ‘it will be still. worse to do so; should she be badly affected.",
+   "XXIII. Aspects between the Moon and stars give the native much activity ; and, if the stars be in. power, they -andicate an efficient, but if. weak an mens excitation to ac- tion.",
+   "XXIV. An eclipse of the luminaries, if in the angles of the nativity, or of an annual revolution, is noxious ; and the effects take place according to the space between the as- cendant and the place of eclipse. And as, in asolareclipse, “ a year is reckoned for an hour, so likewise, in a lunar fue",
+   "XXVI. There is obvious concealment-in the case, if the- star significative of any particular affair be in conjunction. with the Sun, either under the earth of in a place foreign to.its own nature. On the ‘other hand, there is’ manifesta- tion, should the star be raised ‘to elevation out of its depres-",
+   "XXIX. The fixed stars grant sicenaly good fortune, un- connected with the understanding; but it is most com- monly marked by calamities, unless the planets also agree in the felicity.",
+   "_ XXX. Obierve the creation of the first king of any dy- nasty; for if the ascendant at that creation should agree with the ascendant of the nativity of the king’s son, he will succeed his father.",
+   ". XXXI. When the star ruling over any kingdom shall enter into a climacterical place, either the king, or some one of the chief men-of his kingdom, will die.",
+   "XXXII. Loveand hatred are discernible, as:well from the concord and discord of the luminaries, .as from the ascendants of both nativities : but one signs increase good will.",
+   "XXXVI. In the foundation of cities, consider the fixed stars which: may seem to contribute thereto ;. but in the erection of houses, observe the planets. The. kings of every city which has Mars in culmination will most commonly perish by the sword.",
+   "XXXVIIT. Mercury, if- established in eithet house of Saturn, and in power, gives the native a speculative and in- quisitive intellect : if in a house of Mars, and on if in Aries, he gives eloquence. .",
+   "XXXIX. Affliction of the eleventh house, in the creation of a king, indicates damage in his household ‘and his ttea- ‘sury: affliction of the second house denotes the detriment of his subjects’ wealth.",
+   "XLIT. Should a disease begin when the Moon may be in a sign occupied at the birth by some malefic, or in quar- tile or opposition to any such sign, such disease will be most severe; and if the malefic also behold the said sign,. © it will be dangerous. On the other hand, there will be no danger if the Moon be in a place held at the time of birth by some benefic.",
+   "XLIV. It is an evil case if the ascendant of a sick per- son resist the figuration of his own nativity; and if the time should not bring up any benefic. |",
+   "XLVI. In nativities much happiness is conferred by the fixed stars; and also by the angles of the new Moon, and by the places of a kingdom’ s Part of Fortune, should the ascendant be found in any of them.",
+   "XLVII. If a malefic in one nativity fall on the place of a benefic in another nativity, he who has the benefic will suffer damage from him who has the malefic.",
+   "ALVIII. If the mid-heaven of a prince be the ascendant of his subject, or if their respective significators be con- figurated in a benevolent form, they will continue long in-",
+   "XLIX. If the ascendant of a servant be the mid-heaven in his master’s nativity, the master will place so much con- fidence in that servant as to be ruled by him.",
+   "@ LL. Overlook none of the hundred and nineteen conjunc tions ; for on them depends the knowledge of worldly ope- rations, whether of generation or of corruption.",
+   "birth the sign ascending .at the conception; and consider that in which she may be posited at the conception, or the opposite one, as the sign ascending at the birth. : LIT. Men of tall stature have their-lords of nativity in elevation, and their ascendants in the beginnings of signs ; but the lords.of men of short stature will be found in decli-. nation*, It must also be seen whether the signs be ee or",
+   "LIT. The lords of nativity of slight or thin men have no latitude, but those of stout.or fat men have ; and, if the latitude be south, the native will be active ; if north, i in- active. |",
+   "LV. Mars’s evil influence over ships i is diminished if he be neither in the mid-heaven nor in the eleventh house ; © but if in either of those places, he renders the ship liable to be captured hy pirates. . And if the ascendant be afflicted by",
+   "decrease. | LVII. If, during a sickness, the seventh house and its’ lord be afflicted, change the physician. j LVIIT. Observe the place of an aspect, and its ; distance from the ascéndant of the year 5 for the event will happen",
+   "be let blood; and before saying that he shall find treasure, examine whether he may not receive his own deposit; for the figures of all these things may be similar.",
+   ". LX. In cases of sickness, observe the critical days, and the Moon’s progress in the angles of a figure of sixteen sides. If those angles be well affected, it is favourable for . the invalid ; if they be afflicted, unfavourable.",
+   "LXII. By marking exactly the beginning of a conjunc- tion*, judgment may be made of the variation of the wea- ther in the ensuing month. It will depend upon the lord of the angle of every figure, for he controuls the nature of the atmosphere ; assuming also at these times the quality of the existing weather.",
+   "LXIII. In the conjunction of Saturn and Jupiter, pro- nounce according to the nature of that one which may be higher in elevation. Follow the same rule with other stars.",
+   ". LXIV. After ascertaining the lord of the enquiry, see | what power he may have in the annual revolution, or in the ascendant of the new Moon; and pronounce accordihgly. -",
+   "LXIX, The native’s sight will baimpaired if the Moon be opposed to the Sun, ani joined with nebulous stars ; and if the Moon be in the western angle, and both the malefic",
+   "nection with Mercury ;—and, if neither of them he connected with the ascendant, Saturn being in occupation of that angle by night, but Mars by day, especially if in Cancer, Virgo, or Pisces, a deemoniag affection will be produced.",
+   "LXXI. If both luminaries: may be in masculine signs, in the nativities of males, their actions will be consonant with nature; but if so placed in the nativities of females, they increase their-action. And Mars and Venus, if matutine, incline to the masculine gender ; if vespertine, to the femi- nine.",
+   "- LXXII. Matters of education are to be considered by the ascending lords of triplicity; matters of life, by the lords of the conditionary Juminary’s triplicity.",
+   ". LXXIII. If the Sun be found with the Gorgon’ s head (Caput Medusa), and not aspected by any benefic star, and if there be no benefic present in the eighth house, and the lord. of the conditionary luminary be opposed to Mars, or in quartile ta him, the natiye will be beheaded. If the lumi- ~ nary culminate, his body will be maimed or mangled ; and if the aspect in quartile be from Gemini or Pisces, his hands and feet will be amputated.",
+   "LXXV. If the Sun be in sonjanction with the lord of the ascendant, in Leo, and Mars have no prerogative in the ascendant, and if there be no benefic in the eighth house, the native will be burned.",
+   ". im the ruins of buildings, provided the sign on the lower heaven be an earthly sign ; if it be a watery sign, he will be drowned or suffocated by water: if a human sign, he will be strangled by men, or will perish by the halter or the scourge. Should there, however, be a benefic in the eighth house, he will not suffer death, although he will be’brought near it.",
+   "LXXVII. Profection of the ascendant is to be made for matters affecting the body ; of the Part of Fortune, for ex- trinsic circumstances ; of the Moon, for the connection be- tween the body and the spirit; and of the mid-heaven, for the employment or profession.",
+   "LXXXI. Times are reckoned in seven ways ; viz. by the space between two significators ; by the space between their mutual aspects; by the approach of one to the other; by the space between either of them and the place appropriated to the proposed event ; by the descension of a star, with its addition or diminution ; by the changing of a significator ; and by the approach ofa planet to its place. | ’ LXXXII. When a figure may be equipoised, observe the horoscope (or figure) at the new or full moon, and, if that also be equipoised, be not hasty in giving judgement.",
+   "LXXXIV. And if Mars be lord of the ascendant at the time of entering on possession, aud posited in the second house, or coupled with the.lord of the second, he pimge much mischief. .",
+   "LXXXVII. Monthly. revolutions are made in twenty- eight days, two hours and about eighteen mmutes. Judge- ment is also made by. some persons by means of the Sun’s progress; that is to say, by his partile equations to that de- gree and minute which he might hold at the beginning.",
+   "XC. Should the significator be in aspect to the ascend- ant, the hidden event or object will correspond in its nature with the ascendant ; but if the ascendant be not so aspected, the nature of the event will accord with that of the place in which the significator is posited. The lord of the hour -",
+   "“above the earth, it will be a novel thing; if below, old. The part of Fortune indicates its quantity, whether long or short, The lords of the terms, and of the lower heaven and mid-heaven, and of the Moon, shew its substance or value.",
+   "XCIII. Judgement is not to be drawn from any figure until the next conjunction shall have been considered : for principles are varied by every conjunction ; and therefore, to avoid error, both the last and the next should be combined.",
+   "XCVI. In an eclipse, such significations as are ante nearest the angles, shew the events decreed. The nature of the stars in accordance with the eclipse, planets as well.as fixed stars, and also the appearances co-ascending, are like- wise to be considered, and judgement is to be given accord- ingly. .",
+   "XCIX. Shooting stars denote the dryness of the air; and, if they are projected to one part only, they indicate wind therefrom: if to various parts, they indicate diminution of waters, a turbulent atmosphere, and incursions of armies.",
+   "C. If comets, whose distance is eleven signs behind the Sun, appear in angles, the king of some kingdom, or one of the princes or chief men of a kingdom, will die. If in a succedent house, the affairs of the kingdom’s treasury will prosper, but the governor or ruler will be changed. If in a cadent house, there will be diseases and sudden deaths. And if comets be in motion from the west towards the east, a foreign foe will invade the country: if not in motion, the foe will be provincial, or domestic."
+  ]
+ },
+ "centiloquy": {
+  "aphorisms": [
+   {
+    "no": 1,
+    "text": "JupGmMENT must be regulated by thyself, as well as ‘by the science ; for it 1s not possible that particular forms of events should be declared by any person, however scientific ; since the understanding conceives only a certain general idea of some sensibfe event, and not its particular form. It is, therefore, necessary for him who practises herein to adopt inference. They only: who are inspired by the deity can pre- dict particulars."
+   },
+   {
+    "no": 2,
+    "text": "When an enquirer shall make mature search into an expected event, there will be found no material difference between the event itself and his idea of it."
+   },
+   {
+    "no": 3,
+    "text": "Whosoever may be adapted to any particular event # Moxon’s Mathematical Dictionary says, that the “Centiloquium — “ is a book containing one hundred astrological aphorisms, common- “ly ascribed to Ptolemy, as its author, but by some to Hermes Tris- ‘““ megistus.” This account, however, seems to be inaccurate ; for the CentiJoquy attributed to Osiris’s cotemporary and counsellor (eulogized by Lilly as having been “one of the-wisest of all mortal. ~ men, and as ancient as Moyses”), is very different from that known by. the name of the Kagwoc, or “ Fruit of the Tetrabiblos.” Whether this latter Centiloquy be really the work of Ptolemy is another ques- tion: it has been usually edited as his, but some of the aphorisms seem to relate to horary questions only, which are not adverted to in ‘the Tetrabiblos, and there are others also which do not appear to result from the doctrine of that book. APPENDIX. | 225 or pursuit, will assuredly have the star indicative thereof very potent.in his nativity."
+   },
+   {
+    "no": 4,
+    "text": "Amind apt in knowledge will svcoes truth more readily than one practised in the highest branches of science."
+   },
+   {
+    "no": 5,
+    "text": "A skilful person, acquainted with the nature of the stars, is enabled to avert many of their effects, and to prepare himself for those effects before they arrive."
+   },
+   {
+    "no": 6,
+    "text": "It is advantageous to make choice of days and hours at a time well constituted by the nativity. Should the time be adverse, the choice will in no respect avail, however fa- vourable an issue it may chance to promise."
+   },
+   {
+    "no": 7,
+    "text": "The mingled influences of the stars can be under- stood by no one who has not previously acquired knowledge of the combinations and. varieties existing in. nature. |"
+   },
+   {
+    "no": 8,
+    "text": "A sagacious mind improves the operation of the heavens, as a skilful farmer, by cultivation, i ea a na- ture."
+   },
+   {
+    "no": 9,
+    "text": "In their generation and corruption forms are influ- enced iby the celestial forms, of which the framers of talis- mans consequently avail themselves, by observing the in- | gresses of the stars thereupon."
+   },
+   {
+    "no": 10,
+    "text": "In the election of days and hours, make use of the malefics, to the same moderate extent as the skilful physt- cian would use poisons in ofder to perform cures."
+   },
+   {
+    "no": 11,
+    "text": "A day and hour are not to be elected until the qua« lity of the object proposed shall be known."
+   },
+   {
+    "no": 12,
+    "text": "Love and hatred prohibit the’ true accomplishment of.judgments ; and, inasmuch as they lessen the most im- portant, so likewise they magnify the most trivial things. ."
+   },
+   {
+    "no": 13,
+    "text": "In every indication made by the constitution of the heavens, secondary stars, whether auxiliary or meus thereto, are also to be used."
+   },
+   {
+    "no": 15,
+    "text": "The astrologer will be entangled in a labyrinth of . error, when the seventh house and its lord shall be afflicted. -+ XV. Signs cadent from the ascendant of any kingdom GG 226 * APPENDIX.: are the ascendants of that kingdom’s: enemies. But the angles and succedent houses are the ascendants of its friends. It is the same in all doctrines and institutions. _"
+   },
+   {
+    "no": 16,
+    "text": "When the benefics may be controuled in the eighth house, they bring. mischief by means of good men :. if, on the other hand, they he well. affected, they will a mis- chief."
+   },
+   {
+    "no": 17,
+    "text": ".Give no eacsicn as to the future life ne an aged ¢. person, until the number. of yer he may. live shall have . been reckoned."
+   },
+   {
+    "no": 18,
+    "text": "If, while a benefic may ascend, both. the lumi- naries should be in the same minute*, the native will be equaily. and’ highly, prosperous in all things which can befal him. So, likewise, if the luminaries be mutually opposed by the east and west... But the contrary effect.will: be pro- duced, should a.malefic be on the ascendant. -"
+   },
+   {
+    "no": 19,
+    "text": "The efficacy of purgation is a aa the Moon’s . Conjunction with Jupiter."
+   },
+   {
+    "no": 20,
+    "text": "Pierce not with iron that part of the body which May be governed by the sign actually occupied by the Moon."
+   },
+   {
+    "no": 21,
+    "text": "When the Moon may be in. Scorpio or Pisces, pur- gation may be advantageously used, provided the lord of the ascendant be coupled with some star posited below the earth. If he be coupled with a star placed above the earth, * the potion swallowed will be vomited up."
+   },
+   {
+    "no": 22,
+    "text": "Neither put on nor lay aside any garment for the first time, when the Moon may be located in Leo. And ‘it will be still. worse to do so; should she be badly affected."
+   },
+   {
+    "no": 23,
+    "text": "Aspects between the Moon and stars give the native much activity ; and, if the stars be in. power, they -andicate an efficient, but if. weak an mens excitation to ac- tion. * Of the same degree and sign."
+   },
+   {
+    "no": 24,
+    "text": "An eclipse of the luminaries, if in the angles of the nativity, or of an annual revolution, is noxious ; and the effects take place according to the space between the as- cendant and the place of eclipse. And as, in asolareclipse, “ a year is reckoned for an hour, so likewise, in a lunar fue .4 month is reckoned for an hour."
+   },
+   {
+    "no": 25,
+    "text": "The progression of a significator, posited in the mid- heaven, i is to be made by ‘right ascension ; of another - posited in the ascendant, by the oblique ascension of the \\ particular latitude."
+   },
+   {
+    "no": 26,
+    "text": "There is obvious concealment-in the case, if the- star significative of any particular affair be in conjunction. with the Sun, either under the earth of in a place foreign to.its own nature. On the ‘other hand, there is’ manifesta- tion, should the star be raised ‘to elevation out of its depres- -sion, and be, located in its own place."
+   },
+   {
+    "no": 27,
+    "text": "‘Venus gives pleasure to the native in that part of the body which may be ruled by the sign she o¢cupies. It . is the same with other stars."
+   },
+   {
+    "no": 28,
+    "text": "When the Moon may not hold a familiarity with two planets, as is desirable, care- should be taken to con- nect her, if possible, with some fixed. star. combining their qualities,"
+   },
+   {
+    "no": 29,
+    "text": "The fixed stars grant sicenaly good fortune, un- connected with the understanding; but it is most com- monly marked by calamities, unless the planets also agree in the felicity."
+   },
+   {
+    "no": 30,
+    "text": "Obierve the creation of the first king of any dy- nasty; for if the ascendant at that creation should agree with the ascendant of the nativity of the king’s son, he will succeed his father."
+   },
+   {
+    "no": 31,
+    "text": "When the star ruling over any kingdom shall enter into a climacterical place, either the king, or some one of the chief men-of his kingdom, will die."
+   },
+   {
+    "no": 32,
+    "text": "Concord: between two persons is. produced by we Pane ar _——— gre ee re ~ - 7 se eee poet Seeley — He 3 = = — shar : er 8 Pacts _* — too ms = = pas an harmonious figuration of the .stars, indicative of the matter whereby good will is constituted, in the -nativity sg either person."
+   },
+   {
+    "no": 33,
+    "text": "Loveand hatred are discernible, as:well from the concord and discord of the luminaries, .as from the ascendants of both nativities : but one signs increase good will."
+   },
+   {
+    "no": 34,
+    "text": "If the lord of the place of the new Moon be in an angle, he is indicative of the events liable to happen in that month. ."
+   },
+   {
+    "no": 35,
+    "text": "When the Sun arrives at the place se any star, he excites the influence of that'.star in the atmosphere."
+   },
+   {
+    "no": 36,
+    "text": "In the foundation of cities, consider the fixed stars which: may seem to contribute thereto ;. but in the erection of houses, observe the planets. The. kings of every city which has Mars in culmination will most commonly perish by the sword."
+   },
+   {
+    "no": 38,
+    "text": "If Virgo or Pisces be on the aecendaat, the native will create his own dignity ; but if Aries of Libra be on the ascendant, he will cause his own death.. The other signs are to be contemplated inthe same way. XXXVIIT. Mercury, if- established in eithet house of Saturn, and in power, gives the native a speculative and in- quisitive intellect : if in a house of Mars, and on if in Aries, he gives eloquence. ."
+   },
+   {
+    "no": 39,
+    "text": "Affliction of the eleventh house, in the creation of a king, indicates damage in his household ‘and his ttea- ‘sury: affliction of the second house denotes the detriment of his subjects’ wealth."
+   },
+   {
+    "no": 40,
+    "text": "When the ascenddnt is oppressed by the malefics, the native will delight in sordid things, and approve ill- flavoured odours."
+   },
+   {
+    "no": 43,
+    "text": "Beware the affliction of the eighth house ahd its | lord, at a time of departure; and that of the second house “and its lord, at a time of retufn. XLIT. Should a disease begin when the Moon may be in a sign occupied at the birth by some malefic, or in quar- tile or opposition to any such sign, such disease will be most severe; and if the malefic also behold the said sign,. © it will be dangerous. On the other hand, there will be no danger if the Moon be in a place held at the time of birth by some benefic. _ XLIIT. The malefic figures of a nation are ‘strengthened by adverse figurations of existing times."
+   },
+   {
+    "no": 44,
+    "text": "It is an evil case if the ascendant of a sick per- son resist the figuration of his own nativity; and if the time should not bring up any benefic. |"
+   },
+   {
+    "no": 45,
+    "text": "If the ascendant, or principal significators, be not in human signs, the native himself will be also estranged from human nature."
+   },
+   {
+    "no": 46,
+    "text": "In nativities much happiness is conferred by the fixed stars; and also by the angles of the new Moon, and by the places of a kingdom’ s Part of Fortune, should the ascendant be found in any of them."
+   },
+   {
+    "no": 48,
+    "text": "If a malefic in one nativity fall on the place of a benefic in another nativity, he who has the benefic will suffer damage from him who has the malefic. ALVIII. If the mid-heaven of a prince be the ascendant of his subject, or if their respective significators be con- figurated in a benevolent form, they will continue long in- , separable, It will be the same, also, should the sixth house of a subject or servant be the ascendant of his prince or master. |"
+   },
+   {
+    "no": 50,
+    "text": "If the ascendant of a servant be the mid-heaven in his master’s nativity, the master will place so much con- fidence in that servant as to be ruled by him. @ LL. Overlook none of the hundred and nineteen conjunc tions ; for on them depends the knowledge of worldly ope- rations, whether of generation or of corruption."
+   },
+   {
+    "no": 53,
+    "text": "Make the sign occupied by the Moon at the time of 7 ee - —s Eee mage eye om? e . birth the sign ascending .at the conception; and consider that in which she may be posited at the conception, or the opposite one, as the sign ascending at the birth. : LIT. Men of tall stature have their-lords of nativity in elevation, and their ascendants in the beginnings of signs ; but the lords.of men of short stature will be found in decli-. nation*, It must also be seen whether the signs be ee or _ oblique. LIT. The lords of nativity of slight or thin men have no latitude, but those of stout.or fat men have ; and, if the latitude be south, the native will be active ; if north, i in- active. |"
+   },
+   {
+    "no": 54,
+    "text": "In the construction of a ‘building, the principal rulers, if coupled. with a star below the earth, -will impede the erection."
+   },
+   {
+    "no": 55,
+    "text": "Mars’s evil influence over ships i is diminished if he be neither in the mid-heaven nor in the eleventh house ; © but if in either of those places, he renders the ship liable to be captured hy pirates. . And if the ascendant be afflicted by _any fixed star of the nature of Mars, the ship willbe burned."
+   },
+   {
+    "no": 56,
+    "text": "While the Moon is in her first quarter, withdrawing — - from her conjunction with ‘the Sun, the bodily humours expand until her second: quench: in her other quarters they decrease. |"
+   },
+   {
+    "no": 58,
+    "text": "If, during a sickness, the seventh house and its’ lord be afflicted, change the physician. j LVIIT. Observe the place of an aspect, and its ; distance from the ascéndant of the year 5 for the event will happen _ when the profection may arrive thither."
+   },
+   {
+    "no": 59,
+    "text": "Before pronouncing that. an absent person ‘shall die, observe whether he may not become intoxicated ; before de- claring that he:shall receive 4 wound, see aliether he may not * Or in obscure situations. be let blood; and before saying that he shall find treasure, examine whether he may not receive his own deposit; for the figures of all these things may be similar."
+   },
+   {
+    "no": 60,
+    "text": "In cases of sickness, observe the critical days, and the Moon’s progress in the angles of a figure of sixteen sides. If those angles be well affected, it is favourable for . the invalid ; if they be afflicted, unfavourable."
+   },
+   {
+    "no": 61,
+    "text": "The Moon is significative of bodily meres which, in respect of motion, resemble her."
+   },
+   {
+    "no": 62,
+    "text": "By marking exactly the beginning of a conjunc- tion*, judgment may be made of the variation of the wea- ther in the ensuing month. It will depend upon the lord of the angle of every figure, for he controuls the nature of the atmosphere ; assuming also at these times the quality of the existing weather."
+   },
+   {
+    "no": 63,
+    "text": "In the conjunction of Saturn and Jupiter, pro- nounce according to the nature of that one which may be higher in elevation. Follow the same rule with other stars."
+   },
+   {
+    "no": 64,
+    "text": "After ascertaining the lord of the enquiry, see | what power he may have in the annual revolution, or in the ascendant of the new Moon; and pronounce accordihgly. -"
+   },
+   {
+    "no": 65,
+    "text": "In the least conjunction, the difference of the mean conjunction, and in the mean Sonjanchen the dif- ference of the greatest conjunctiont. :"
+   },
+   {
+    "no": 66,
+    "text": "Consider no profection by itself alone, but make reference also to the qualifications and impediments -of the Stars."
+   },
+   {
+    "no": 68,
+    "text": "Years are diminished by the imbecility of the receiver. LXVIIJ..A malefic, when iaatutine, signifies an acci- dent; when vespertine, a disease. * Of the Sun and Moon. + On this aphorism Partridge has said, “ how Ptolemy meant it to “‘be understood, I know not; and so I leave it.” - 232 APPEND, .."
+   },
+   {
+    "no": 69,
+    "text": "The native’s sight will baimpaired if the Moon be opposed to the Sun, ani joined with nebulous stars ; and if the Moon be in the western angle, and both the malefic stars in the eastern angle, the Sun being in an angle also, | the native will become blind."
+   },
+   {
+    "no": 70,
+    "text": "Insanity is produced if ‘the Maon have no con- nection with Mercury ;—and, if neither of them he connected with the ascendant, Saturn being in occupation of that angle by night, but Mars by day, especially if in Cancer, Virgo, or Pisces, a deemoniag affection will be produced."
+   },
+   {
+    "no": 71,
+    "text": "If both luminaries: may be in masculine signs, in the nativities of males, their actions will be consonant with nature; but if so placed in the nativities of females, they increase their-action. And Mars and Venus, if matutine, incline to the masculine gender ; if vespertine, to the femi- nine."
+   },
+   {
+    "no": 72,
+    "text": "Matters of education are to be considered by the ascending lords of triplicity; matters of life, by the lords of the conditionary Juminary’s triplicity."
+   },
+   {
+    "no": 73,
+    "text": "If the Sun be found with the Gorgon’ s head (Caput Medusa), and not aspected by any benefic star, and if there be no benefic present in the eighth house, and the lord. of the conditionary luminary be opposed to Mars, or in quartile ta him, the natiye will be beheaded. If the lumi- ~ nary culminate, his body will be maimed or mangled ; and if the aspect in quartile be from Gemini or Pisces, his hands and feet will be amputated."
+   },
+   {
+    "no": 74,
+    "text": "Mars, if ascending, aia gives a scar in the face."
+   },
+   {
+    "no": 75,
+    "text": "If the Sun be in sonjanction with the lord of the ascendant, in Leo, and Mars have no prerogative in the ascendant, and if there be no benefic in the eighth house, the native will be burned."
+   },
+   {
+    "no": 76,
+    "text": "If Saturn hold the mid-heayen, and the con- ditionary luminary be opposed to him, the native will perish . im the ruins of buildings, provided the sign on the lower heaven be an earthly sign ; if it be a watery sign, he will be drowned or suffocated by water: if a human sign, he will be strangled by men, or will perish by the halter or the scourge. Should there, however, be a benefic in the eighth house, he will not suffer death, although he will be’brought near it."
+   },
+   {
+    "no": 77,
+    "text": "Profection of the ascendant is to be made for matters affecting the body ; of the Part of Fortune, for ex- trinsic circumstances ; of the Moon, for the connection be- tween the body and the spirit; and of the mid-heaven, for the employment or profession."
+   },
+   {
+    "no": 79,
+    "text": "A star often dispenses influence in a place in which it has no prerogative, thus bringing unexpected advan- tage to the native. LX XIX. Whoever has Mars in the eleventh house, does | not govern his master."
+   },
+   {
+    "no": 80,
+    "text": "If Venus be in conjunction with Saturn, and have any lord of house in the seventh house, the native will be of spurious origin."
+   },
+   {
+    "no": 82,
+    "text": "Times are reckoned in seven ways ; viz. by the space between two significators ; by the space between their mutual aspects; by the approach of one to the other; by the space between either of them and the place appropriated to the proposed event ; by the descension of a star, with its addition or diminution ; by the changing of a significator ; and by the approach ofa planet to its place. | ’ LXXXII. When a figure may be equipoised, observe the horoscope (or figure) at the new or full moon, and, if that also be equipoised, be not hasty in giving judgement."
+   },
+   {
+    "no": 83,
+    "text": "The time of obtaining a grant indicates the affection between the applicant and his prince ; but the seat* shews the nature of the office ;— CN EE aaa * Or part of heaven indicating the grant. HH eee ee ee PR re aa i ecione ce ee, El SR dat a Me ee Se - meine cog aks me cme — O84 APPENDIX;"
+   },
+   {
+    "no": 84,
+    "text": "And if Mars be lord of the ascendant at the time of entering on possession, aud posited in the second house, or coupled with the.lord of the second, he pimge much mischief. ."
+   },
+   {
+    "no": 86,
+    "text": "Should the lord of the ascendant be configu: rated with the lord of the second house, the prince will spontaneously create many Charges. LX:XXVI. The Sun is the source of the vital power; the Moon, of the natural power."
+   },
+   {
+    "no": 87,
+    "text": "Monthly. revolutions are made in twenty- eight days, two hours and about eighteen mmutes. Judge- ment is also made by. some persons by means of the Sun’s progress; that is to say, by his partile equations to that de- gree and minute which he might hold at the beginning."
+   },
+   {
+    "no": 88,
+    "text": "In making profection of the part of For- - tune for a whole annual revolution, a space equal.to that — between the Sun and Moon is to be reckoned ee the ascendant."
+   },
+   {
+    "no": 89,
+    "text": "Consider the grandfather’ s affairs from the seventh house, and the uncle’s from the sixth."
+   },
+   {
+    "no": 90,
+    "text": "Should the significator be in aspect to the ascend- ant, the hidden event or object will correspond in its nature with the ascendant ; but if the ascendant be not so aspected, the nature of the event will accord with that of the place in which the significator is posited. The lord of the hour - 7 shews its colour; the place of the Moon its time; and, if “above the earth, it will be a novel thing; if below, old. The part of Fortune indicates its quantity, whether long or short, The lords of the terms, and of the lower heaven and mid-heaven, and of the Moon, shew its substance or value."
+   },
+   {
+    "no": 91,
+    "text": "Should the ruler of a sick persof: be combust, it is an evjl portent ; and especially if the part of Fortune be afflicted."
+   },
+   {
+    "no": 92,
+    "text": "Saturn, if oriental, is not so highly noxious to a sick person ; nor Mars, if. occidental. __ gee"
+   },
+   {
+    "no": 93,
+    "text": "Judgement is not to be drawn from any figure until the next conjunction shall have been considered : for principles are varied by every conjunction ; and therefore, to avoid error, both the last and the next should be combined."
+   },
+   {
+    "no": 94,
+    "text": "The place of the more potent significator indi- cates the thoughts of the inquirer."
+   },
+   {
+    "no": 95,
+    "text": "The stars rising with the tenth’ house prove how far the native may be fitted to the occupation which he fol- lows."
+   },
+   {
+    "no": 96,
+    "text": "In an eclipse, such significations as are ante nearest the angles, shew the events decreed. The nature of the stars in accordance with the eclipse, planets as well.as fixed stars, and also the appearances co-ascending, are like- wise to be considered, and judgement is to be given accord- ingly. ."
+   },
+   {
+    "no": 97,
+    "text": "The event inquired about will be speedily accom- plished, should the lord of the new or full Moon be in an angle."
+   },
+   {
+    "no": 98,
+    "text": "Shooting stars, and meteors like flowing hair, bear a secondary part in judgements."
+   },
+   {
+    "no": 99,
+    "text": "Shooting stars denote the dryness of the air; and, if they are projected to one part only, they indicate wind therefrom: if to various parts, they indicate diminution of waters, a turbulent atmosphere, and incursions of armies."
+   },
+   {
+    "no": 100,
+    "text": "If comets, whose distance is eleven signs behind the Sun, appear in angles, the king of some kingdom, or one of the princes or chief men of a kingdom, will die. If in a succedent house, the affairs of the kingdom’s treasury will prosper, but the governor or ruler will be changed. If in a cadent house, there will be diseases and sudden deaths. And if comets be in motion from the west towards the east, a foreign foe will invade the country: if not in motion, the foe will be provincial, or domestic."
+   }
+  ],
+  "numbers_missing": [
+   15,
+   38,
+   42,
+   43,
+   48,
+   50,
+   52,
+   53,
+   58,
+   68,
+   79,
+   82,
+   86
+  ]
+ },
+ "planisphere_appendix": {
+  "passages": [
+   "~Tue Reader is desired to refer to the annexed Plate, con- taining diagrams, of the Zodiacal Planispbere, which has been spoken of in the Note in p. 146.",
+   "Fic. 1 is the Planisphere adjusted for the northern lati- tude of 30° 22’ (where the longest day consists of fourteen equatorial hours), agreeably to the ‘* Exemplification’’ given by Ptolemy in Chap. 15, Book 3. It represents that portion of the ccelestiak sphere which is contained between the tropics: — the central horizontal line is the equator; the curved line extending longitudinally from east to west 1s the ecliptic ; the central perpendicular line is the meridian, or cusp of the 10th house ; the other short lines, cutting the equator trans- versely, are the cusps of the other houses ; that of the first house being the eastern horizon ; that of the 7th, the west- ern horizon. Hence, the distance from the Ist house to the meridian, or from the meridian to, the 7th house, shews the semi-diurnal arc of any parallel of declination in the ecliptic; and the distance of the 7th house to the 4th, or from the 4th to the Ist, shews the semi-nocturnal arc. The distance from the cusp of one house to that of the next, taken on the same parallel, is also equal to two temporal . hours ; thus, for instance, in the latitude above quoted, the. semi-diurnal arc of 0° o is 6h. 50m., or 102° 39’ of the equator ; consequently the diurnal temporal hour is equal — to one equatorial ‘hour and eight minutes, or to 17° 6’ of the equator.",
+   "In his first example, Ptolemy directs 0° Y to be placed on the ascendant, so that the beginning of ¥F may be on the mid-heaven : 0° = must, therefore, fall on the point A, distant from the mid-heaven 147° 44’ of the equator, as ~",
+   "tweem 0° ¢ (when posited on the ascendant) and 0 n, and it is equal to 45°5' of the equator. In the second . example, 0° ¥ is placed on the mid-heaven, which position . must be at D, so that 0° mo must necessarily be at E; and the distance from E to B, equal to 57° 44’ of. the equator, is the prorogation between 0° ¥ and 0° m1, when 0° » is on the mid-heaven. In the third example, 0° » is supposed ' to be on the 7th house, or descending, at F, so that 2 is on the mid-heavyen, and 0° m at the point G, in advance of the mid-heaven 32° 16’ of the equator, as shewn by the — distance BG. Now it is required to bring 0° m to the 7th house (the place of 0° w), and it will be there on arriving at H, distant from B 102° 39’ of the equator; but as 0° n is already at G, the distance from G to H, equal to 70° 23’ of the equator, is the amount of the prorogation between 0° y and 0° m, when 0° y is on the 7th house, The fourth example places 0° v at I, three temporal hours past the meridian ; 0° x therefore falls on the point K, at the distance of 13 equatorial degrees before the meridian or mid- heaven, and will be three temporal hours past the meridian (the position of 0? w) on arriving at L, distant 51 equatorial degrees from the mid-heaven : the whole distanee from K (the first position of @° m)to L, its second position, equal to 64 degrees of the equator, is therefore the prorogation between 0° y and 0° 1, when 0° ¥ is past the meridian at the distance of three temporal hours.—Ptolemy has also instanced two other positions for 0° ¥ ; viz. at two tem-",
+   "poral hours. past the meridian, ahd at two temporal hours before the occidental angle; or, in other: words, on the cusp of the 9th howMe, and on that of the 8th. Now, if 0° ¥ -be on the cusp of the 9th house, it must be at M, and 0° a will be at N, distant 62 equatorial degrees from Q, which is also on the cusp of the 9th. If 0° ¥ be on the cusp of the 8th, it must be at OQ, and 0° m will be at P, distant 66 equatorial degrees from R, which is also on the cusp of the 8th: these",
+   ".Ptolemy’s ‘* Exemplification”’ has been followed thus mi- nutelyin order to shew how perfectly Mr. Ranger’s invention is adapted to assist (if not to supersede) arithmetical calculation; for, after the Planisphere has once been.accurately laid down, a line drawn. parallel to the equator, from the significator to the promittor,. or to the promittor’s pole of position, and measured by degrees of the equator, will accomplish the whole operation of ascertaining the amount of prorogation.",
+   "Fic. 2 is the Equator extended, in plano, on a scale pro- portionate to the planispheres in Figs. 1 and 3; it 1s divided into 360 degrees, and into equal time, as measured by the | 24 hours of the earth’s daily rotation on its agis, and by sinaller portions of four minutes each, corresponding with",
+   "Fic. 3 is the Planisphere set for the latitude of Southern Britain, 51° 30’ N., where the longest day is 16h. 30 m., the semi-diurnal arc of 0° m being consequently 7 h. 52 m., or 118° of the equator, and its diurnal temporal hour equal to one hour and nearly nineteen minutes of equatorial time, or - to 19° 40’ of the equator. |",
+   "ef the equator. When 0° ¥ may be on the mid-heaven ‘at D, 0° o will be at E, and will arrive at B, on the mid- heaven, after the passage of 57° 44’ of the equator, as in Fig. 1. “When 0° ¥ may be on the 7th house, at F, 0° a will be at G, and will come to the 7th house, at H, after the passage of 85° 45’ of the equator. If 0° y& be three temporal hours past the meridian, at I, O° m would be at K, again 13 equatorial degrees before the meridian, as in Fie. 1, and will be three temporal hours past the meridian, a posi- tion similar to that assumed for 0° ¥, on arriving at L, distant from the mid-heaven 59 equatorial degrees; thus making the whole distance, from K to L, #2 equatorial de- grees.—If 0° y be on the 9th house, at M, 0° a will be at - N, distant from Q (also on the 9th house) about 67 equa-",
+   "By taking the trouble to calculate the distances between the several positions given by Ptolemy, the Reader may sa- tisfy himself of the sufficiency of this Planisphere for the purpose for which it was first projected ; viz. for the more expeditious’ measurement of the arcs of direction. The Tables of Ascensions, extracted from the Almagest, in p, 223, will shew that the arcs, as measured in Figs. 1 and 2 of the plate, exactly tally with the amounts of distance obtained by calculating arithmetically, according to the respective lati- tudes, as quoted in the Tables.",
+   "The slight view which has been here given of the Zodiacal Planisphere invented by Mr. Ranger, must not be considered as pretending to offer a complete idea of its powers: they are so manifold and various, that another volume would be",
+   "required to detail them fully ; ‘and it has now been used only in order to give a better illustration of Ptolemy’s ex- amples of the spaces of prorogation than mere words can do. To persons conversant with the mathematical part of astronomy, the facility with which a complete representation of zodiacal latitude, declination, the poles of position, cre- pusculine circles, and other phenomena, may be made by this Planisphere, will be sufficiently obyious from the accom- panying Figures."
+  ]
+ }
+}

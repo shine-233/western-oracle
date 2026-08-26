@@ -562,6 +562,99 @@ def audit_lilly_chapters(report: dict) -> None:
     report['lilly_chapters_v1'] = {'checks': checks, 'counts': d['counts'], 'pass': all(checks.values())}
 
 
+# ---------- 第四轮扩容数据集（第三批 remine）----------
+
+def audit_tetrabiblos_appendices(report: dict) -> None:
+    d = _load('tetrabiblos_appendices_v1.json')
+    cq = d['centiloquy']
+    checks = {
+        'front_matter': sum(map(len, d['ashmand_front_matter']['passages'])) >= 30000,
+        'almagest_extract': sum(map(len, d['almagest_extract']['passages'])) >= 4000,
+        'tables_extracts': sum(map(len, d['tables_and_extracts']['passages'])) >= 8000,
+        'centiloquy_ge_85': len(cq['aphorisms']) >= 85,
+        'centiloquy_text': sum(len(a['text']) for a in cq['aphorisms']) >= 15000,
+        'planisphere': sum(map(len, d['planisphere_appendix']['passages'])) >= 3000,
+    }
+    report['tetrabiblos_appendices_v1'] = {
+        'checks': checks, 'counts': dict(d['counts'], centiloquy_missing=cq['numbers_missing']),
+        'pass': all(checks.values()),
+    }
+
+
+LEO_V4_BLOCKS = {'appearance_rules', 'rising_sign', 'ch7_ruling_planet',
+                 'ch8_health_length_of_life'}
+
+
+def audit_leo_v4(report: dict) -> None:
+    d = _load('leo_nativity_v4.json')
+    exp = d['expansions']
+    checks = {
+        'v4_blocks': LEO_V4_BLOCKS <= set(exp),
+        'v4_min_len': all(len(exp[k]['passage']) >= m
+                          for k, m in (('appearance_rules', 8000), ('rising_sign', 30000),
+                                       ('ch7_ruling_planet', 3000),
+                                       ('ch8_health_length_of_life', 10000))),
+        'v3_expansions_kept': LEO_EXPANSIONS <= set(exp) and len(exp['planets_rising_in_signs']) == 12,
+        'aphorisms_still_100': len(d['centiloquy']['aphorisms']) == 100,
+        'houses_still_11': len(d['houses']) == 11,
+    }
+    report['leo_nativity_v4'] = {'checks': checks, 'pass': all(checks.values())}
+
+
+KUNZ_V4_CHAPTERS = {'superstitions', 'talismans_amulets', 'talismanic_use',
+                    'engraved_carved_gems', 'ominous_luminous_stones'}
+
+
+def audit_kunz_v4(report: dict) -> None:
+    d = _load('kunz_birthstones_v4.json')
+    chs = d['chapters']
+    checks = {
+        'five_early_chapters': KUNZ_V4_CHAPTERS <= set(chs),
+        'early_totals': all(sum(map(len, chs[k]['passages'])) >= m
+                            for k, m in (('superstitions', 20000), ('talismans_amulets', 30000),
+                                         ('talismanic_use', 60000), ('engraved_carved_gems', 25000),
+                                         ('ominous_luminous_stones', 30000))),
+        'sentiments_kept': set(d['sentiments_of_months']) == MONTH_NAMES,
+        'crystal_kept': sum(map(len, chs['crystal_gazing']['passages'])) >= 30000,
+        'religious_kept': sum(map(len, chs['religious_uses']['passages'])) >= 25000,
+    }
+    report['kunz_birthstones_v4'] = {'checks': checks, 'pass': all(checks.values())}
+
+
+def audit_robson_magic(report: dict) -> None:
+    d = _load('robson_medieval_magic_v1.json')
+    star_names = {re.sub(r'\s+', '', x['name']).casefold() for x in d['magic_fixed_stars']}
+    met_blob = ' '.join(d['astro_meteorology']['passages']).lower()
+    checks = {
+        'star_magic_ge_12': len(d['magic_fixed_stars']) >= 12,
+        'star_magic_anchors': all(n in star_names for n in
+                                  ('algol', 'regulus', 'sirius', 'spica')),
+        'seals_present': len(d['magical_seals']['passages']) >= 1,
+        'mansions_magic': sum(map(len, d['lunar_mansions_magic']['passages'])) >= 1500,
+        'meteorology': sum(map(len, d['astro_meteorology']['passages'])) >= 3000,
+        'meteorology_weather_words': all(k in met_blob for k in ('rain', 'wind')),
+        'formulae': len(d['mathematical_formulae']['passages']) >= 30,
+    }
+    report['robson_medieval_magic_v1'] = {
+        'checks': checks, 'counts': d['counts'], 'pass': all(checks.values()),
+    }
+
+
+def audit_lilly_introduction(report: dict) -> None:
+    d = _load('lilly_introduction_v1.json')
+    pre = d['regions']['preface']['paragraphs']
+    b1c = d['regions']['book1_chapters']['paragraphs']
+    blob = ' '.join(b1c)
+    checks = {
+        'preface': sum(map(len, pre)) >= 8000,
+        'chapters_count': len(b1c) >= 250 and sum(map(len, b1c)) >= 80000,
+        'planets_chapter': any(k in blob for k in ('Saturne', 'Saturn', 'SATURNE')),
+    }
+    report['lilly_introduction_v1'] = {
+        'checks': checks, 'counts': d['counts'], 'pass': all(checks.values()),
+    }
+
+
 def main() -> None:
     report: dict = {'generated': '2026-08-26', 'datasets': {}}
     audit_tarot(report['datasets'])
@@ -593,6 +686,11 @@ def main() -> None:
     audit_leo_v3(report['datasets'])
     audit_kunz_v3(report['datasets'])
     audit_lilly_chapters(report['datasets'])
+    audit_tetrabiblos_appendices(report['datasets'])
+    audit_leo_v4(report['datasets'])
+    audit_kunz_v4(report['datasets'])
+    audit_robson_magic(report['datasets'])
+    audit_lilly_introduction(report['datasets'])
 
     all_pass = all(d['pass'] for d in report['datasets'].values())
     report['all_pass'] = all_pass

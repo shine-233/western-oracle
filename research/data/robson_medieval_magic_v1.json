@@ -1,0 +1,225 @@
+{
+ "dataset": "robson_medieval_magic_and_meteorology",
+ "version": "v1",
+ "generated": "2026-08-26",
+ "source": {
+  "work": "Vivian E. Robson, The Fixed Stars and Constellations in Astrology",
+  "year": 1923,
+  "publisher": "Cecil Palmer, London",
+  "rights": "public domain",
+  "origin": "Internet Archive OCR (in.ernet.dli.2015.128091)",
+  "note": "Medieval Magic 章（恒星魔法效应/魔法印记/月宿魔法）与 Astro-Meteorology 章（恒星气象效应）、数学公式组；星座效应清单见 robson_constellations_v1.json"
+ },
+ "counts": {
+  "magic_fixed_stars": 14,
+  "seals_passages": 1,
+  "mansions_magic_passages": 28,
+  "meteorology_passages": 23,
+  "formulae_passages": 51
+ },
+ "magic_fixed_stars": [
+  {
+   "num": 1,
+   "name": "Aldebaran",
+   "rules": "Carbuncle, ruby, milky thistle, and \" matry-silva.\"",
+   "image_effect": "The likeness of God, or of a flying man. - ' It is said to give riches and honour."
+  },
+  {
+   "num": 2,
+   "name": "Algol",
+   "rules": "Diamond, black hellebore, mugwort",
+   "image_effect": "A human head cut off at the neck. It gives success to j>etitions, makes the wearer bold and magnanimous, preserves the body, protects against witchcraft, and turns evil and spells back upon those who work them."
+  },
+  {
+   "num": 3,
+   "name": "Algorab",
+   "rules": "Stones of the colour of black onyx, burr, quadra ginus, henbane, comfrey, and the tongue of a frog. linage. A raven, snake or negro dressed in black. It makes the wearer angry, bold, courageous and a backbiter, gives bad dreams, the power of summon- ing or driving away evil spirits and protection fr",
+   "image_effect": "A raven, snake or negro dressed in black. It makes the wearer angry, bold, courageous and a backbiter, gives bad dreams, the power of summon- ing or driving away evil spirits and protection from winds and the malice of men and devils."
+  },
+  {
+   "num": 4,
+   "name": "Alphecca",
+   "rules": "Topaz, rosemary, trefoil and ivy",
+   "image_effect": ""
+  },
+  {
+   "num": 5,
+   "name": "Antares",
+   "rules": "Sardonyx, amethyst, long aristotochy and saffron, * -",
+   "image_effect": "A man armed with a coat of mail, or a scorpion. It gives understanding and memory, help against evil spirits, and the power of driving them away and binding them."
+  },
+  {
+   "num": 6,
+   "name": "Arcturus",
+   "rules": "Jasper and plantain",
+   "image_effect": "A horse, wolf, or man dancing. It cures fevers, retains the blood and acts' as an astring- ent."
+  },
+  {
+   "num": 7,
+   "name": "Capella",
+   "rules": "' Sapphire, horebound, mint, mugwort and mandrake",
+   "image_effect": "A man playing musical instruments. It makes the wearer -honoured and exalted before nobility and cures the toothache."
+  },
+  {
+   "num": 8,
+   "name": "Deneb Algedi",
+   "rules": "Chalcedony, marjoram, mugwort, nip and mandrake root",
+   "image_effect": "A hart, goat, or angry man. It gives prosperity and increased wrath."
+  },
+  {
+   "num": 9,
+   "name": "Pleiades",
+   "rules": "Crystal and the stone Diodocus, the herb Diacedon, frankincense, fennel and quicksilver",
+   "image_effect": "A little virgin or a lamp. It strengthens the eyesight, assembles spirits, raises winds and reveals secret and hidden things."
+  },
+  {
+   "num": 10,
+   "name": "Polaris",
+   "rules": "",
+   "image_effect": "A pensive man, a bull, or a calf. It protects against spells- and renders the wearer secure in travel."
+  },
+  {
+   "num": 11,
+   "name": "pROCYON",
+   "rules": "The stone Achates/ flowers of marigold, pennyroyal",
+   "image_effect": "A cock, or three little maids. It gives the favour of gods, spirits and men, power against witchcraft, and preserves the health."
+  },
+  {
+   "num": 12,
+   "name": "Regulus",
+   "rules": "Granite, sallcndine, mugwort and mastic",
+   "image_effect": "A lion, cat, or an honourable person seated in a chair. It makes the wearer temperate, gives favour and appeases wrath."
+  },
+  {
+   "num": 13,
+   "name": "Sirius",
+   "rules": "Beryl, savine, mugwort, dragonwort and the tongue of a snake",
+   "image_effect": "A hound or a little virgin. It gives honour, the goodwill and favour of men and the airy spirits, and the power to pacify nobles and others."
+  },
+  {
+   "num": 14,
+   "name": "Spica",
+   "rules": "Emerald, sage, trefoil, periwinkle i mug- wort and mandrake",
+   "image_effect": "A bird, or a man laden with merchandise. It gives riches, overcomes contentions, and removes scarcity and mischief."
+  }
+ ],
+ "magical_seals": {
+  "passages": [
+   "- Image. A hen or crowned man. It gives chastity and the love and goodwill of men."
+  ]
+ },
+ "lunar_mansions_magic": {
+  "passages": [
+   "The following numerical order of the mansions corresponds to that given in Chapter III, the 1st mansion being taken to be A 1 Thurayya.",
+   "1. For general good fortune and happiness. In a square table on a silver ring the image of a woman, well clothed, sitting on a chair, her right hand being lifted to her head. Sealed and perfumed with musk, camphor and calamus aromaticus. Ruling spirit, Anixiel. '",
+   "2. For revenge, separation, enmity and ill-mil. The image of a soldier sitting on a horse, and holding a serpent in his right hand. Scaled in red wax and perfumed with red myrrh and storax. Ruling spirit, Azariel.",
+   "3. For royal and official favour and good enter- tainment. The head of a man, sealed in silver and perfumed with red Sanders. Ruling spirit, Gabriel.",
+   "4. To procure love between two people. Two images embracing one another and sealed in white wax, and perfumed with lignum aloes and amber. Ruling spirit, Dirachiel.",
+   "5. To obtain every good thing. A man well clothed holding up his hands in prayer, sealed in silver and perfumed with good odours. Ruling spirit, Scheliel.",
+   "6. For victory in war. An eagle with the face of a man, scaled in tin and perfumed with brimstone. Ruling spirit, Amnedid.",
+   "7. To cause infirmities. A mutilated man cover- ing his eyes with his hands, scaled in lead and perfumed with pine resin. Ruling spirit, Barbiel.",
+   "■ 8. To facilitate child-bearing and to cure illness. A seal of gold bearing the head of a lion and perfumed with amber. Ruling spirit, Ardefitl.",
+   "9. For fear, reverence and worship. A gold seal bearing the image of a man riding on a lion, his left hand holding its ear, and his right a bracelet of gold. Perfumed with good odours and saffron. Ruling spirit, Neciel.",
+   "10. For the separation of lovers. A seal of black lead bearing the image of a dragon fighting with a man and perfumed with lion’s hair and asafeetida. Ruling spirit, Ahdizuel.",
+   "11. For the agreement of married people. The images of a man in red wax and a woman in white embracing one another and perfumed with lignum aloes and amber. Ruling spirit, Jazeriel",
+   "12 For separation and divorce. A seal of red copper bearing the image of a dog biting its tail and perfumed with the hair of a black dog and a black cat. Ruling spirit, Ergediel.",
+   "13. For friendship and goodwill. A man sitting and writing letters, perfumed with frankincense and nutmegs. Ruling spirit, AiUel.",
+   "14. For gaining merchandise. A silver seal bear- ing the image of a man sitting on a chair holding a balance in his hand and perfumed with pleasant spices. Ruling spirit, Azeruel.",
+   "J 5 - Against thieves and robbers. An -iron seal earing the image of an ape and perfumed with the hair of a ape. Ruling spirit, Adriel.",
+   "1 • Against fevers and venomous creatures. A copper seal^ bearing the image of a snake with its tail above its head and perfumed with hartshorn. Ruling spirit, Egibiel.",
+   "For facilitating birth. A copper seal bearing the image of a woman holding her hands before her lace and perfumed with liquid storax. Ruling spirit, Amutiel.",
+   "18. For hunting. A seal of tin bearing the image of a centaur and perfumed with the head of a wolf. Ruling spirit, Kyriel.",
+   "hltd.?*” ) nth ® doub l e countenance before and behind, and perfumed with brimstone and jet. Tits wns to be put in a box of brass together with brimstone, jet and the hair of the victim. Ruling spirit, Bithmtl. 5",
+   "7 8I : F ° r destruction and wasting. An iron seal hearing the image of a cat with a dog’s head. This was perfumed with hair taken from a dog’s head and buned in the place where harm was intended. Ruling spirit. Requid.",
+   "22. For multiplying herds of cattle. The image 01 a woman and infant W'as branded with iron on tne horn of a ram, bull, goat or of the kind of cattle",
+   "23. For the preservation of trees and harvest. The image of a man planting, sealed in the wood of a fig tree, perfumed with its flowers, and hung on the tree. Ruling spirit, Aziel.",
+   "24. For love and favour. The image of a woman washing and combing her hair, sealed in white wax and mastic and perfumed with good odours. Ruling spirit, Tagriel.",
+   "25. To destroy fountains, pits, medicinal water: and baths. An image in red earth of a winged mar holding in his hand an empty and perforated vessel The image, mixed with asafcetida and liquid storax was burnt and buried in the pond or fountair which it was desired to destroy. Ruling spirit Aiheniel.",
+   "26. For catching fish. A copper seal bearing the image of a fish and perfumed with the skin of a sea- fish. This was thrown into the water where a catch was desired. Ruling spirit, Amnixiel.",
+   "27. For the destruction of someone. In an iron ring sealed in black wax the image of a black man in a garment of hair and wearing a girdle, casting a small lance with his right hand. Perfumed with liquid storax. Ruling spirit, Geniel.",
+   "28. For reconciliation with royalty. The image of a crowned king, sealed in white wax and mastic, and perfumed with lignum aloes. Ruling spirit, Enediel,"
+  ]
+ },
+ "astro_meteorology": {
+  "passages": [
+   "No account of the astrological influences ascribed to the fixed stars would be complete without some mention of their effect upon the weather. In the 17th century astro-meteorology occupied a prominent position and received a great deal of attention, but at the present time it has apparently ceased to in- terest any but the almanac maker, and its modern followers mostly practise the slipshod and almost useless method of noting the daily aspects in the ephemeris and predicting from those alone.",
+   "In the old days it was customary to base the major ■weather predictions upon the positions of the planets in the horoscopes for the entry of the Sun info the four cardinal signs Aries, Cancer, Libra and Capricorn, together with those for great conjunctions and eclipses. These general indications were then am- plified by a. study oi New AIooos, FuU Moons, Quarter Lunations and in some cases daily horo- scopes.",
+   "It is no part of my present plan to describe the methods and rules at length, but merely to draw attention to the fact that in the following account of stellar influences the positions are understood to be those occurring at significant epochs, such as",
+   "The general type of effect appears to follow the nature of the star. Thus the Sun being with Satur nian stars is said to indicate cold, rain or snow ; with Jupitcrian stars, a serene and temperate air ; with Martial stars, thunder-storms ; with Venusian stars, rain, moisture and mist; and, with Mercurial stars, wind. Much importance was attached to the rising and setting of stars, especially in their re- lationship to the Sun, and it is a well-known fact that the ancient Egyptians began their New Year at the time when Sirius rose with the Sun at the Summer Solstice and marked the beginning of the inundations. All the ways in which a star could rise or set with the Sun were carefully classified in very early times and given distinctive names, but only two need concern us here, namely, Mainline and Vespertine, the former of which is applied to a star that rises and sets before the Sun, and the latter to one that rises and sets after it.",
+   "In addition to the individual star influences, the lunar mansion in which a lunation, ingress or con- junction fell was held to affect the weather in ac- cordance with its nature. The meteorological na- ture of each of the Arabic mansions has been handed down to us, and, beginning with A1 Thurayya, is as follows : r. Moist and cold ; more cold. 2, Dry. 3, Temperate. 4, Moist. 5, Cloudy and tempest- uous. 6, Dry. 7, Moist. 8, Temperate and cold 9, Moist. 10, Temperate. 11, Temperate. 12, Moist. 13, Cold and moist. 14, Moist. 15, Dry. 16, Moist,",
+   "17, Temperate. 18, Temperate. 19, Moist. 20, Temperate. 21, Temperate. 22, Dry. 23, Dry. 24, Moist. 25, Temperate. 26, Temperate. 27, Dry. 28, Moist.",
+   "\\Ve may now turn to the separate star influences, which, together with those of a few constellations, are as follows :",
+   "With Jupiter and afflicted by Mars. Wind and^ hail, thunder in summer, warmer in winter especially' if Jupiter be stationary.",
+   "With Jupiter and afflicted by Mars. Wind and hail, thunder in summer, wanner in winter especially if Jupiter be stationary.",
+   "If there be showers at the matutine rising of Delphinus there will be none at the rising of Arcturus. If setting. South wind.",
+   "With Mars. Strong winds, rain, thunder and lightning. If rising or setting, turbulent, windy and often sultry weather.",
+   "With Jupiter and afflicted by Mars. Wind and hail, thunder in summer, warmer in winter especially if Jupiter be stationary.",
+   "If the North Asellus be hid when the air is serene and clear it betokens great winds from the south ; '",
+   "If at the matutine setting of Delphinus there be showers, there will be none at the rising of Arcturus.",
+   "With Jupiter and afflicted by Mars. Wind and hail, thunder in summer, warmer in winter especially if Jupiter be stationary.",
+   "If setting. Trouble by sea and land especially ii afflicted by Mars and Mercury. II matutine set- ting, rain and south wind.",
+   "With Mars. Great heat, clouds and moisture. If rising or setting, turbulent, windy and often . sultry weather.",
+   "With Sun. Turbid, windy and wet. If rising, cloudy season, wind, rain, thunder and lightning. • With Mercury. Winds, showers, thunder and lightning.",
+   "If Praessepe does not appear when the air is serene and clear it betokens foul, cold and winterly weather.",
+   "If rising in evening, tempests. Matutine rising, produces heat, troubles the seas and changes all things.",
+   "With Sun. Fair and warm, thunder and lightning. With Mercury or Saturn. Wind, rain, thunder and lightning.",
+   "With Mercury. Sudden change to wind and wet. With Mars rising or setting. Turbulent, windy and often sultry weather.",
+   "With Mercury. Sudden change to wind and wet. With Mars rising or setting. Turbulent, windy and often sultry weather."
+  ]
+ },
+ "mathematical_formulae": {
+  "passages": [
+   "Obliquity s= 23 0 27' 8.26' — 46.837' T — 0.0085' T 2 4- 0.0017' T 3 where T is the time from 1900 reckoned in centuries, being negative if earlier and positive if later.",
+   "Here T is positive and less than unity, being ,-50 or .23, T 2 will therefore be .0529, and T 3 , .012167.",
+   "2. To find the Value of Precession Precession = 50.248' 4 - 0.000222' / where t is the time from 1900 reckoned in years, being negative if earlier and positive if later.",
+   "Another method is to reduce the hours, minutes and seconds into minutes and seconds, to call the minutes degrees of space and the seconds minutes of time and to divide by 4.",
+   "Example. The Right Ascension of Pollux in time is 7 h. 40 m. 25.4 s. Required its Right Ascension in degrees.",
+   "Divide the degrees, minutes and seconds of space by 15. The result is the equivalent in hours, min- utes and seconds of time.",
+   "Another method is to call the degrees of space minutes of time, and the minutes of space seconds of time, and multiply by 4. The seconds of space should, however, -first be converted into decimals of a minute.",
+   "Example. The RA.M.C. when Sirius rises at London is 32 0 26'. Required the equivalent Sidereal Time.",
+   "If B exceeds 90 use the sine of its excess in Part 3 and the cosine in Part 4. The Latitude will then be of contrary name to the Declination.",
+   "1. In all 'cases where R.A. and Dec. are of the same name, and in those cases in which R.A. and Dec. are of different names but A is greater than the obliquity, the Longitude is obtained directly from Part 4.",
+   "2. In those cases where the R.A. and Dec. are of different names hut A is less than the obliquity, the numerical result in degrees and minutes obtained in Part 4 must be applied as follows instead of as there shown :",
+   "{The arithmetical complement of a log. is the number obtained by subtracting the log. from io.qqooo The quickest way to do this is to write down the numbers necessary to make each figure of the log, add up to 9 working from left to right, and making the last right-hand figure up to 10. Thus the arith. comp, of g.73492 is 0.26508).",
+   "A star can neither rise nor set if its declination ex- ceeds the co-latitude of the place. The co-latitude of any place is found by subtracting its latitude from 90° Thus the latitude of London being 51° 32' its co-latitude wilfbe 90° — 51® 32' = 38° 28', and no star whose declination N or S is greater than this can either set (if in N dec.) or rise (if in S dec.).",
+   "The following method gives true rising and setting, and the apparent or visible rising and setting will differ slightly owing to refraction and also to the fact that we are here concerned with the mean places of the stars irrespective of aberration, etc., but. the difference is so trifling as to be negligible.",
+   "R.A. of star + H — R.A.M.C. of setting. (360° may be added to allow of subtraction or deducted if the sum exceeds that amount.)",
+   "Convert the R.A. 3 I.C. thus obtained into Sidereal .Time by Formula 4. The resulting Sidereal Time may be looked up in a Table of Houses for the place to find what sign and degree occupy the Ascendant.",
+   "Example. Required the Sidereal Times ef true riiir.g and setting cj Sirius at Ijondon. Latitude of London *•* 51* 32'. R.A. Sirius » 100* 24'. Dec. Sirius *» :6* S 36'.",
+   "Sidereal Timcof rising is therefore 2h. 9m. 44 s. R.A.M.C. of setting ~ ioo° 24' + 67\" 5S' iGS* 22'.",
+   "Looking up these Sidereal Times in the Tables of Houses for London we find that Sirius rises with 19 0 ft and sets with 25 0 y’T' A further reference to the Tables will show that when its ecliptic longi- tude, 13° £3, is rising the actual body of Sirius is in the 3rd House and docs not come to the Ascendant for over three hours.",
+   "Owing to latitude aspects to the actual body of a star fall in quite different places from those to its ecliptic longitude, except in the eases of the square and opposition. These places may be found as follows :",
+   "= Log. cosine distance to be added to star's longitude to obtain sinister semisquare, and subtracted to obtain dexter semisquare.",
+   "Jog. cosine of the star’s latitude to the log. cosine of the number of degrees in the aspect, adding the result to, and subtracting it from, the star’s longitude to obtain the places of the aspect. If the aspect is greater than 90° subtract it from jSo° and use the remainder. The result will then be the opposition point to the place of the - aspect.",
+   "\" Applying this distance to the longitude of Sirius as before we obtain n 19 0 33' and ft, 6° 25' as the places of the semisquares, and the opposition points 1 19° 33' aj id ss: 6° 25' as those of the sesqui- quadrates.",
+   "R.A. of o° <P = o°; of o° 25 «= 90°; of o° = 1S0 0 ; and of o° »1 = zjo 0 ' Example. Required the longitude corresponding to the R.A. oj Algol.",
+   "Vt.mi r</nr«.n ly meant e] elu-A m 5/jr cf Cemtlevaticm mir le /.v> lei up /r?n «r e«» of i(j im;inil, Ki/ifj/; r» «inr(.",
+   "Andromeda 16, 231 Girdle, see JtlimeA , Head, see Alpheralf. Wt Foot, sec Almtuk ; Nebula, see Vertex. Alpha, 73.",
+   "«X* . see Saialm'h* ; Beta, 74. 00. see SaJal- tuud . Gamma. 74; Della see S3a| . fcp- slton.90, Zeta, r.ta, 74 , Lambda. 83 ; Mu, Nu.",
+   "Arabic Mansions - 70. 236, 241 Archer. The. see SafiltJnus Bow, see PoUt , l ace, see / o.Tfj and Manu • tnum , Tail see Tere- te Hunt",
+   "Bodtes, 32. Left Knee, see Areturus: Left Shoulder see Segtnus ; Spear- shaft, see Pnnceps ; Alpha, 81, see A returns ; Gamma, see 5^isui ; Delta, see Prmctps.",
+   "BuU^^he \" see Taurus. North Eye. See Prtma Ilyadum ; North Horn, see El Hoik ; South or Following flora, see",
+   "Circinus .... 38 Cities, Meridian degrees o! 224 Cloud, The Greater and Lesser, see Nubecula Major and Minor Clusters - - - 15, 103",
+   "Comets ----- 226 Compasses, The, see Circtmcs Constellations, 18, 20, 22 , ancient, 32 ; boundar- ies, *9 ; influence, 22,",
+   "Cor Hydra, see Alphard Cor Leonis, see Regulus Corolla, seejCorona Australis Corona Australis - - 39",
+   "Wing, see Algorab. Crown, The Northern and Southern, see Corona Borealts and 'Australis. Crux. 4 1 . Alpha, see A crux Culmination d! stars , - - 35)",
+   "Fades ... 1x4, x6j Falling Grype or Vulture 51,216 Felis ..... 44 Fish, The Southern, see Piicis Australis Fishes, The. see Pisces Flavius, see Endanus Fly, The Northern and Southern, see Musca ■ Borealis and Australis Flying Fish, The, see Ptsws Volans",
+   "Flying Grype or Vulture - 29 Flying Horse, The see Pegasus Foal, The, see Equuleus Fomathaut - 114, 165",
+   "71. 77, 88, see Pollux ; Gamma, 7r, 88, see Alhena ; Delta, see XT as at ; Eta, see Trial ; Iota, see Propus ; Mn, see Dir ah",
+   "George's Harp, see Psal- - terium Georgia mint Giant, The, see Orion Giedj .... IT4, 167 GiraSe, The, see Camtlopar-",
+   "Goat, The, see Capri comas. Back, see Dorsum ; Belly, see Castra ; Face, - see Bm: Heart, see jf Annus ; Horn, see Gieii.",
+   "Hercules, 14, 46, «*■ fSee also Pollux). Zeta,r 5; lota. Tan, 185 Herdsman, Ihe, see Bodies Hindu Mansions - - 7 6",
+   "Horoscopes : SheVey, 30 ; Ex-Kaiser. 104 1 Em- peror of Austria, ioj; Dog-bites, igt Horse, The. see Pegasus.",
+   "Line of Right Ascension - 96 Lion, The. see Leo. Back, see Zosma ; Heart, see Regvlus ; Mane, see Adha/era and Al Jabhah , Mouth, see Algenubt ; Tail, see Oenebola",
+   "Nebula, t 6, 103. Andro- meda, see Vertex ; Archer's Face, see Fanes ; Arroiy-head of Sagittarius, see Spiculum ; Onon, see Ensis , Ship’s Stern, see Foramen , Shag 0/ Scorpio, see Aculeus and Acumen , Tail of Great Bear, see Copula Night Owl, The, see Noclua Noah’s Dove, see Co,untba Noce",
+   "Officina T> pographica . 54 Ophmchus, 54. 231. Head, see Iiasalhague } .Left Knee, see Han and Safcift, Alpha, see Iiasalhague ; Delta, see Yed Prior ; Zeta, see Han} Eta, see Sabik ;",
+   "’ Left Shoulder, see Bellatrix ; Nebula, see Ensis ; Right Shoul- der, see Bele/geute. Alpha, 77, see Betel- geuee ; Beta, see Rtgel ; Gamma, see Bellatrix ; Delta, see Mtnlaka; Epsilon, see Atmtam; Theta, 70,",
+   "85. 90, see Marhab ; Beta, 74, 90, see Reheat ; Gamma, 74 85, 90, see Algentb ; Delta, 74, 90; Epsilon, Theta, go Pelagus - - - X14, 180",
+   "Right Ascension, conver- sion into longitnde 250, 256 River, The, see EndanuS Robur Carohrium - - 59",
+   "73 ; Sigma, 73. see Pelagus; Tan, 73 ; PM 73, 8g ; Omega, see Terebellum ; 8 M, 20M, aiM, see Spiculum ; 22M, see Fanes Scale, North 112,203,222",
+   "Sharatan ... 108, 207 Shiloh, see A tttares Ship, The, see Argo Navis. Buckler, see Markeb \\ Stem, see Foramen. Shwuy IVei - - - - 35",
+   "vanable, 17 , classifi. cation, 18 ; unformed or scattered, rg ; names, ig , catalogue names, etc., 20 ; in- fluence, 92 , position eflect, 93, 95, angular 95 : aspects, 95, 253; orbs oi influence, 103 ; rising and setting.",
+   "88, -ice Atdcbaran ; Beta, see TJ Hath ; Gamma, see JPnma /{yadurn , Epsilon, 88, Zeta, see At Hecka ;"
+  ]
+ }
+}
