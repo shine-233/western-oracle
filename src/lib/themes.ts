@@ -558,6 +558,8 @@ function injectStyles(): void {
   }
   // 各皮肤的签名级装饰：让每套主题拥有结构性的独特记号，而非仅换色
   parts.push(`
+/* ---- 装饰定位基准：主题面板需要 relative ---- */
+[data-theme] .panel { position: relative; }
 /* ---- inkpaper：朱砂印章 ---- */
 [data-theme='inkpaper'] .panel { position: relative; }
 [data-theme='inkpaper'] .panel::before {
@@ -625,7 +627,7 @@ function injectStyles(): void {
   background-image: radial-gradient(rgba(255, 158, 203, 0.16) 2px, transparent 2.6px);
   background-size: 16px 16px;
 }
-/* ---- brass：铆钉双框 ---- */
+/* ---- brass：铆钉双框（四角铆钉） ---- */
 [data-theme='brass'] .panel {
   box-shadow:
     inset 0 0 0 2px rgba(201, 151, 63, 0.35),
@@ -634,10 +636,13 @@ function injectStyles(): void {
 }
 [data-theme='brass'] .panel::before {
   content: '';
-  position: absolute; top: 7px; left: 7px; right: auto;
-  width: 6px; height: 6px; border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #f0c469, #8a6a25);
-  box-shadow: calc(100% + 0px) 0 #8a6a25;
+  position: absolute; inset: 10px;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 7px 7px, #f0c469 0 1.6px, rgba(138, 106, 37, 0.85) 1.6px 3px, transparent 3.4px),
+    radial-gradient(circle at calc(100% - 7px) 7px, #f0c469 0 1.6px, rgba(138, 106, 37, 0.85) 1.6px 3px, transparent 3.4px),
+    radial-gradient(circle at 7px calc(100% - 7px), #f0c469 0 1.6px, rgba(138, 106, 37, 0.85) 1.6px 3px, transparent 3.4px),
+    radial-gradient(circle at calc(100% - 7px) calc(100% - 7px), #f0c469 0 1.6px, rgba(138, 106, 37, 0.85) 1.6px 3px, transparent 3.4px);
 }
 /* ---- jade：藤蔓角饰 + 幽绿内晕 ---- */
 [data-theme='jade'] .panel {

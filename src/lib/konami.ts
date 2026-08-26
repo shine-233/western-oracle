@@ -96,6 +96,9 @@ export function installKonami(): void {
   window.addEventListener(
     'keydown',
     (e) => {
+      // 输入框中打字不推进秘技序列
+      const t = e.target as HTMLElement | null
+      if (t?.closest?.('input, textarea, select, [contenteditable]')) return
       const k = e.key.length === 1 ? e.key.toLowerCase() : e.key
       idx = k === SEQ[idx] ? idx + 1 : k === SEQ[0] ? 1 : 0
       if (idx !== SEQ.length) return
