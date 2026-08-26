@@ -66,6 +66,7 @@ const messages: Record<string, Pair> = {
   'navg.east': ['东厢', 'Eastern Wing'],
   'nav.crystal': ['水晶球', 'Crystal Ball'],
   'nav.hours': ['行星时刻', 'Planet Hours'],
+  'nav.gesture': ['手势占卜', 'Gesture'],
   'app.soundOff': ['关闭音效', 'Mute'],
   'app.soundOn': ['开启音效', 'Unmute'],
   'footer.l1': ['✦ 所有计算均在你的浏览器本地完成，不上传任何数据 ✦', '✦ Everything runs locally in your browser. No data leaves your device. ✦'],
@@ -133,6 +134,7 @@ const messages: Record<string, Pair> = {
   'mod.meihua.desc': ['梅花易数：心中浮现一个数，配上出生年月日时，六爻逐条起卦给你看。', 'Plum Blossom numerology: one surfaced number plus your birth time, six lines cast live.'],
   'mod.history.desc': ['每一次占卜都被记进魔法书，随时回看、生成星空分享图。', 'Every reading logged in your grimoire — revisit anytime, export starry share cards.'],
   'mod.crystal.desc': ['体素水晶球：拖拽旋转、滚轮推近，凝视到雾气炸开就是答案。', 'A voxel orb: drag to spin, wheel to zoom — gaze until the mist bursts with your answer.'],
+  'mod.gesture.desc': ['摄像头手势抽牌：张掌蓄力、食指瞄准、握拳抓牌；无摄像头自动切鼠标模式。', 'Camera-free-will drawing: palm to charge, point to aim, fist to seize; falls back to mouse.'],
   'mod.hours.desc': ['行星时刻钟：按传统行星时规则标出今天每个小时的守护星与宜忌。', 'Planetary hours clock: each hour\'s ruling planet and what it favors, the classical way.'],
 
   /* ---------- 首页 · 人气榜 ---------- */

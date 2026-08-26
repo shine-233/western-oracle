@@ -38,6 +38,7 @@ const GROUPS: { id: string; icon: string; title: string; sub: string; mods: ModD
       { to: '/astrology', glyph: '☉', title: 'nav.astrology', desc: 'mod.astrology.desc', heat: 96 },
       { to: '/numerology', glyph: '∴', title: 'nav.numerology', desc: 'mod.numerology.desc', heat: 84 },
       { to: '/synastry', glyph: '☍', title: 'nav.synastry', desc: 'mod.synastry.desc', heat: 82 },
+      { to: '/gesture', glyph: '🖐', title: 'nav.gesture', desc: 'mod.gesture.desc', heat: 72 },
       { to: '/runes', glyph: 'ᛟ', title: 'nav.runes', desc: 'mod.runes.desc', heat: 66 },
     ],
   },

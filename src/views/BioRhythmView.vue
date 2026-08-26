@@ -322,6 +322,7 @@ function selectedDateFor(off: number): Date {
         </section>
       </div>
 
+      <ApprenticeReact module="biorhythm" :score="Math.round(readings.reduce((s, r) => s + r.pct, 0) / 3)" />
       <p class="hint" style="text-align: center; margin-top: 16px;">
         {{ L([
           '橙色虚线是"临界日"——曲线过零，状态切换的当口，开车开会都多留个心眼。',

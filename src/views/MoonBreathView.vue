@@ -7,6 +7,7 @@ import { L } from '../data/oracleArcade'
 import { isSoundOn, sfx } from '../lib/sfx'
 import { sparkleFromEvent } from '../lib/sparkle'
 import DecryptTitle from '../components/DecryptTitle.vue'
+import ApprenticeReact from '../components/ApprenticeReact.vue'
 
 const phase = moonPhase()
 
@@ -235,6 +236,7 @@ const phaseLabel = computed(() => t(`moon.${phase.index}.name`))
         </div>
       </div>
 
+      <ApprenticeReact module="moonbreath" :score="Math.min(round * 34, 100)" />
       <button class="btn breath-btn" @click="toggle($event)">
         {{ running ? L(['停下来', 'Pause']) : L(['开始一轮', 'Begin a round']) }}
       </button>

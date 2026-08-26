@@ -7,6 +7,7 @@ import { locale } from '../lib/i18n'
 import { sparkleFromEvent } from '../lib/sparkle'
 import { sfx } from '../lib/sfx'
 import DecryptTitle from '../components/DecryptTitle.vue'
+import ApprenticeReact from '../components/ApprenticeReact.vue'
 
 const selected = ref<PalmFeature | null>(null)
 const drawn = ref(false)
@@ -141,6 +142,7 @@ const STARS = [
             />
           </g>
         </svg>
+        <ApprenticeReact module="palmistry" :score="selected ? 90 : 62" />
         <p class="stage-hint">{{ L(['✧ 点亮任意一条纹路或一片星域 ✧', '✧ tap any line or nebula ✧']) }}</p>
       </section>
 

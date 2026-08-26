@@ -8,6 +8,7 @@ import { sparkleFromEvent } from '../lib/sparkle'
 import { loadJSON, saveJSON } from '../lib/storage'
 import { L } from '../data/oracleArcade'
 import DecryptTitle from '../components/DecryptTitle.vue'
+import ApprenticeReact from '../components/ApprenticeReact.vue'
 
 /* ---------- 北斗七星布局（SVG 坐标）与五声音阶 ---------- */
 interface Star {
@@ -326,6 +327,7 @@ const dust = Array.from({ length: 26 }, (_, i) => ({
         </p>
       </div>
 
+      <ApprenticeReact module="musicbox" :score="playing ? 88 : 60" />
       <div class="mb-actions">
         <button class="btn ghost small" @click="generate($event)">🎲 {{ L(['换一首曲子', 'New tune']) }}</button>
         <button class="btn" @click="togglePlay">

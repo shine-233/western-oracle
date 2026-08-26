@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, ref } from 'vue'
 import { NUMBER_MEANINGS, PERSONAL_YEAR_MEANINGS, calculateNumerology, lifePathChain, personalDay, personalMonth, personalYear, type NumerologyResult } from '../lib/numerology'
+import { KABALA_MINOR_KEY, KABALA_THINGS_THOUGHT, KABALA_RESULTANTS } from '../data/sepharialNumbers'
+import { locale } from '../lib/i18n'
 import { loadJSON, saveJSON } from '../lib/storage'
 import { sparkleFromEvent } from '../lib/sparkle'
 import { addHistory } from '../lib/history'
@@ -141,6 +143,51 @@ function replayChain(e?: MouseEvent): void {
   sfx.blip()
   if (e) sparkleFromEvent(e, 6)
 }
+
+/* ---------- Sepharial《数字卡巴拉》抽数（1911 公版） ---------- */
+const zh = computed(() => locale.value === 'zh')
+const resultantKeys = Object.keys(KABALA_RESULTANTS)
+interface KabalaPick {
+  root: string
+  thought: string
+  compound: string
+  resultant: string
+}
+const kabalaPick = ref<KabalaPick | null>(null)
+const kabalaBusy = ref(false)
+
+/** 出生根数（1-9）的 Sepharial 含义 */
+const rootMeaning = computed(() => {
+  if (!result.value) return null
+  const root = ((result.value.lifePath - 1) % 9) + 1
+  const km = KABALA_MINOR_KEY[String(root)]
+  return km ? { root, ...km } : null
+})
+
+function drawKabala(e?: MouseEvent): void {
+  if (kabalaBusy.value || resultantKeys.length === 0) return
+  kabalaBusy.value = true
+  sfx.riffle()
+  window.setTimeout(() => {
+    const root = String(1 + Math.floor(Math.random() * 9))
+    const compound = resultantKeys[Math.floor(Math.random() * resultantKeys.length)]!
+    kabalaPick.value = {
+      root,
+      thought: KABALA_THINGS_THOUGHT[root] ?? '',
+      compound,
+      resultant: KABALA_RESULTANTS[compound] ?? '',
+    }
+    kabalaBusy.value = false
+    sfx.ding()
+    if (e) sparkleFromEvent(e, 8)
+    addHistory({
+      type: 'numerology',
+      label: '灵数 · 卡巴拉抽数',
+      summary: `根数 ${root} · 合成数 ${compound}`,
+      detail: `${KABALA_THINGS_THOUGHT[root] ?? ''}\n\n合成数 ${compound}：${KABALA_RESULTANTS[compound] ?? ''}`,
+    })
+  }, 420)
+}
 </script>
 
 <template>
@@ -209,6 +256,46 @@ function replayChain(e?: MouseEvent): void {
         <div class="pday-box"><small>{{ t('num.day') }}</small><strong>{{ todayNumbers.day }}</strong></div>
         <p class="hint" style="flex: 1 1 200px; margin: 0;">{{ todayNumbers.yearMeaning }}</p>
       </div>
+    </section>
+
+    <!-- Sepharial 数字卡巴拉（1911 公版考据层） -->
+    <section class="panel kabala-panel">
+      <h3 style="margin-top: 0;">🔢 {{ zh ? 'Sepharial 数字卡巴拉' : 'Sepharial’s Kabala of Numbers' }}<span class="tag">1911</span></h3>
+      <p class="hint" style="margin-top: 0;">
+        {{ zh
+          ? '心里想一件要占问的事，点「抽数」。根数告诉你「想的是什么」，合成数告诉你「结果偏向哪里」——出自 Sepharial《The Kabala of Numbers》的原表。'
+          : 'Hold a question in mind, then draw. The root tells what you are really asking about; the compound number hints where it tends — straight from Sepharial’s 1911 tables.' }}
+      </p>
+
+      <div v-if="rootMeaning" class="kb-root">
+        <span class="kb-root-num">{{ rootMeaning.root }}</span>
+        <div class="kb-root-text">
+          <b>{{ zh ? `你的出生根数 ${rootMeaning.root}` : `Your birth root ${rootMeaning.root}` }}
+            <em v-if="rootMeaning.planet" class="kb-planet">☉ {{ rootMeaning.planet }}</em>
+          </b>
+          <p>{{ rootMeaning.meaning }}</p>
+        </div>
+      </div>
+
+      <button class="btn" :disabled="kabalaBusy" @click="drawKabala($event)">
+        {{ kabalaBusy ? '✦ …' : (zh ? '🎲 抽数一卦' : '🎲 Draw a number') }}
+      </button>
+
+      <Transition name="kabala-pop">
+        <div v-if="kabalaPick" :key="kabalaPick.compound + kabalaPick.root" class="kb-cards">
+          <div class="kb-card" style="--kd: 0s">
+            <small>ROOT · {{ kabalaPick.root }}</small>
+            <strong>{{ zh ? '所思何事' : 'Things thought' }}</strong>
+            <p>{{ kabalaPick.thought }}</p>
+          </div>
+          <div class="kb-arrow">→</div>
+          <div class="kb-card gold" style="--kd: 0.14s">
+            <small>COMPOUND · {{ kabalaPick.compound }}</small>
+            <strong>{{ zh ? '结果之象' : 'Resultant' }}</strong>
+            <p>{{ kabalaPick.resultant }}</p>
+          </div>
+        </div>
+      </Transition>
     </section>
 
     <MascotCard ref="pet" id="numi" />
@@ -295,6 +382,53 @@ function replayChain(e?: MouseEvent): void {
 .chain-arrow { color: var(--ink-dim); animation: arrow-in 0.4s ease both; animation-delay: var(--d); }
 @keyframes chip-in { from { opacity: 0; transform: translateY(12px) scale(0.55); } }
 @keyframes arrow-in { from { opacity: 0; } }
+
+/* ---------- Sepharial 卡巴拉 ---------- */
+.kabala-panel { margin-top: 18px; }
+.kb-root {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+  border-radius: 12px;
+  background: rgba(13, 11, 32, 0.6);
+  border: 1.5px solid color-mix(in srgb, var(--lavender) 28%, transparent);
+}
+.kb-root-num {
+  font-family: var(--cute);
+  font-size: 2rem;
+  color: var(--gold-bright);
+  min-width: 44px;
+  text-align: center;
+  text-shadow: 0 0 14px color-mix(in srgb, var(--gold) 60%, transparent);
+}
+.kb-root-text b { display: flex; align-items: center; gap: 10px; color: var(--lavender-soft); font-weight: 400; }
+.kb-root-text p { margin: 4px 0 0; font-size: 0.86rem; line-height: 1.85; color: var(--ink-dim); }
+.kb-planet { font-style: normal; font-family: var(--pixel); font-size: 0.6rem; letter-spacing: 0.1em; color: var(--gold); border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent); border-radius: 999px; padding: 2px 8px; }
+
+.kb-cards { display: flex; gap: 14px; margin-top: 18px; align-items: stretch; flex-wrap: wrap; }
+.kb-card {
+  flex: 1 1 240px;
+  padding: 15px 17px;
+  border-radius: 12px;
+  background: rgba(13, 11, 32, 0.65);
+  border: 1.5px solid color-mix(in srgb, var(--lavender) 30%, transparent);
+  animation: kb-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation-delay: var(--kd);
+}
+.kb-card.gold { border-color: color-mix(in srgb, var(--gold) 55%, transparent); box-shadow: 0 8px 22px color-mix(in srgb, var(--gold) 12%, transparent); }
+.kb-card small { display: block; font-family: var(--pixel); font-size: 0.55rem; letter-spacing: 0.12em; color: var(--ink-dim); margin-bottom: 5px; }
+.kb-card strong { display: block; font-family: var(--cute); font-weight: 400; color: var(--lavender-soft); margin-bottom: 7px; }
+.kb-card.gold strong { color: var(--gold-bright); }
+.kb-card p { margin: 0; line-height: 1.9; font-size: 0.88rem; color: var(--ink); opacity: 0.94; }
+.kb-arrow { align-self: center; color: var(--ink-dim); font-size: 1.3rem; animation: arrow-in 0.4s ease 0.2s both; }
+.kabala-pop-enter-active { transition: all 0.35s ease; }
+.kabala-pop-enter-from { opacity: 0; transform: translateY(10px); }
+@keyframes kb-in { from { opacity: 0; transform: translateY(16px) rotate(-2deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .kb-card, .kb-arrow { animation: none; }
+}
 @media (prefers-reduced-motion: reduce) {
   .chain-chip, .chain-arrow { animation: none; }
 }

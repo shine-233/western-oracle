@@ -10,6 +10,7 @@ import { WAITE_MEANINGS } from '../data/waiteMeanings'
 import { TAROT_SOURCES } from '../data/tarotSources'
 import { TAROT_MODERN } from '../data/tarotModern'
 import { BOOK_T_DECANS } from '../data/bookTDecans'
+import { MAJOR_ALIGNMENT, MINOR_RANK_ARC } from '../data/alignment'
 import { addHistory } from '../lib/history'
 import { downloadShareCard } from '../lib/share'
 import { t, locale } from '../lib/i18n'
@@ -36,6 +37,15 @@ const question = ref('')
 const allowReversed = ref(true)
 const drawn = ref<DrawnCard[]>([])
 const detail = ref<DrawnCard | null>(null)
+
+/** 语义对齐层：大牌用人工标注，小牌用花色×阶位弧线（Papus 三段论） */
+const alignmentInfo = computed(() => (detail.value ? MAJOR_ALIGNMENT[detail.value.card.id] ?? null : null))
+const arcLine = computed(() => {
+  const c = detail.value?.card
+  if (!c) return null
+  if (c.arcana === 'major') return MINOR_RANK_ARC[c.id] ?? null
+  return MINOR_RANK_ARC[c.id.split('-')[1] ?? ''] ?? null
+})
 
 /** 扇形牌堆 */
 const FAN_COUNT = 27
@@ -392,6 +402,19 @@ watch(allFlipped, (done) => {
                 </div>
                 <details class="sources-box">
                   <summary>{{ t('src.tarot.summary') }}<span class="tag">研究数据</span></summary>
+                  <div v-if="alignmentInfo" class="src-block src-align">
+                    <strong>语义对齐标注 · 中英研究层</strong>
+                    <div class="align-chips">
+                      <span v-for="k in alignmentInfo.cnKeywords" :key="k" class="al-cn">{{ k }}</span>
+                    </div>
+                    <p class="reading en-quote">{{ alignmentInfo.enKeywords.join(' · ') }}</p>
+                    <p class="reading en-quote">Waite theme: “{{ alignmentInfo.waiteTheme }}”</p>
+                    <span class="conf-badge" :class="'conf-' + alignmentInfo.confidence">confidence: {{ alignmentInfo.confidence }}</span>
+                  </div>
+                  <div v-else-if="arcLine" class="src-block src-align">
+                    <strong>阶位弧线 · Papus 三段论</strong>
+                    <p class="reading"><b class="al-cn">{{ arcLine.cn }}</b> — {{ arcLine.en }}</p>
+                  </div>
                   <div v-if="WAITE_MEANINGS[detail.card.id]" class="src-block src-waite">
                     <strong>Waite 原文牌意 · 1911</strong>
                     <p class="reading en-quote">“{{ WAITE_MEANINGS[detail.card.id]!.up }}”</p>
@@ -697,6 +720,33 @@ watch(allFlipped, (done) => {
 .src-block.src-fortune { border-left-color: var(--mint); }
 .src-block.src-decan { border-left-color: var(--gold); }
 .src-block.src-modern { border-left-color: var(--pink-soft); }
+.src-block.src-align { border-left-color: #8fd3e8; }
+.align-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 7px 0 9px; }
+.al-cn {
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-family: var(--cute);
+  font-size: 0.85rem;
+  color: #bfeaf5;
+  background: rgba(143, 211, 232, 0.1);
+  border: 1px solid rgba(143, 211, 232, 0.4);
+  animation: al-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.al-cn:nth-child(2) { animation-delay: 0.07s; }
+.al-cn:nth-child(3) { animation-delay: 0.14s; }
+@keyframes al-pop { from { opacity: 0; transform: scale(0.5); } }
+.conf-badge {
+  display: inline-block;
+  margin-top: 8px;
+  font-family: var(--pixel);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+.conf-high { color: var(--gold-bright); border: 1px solid color-mix(in srgb, var(--gold) 60%, transparent); }
+.conf-medium { color: var(--lavender-soft); border: 1px solid color-mix(in srgb, var(--lavender) 50%, transparent); }
+.conf-low { color: var(--ink-dim); border: 1px solid rgba(128, 128, 140, 0.45); }
 .reflect-box {
   margin-top: 14px;
   padding: 12px 14px;

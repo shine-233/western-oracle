@@ -14,6 +14,9 @@ import { addHistory } from '../lib/history'
 import { sfx } from '../lib/sfx'
 import { useEscClose } from '../lib/useEsc'
 import { TETRABIBLOS_PLANETS } from '../data/tetrabiblosPlanets'
+import { TETRABIBLOS_TOPICS } from '../data/tetrabiblosBooks34'
+import { LEO_NATIVITY_SECTIONS } from '../data/classicalPassages'
+import { ZODIAC_FACTS } from '../data/zodiacFacts'
 import { vTilt } from '../lib/tilt'
 import { t, locale } from '../lib/i18n'
 import { tt } from '../lib/i18nExtra'
@@ -51,6 +54,29 @@ const expandedPlanet = ref<string | null>(null)
 const signModal = ref<number | null>(null)
 const pet = ref<InstanceType<typeof MascotCard> | null>(null)
 const houseModal = ref<number | null>(null)
+
+/* ---------- 古典书房：Ptolemy 论命专题 + Alan Leo 原典 ---------- */
+const TOPIC_ZH: Record<string, string> = {
+  body: '形体体质', mind: '心智质性', siblings: '兄弟姐妹', longevity: '寿限',
+  marriage: '婚姻', children: '子女', travel: '远行迁居', death_quality: '终局之相',
+  rank: '尊荣地位', occupation: '职业营生',
+}
+const topicKey = ref<string>('body')
+const topicList = Object.entries(TETRABIBLOS_TOPICS).map(([k, v]) => ({ key: k, ...v }))
+const activeTopic = computed(() => TETRABIBLOS_TOPICS[topicKey.value] ?? null)
+
+const LEO_TABS = [
+  { key: 'twelve_houses', zh: '十二宫总论', en: 'The Twelve Houses' },
+  { key: 'sun_in_signs', zh: '太阳十二星座', en: 'Sun in the Signs' },
+  { key: 'moon_in_signs', zh: '月亮十二星座', en: 'Moon in the Signs' },
+] as const
+const leoTab = ref<string>('twelve_houses')
+const leoSection = computed(() => LEO_NATIVITY_SECTIONS[leoTab.value] ?? null)
+
+/** 星座弹窗的 corpora 数据层 */
+function zodiacFactOf(signEn: string) {
+  return ZODIAC_FACTS[signEn] ?? null
+}
 
 useEscClose(() => {
   signModal.value = null

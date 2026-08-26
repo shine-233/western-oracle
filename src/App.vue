@@ -15,6 +15,7 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
       { to: '/tarot', label: 'nav.tarot', emoji: '✦' },
       { to: '/astrology', label: 'nav.astrology', emoji: '☉' },
       { to: '/synastry', label: 'nav.synastry', emoji: '☍' },
+      { to: '/gesture', label: 'nav.gesture', emoji: '🖐' },
       { to: '/numerology', label: 'nav.numerology', emoji: '∴' },
       { to: '/transits', label: 'nav.transits', emoji: '⟳' },
     ],

@@ -260,6 +260,7 @@ function chooseLot(i: number, e: MouseEvent): void {
       </div>
     </section>
   </div>
+    <ApprenticeReact module="arcade" :score="wheelResult !== null ? 85 : 65" />
 </template>
 
 <style scoped>

@@ -20,6 +20,7 @@ import OrreryView from '../views/OrreryView.vue'
 import MoonBreathView from '../views/MoonBreathView.vue'
 import BioRhythmView from '../views/BioRhythmView.vue'
 import MeihuaView from '../views/MeihuaView.vue'
+import GestureView from '../views/GestureView.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -43,6 +44,7 @@ const router = createRouter({
     { path: '/moonbreath', component: MoonBreathView },
     { path: '/biorhythm', component: BioRhythmView },
     { path: '/meihua', component: MeihuaView },
+    { path: '/gesture', component: GestureView },
     { path: '/history', component: HistoryView },
     { path: '/settings', component: SettingsView },
     { path: '/:pathMatch(.*)*', redirect: '/' },
