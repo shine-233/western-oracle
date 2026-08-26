@@ -20,7 +20,7 @@ import { ZODIAC_FACTS } from '../data/zodiacFacts'
 import { vTilt } from '../lib/tilt'
 import { t, locale } from '../lib/i18n'
 import { tt } from '../lib/i18nExtra'
-import { findSolarReturn } from '../lib/solarReturn'
+import { findSolarReturn, srAscNoteText } from '../lib/solarReturn'
 import { ASPECT_CN, crossAspects, type CrossAspect } from '../lib/astrology'
 import AstroWheel from '../components/AstroWheel.vue'
 import AiChat from '../components/AiChat.vue'
@@ -446,6 +446,7 @@ export default {}
       <section class="panel reading-panel">
         <h3 style="margin-top: 0;">{{ tt('sr.title') }}<span class="tag">SR</span></h3>
         <p class="hint" style="margin-top: 0;">{{ tt('sr.hint') }}</p>
+        <p class="hint" style="margin-top: 6px;">{{ tt('sr.hint2') }}</p>
         <button v-if="!srChart" v-magnetic class="btn ghost small" :disabled="srBusy" @click="computeSr">
           ✦ {{ tt('sr.calc') }}
         </button>
@@ -456,6 +457,7 @@ export default {}
             <strong>{{ srCountdown.days }}</strong> {{ zhDay() }}
           </p>
           <p v-if="srAscHouse" class="sr-asc">↑ {{ tt('sr.ascInHouse', { n: srAscHouse }) }}</p>
+          <p v-if="srAscHouse" class="hint" style="margin: 6px 0 0;">{{ srAscNoteText(srAscHouse) }}</p>
           <div class="astro-layout" style="margin-top: 14px;">
             <div v-tilt="5">
               <AstroWheel

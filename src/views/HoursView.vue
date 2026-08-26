@@ -334,6 +334,8 @@ const CHALDEAN_ORDER = ['Saturn', 'Jupiter', 'Mars', 'Sun', 'Venus', 'Mercury', 
         </span>
       </div>
       <p class="lore-p">{{ tt('lore.p2') }}</p>
+      <p class="lore-p">{{ tt('lore.p3') }}</p>
+      <p class="lore-p">{{ tt('lore.p4') }}</p>
       <p class="lore-tip">✧ {{ tt('lore.tip') }}</p>
     </section>
   </div>

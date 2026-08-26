@@ -86,10 +86,10 @@ const messages: Record<string, Pair> = {
   /* ---------- 首页 ---------- */
   'home.hero': ['星辰不语，自有答案', 'The stars say nothing — yet they answer'],
   'home.greeting.night': ['夜深了，星星都醒着', 'Deep night — even the stars are awake'],
-  'home.greeting.morning': ['早上好，今天的天空很新鲜', 'Good morning — fresh skies today'],
-  'home.greeting.noon': ['午安，适合抽张牌歇一歇', 'Good afternoon — time for a card break'],
-  'home.greeting.afternoon': ['下午好，宇宙正在派送好运', 'Good afternoon — fortune is in delivery'],
-  'home.greeting.evening': ['晚上好，月亮上班啦', 'Good evening — the Moon is on shift'],
+  'home.greeting.morning': ['早。天空刚开门。', 'Morning. The sky just opened.'],
+  'home.greeting.noon': ['午安，抽张牌歇一会儿', 'Afternoon — take a card break'],
+  'home.greeting.afternoon': ['下午三点半，运气开始派件。', 'Half past three — luck starts delivering.'],
+  'home.greeting.evening': ['晚上好，月亮上班了', 'Good evening — the Moon is on shift'],
   'home.intro': [
     '{greet}{name}！一座纯浏览器端的西方占卜小站：无需注册、没有后端、数据不出本机。右下角的小巫女露娜知道很多星星的秘密，记得去戳戳她。',
     "{greet}{name}! A browser-only oracle den: no sign-up, no backend, no data leaving your device. Luna the pixel witch knows the stars' secrets — go poke her.",

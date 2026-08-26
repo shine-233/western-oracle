@@ -160,32 +160,40 @@ renderer.setPixelRatio(Math.min(MAX_DPR, low ? 1.5 : 2))
   const COLS = WITCH_W
   const ROWS = WITCH_H
   const S = 0.44
-  const geo = new THREE.BoxGeometry(S, S, S)
+    const SUB = 2
+  const s2 = S / SUB
+  const geo = new THREE.BoxGeometry(s2, s2, S)
 
   witchGroup = new THREE.Group()
-  const count = voxels.length * 2 // 前后两层，有厚度
+  const count = voxels.length * SUB * SUB * 2 // 前后深塑 × 像素细分
   const material = new THREE.MeshLambertMaterial()
   const mesh = new THREE.InstancedMesh(geo, material, count)
   const m = new THREE.Matrix4()
   const color = new THREE.Color()
 
-  voxels.forEach((v, i) => {
-    const px = (v.x - COLS / 2 + 0.5) * S
-    const py = (ROWS / 2 - v.y - 0.5) * S
-    for (let layer = 0; layer < 2; layer++) {
-      const idx = i * 2 + layer
-      m.setPosition(px, py, (layer - 0.5) * S * 1.1)
-      mesh.setMatrixAt(idx, m)
-      mesh.setColorAt(idx, color.set(v.color).multiplyScalar(layer === 0 ? 1 : 0.72))
-      // 记录眼睛体素（E 色），用于眨眼动画
-      if (v.color.toLowerCase() === '#3a2e5c') {
-        eyeIndices.push(idx)
-        eyeBaseY.push(py)
+  let idx = 0
+  voxels.forEach((v) => {
+    const isEye = v.color.toLowerCase() === '#3a2e5c'
+    for (let sx = 0; sx < SUB; sx++) {
+      for (let sy = 0; sy < SUB; sy++) {
+        const px = (v.x - COLS / 2 + 0.5) * S + (sx - (SUB - 1) / 2) * s2
+        const py = (ROWS / 2 - v.y - 0.5) * S + ((SUB - 1 - sy) - (SUB - 1) / 2) * s2
+        for (let layer = 0; layer < 2; layer++) {
+          m.setPosition(px, py, (layer - 0.5) * S * 1.1)
+          mesh.setMatrixAt(idx, m)
+          const jitter = isEye ? 1 : 0.93 + ((sx * 3 + sy * 5 + layer * 2) % 4) * 0.023
+          mesh.setColorAt(idx, color.set(v.color).multiplyScalar((layer === 0 ? 1 : 0.72) * jitter))
+          if (isEye && layer === 0) {
+            eyeIndices.push(idx)
+            eyeBaseY.push(py)
+          }
+          idx++
+        }
       }
     }
   })
   mesh.instanceMatrix.needsUpdate = true
-  witchGroup.add(mesh)
+
   witchGroup.rotation.y = targetRotY
   witchGroup.rotation.x = targetRotX
   scene.add(witchGroup)

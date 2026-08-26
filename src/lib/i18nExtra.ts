@@ -151,7 +151,7 @@ export const OMENS: Pair[] = [
   ['别急着回那条让你不舒服的消息，晾它一晚上。', 'Don\'t reply to that irritating message yet. Let it sit overnight.'],
   ['直觉在保护你，但这次它把警报调得太高了。', 'Your gut protects you, but this time the alarm is set too high.'],
   ['适合重启那个半途而废的计划，从第二步开始，不用从头。', 'Restart that abandoned plan — from step two. No need to start over.'],
-  ['有人会给你递台阶，记得下，别硬撑在原地。', 'Someone offers you an exit. Take it instead of holding your ground.'],
+  ['有人会给你递台阶，记得下，别硬撑在原地。', 'Someone offers you a graceful exit. Take it instead of standing your ground.'],
   ['今天运气藏在排队、等车的缝隙里，别塞双耳耳机。', 'Luck hides in queues and waiting rooms today. Leave one earbud out.'],
   ['那笔犹豫要不要花的钱，睡一晚再决定。', 'That purchase you keep hesitating over? Sleep on it once.'],
   ['适合给爸妈打个电话，说什么不重要，打这个动作重要。', 'Call your parents. The topic doesn\'t matter; the call does.'],
@@ -164,11 +164,11 @@ export const OMENS: Pair[] = [
   ['别替别人着急，他们的功课有他们的进度。', 'Stop rushing other people\'s lessons. Their timeline is theirs.'],
   ['今晚适合关灯听一首老歌，给情绪放个短假。', 'Lights off, one old song tonight. Give your feelings a short break.'],
   ['你想的那件事成不成就在这两周，撑住别松手。', 'The thing you want settles within two weeks. Hold on.'],
-  ['适合把头像换掉，「新气象」这种事有一点用。', 'Change that old avatar. Fresh-start superstition half works.'],
+  ['适合把头像换掉，「新气象」这种事有一点用。', 'Change that old avatar. New-look superstition works about half the time.'],
   ['有人在模仿你，别烦，这是没写进法律的恭维。', 'Someone copies you. Annoying — but it\'s flattery without a statute.'],
   ['今天效率高峰在上午十点前后，要紧事往那儿放。', 'Peak focus lands around ten this morning. Put the hard thing there.'],
-  ['少跟那个人讲道理，讲赢了你也是输。', 'Skip the debate with that person. Even winning it loses.'],
-  ['适合存一笔「底气钱」，数目不论，在那儿就行。', 'Stash a small confidence fund. Amount irrelevant; existence matters.'],
+  ['少跟那个人讲道理，讲赢了你也是输。', 'Skip the debate with that person. Even winning it costs you.'],
+  ['适合存一笔「底气钱」，数目不论，在那儿就行。', 'Stash a small "confidence fund." The amount doesn\'t matter; its existence does.'],
   ['你最近笑得少了，去找点好笑的东西，这不叫浪费时间的。', 'You\'ve been smiling less lately. Go find something funny — it counts as maintenance.'],
   ['那个群可以免打扰了，天塌不下来。', 'Mute that group chat. The sky will hold.'],
   ['适合睡前把明天的东西摆好，明早的你会有如神助。', 'Lay out tomorrow tonight. Morning-you gets divine assistance.'],
@@ -182,7 +182,7 @@ export const OMENS: Pair[] = [
   ['今天是非绕着你走，因为你上周嘴下留了情。', 'Gossip detours around you today — payment for last week\'s held tongue.'],
   ['适合学个没用的小技能，快乐的一大配方就是无用。', 'Learn something useless today. Uselessness is a secret ingredient of joy.'],
   ['别把计划说太满，说七分，留三分给变化。', 'Share seven-tenths of any plan. Keep three for surprises.'],
-  ['今晚早睡一小时，明天的问题会自己缩小一号。', 'Sleep an hour early tonight. Tomorrow\'s problems shrink a size.'],
+  ['今晚早睡一小时，明天的问题会自己缩小一号。', 'Sleep an hour earlier tonight, and tomorrow\'s problems shrink a size.'],
 ]
 
 /* ---------- 行星时活动宜忌 ---------- */

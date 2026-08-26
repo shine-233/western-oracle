@@ -35,10 +35,20 @@ const mood = computed<MoodKey>(() => {
 
 const line = computed(() => who.value.moods[mood.value][zh.value ? 'zh' : 'en'])
 
-/* 像素小人（与体素同源） */
+/* 像素小人（与体素同源）+ 邻接微着色 */
 const pixels = computed(() => {
   const def = MASCOTS[who.value.id]
-  return def ? mascotVoxels(def) : []
+  if (!def) return []
+  const out: Array<{ x: number; y: number; color: string }> = []
+  const rows = def.sprite
+  const same = (y: number, x: number, ch: string): boolean => rows[y]?.[x] === ch
+  mascotVoxels(def).forEach((v) => {
+    let f = 1
+    if (!same(v.y + 1, v.x, def.sprite[v.y]?.[v.x] ?? '')) f = 0.86
+    else if (!same(v.y - 1, v.x, v.color === def.sprite[v.y]?.[v.x] ? def.sprite[v.y]![v.x]! : '\0')) f = 1.07
+    out.push({ x: v.x, y: v.y, color: f === 1 ? v.color : shadeHex(v.color, f) })
+  })
+  return out
 })
 const gridW = computed(() => {
   const def = MASCOTS[who.value.id]
@@ -95,15 +105,15 @@ const MOOD_FACE: Record<MoodKey, string> = { great: '🌟', good: '🌤️', meh
   margin-top: 20px;
 }
 .react-sprite {
-  width: 64px;
+  width: 76px;
   flex-shrink: 0;
   image-rendering: pixelated;
   filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.4));
   animation: react-bounce 3.2s ease-in-out infinite;
 }
 @keyframes react-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-4px) rotate(2.5deg); }
 }
 .react-bubble {
   position: relative;

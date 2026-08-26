@@ -126,3 +126,75 @@ export function houseFullTextEn(house: number): string | null {
   if (!hit) return null
   return `【House ${house}】Keywords: ${hit.keywords.join(' / ')}\n${hit.theme}`
 }
+
+/* ---------- 行星英文短档：role / focus / detail ---------- */
+
+export interface PlanetEn {
+  role: string
+  focus: string
+  detail: string
+}
+
+export const PLANET_EN: Record<string, PlanetEn> = {
+  Sun: { role: 'the lead melody of your life', focus: 'identity and vitality', detail: 'The Sun answers "who am I" — core will, dignity, creativity. Its sign is your base note; its house, your main stage.' },
+  Moon: { role: 'your inner tide', focus: 'emotional needs & safety', detail: 'The Moon answers "what makes me feel safe": instincts, habits, the shell you retreat into — and your private line to home.' },
+  Mercury: { role: "the mind's translator", focus: 'thinking, learning, talk', detail: 'Mercury shapes how you take in and send out information: speech style, learning method, the flavor of your humor.' },
+  Venus: { role: 'love & beauty sensor', focus: 'love, aesthetics, values', detail: 'Venus runs two desks: how you love, and what you find beautiful. It also holds the values ledger — what you pay for, in money and time.' },
+  Mars: { role: 'the drive engine', focus: 'action, desire, competition', detail: 'Mars is how you step on the gas: chasing wants, expressing anger, making moves. Flowing Mars is not aggressive — it simply reaches for what it wants.' },
+  Jupiter: { role: "luck's amplifier", focus: 'chance, faith, expansion', detail: 'Jupiter marks where life feels generous — and your belief system. It expands whatever it touches: luck, confidence, occasionally over-optimism.' },
+  Saturn: { role: 'the strict mentor', focus: 'lessons, discipline, achievement', detail: 'Saturn is where life grades you: delayed rewards, earned authority, structures that outlast moods.' },
+  Uranus: { role: 'the lightning rewirer', focus: 'freedom & disruption', detail: 'Uranus flips switches you did not know existed — originality, sudden turns, liberation through shock.' },
+  Neptune: { role: 'the dream projector', focus: 'dreams, art, spirituality', detail: 'Neptune dissolves borders: imagination, compassion, and occasional fog. Your muse and your mirage share this address.' },
+  Pluto: { role: 'the deep renovator', focus: 'power & transformation', detail: "Plato's quieter cousin renovates basements of the psyche — endings that compost into power." },
+  Chiron: { role: 'the wounded healer', focus: 'old wounds & gifts', detail: 'Chiron marks the ache that became expertise — where you heal others because you had to heal yourself.' },
+  Lilith: { role: 'the wild untamed', focus: 'repressed desire', detail: 'Lilith keeps the appetite you were told to hide — raw autonomy, magnetism, unapologetic want.' },
+  NorthNode: { role: 'the growth compass', focus: 'soul direction', detail: 'The North Node points at unfamiliar territory that grows you — uncomfortable on purpose.' },
+  SouthNode: { role: 'the old comfort', focus: 'past-life habits', detail: 'The South Node is your default setting — fluent, cozy, and exactly where growth does not live.' },
+  Ceres: { role: 'the nurturer', focus: 'care & nourishment', detail: 'Ceres governs how you feed and are fed — food, touch, and the rituals of care.' },
+  Pallas: { role: 'the strategist', focus: 'pattern & planning', detail: 'Pallas weaves patterns: strategy, craft-wisdom, seeing the board ten moves ahead.' },
+  Juno: { role: 'the commitment keeper', focus: 'partnership needs', detail: 'Juno drafts the fine print of commitment — what loyalty looks like when romance leaves the room.' },
+  Vesta: { role: 'the sacred flame', focus: 'focus & devotion', detail: 'Vesta guards your hearth — what deserves your undivided flame, and where you keep it lit.' },
+}
+
+/* ---------- 星座行事风格（英文一句版，供落座造句） ---------- */
+
+export const SIGN_EXPR_EN: Record<string, string> = {
+  Aries: 'direct, pioneering, running hot',
+  Taurus: 'steady, sensory, built to last',
+  Gemini: 'quick, curious, talking in tabs',
+  Cancer: 'caring, indirect, memory-powered',
+  Leo: 'warm, dramatic, center-stage',
+  Virgo: 'precise, helpful, quietly exacting',
+  Libra: 'fair, charming, weighing every side',
+  Scorpio: 'intense, private, all-or-nothing',
+  Sagittarius: 'blunt, roaming, meaning-hungry',
+  Capricorn: 'patient, structured, summit-bound',
+  Aquarius: 'original, detached, three steps ahead',
+  Pisces: 'dreamy, empathic, borderless',
+}
+
+/** 「行星落星座」英文组合解读 */
+export function planetInSignTextEn(planetKey: string, signIndex: number): string | null {
+  const names = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces']
+  const p = PLANET_EN[planetKey]
+  const sign = names[((signIndex % 12) + 12) % 12]!
+  if (!p) return null
+  const expr = SIGN_EXPR_EN[sign] ?? 'uniquely itself'
+  return [
+    `Your ${planetKey} (${p.role}) sits in ${sign}.`,
+    `Here, ${p.focus} runs ${expr}.`,
+    `In other words: ${p.detail} — all of it tinted in ${sign}'s filter.`,
+  ].join('\n')
+}
+
+/** 「行星落宫位」英文组合解读 */
+export function planetInHouseTextEn(planetKey: string, house: number): string | null {
+  const p = PLANET_EN[planetKey]
+  const h = HOUSE_EN[house]
+  if (!p || !h) return null
+  return [
+    `${planetKey} moves into House ${house} — ${h.theme}`,
+    `So ${p.focus} becomes the main storyline in these matters: ${h.keywords.join(', ')}.`,
+    `${p.detail}`,
+  ].join('\n')
+}

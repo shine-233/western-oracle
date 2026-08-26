@@ -435,6 +435,12 @@ const selInfo = computed(() => {
   transition: stroke-width 0.2s ease, opacity 0.25s ease;
 }
 .asp-line:hover { opacity: 1 !important; stroke-width: calc(var(--w) * 3); }
+/* 透明命中克隆：只负责接事件，永不显示；聚焦时给信息条即可（见 selInfo） */
+.asp-hit {
+  pointer-events: stroke;
+  cursor: pointer;
+  outline: none;
+}
 .asp-line.muted { opacity: 0.05 !important; animation: none; stroke-width: 0.6; }
 .asp-line.hot {
   opacity: 1 !important;

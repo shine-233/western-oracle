@@ -739,6 +739,7 @@ const now = clock.getElapsedTime()
       sx *= 1.13
     }
     petGroup.scale.set(sx, sy, sx)
+    if (!dragging && !asleep.value) petGroup.rotation.z = Math.sin(now * 0.9) * 0.02 // 醒着时轻轻摇
     petGroup.position.y = Math.sin(now * (asleep.value ? 0.8 : 1.5)) * (asleep.value ? 0.08 : 0.18) + jumpOffset
   }
   if (starField) starField.rotation.y = now * (asleep.value ? 0.05 : 0.14)

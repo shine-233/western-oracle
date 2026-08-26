@@ -33,6 +33,11 @@ export function installMouseReveal(): void {
   const style = document.createElement('style')
   style.textContent = `
 .mouse-reveal-layer{
+  /* 层叠契约：本层 z-index:-1 + pointer-events:none ——
+     星尘藏在面板之下、页面底色之上，光标扫过面板间隙时"显影"。
+     -1 保证永不遮挡任何交互与浮层（弹窗 z2000 / 学徒弹幕 z9400 /
+     CRT 覆层 z9990 / 进度条 z9999）；body 需保持透明或半透明底，
+     若给 body 加不透明背景会盖住本层。改层级前先核对这些浮层。 */
   position:fixed; inset:0; z-index:-1; pointer-events:none;
   opacity:0; transition:opacity .6s ease;
   -webkit-mask-image:radial-gradient(circle var(--mr-r,170px) at var(--mr-x,-500px) var(--mr-y,-500px), #000 30%, transparent 75%);

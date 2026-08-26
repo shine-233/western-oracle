@@ -1,4 +1,5 @@
 import { signFullTextEn, houseFullTextEn } from './corpusEn'
+import { planetInSignTextEn, planetInHouseTextEn } from './corpusEn'
 import { locale } from '../lib/i18n'
 /**
  * 占星语义层语料库：12 星座 / 12 宫位 / 相位含义 / 扩展星体 / 格局。
@@ -331,6 +332,10 @@ export const PATTERNS_CN: Record<string, { cn: string; desc: string }> = {
 
 /** 「行星落星座」组合解读 */
 export function planetInSignText(planetKey: string, signIndex: number): string {
+  if (locale.value === 'en') {
+    const en = planetInSignTextEn(planetKey, signIndex)
+    if (en) return en
+  }
   const p = PLANETS[planetKey]
   const s = SIGNS[signIndex % 12]
   if (!p || !s) return ''
@@ -341,6 +346,10 @@ export function planetInSignText(planetKey: string, signIndex: number): string {
 
 /** 「行星落宫位」组合解读 */
 export function planetInHouseText(planetKey: string, house: number): string {
+  if (locale.value === 'en') {
+    const en = planetInHouseTextEn(planetKey, house)
+    if (en) return en
+  }
   const p = PLANETS[planetKey]
   const h = HOUSES[(house || 1) - 1]
   if (!p || !h) return ''
