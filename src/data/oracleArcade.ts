@@ -30,11 +30,11 @@ export const PLANET_FACES: DieFace[] = [
 /** 领域骰：六面 */
 export const REALM_FACES: DieFace[] = [
   { glyph: '♥', zh: '感情', en: 'Love', zhRole: '感情的事', enRole: 'matters of the heart' },
-  { glyph: '💰', zh: '钱财', en: 'Money', zhRole: '钱袋的事', enRole: 'money matters' },
-  { glyph: '💼', zh: '事业', en: 'Career', zhRole: '工作与事业', enRole: 'work and career' },
-  { glyph: '🌱', zh: '健康', en: 'Health', zhRole: '身体和精力', enRole: 'body and energy' },
-  { glyph: '📚', zh: '学习', en: 'Study', zhRole: '学习和输入', enRole: 'study and input' },
-  { glyph: '🧭', zh: '出行', en: 'Travel', zhRole: '出门与远行', enRole: 'trips and getting around' },
+  { glyph: '❖', zh: '钱财', en: 'Money', zhRole: '钱袋的事', enRole: 'money matters' },
+  { glyph: '▲', zh: '事业', en: 'Career', zhRole: '工作与事业', enRole: 'work and career' },
+  { glyph: '✚', zh: '健康', en: 'Health', zhRole: '身体和精力', enRole: 'body and energy' },
+  { glyph: '☰', zh: '学习', en: 'Study', zhRole: '学习和输入', enRole: 'study and input' },
+  { glyph: '⚑', zh: '出行', en: 'Travel', zhRole: '出门与远行', enRole: 'trips and getting around' },
 ]
 
 /** 拼组合解读句 */
@@ -46,7 +46,8 @@ export function diceReading(p: DieFace, r: DieFace): string {
 /* ================= 命运转盘 ================= */
 
 export interface WheelSector {
-  emoji: string
+  /** 单色主题符号（不用彩色 emoji，和站内像素风统一） */
+  glyph: string
   zh: string
   en: string
   zhLine: string
@@ -55,14 +56,14 @@ export interface WheelSector {
 }
 
 export const WHEEL_SECTORS: WheelSector[] = [
-  { emoji: '🌟', zh: '大吉', en: 'Great Luck', zhLine: '今天宇宙手滑，把好东西多塞了你一份。收好，别声张。', enLine: 'The universe overpaid you today. Pocket it quietly.', color: '#f5c86e' },
-  { emoji: '💗', zh: '桃花', en: 'Romance', zhLine: '有人的目光在你身上多停了一秒。抬头，别装没看见。', enLine: "Someone's gaze lingered a second too long. Look up — don't pretend you missed it.", color: '#ff9fce' },
-  { emoji: '🪙', zh: '财气', en: 'Fortune', zhLine: '小财在路上了：一笔进账、一个折扣、或者口袋里翻出的十块钱。', enLine: 'Small money inbound: a payment, a discount, or a bill forgotten in a pocket.', color: '#7de8c3' },
-  { emoji: '🌀', zh: '变动', en: 'Change', zhLine: '有个计划该改道了。不是失败，是导航重新规划路线。', enLine: 'A plan wants rerouting. Not failure — just GPS doing its job.', color: '#a9c4e8' },
-  { emoji: '🤝', zh: '贵人', en: 'Helper', zhLine: '今天开口求助的成功率比平时高。那个一直想找的人，去找吧。', enLine: 'Asking for help works unusually well today. Go find that person you keep meaning to ask.', color: '#b3a6f7' },
-  { emoji: '📖', zh: '学习', en: 'Insight', zhLine: '有个困惑会突然"啊——"地通。准备好纸笔或备忘录。', enLine: 'A confusion is about to click into place. Keep notes ready.', color: '#8fd0ff' },
-  { emoji: '🛌', zh: '休整', en: 'Rest', zhLine: '轮盘让你躺就躺一会儿。这不是偷懒，是充电，充的是你的电。', enLine: 'The wheel says lie down. That is not laziness; that is charging your own battery.', color: '#c9b8ff' },
-  { emoji: '⚔️', zh: '考验', en: 'Trial', zhLine: '会有一件小事不顺。它只负责试音，不负责定调，别加戏。', enLine: 'One small thing will snag. It tests the waters; it does not decide the weather.', color: '#ffb37a' },
+  { glyph: '★', zh: '大吉', en: 'Great Luck', zhLine: '今天宇宙手滑，把好东西多塞了你一份。收好，别声张。', enLine: 'The universe overpaid you today. Pocket it quietly.', color: '#f5c86e' },
+  { glyph: '♡', zh: '桃花', en: 'Romance', zhLine: '有人的目光在你身上多停了一秒。抬头，别装没看见。', enLine: "Someone's gaze lingered a second too long. Look up — don't pretend you missed it.", color: '#ff9fce' },
+  { glyph: '◆', zh: '财气', en: 'Fortune', zhLine: '小财在路上了：一笔进账、一个折扣、或者口袋里翻出的十块钱。', enLine: 'Small money inbound: a payment, a discount, or a bill forgotten in a pocket.', color: '#7de8c3' },
+  { glyph: '↻', zh: '变动', en: 'Change', zhLine: '有个计划该改道了。不是失败，是导航重新规划路线。', enLine: 'A plan wants rerouting. Not failure — just GPS doing its job.', color: '#a9c4e8' },
+  { glyph: '✚', zh: '贵人', en: 'Helper', zhLine: '今天开口求助的成功率比平时高。那个一直想找的人，去找吧。', enLine: 'Asking for help works unusually well today. Go find that person you keep meaning to ask.', color: '#b3a6f7' },
+  { glyph: '☰', zh: '学习', en: 'Insight', zhLine: '有个困惑会突然"啊——"地通。准备好纸笔或备忘录。', enLine: 'A confusion is about to click into place. Keep notes ready.', color: '#8fd0ff' },
+  { glyph: '☾', zh: '休整', en: 'Rest', zhLine: '轮盘让你躺就躺一会儿。这不是偷懒，是充电，充的是你的电。', enLine: 'The wheel says lie down. That is not laziness; that is charging your own battery.', color: '#c9b8ff' },
+  { glyph: '✶', zh: '考验', en: 'Trial', zhLine: '会有一件小事不顺。它只负责试音，不负责定调，别加戏。', enLine: 'One small thing will snag. It tests the waters; it does not decide the weather.', color: '#ffb37a' },
 ]
 
 /* ================= 神谕签筒（德尔斐 Cleromancy 抽签） ================= */

@@ -6,6 +6,7 @@ import { t } from '../lib/i18n'
 import { addHistory } from '../lib/history'
 import { L } from '../data/oracleArcade'
 import { isSoundOn, sfx } from '../lib/sfx'
+import { loadJSON, saveJSON, migrateRaw } from '../lib/storage'
 import { sparkleFromEvent } from '../lib/sparkle'
 import DecryptTitle from '../components/DecryptTitle.vue'
 import ApprenticeReact from '../components/ApprenticeReact.vue'
@@ -30,7 +31,7 @@ interface Pattern {
 const PATTERNS: Pattern[] = [
   {
     id: 'moon', name: ['月相呼吸', 'Moon breath'], glyph: '☾',
-    desc: ['吸4 · 屏4 · 呼6 —— 跟着月相涨落，最经典的一套', 'in 4 · hold 4 · out 6 — follow the moon’s tide'],
+    desc: ['吸4 · 屏4 · 呼6，跟着月相涨落，最经典的一套', 'in 4 · hold 4 · out 6 — follow the moon’s tide'],
     targetRounds: 3,
     steps: [
       { key: 'in', label: ['吸气', 'Breathe in'], secs: 4 },
@@ -40,7 +41,7 @@ const PATTERNS: Pattern[] = [
   },
   {
     id: 'sleep', name: ['安睡吐纳', 'Sleep 4-7-8'], glyph: '✧',
-    desc: ['吸4 · 屏7 · 呼8 —— 拉长呼气哄神经系统入睡', 'in 4 · hold 7 · out 8 — the long exhale that lulls the nerves'],
+    desc: ['吸4 · 屏7 · 呼8，长呼气哄神经系统入睡', 'in 4 · hold 7 · out 8 — the long exhale that lulls the nerves'],
     targetRounds: 4,
     steps: [
       { key: 'in', label: ['吸气', 'Breathe in'], secs: 4 },
@@ -50,7 +51,7 @@ const PATTERNS: Pattern[] = [
   },
   {
     id: 'box', name: ['方箱呼吸', 'Box breathing'], glyph: '□',
-    desc: ['吸4 · 屏4 · 呼4 · 再屏4 —— 四边等长，稳住注意力', 'in 4 · hold 4 · out 4 · hold 4 — four equal sides for a steady mind'],
+    desc: ['吸4 · 屏4 · 呼4 · 再屏4，四边等长，稳住注意力', 'in 4 · hold 4 · out 4 · hold 4 — four equal sides for a steady mind'],
     targetRounds: 4,
     steps: [
       { key: 'in', label: ['吸气', 'Breathe in'], secs: 4 },
@@ -68,6 +69,10 @@ const steps = computed(() => pat.value.steps)
 function pickPattern(i: number): void {
   stop()
   patternIdx.value = i
+  // 换节拍清空进度：上一套的轮数不该顶在这套的目标点上
+  round.value = 0
+  stepIdx.value = 0
+  stepLeft.value = PATTERNS[i]!.steps[0]!.secs
   sfx.blip()
 }
 
@@ -161,24 +166,22 @@ interface BreathLog {
   today: string
   todayCount: number
 }
-const LOG_KEY = 'wo.moonbreath'
+const LOG_KEY = 'moonbreath-log'
+// 老版本用裸键 wo.moonbreath，搬一次家
+migrateRaw('wo.moonbreath', LOG_KEY)
 function dayKey(d = new Date()): string {
   return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
 }
 function loadLog(): BreathLog {
-  try {
-    const raw = JSON.parse(localStorage.getItem(LOG_KEY) ?? 'null') as BreathLog | null
-    if (raw && typeof raw.total === 'number') {
-      return raw.today === dayKey() ? raw : { ...raw, today: dayKey(), todayCount: 0 }
-    }
-  } catch { /* ignore */ }
+  const raw = loadJSON<BreathLog | null>(LOG_KEY, null)
+  if (raw && typeof raw.total === 'number') {
+    return raw.today === dayKey() ? raw : { ...raw, today: dayKey(), todayCount: 0 }
+  }
   return { total: 0, today: dayKey(), todayCount: 0 }
 }
 const log = ref<BreathLog>(loadLog())
 function saveLog(): void {
-  try {
-    localStorage.setItem(LOG_KEY, JSON.stringify(log.value))
-  } catch { /* ignore */ }
+  saveJSON(LOG_KEY, log.value)
 }
 function awardStar(): void {
   log.value.total += 1
@@ -188,10 +191,15 @@ function awardStar(): void {
   }
   log.value.todayCount += 1
   saveLog()
+  // 节拍直接由当前步骤生成，换模式不会记错
+  const beat = steps.value.map((s) => s.secs).join('-')
   addHistory({
     type: 'moonbreath',
-    label: '月亮呼吸室',
-    summary: `完成一轮 4-4-6 呼吸 ✦ 累计 ${log.value.total} 颗星`,
+    label: L(['月相呼吸房', 'Moon Breath Room']),
+    summary: L([
+      `完成一轮 ${beat} 呼吸 ✦ 累计 ${log.value.total} 颗星`,
+      `One ${beat} round done ✦ ${log.value.total} stars banked in all`,
+    ]),
   })
 }
 
@@ -233,7 +241,7 @@ const phaseLabel = computed(() => t(`moon.${phase.index}.name`))
       <div class="ring-wrap">
         <div class="sky-dust" :style="{ opacity: Math.min(1, Math.max(0.15, skyGlow)) }" />
         <div class="halo-ring" :style="{ transform: `scale(${(Number(ringScale) || 1) * 1.35})` }" />
-        <div class="breath-ring" :style="{ transform: `scale(${ringScale})` }">
+        <div class="breath-ring" :style="{ transform: `scale(${ringScale})` }" :class="{ grabbable: !running }" title="点击开始/暂停" @click="toggle()">
           <span class="phase-word">{{ running ? L([currentPhase.label[0], currentPhase.label[1]]) : L(['准备好了吗', 'Ready?']) }}</span>
           <span v-if="running" class="count-num">{{ stepLeft }}</span>
           <span v-else class="count-num">☾</span>
@@ -252,14 +260,14 @@ const phaseLabel = computed(() => t(`moon.${phase.index}.name`))
       <button class="btn breath-btn" @click="toggle($event)">
         {{ running ? L(['停下来', 'Pause']) : L(['开始一轮', 'Begin a round']) }}
       </button>
-      <Transition name="pop">
-        <p v-if="round >= pat.targetRounds" class="done-note pop">
-          {{ L([
-            `${pat.targetRounds}轮完成，${log.todayCount}颗星进账。月亮看见了——去睡吧，或者去干点真正想干的。`,
-            `${pat.targetRounds} rounds done, ${log.todayCount} stars banked. The moon saw it — go sleep, or go do the thing you truly want.`,
-          ]) }}
-        </p>
-      </Transition>
+        <Transition name="pop">
+          <p v-if="round >= pat.targetRounds" class="done-note pop">
+            {{ L([
+              `${pat.targetRounds}轮完成，这轮练习进账 ${Math.min(round, 12)} 颗星。月亮看见了。去睡吧，或者去干点真正想干的。`,
+              `${pat.targetRounds} rounds done — ${Math.min(round, 12)} stars this sitting. The moon saw it. Go sleep, or go do the thing you truly want.`,
+            ]) }}
+          </p>
+        </Transition>
     </section>
   </div>
 </template>
@@ -345,8 +353,10 @@ const phaseLabel = computed(() => t(`moon.${phase.index}.name`))
   place-items: center;
   align-content: center;
   gap: 4px;
-  transition: transform 1s linear;
+  transition: transform 1s linear, box-shadow 0.3s;
 }
+.breath-ring.grabbable { cursor: pointer; }
+.breath-ring.grabbable:hover { box-shadow: 0 0 44px rgba(245, 200, 110, 0.55), inset 0 0 34px rgba(107, 91, 214, 0.5); }
 .phase-word { font-family: var(--cute); color: var(--gold-bright); font-size: 1.15rem; letter-spacing: 0.2em; }
 .count-num { font-family: var(--pixel); font-size: 1.5rem; color: #fff; }
 

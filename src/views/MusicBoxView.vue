@@ -37,7 +37,11 @@ let analyser: AnalyserNode | null = null
 let specData: Uint8Array | null = null
 
 function ensureAudio(): void {
-  if (ctx) return
+  if (ctx) {
+    // iOS 上已建的 context 可能仍停在 suspended，每次进曲前补一次 resume
+    if (ctx.state === 'suspended') void ctx.resume()
+    return
+  }
   ctx = new AudioContext()
   master = ctx.createGain()
   master.gain.value = 0.55
@@ -145,6 +149,26 @@ function generate(e?: MouseEvent): void {
   if (e) sparkleFromEvent(e, 6)
 }
 
+/** 手工编辑：点一下升一个音（空→宫→商→角…→摇光→空），点到哪个音当场奏哪个 */
+function cycleCell(i: number): void {
+  const cur = sequence.value[i] ?? -1
+  const next = cur + 1 >= STARS.length ? null : cur + 1
+  sequence.value[i] = next
+  if (next !== null) {
+    playNote(STARS[next]!.freq)
+    lightStar(next)
+  } else {
+    sfxBlip()
+  }
+}
+
+/** 右键/长按清格 */
+function clearCell(i: number): void {
+  if (sequence.value[i] === null) return
+  sequence.value[i] = null
+  sfxBlip()
+}
+
 function sfxBlip(): void {
   playNote(STARS[0]!.freq * (Math.random() < 0.5 ? 1 : 2))
 }
@@ -226,6 +250,9 @@ function removeTune(at: number): void {
 
 /* ---------- 导出：WAV 音频 + 星谱分享卡 ---------- */
 const exporting = ref(false)
+/** 导出失败的可见提示（以前失败只响个音效，用户根本不知道发生了什么） */
+const exportFailed = ref(false)
+let exportFailTimer = 0
 
 /** 离线渲染当前旋律（复刻在线合成链：三角波主音 ×2 泛音 + 回声） */
 async function renderOffline(): Promise<AudioBuffer> {
@@ -331,14 +358,21 @@ async function exportWav(e?: MouseEvent): Promise<void> {
     if (e) sparkleFromEvent(e, 8)
   } catch {
     sfx.pop()
+    exportFailed.value = true
+    window.clearTimeout(exportFailTimer)
+    exportFailTimer = window.setTimeout(() => (exportFailed.value = false), 3200)
   } finally {
     exporting.value = false
   }
 }
 
 /** 把当前旋律画成一张星谱分享卡 PNG */
-function exportCard(e?: MouseEvent): void {
+async function exportCard(e?: MouseEvent): Promise<void> {
   if (!sequence.value.some((s) => s !== null)) return
+  // 等中文手写体真正就绪再落画布，否则分享卡标题会退化成默认字体
+  try {
+    if ('fonts' in document) await document.fonts.ready
+  } catch { /* 字体 API 不可用就直接画 */ }
   const cv = document.createElement('canvas')
   cv.width = 900
   cv.height = 500
@@ -426,6 +460,7 @@ onBeforeUnmount(() => {
   stopPlay()
   cancelAnimationFrame(specRaf)
   if (litTimer) window.clearTimeout(litTimer)
+  if (exportFailTimer) window.clearTimeout(exportFailTimer)
   // 关闭本页独立的 AudioContext（sfx.ts 的全局实例不归这里管）
   void ctx?.close().catch(() => {})
   ctx = null
@@ -440,10 +475,15 @@ let specRaf = 0
 function drawSpec(): void {
   specRaf = requestAnimationFrame(drawSpec)
   const cv = specCanvas.value
-  if (!cv || !analyser || !specData) return
-  analyser.getByteFrequencyData(specData as Uint8Array<ArrayBuffer>)
+  if (!cv) return
   const g = cv.getContext('2d')
   if (!g) return
+  // 没在出声（没建音频链、已停止、页面切走）时不烧 rAF：清一次屏就歇着
+  if (!analyser || !specData || !playing.value || document.hidden) {
+    g.clearRect(0, 0, cv.width, cv.height)
+    return
+  }
+  analyser.getByteFrequencyData(specData as Uint8Array<ArrayBuffer>)
   const W = cv.width
   const H = cv.height
   g.clearRect(0, 0, W, H)
@@ -465,8 +505,6 @@ function drawSpec(): void {
   }
 }
 
-onBeforeUnmount(() => cancelAnimationFrame(specRaf))
-
 onMounted(() => {
   drawSpec()
 })
@@ -482,7 +520,7 @@ const dust = Array.from({ length: 26 }, (_, i) => ({
 </script>
 
 <template>
-  <div class="page-root">
+  <div class="page-root mb-page">
     <h2><DecryptTitle :text="L(['星光八音盒', 'Starlight Music Box'])" /></h2>
     <p class="hint">{{ L([
       '北斗七星是一台八音盒：点星星演奏，或者让作曲家骰子替你写一首十六步的小曲。建议开着声音。',
@@ -541,31 +579,43 @@ const dust = Array.from({ length: 26 }, (_, i) => ({
             :key="i"
             class="seq-cell"
             :class="{ active: currentStep === i, filled: noteIdx !== null }"
-            :title="noteIdx !== null ? STARS[noteIdx]!.name[0] : '·'"
-            @click="sequence[i] = noteIdx === null ? Math.floor(Math.random() * STARS.length) : null; sfxBlip()"
+            :title="L(['每点一下升一个音，右键清掉', 'tap to raise the note, right-click to clear'])"
+            :aria-label="L(['第', 'step']) + (i + 1) + L(['步', ': ']) + (noteIdx !== null ? STARS[noteIdx]!.name[0] : L(['空', 'rest']))"
+            @click="cycleCell(i)"
+            @contextmenu.prevent="clearCell(i)"
           >
             <i v-if="noteIdx !== null" class="note-dot" />
           </button>
         </div>
+        <p class="seq-tip">{{ L([
+          '每格点一下升一个音（宫→商→角→徵→羽→高宫→高商→休止），右键长按可清掉',
+          'Each tap raises the step one pitch (Do→Re→Mi→Sol→La→Do↑→Re↑→rest); right-click clears',
+        ]) }}</p>
         <p v-if="playing" class="hint" style="margin: 10px 0 0; text-align: center;">
           {{ L(['♪ 正在播放你的小曲…再点一次停止', '♪ Playing your tune… tap again to stop']) }}
         </p>
       </div>
 
       <ApprenticeReact module="musicbox" :score="playing ? 88 : 60" />
+      <Transition name="fade-swap">
+        <p v-if="exportFailed" class="export-err">{{ L([
+          '这台浏览器不太配合，离线灌录失败了——换个 Chrome/Edge 试试',
+          'Offline render failed in this browser — try Chrome or Edge',
+        ]) }}</p>
+      </Transition>
       <div class="mb-actions">
-        <button class="btn ghost small" @click="generate($event)">🎲 {{ L(['换一首曲子', 'New tune']) }}</button>
+        <button class="btn ghost small" @click="generate($event)">{{ L(['换一首曲子', 'New tune']) }}</button>
         <button class="btn" @click="togglePlay">
           {{ playing ? L(['■ 停止', '■ Stop']) : L(['▶ 播放', '▶ Play']) }}
         </button>
         <button class="btn ghost small" :disabled="!sequence.some((s) => s !== null)" @click="saveTune">
-          💠 {{ L(['收藏这段', 'Save tune']) }}
+          ✦ {{ L(['收藏这段', 'Save tune']) }}
         </button>
         <button class="btn ghost small" :disabled="!sequence.some((s) => s !== null) || exporting" @click="exportWav($event)">
-          ⬇ {{ exporting ? L(['正在灌录…', 'Rendering…']) : L(['导出 WAV', 'Export WAV']) }}
+          {{ exporting ? L(['正在灌录…', 'Rendering…']) : L(['导出 WAV', 'Export WAV']) }}
         </button>
         <button class="btn ghost small" :disabled="!sequence.some((s) => s !== null)" @click="exportCard($event)">
-          🌠 {{ L(['星谱分享卡', 'Star-map card']) }}
+          {{ L(['星谱分享卡', 'Star-map card']) }}
         </button>
         <label class="tempo-ctl">
           ♪ {{ L(['节拍', 'Tempo']) }}
@@ -575,8 +625,13 @@ const dust = Array.from({ length: 26 }, (_, i) => ({
 
       <!-- 旋律收藏架 -->
       <div v-if="savedTunes.length" class="tune-shelf">
-        <span class="shelf-label">{{ L(['💠 收藏的曲子', '💠 Saved tunes']) }}</span>
-        <span v-for="t in savedTunes" :key="t.at" class="tune-chip" :title="L(['点按载入 · 长按名可删', 'click to load'])">
+        <span class="shelf-label">{{ L(['✦ 收藏的曲子', '✦ Saved tunes']) }}</span>
+        <span
+          v-for="(t, i) in savedTunes"
+          :key="`${t.at}-${i}`"
+          class="tune-chip"
+          :title="L(['点按载入 · 右侧 ✕ 删除', 'click to load, ✕ to delete'])"
+        >
           <button class="tune-load" @click="loadTune(t, $event)">♪ {{ t.name }}</button>
           <button class="tune-del" @click="removeTune(t.at)">✕</button>
         </span>
@@ -594,6 +649,9 @@ const dust = Array.from({ length: 26 }, (_, i) => ({
 </template>
 
 <style scoped>
+/* 星屑随文档流飘落（absolute + 相对定位根），避免滚动斜切时 fixed 层抖动 */
+.mb-page { position: relative; overflow: hidden; }
+
 .box-stage { position: relative; overflow: hidden; }
 .sky-svg { width: 100%; max-width: 640px; display: block; margin: 0 auto; }
 
@@ -683,6 +741,27 @@ const dust = Array.from({ length: 26 }, (_, i) => ({
 }
 
 .sequencer { margin-top: 8px; }
+.seq-tip {
+  margin: 8px 0 0;
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--ink-dim);
+  opacity: 0.75;
+}
+.export-err {
+  margin: 10px auto 0;
+  max-width: 380px;
+  text-align: center;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1.5px dashed rgba(255, 159, 120, 0.55);
+  color: #ffb98a;
+  font-size: 0.85rem;
+}
+.fade-swap-enter-active { transition: all 0.25s ease; }
+.fade-swap-enter-from { opacity: 0; transform: translateY(4px); }
+.fade-swap-leave-active { transition: all 0.5s ease; }
+.fade-swap-leave-to { opacity: 0; }
 .seq-grid { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
 .seq-cell {
   width: 34px;
@@ -704,7 +783,7 @@ const dust = Array.from({ length: 26 }, (_, i) => ({
 .mb-actions { display: flex; gap: 14px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
 
 .dust {
-  position: fixed;
+  position: absolute;
   top: -30px;
   color: rgba(255, 227, 168, 0.5);
   font-size: 0.8rem;

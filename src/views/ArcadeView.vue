@@ -17,7 +17,7 @@ import { sfx } from '../lib/sfx'
 import { addHistory } from '../lib/history'
 import { ALL_CARDS, cardImageUrl } from '../data/tarot'
 import { shuffle } from '../lib/random'
-import { loadJSON, saveJSON } from '../lib/storage'
+import { loadJSON, saveJSON, migrateRaw } from '../lib/storage'
 import CardBackArt from '../components/CardBackArt.vue'
 import DecryptTitle from '../components/DecryptTitle.vue'
 import PhysicsTable from '../components/PhysicsTable.vue'
@@ -70,8 +70,8 @@ function rollDice(e?: MouseEvent): void {
     rolling.value = false
     addHistory({
       type: 'arcade',
-      label: '占卜骰子',
-      summary: `${diceReading(PLANET_FACES[pi]!, REALM_FACES[ri]!)}`,
+      label: L(['占卜骰子', 'Dice']),
+      summary: diceReading(PLANET_FACES[pi]!, REALM_FACES[ri]!),
     })
   }, 1500)
 }
@@ -128,8 +128,8 @@ function spinWheel(e?: MouseEvent): void {
     const sec = WHEEL_SECTORS[pick]!
     addHistory({
       type: 'arcade',
-      label: '命运转盘',
-      summary: `${sec.emoji} ${sec.zh} —— ${sec.zhLine}`,
+      label: L(['命运转盘', 'Wheel']),
+      summary: `${sec.glyph} ${L([sec.zh, sec.en])} —— ${L([sec.zhLine, sec.enLine])}`,
     })
   }, 4200)
 }
@@ -163,9 +163,9 @@ function chooseLot(i: number, e: MouseEvent): void {
   const lot = slip.value!
   addHistory({
     type: 'arcade',
-    label: '德尔斐神签',
-    summary: `${RANK_LABEL[lot.rank][0]} · ${lot.zhPoem}`,
-    detail: `${lot.zhAdvice}\n${lot.enAdvice}`,
+    label: L(['德尔斐神签', 'Delphic Lots']),
+    summary: `${L(RANK_LABEL[lot.rank])} · ${L([lot.zhPoem, lot.enPoem])}`,
+    detail: L([lot.zhAdvice, lot.enAdvice]),
   })
 }
 
@@ -181,7 +181,9 @@ const memOpen = ref<number[]>([])
 const memMatched = ref<Set<string>>(new Set())
 const memMoves = ref(0)
 const memLock = ref(false)
-const memBest = ref<number | null>(loadJSON<number | null>('wo-memory-best', null))
+// 记忆圣殿最佳成绩：历史上误存成 wo-wo-memory-best，这里搬一次家
+migrateRaw('wo-wo-memory-best', 'memory-best')
+const memBest = ref<number | null>(loadJSON<number | null>('memory-best', null))
 const memWon = ref(false)
 
 function newMemory(e?: MouseEvent): void {
@@ -223,7 +225,7 @@ function flipMem(idx: number, e?: MouseEvent): void {
         sparkleFromEvent({ clientX: innerWidth / 2, clientY: innerHeight / 3 }, 24)
         if (memBest.value === null || memMoves.value < memBest.value) {
           memBest.value = memMoves.value
-          saveJSON('wo-memory-best', memMoves.value)
+          saveJSON('memory-best', memMoves.value)
         }
       }
     }
@@ -245,10 +247,10 @@ function flipMem(idx: number, e?: MouseEvent): void {
 
     <!-- 页签 -->
     <div class="arcade-tabs">
-      <button class="arcade-tab" :class="{ active: tab === 'dice' }" @click="switchTab('dice')">🎲 {{ L(['占卜骰子', 'Dice']) }}</button>
-      <button class="arcade-tab" :class="{ active: tab === 'wheel' }" @click="switchTab('wheel')">🎡 {{ L(['命运转盘', 'Wheel']) }}</button>
-      <button class="arcade-tab" :class="{ active: tab === 'sortition' }" @click="switchTab('sortition')">🏺 {{ L(['德尔斐神签', 'Delphic Lots']) }}</button>
-      <button class="arcade-tab" :class="{ active: tab === 'memory' }" @click="switchTab('memory')">🃏 {{ L(['记忆圣所', 'Memory']) }}</button>
+      <button class="arcade-tab" :class="{ active: tab === 'dice' }" @click="switchTab('dice')">{{ L(['占卜骰子', 'Dice']) }}</button>
+      <button class="arcade-tab" :class="{ active: tab === 'wheel' }" @click="switchTab('wheel')">{{ L(['命运转盘', 'Wheel']) }}</button>
+      <button class="arcade-tab" :class="{ active: tab === 'sortition' }" @click="switchTab('sortition')">{{ L(['德尔斐神签', 'Delphic Lots']) }}</button>
+      <button class="arcade-tab" :class="{ active: tab === 'memory' }" @click="switchTab('memory')">{{ L(['记忆圣所', 'Memory']) }}</button>
     </div>
 
     <!-- 骰子 -->
@@ -292,7 +294,7 @@ function flipMem(idx: number, e?: MouseEvent): void {
             text-anchor="middle"
             dominant-baseline="central"
             class="wheel-label"
-          >{{ s.emoji }}</text>
+          >{{ s.glyph }}</text>
           <circle cx="110" cy="110" r="12" fill="#2e2650" stroke="#f5c86e" stroke-width="2" />
         </svg>
       </div>
@@ -303,7 +305,7 @@ function flipMem(idx: number, e?: MouseEvent): void {
       </div>
       <Transition name="pop">
         <div v-if="wheelResult !== null" class="reading wheel-result">
-          <strong>{{ WHEEL_SECTORS[wheelResult]!.emoji }} {{ L([WHEEL_SECTORS[wheelResult]!.zh, WHEEL_SECTORS[wheelResult]!.en]) }}</strong>
+          <strong>{{ WHEEL_SECTORS[wheelResult]!.glyph }} {{ L([WHEEL_SECTORS[wheelResult]!.zh, WHEEL_SECTORS[wheelResult]!.en]) }}</strong>
           <p>{{ L([WHEEL_SECTORS[wheelResult]!.zhLine, WHEEL_SECTORS[wheelResult]!.enLine]) }}</p>
         </div>
       </Transition>
@@ -329,7 +331,7 @@ function flipMem(idx: number, e?: MouseEvent): void {
             :style="{ '--d': i * 0.09 + 's' }"
             @click="chooseLot(i, $event)"
           >
-            <span class="lot-glyph">🏺</span>
+            <span class="lot-glyph">✦</span>
             <small>{{ L(['第' + '一二三'[i] + '签', 'Lot ' + (i + 1)]) }}</small>
           </button>
         </div>
@@ -362,7 +364,7 @@ function flipMem(idx: number, e?: MouseEvent): void {
 
       <Transition name="pop">
         <p v-if="memWon" class="reading mem-win">
-          {{ L([`🎉 ${memMoves} 步通关！大阿卡纳记住了你的手法。`, `🎉 Cleared in ${memMoves} moves — the Majors approve of your technique.`]) }}
+          {{ L([`✦ ${memMoves} 步通关！大阿卡纳记住了你的手法。`, `✦ Cleared in ${memMoves} moves — the Majors approve of your technique.`]) }}
         </p>
       </Transition>
 
@@ -386,14 +388,15 @@ function flipMem(idx: number, e?: MouseEvent): void {
     </section>
   </div>
     <section v-reveal class="panel arcade-panel" style="margin-top: 18px;">
-      <h3 style="margin: 0 0 12px; font-family: var(--cute); color: var(--gold-bright); font-weight: 400;">🃏 {{ L(['自由牌桌 · 抓牌解压', 'Free Table · Grab & Fling']) }}</h3>
+      <h3 style="margin: 0 0 12px; font-family: var(--cute); color: var(--gold-bright); font-weight: 400;">{{ L(['✦ 自由牌桌 · 抓牌解压', '✦ Free Table · Grab & Fling']) }}</h3>
       <PhysicsTable />
     </section>
     <section v-reveal class="panel arcade-panel" style="margin-top: 18px;">
-      <h3 style="margin: 0 0 12px; font-family: var(--cute); color: var(--gold-bright); font-weight: 400;">⚡ {{ L(['记忆闪回 · 四十秒挑战', 'Memory Flash · 40-Second Dash']) }}</h3>
+      <h3 style="margin: 0 0 12px; font-family: var(--cute); color: var(--gold-bright); font-weight: 400;">{{ L(['» 记忆闪回 · 四十秒挑战', '» Memory Flash · 40-Second Dash']) }}</h3>
       <MemoryFlash />
     </section>
-    <ApprenticeReact module="arcade" :score="wheelResult !== null ? 85 : 65" />
+    <!-- 学徒只在玩出结果后开口，不再常驻刷存在感 -->
+    <ApprenticeReact v-if="dicePair || wheelResult !== null || slip" module="arcade" :score="wheelResult !== null ? 85 : dicePair ? 72 : 78" />
 </template>
 
 <style scoped>
@@ -542,10 +545,10 @@ function flipMem(idx: number, e?: MouseEvent): void {
   text-align: center;
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
 }
-.omi-slip.rank-daikichi { border-top: 6px solid #e0483e; }
-.omi-slip.rank-kichi { border-top: 6px solid #e09a3e; }
-.omi-slip.rank-suekichi { border-top: 6px solid #6ba36b; }
-.omi-slip.rank-kyo { border-top: 6px solid #5a6bd6; }
+.omi-slip.rank-blessed { border-top: 6px solid #e0483e; }
+.omi-slip.rank-favored { border-top: 6px solid #e09a3e; }
+.omi-slip.rank-quiet { border-top: 6px solid #6ba36b; }
+.omi-slip.rank-turning { border-top: 6px solid #7c5bd6; }
 .omi-rank { font-family: var(--cute); font-size: 1.5rem; letter-spacing: 0.3em; display: block; }
 .omi-poem { font-style: italic; margin: 10px 0 6px; opacity: 0.85; }
 .omi-advice { margin: 0; line-height: 1.8; }

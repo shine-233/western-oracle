@@ -19,6 +19,7 @@ const SECTION_OF: Record<string, string> = {
   life: 'line_of_life',
   fate: 'line_of_destiny',
   sun: 'line_of_sun',
+  marriage: 'marriage',
   venus: 'mount_venus',
   jupiter: 'mount_jupiter',
   saturn: 'mount_saturn',

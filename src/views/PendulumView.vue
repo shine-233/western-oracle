@@ -256,6 +256,8 @@ function onBobDown(e: PointerEvent): void {
   answer.value = null
   window.addEventListener('pointermove', onBobMove)
   window.addEventListener('pointerup', onBobUp, { once: true })
+  // 移动端：系统抢走手势（滚动/来电）时必须松手，否则 dragging 永久卡死
+  window.addEventListener('pointercancel', onBobCancel, { once: true })
   e.preventDefault()
 }
 
@@ -266,7 +268,8 @@ function onBobMove(e: PointerEvent): void {
   if (!grabbed && Math.hypot(dx, dy) < 6) return
   grabbed = true
   hint.value = false
-  const r = Math.min(1.15, Math.hypot(dx, dy * 0.75) / LEN)
+  // r 必须留在 asin 定义域内（曾因上限 1.15 导致 NaN 冻结整条物理链）
+  const r = Math.min(0.995, Math.hypot(dx, dy * 0.75) / LEN)
   th = Math.asin(r)
   ph = Math.atan2(dy * 0.75, dx)
   hist.push({ t: performance.now(), x: e.clientX, y: e.clientY })
@@ -274,8 +277,21 @@ function onBobMove(e: PointerEvent): void {
   render()
 }
 
+function onBobCancel(): void {
+  window.removeEventListener('pointermove', onBobMove)
+  if (disposed || !dragging) return
+  dragging = false
+  if (!grabbed) return
+  // 系统打断：不给初速度，让摆从当前位置自然衰减出"再等等"
+  om = Math.sign(Math.sin(th)) * 0.5
+  wp = 0
+  answer.value = 'wait'
+  beginSwing()
+}
+
 function onBobUp(e: PointerEvent): void {
   window.removeEventListener('pointermove', onBobMove)
+  window.removeEventListener('pointercancel', onBobCancel)
   if (disposed || !dragging) return
   dragging = false
   if (!grabbed) return // 单击：交给宠物/其他逻辑
@@ -309,6 +325,8 @@ function finishReading(): void {
   recorded = true
   phase.value = 'verdict'
   sfx.ding()
+  // 手机上给一下触觉反馈（不支持的设备静默跳过）
+  if (typeof navigator !== 'undefined' && 'vibrate' in navigator) navigator.vibrate(24)
   const ans = (answer.value ?? 'wait') as Answer
   reactScore.value = ans === 'yes' ? 86 : ans === 'no' ? 42 : 26
   reactKey.value++
@@ -316,10 +334,16 @@ function finishReading(): void {
   const v = VERDICTS[ans]
   addHistory({
     type: 'pendulum',
-    label: `灵摆 · ${v.zh.split(' —— ')[1] ?? ''}`,
+    label: L([`灵摆 · ${v.zh.split(' —— ')[1] ?? ''}`, `Pendulum · ${(v.en.split('— ')[1] ?? v.en).trim()}`]),
     question: question.value.trim() || undefined,
-    summary: `${v.zh}${question.value.trim() ? `：「${question.value.trim()}」` : ''}`,
-    detail: [`${question.value.trim() ? `问题：${question.value.trim()}` : '（开放一问）'}`, v.zh, v.zhLine].join('\n'),
+    summary: L([`${v.zh}${question.value.trim() ? `：「${question.value.trim()}」` : ''}`,
+      `${v.en}${question.value.trim() ? `: "${question.value.trim()}"` : ''}`]),
+    detail: [
+      L([question.value.trim() ? `问题：${question.value.trim()}` : '（开放一问）',
+        question.value.trim() ? `Question: ${question.value.trim()}` : '(open question)']),
+      L([v.zh, v.en]),
+      L([v.zhLine, v.enLine]),
+    ].join('\n'),
   })
 }
 
@@ -338,10 +362,8 @@ onBeforeUnmount(() => {
   disarmFallbackRelease()
   window.removeEventListener('pointermove', onBobMove)
   window.removeEventListener('pointerup', onBobUp)
+  window.removeEventListener('pointercancel', onBobCancel)
 })
-
-const reducedMotion =
-  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 const hint = ref(true)
 
@@ -352,7 +374,7 @@ const verdict = computed(() => (answer.value ? VERDICTS[answer.value] : null))
   <div class="page-root">
     <h2><DecryptTitle :text="L(['灵摆占卜', 'Pendulum Oracle'])" /></h2>
     <p class="hint">{{ L([
-      '两种问法：按住蓄力再松手，或者直接揪住摆锤朝你想问的方向甩出去——前后为是，左右为否，斜着就是画圈。这次它是真的在 obey 物理。',
+      '两种问法：按住蓄力再松手，或者直接揪住摆锤朝想问的方向甩——前后为是，左右为否，斜着画圈。这回它是真听物理话的。',
       'Two ways to ask: hold to charge and release, or grab the bob and fling it — forth-back is yes, sideways is no, diagonal circles for wait. This time the physics is real.',
     ]) }}</p>
 
@@ -388,13 +410,15 @@ const verdict = computed(() => (answer.value ? VERDICTS[answer.value] : null))
           @pointerdown="startCharge($event)"
           @pointerup="release($event)"
           @pointerleave="onPointerLeave($event)"
+          @keydown.space.prevent="startCharge()"
+          @keyup.space.prevent="release()"
         >
-          {{ L(['✊ 按住蓄力 · 松手发问', '✊ Hold to charge · release to ask']) }}
+          {{ L(['按住蓄力 · 松手发问', 'Hold to charge · release to ask']) }}
         </button>
         <p v-if="swingHint" class="hint charging-tip">{{ swingHint }}</p>
         <p class="drag-hint">{{ L([
-          '☝ 也可以直接抓住月亮石甩出去',
-          '☝ or grab the moonstone and fling it',
+          '手痒的话，也可以直接揪住月亮石甩出去',
+          'Or just grab the moonstone and fling it',
         ]) }}</p>
       </section>
 
@@ -431,9 +455,6 @@ const verdict = computed(() => (answer.value ? VERDICTS[answer.value] : null))
     </div>
 
     <MascotCard ref="pet" id="twins" :height="210" />
-
-    <!-- 减少动态的隐藏按钮：蓄力后由 release 兜底 -->
-    <span v-if="reducedMotion" hidden>rm</span>
   </div>
 </template>
 
@@ -579,7 +600,13 @@ const verdict = computed(() => (answer.value ? VERDICTS[answer.value] : null))
   padding: 16px 18px;
   border-radius: 12px;
   line-height: 1.9;
-  animation: chip-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* 判定卡像摆锤落定：轻晃两下停住，不用全站通用的弹跳曲线 */
+  animation: verdict-sway 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes verdict-sway {
+  from { opacity: 0; transform: translateY(10px) rotate(-1.6deg); }
+  55% { transform: translateY(0) rotate(0.9deg); }
+  to { opacity: 1; transform: rotate(0deg); }
 }
 .verdict-card strong { display: block; font-family: var(--cute); font-weight: 400; font-size: 1.15rem; margin-bottom: 6px; }
 .verdict-card p { margin: 0; font-size: 0.92rem; }

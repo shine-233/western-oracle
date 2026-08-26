@@ -28,6 +28,7 @@ const millerLoading = ref(false)
 let millerRequested = false
 
 async function loadMiller(): Promise<void> {
+  if (millerRequested) return
   millerRequested = true
   millerLoading.value = true
   try {
@@ -42,15 +43,42 @@ watch(keyword, (kw) => {
   if (!millerRequested && kw.trim().length >= 2) void loadMiller()
 })
 
+/** 米勒原典命中：① 词条名直接含关键词；② 本地词条的英文名桥接到原典（中文搜索也能找到原文） */
+const millerHits = computed<Array<{ term: string; meanings: string[] }>>(() => {
+  const src = miller.value
+  const kw = keyword.value.trim().toLowerCase()
+  if (!src || !kw) return []
+  const out: Array<{ term: string; meanings: string[] }> = []
+  const seen = new Set<string>()
+  const push = (e: MillerEntry): void => {
+    if (out.length >= 8 || seen.has(e.term)) return
+    seen.add(e.term)
+    out.push(e)
+  }
+  // 桥接：本地词典命中的英文名 → 原典同名/同前缀词条（放最前，相关性最高）
+  for (const d of filtered.value.slice(0, 12)) {
+    const en = d.en.toLowerCase()
+    const hit =
+      src.find((m) => m.term.toLowerCase() === en) ??
+      src.find((m) => m.term.toLowerCase().startsWith(en))
+    if (hit) push(hit)
+  }
+  for (const m of src) {
+    if (m.term.toLowerCase().includes(kw)) push(m)
+    if (out.length >= 8) break
+  }
+  return out
+})
+
 const filtered = computed(() => {
   const list = searchDreams(keyword.value)
   if (category.value === 'all') return list
   return list.filter((d) => d.category === category.value)
 })
 
-const cats: Array<{ key: DreamCategory | 'all'; label: string }> = [
-  { key: 'all', label: '全部' },
-  ...Object.entries(DREAM_CATEGORY_CN).map(([key, label]) => ({ key: key as DreamCategory, label })),
+const cats: Array<{ key: DreamCategory | 'all' }> = [
+  { key: 'all' },
+  ...Object.keys(DREAM_CATEGORY_CN).map((key) => ({ key: key as DreamCategory })),
 ]
 
 function catLabel(key: DreamCategory | 'all'): string {
@@ -59,20 +87,29 @@ function catLabel(key: DreamCategory | 'all'): string {
 
 /* ---------- 组合解梦 ---------- */
 const picked = ref<DreamEntry[]>([])
+/** 满三个后再加新词时的明确提示（不再静默挤掉最早的） */
+const swapNote = ref('')
+let swapTimer = 0
 
 function togglePick(d: DreamEntry, e?: MouseEvent): void {
   const at = picked.value.findIndex((p) => p.id === d.id)
-  if (at >= 0) picked.value.splice(at, 1)
-  else if (picked.value.length < 3) {
-    picked.value.push(d)
-    sfx.blip()
-    if (e) sparkleFromEvent(e, 5)
-  } else {
-    // 超过三个，替换最早的
-    picked.value.shift()
-    picked.value.push(d)
-    sfx.blip()
+  if (at >= 0) {
+    picked.value.splice(at, 1)
+    return
   }
+  if (picked.value.length < 3) {
+    picked.value.push(d)
+  } else {
+    const out = picked.value.shift()!
+    picked.value.push(d)
+    swapNote.value = zh.value
+      ? `满三个了——「${out.zh}」被换了下来`
+      : `Already three — "${out.en}" stepped out`
+    window.clearTimeout(swapTimer)
+    swapTimer = window.setTimeout(() => (swapNote.value = ''), 2600)
+  }
+  sfx.blip()
+  if (e) sparkleFromEvent(e, 5)
 }
 
 function isPicked(id: string): boolean {
@@ -192,9 +229,9 @@ function removeJournal(i: number): void {
     <!-- 组合解梦台 -->
     <section class="panel dream-mixer stagger-in">
       <div class="mixer-head">
-        <h3 style="margin: 0;">{{ zh ? '🧪 组合解梦' : '🧪 Dream Blender' }}<span class="tag">{{ picked.length }}/3</span></h3>
+        <h3 style="margin: 0;">{{ zh ? '✦ 组合解梦' : '✦ Dream Blender' }}<span class="tag">{{ picked.length }}/3</span></h3>
         <div style="display: flex; gap: 8px;">
-          <button v-if="reading" class="btn ghost small" @click="saveReading">{{ zh ? '📒 存入手账' : '📒 Save' }}</button>
+          <button v-if="reading" class="btn ghost small" @click="saveReading">{{ zh ? '存入手账' : 'Save' }}</button>
           <button v-if="picked.length" class="btn ghost small" @click="picked = []">{{ zh ? '清空' : 'Clear' }}</button>
         </div>
       </div>
@@ -206,6 +243,9 @@ function removeJournal(i: number): void {
           {{ zh ? '点下面任意词条加进来' : 'Tap any entry below to add it here' }}
         </span>
       </TransitionGroup>
+      <Transition name="fade-swap">
+        <small v-if="swapNote" class="swap-note">{{ swapNote }}</small>
+      </Transition>
       <Transition name="pop">
         <pre v-if="reading" class="reading mixer-reading">{{ reading }}</pre>
       </Transition>
@@ -215,7 +255,7 @@ function removeJournal(i: number): void {
     <!-- 解梦手账 -->
     <section v-if="journal.length" class="panel stagger-in journal-panel">
       <button class="btn ghost small journal-toggle" @click="showJournal = !showJournal; sfx.blip()">
-        📒 {{ zh ? `解梦手账（${journal.length}）` : `Dream journal (${journal.length})` }} {{ showJournal ? '▲' : '▼' }}
+        ✦ {{ zh ? `解梦手账（${journal.length}）` : `Dream journal (${journal.length})` }} {{ showJournal ? '▲' : '▼' }}
       </button>
       <TransitionGroup v-if="showJournal" name="pick" tag="div" class="journal-list">
         <article v-for="(j, i) in journal" :key="j.date + i" class="journal-item">
@@ -226,6 +266,27 @@ function removeJournal(i: number): void {
           <pre class="reading">{{ j.text }}</pre>
         </article>
       </TransitionGroup>
+    </section>
+
+    <!-- Miller 原典命中（1901 公版英文原文） -->
+    <section v-if="millerHits.length || millerLoading" class="panel miller-panel">
+      <header class="miller-head">
+        <h3 style="margin: 0;">{{ zh ? '✦ 米勒原典' : '✦ Miller, 1901' }}</h3>
+        <span v-if="millerLoading" class="tag">{{ zh ? '翻书中…' : 'fetching…' }}</span>
+        <span v-else-if="millerHits.length" class="tag">{{ zh ? `命中 ${millerHits.length} 条` : `${millerHits.length} hits` }}</span>
+      </header>
+      <p class="hint" style="margin: 6px 0 0;">
+        {{ zh
+          ? 'Gustavus Miller 1901 年那本《万梦解》的英文原文——老派、直白、偶尔吓人。中文搜索也会通过英文名桥接过来。'
+          : 'Original passages from Miller\u2019s Ten Thousand Dreams Interpreted (public domain, 1901).' }}
+      </p>
+      <details v-for="m in millerHits" :key="m.term" class="miller-item">
+        <summary>{{ m.term }}<span class="mi-count">{{ m.meanings.length }}</span></summary>
+        <div class="mi-body">
+          <p v-for="(mn, i) in m.meanings.slice(0, 3)" :key="i">{{ mn }}</p>
+          <p v-if="m.meanings.length > 3" class="mi-more">{{ zh ? `还有 ${m.meanings.length - 3} 条变体解读` : `${m.meanings.length - 3} more variants` }}</p>
+        </div>
+      </details>
     </section>
 
     <!-- 词条网格 -->
@@ -246,17 +307,17 @@ function removeJournal(i: number): void {
         <p>{{ zh ? d.zhMeaning : d.enMeaning }}</p>
       </article>
     </div>
-    <p v-if="filtered.length === 0" class="hint" style="text-align: center; margin-top: 30px;">
+    <p v-if="filtered.length === 0 && !millerHits.length && !millerLoading" class="hint" style="text-align: center; margin-top: 30px;">
       {{ zh ? '词典里还没收这个梦——不过没被记录的梦，多半也不算凶。' : 'Not in the book yet — but unrecorded dreams are rarely bad omens.' }}
     </p>
   </div>
 </template>
 
 <style scoped>
-/* 解梦页雾团：两团缓慢漂移的柔光，页面专属氛围 */
+/* 解梦页雾团：两团缓慢漂移的柔光，页面专属氛围（absolute：随文档流，不与滚动斜切特效冲突） */
 .dream-page { position: relative; }
 .fog {
-  position: fixed;
+  position: absolute;
   width: min(420px, 92vw);
   height: min(260px, 42vw);
   border-radius: 50%;
@@ -319,6 +380,11 @@ function removeJournal(i: number): void {
 @keyframes chip-pop { from { transform: scale(0.6); opacity: 0; } }
 .pick-leave-active { transition: all 0.18s ease; }
 .pick-leave-to { opacity: 0; transform: scale(0.7); }
+.swap-note { color: var(--gold-bright); opacity: 0.85; }
+.fade-swap-enter-active { transition: all 0.25s ease; }
+.fade-swap-enter-from { opacity: 0; transform: translateY(4px); }
+.fade-swap-leave-active { transition: all 0.5s ease; }
+.fade-swap-leave-to { opacity: 0; }
 .mixger-reading, .mixer-reading {
   margin: 14px 0 0;
   white-space: pre-wrap;
@@ -326,9 +392,33 @@ function removeJournal(i: number): void {
   line-height: 1.95;
   padding: 14px 16px;
   background: rgba(13, 11, 32, 0.6);
-  border-left: 3px solid var(--mint);
+  border: 1px solid rgba(125, 232, 195, 0.35);
   border-radius: 8px;
 }
+
+/* 米勒原典区 */
+.miller-panel { margin-top: 16px; }
+.miller-head { display: flex; align-items: center; gap: 10px; }
+.miller-head h3 { font-family: var(--cute); font-weight: 400; color: var(--lavender-soft); }
+.miller-item { border-top: 1px dashed rgba(179, 166, 247, 0.22); }
+.miller-item summary {
+  cursor: pointer;
+  padding: 9px 2px;
+  color: var(--gold-bright);
+  font-size: 0.95rem;
+  list-style-position: inside;
+  transition: color 0.15s;
+}
+.miller-item summary:hover { color: var(--pink); }
+.mi-count {
+  margin-left: 8px;
+  font-family: var(--pixel);
+  font-size: 0.55rem;
+  color: var(--ink-dim);
+}
+.mi-body { padding: 2px 4px 12px; }
+.mi-body p { margin: 6px 0; line-height: 1.85; font-size: 0.86rem; color: var(--ink-dim); }
+.mi-more { font-family: var(--pixel); font-size: 0.55rem; letter-spacing: 0.1em; }
 
 .dream-grid {
   display: grid;
@@ -356,7 +446,7 @@ function removeJournal(i: number): void {
 .journal-item {
   padding: 12px 14px;
   background: rgba(13, 11, 32, 0.6);
-  border-left: 3px solid var(--pink);
+  border: 1px solid rgba(255, 159, 206, 0.28);
   border-radius: 8px;
 }
 .journal-item header { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; }

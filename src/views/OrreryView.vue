@@ -115,8 +115,8 @@ interface Body {
   en: string
 }
 
-const CX = 290
-const CY = 290
+const CX = 330
+const CY = 330
 
 const BODIES: Body[] = [
   { key: 'Sun', glyph: '☉', orbit: 64, color: '#ffd76e', zh: '太阳', en: 'Sun' },
@@ -147,10 +147,10 @@ const BLURB: Record<string, [string, string]> = {
 const simTime = ref(new Date())
 const speedIdx = ref(1)
 const SPEEDS = [
-  { label: ['⏸ 暂停', '⏸ Pause'], factor: 0 },
-  { label: ['▶ 真实速度', '▶ Real time'], factor: 1 },
-  { label: '⏩ 1天=12秒', factor: 7200 },
-  { label: '⚡ 1月=20秒', factor: 130000 },
+  { label: ['‖ 暂停', '‖ Pause'], factor: 0 },
+  { label: ['▷ 实时', '▷ Real time'], factor: 1 },
+  { label: ['» 1天=12秒', '» 1 day = 12s'], factor: 7200 },
+  { label: ['≫ 1月=20秒', '≫ 1 month = 20s'], factor: 130000 },
 ] as const
 
 let timer: number | null = null
@@ -254,7 +254,7 @@ function localeTag(): string {
       <!-- 轨道图 -->
       <section class="panel stage">
         <div class="mode-row">
-          <button class="mode-chip" :class="{ on: viewMode === '3d' }" @click="setMode('3d')">🪐 3D {{ L(['天象仪', 'Orrery']) }}</button>
+          <button class="mode-chip" :class="{ on: viewMode === '3d' }" @click="setMode('3d')">✦ 3D {{ L(['天象仪', 'Orrery']) }}</button>
           <button class="mode-chip" :class="{ on: viewMode === '2d' }" @click="setMode('2d')">✧ {{ L(['平面星图', 'Flat chart']) }}</button>
         </div>
 
@@ -273,9 +273,10 @@ function localeTag(): string {
           @pointercancel="onStageUp"
           @wheel.prevent="onStageWheel"
         >
-          <svg viewBox="0 0 580 580" class="orr-svg">
+          <!-- viewBox 660：海王星轨道 r=318，580 的旧画布会把它裁出画面 -->
+          <svg viewBox="0 0 660 660" class="orr-svg">
             <!-- 白羊座标记在正上方 -->
-            <text :x="CX" :y="26" text-anchor="middle" class="aries-mark">♈ 0°</text>
+            <text :x="CX" :y="24" text-anchor="middle" class="aries-mark">♈ 0°</text>
             <!-- 轨道圈 -->
             <circle v-for="b in BODIES" :key="'o' + b.key" :cx="CX" :cy="CY" :r="b.orbit" class="orbit-ring" />
             <!-- 太阳 -->
