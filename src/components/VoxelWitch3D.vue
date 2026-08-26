@@ -13,6 +13,7 @@ import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js'
 import { witchVoxels } from '../data/witchSprite'
 import { sfx } from '../lib/sfx'
 import { t } from '../lib/i18n'
+import { themeVar, onThemeChange } from '../lib/themeColors'
 
 const container = ref<HTMLDivElement | null>(null)
 const hint = ref(true)
@@ -23,9 +24,11 @@ let camera: THREE.PerspectiveCamera | null = null
 let witchGroup: THREE.Group | null = null
 let starField: THREE.Points | null = null
 let moon: THREE.Mesh | null = null
+let groundGlow: THREE.Mesh | null = null
 let composer: EffectComposer | null = null
 let raf = 0
 let disposed = false
+let themeWatcher: { disconnect: () => void } | null = null
 
 let dragging = false
 let lastX = 0
@@ -122,7 +125,7 @@ function build(): void {
   if (!el) return
 
   scene = new THREE.Scene()
-  scene.background = new THREE.Color('#141132')
+  scene.background = new THREE.Color(themeVar('--void-1', '#141132'))
 
   camera = new THREE.PerspectiveCamera(42, el.clientWidth / el.clientHeight, 0.1, 100)
   camera.position.set(0, 0.8, 14.5)
@@ -187,7 +190,7 @@ function build(): void {
   }
   const starGeo = new THREE.BufferGeometry()
   starGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3))
-  starField = new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xf5c86e, size: 0.14 }))
+  starField = new THREE.Points(starGeo, new THREE.PointsMaterial({ color: themeVar('--gold', '#f5c86e'), size: 0.14 }))
   scene.add(starField)
 
   // ---- 环绕体素月球 ----
@@ -200,8 +203,9 @@ function build(): void {
   // ---- 地面光晕 ----
   const glow = new THREE.Mesh(
     new THREE.CircleGeometry(4.4, 40),
-    new THREE.MeshBasicMaterial({ color: '#7c6bd6', transparent: true, opacity: 0.16 }),
+    new THREE.MeshBasicMaterial({ color: themeVar('--lavender', '#7c6bd6'), transparent: true, opacity: 0.16 }),
   )
+  groundGlow = glow
   glow.rotation.x = -Math.PI / 2
   glow.position.y = -ROWS * S * 0.5 - 0.4
   scene.add(glow)
@@ -216,6 +220,14 @@ function build(): void {
     composer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     composer.setSize(el.clientWidth, el.clientHeight)
   }
+
+  // 皮肤切换：重涂舞台底色 / 星尘 / 地面光晕
+  themeWatcher = onThemeChange(() => {
+    if (!scene) return
+    scene.background = new THREE.Color(themeVar('--void-1', '#141132'))
+    if (starField) (starField.material as THREE.PointsMaterial).color.set(themeVar('--gold', '#f5c86e'))
+    if (groundGlow) (groundGlow.material as THREE.MeshBasicMaterial).color.set(themeVar('--lavender', '#7c6bd6'))
+  })
 
   nextBlinkAt = clock.getElapsedTime() + 2 + Math.random() * 3
   bindEvents(el)

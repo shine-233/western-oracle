@@ -295,12 +295,12 @@ const dust = Array.from({ length: 26 }, (_, i) => ({
           :r="8"
           class="ripple"
           fill="none"
-          stroke="#ffe3a8"
+          stroke="var(--gold-bright)"
         />
         <!-- 星体 -->
         <g v-for="(s, i) in STARS" :key="i" class="star" :class="{ lit: litStar === i }" @click="strike(s, $event)">
           <circle :cx="s.x" :cy="s.y" :r="18" class="halo" :style="{ animationDelay: i * 0.45 + 's' }" />
-          <circle :cx="s.x" :cy="s.y" r="7" fill="#ffe3a8" class="core" />
+          <circle :cx="s.x" :cy="s.y" r="7" fill="var(--gold-bright)" class="core" />
           <text :x="s.x" :y="s.y + 30" text-anchor="middle" class="star-name">{{ L(s.name).split('·')[1] ?? '' }}</text>
         </g>
       </svg>
@@ -375,7 +375,7 @@ const dust = Array.from({ length: 26 }, (_, i) => ({
   filter: drop-shadow(0 0 16px #fff) drop-shadow(0 0 30px rgba(255, 227, 168, 0.9));
 }
 .star.lit .halo { fill: rgba(255, 240, 200, 0.5); animation: none; }
-.star.lit .star-name { fill: #ffe3a8; opacity: 1; }
+.star.lit .star-name { fill: var(--gold-bright); opacity: 1; }
 
 .spec-canvas {
   display: block;

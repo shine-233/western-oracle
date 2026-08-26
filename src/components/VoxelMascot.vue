@@ -14,6 +14,7 @@ import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js'
 import { MASCOTS, mascotVoxels } from '../data/mascots'
 import { sfx } from '../lib/sfx'
 import { t } from '../lib/i18n'
+import { themeVar, onThemeChange } from '../lib/themeColors'
 
 const props = withDefaults(defineProps<{ id: string; height?: number }>(), { height: 230 })
 
@@ -29,6 +30,7 @@ let satellite: THREE.Mesh | null = null
 let composer: EffectComposer | null = null
 let raf = 0
 let disposed = false
+let themeWatcher: { disconnect: () => void } | null = null
 
 let dragging = false
 let lastX = 0
@@ -42,13 +44,28 @@ let targetRotY = autoRotY
 let targetRotX = leanX
 let lastInteractAt = 0
 let idleTimer: number | null = null
+/** 抚摸累计行程（拖着蹭过一定距离算摸一次） */
+let strokeAccum = 0
+let petting = false
+/** 闲置自言自语定时器（bindEvents 里安装） */
+let chatterTimer: number | null = null
 
 let eyeIndices: number[] = []
 let eyeBaseY: number[] = []
 let blinkUntil = 0
 let nextBlinkAt = 0
+let doubleBlinkPending = false
 let jumpVel = 0
 let jumpOffset = 0
+let prevJumpOffset = 0
+/** 落地挤压的截止时刻 */
+let landSquashUntil = 0
+
+/* ---- 生命感状态 ---- */
+const asleep = ref(false)
+let nextTrickAt = 0
+let trickLeanY = 0
+let wiggleUntil = 0
 
 const moodText = ref('')
 let moodTimer: number | null = null
@@ -127,7 +144,7 @@ function build(): void {
   if (!el || !def) return
 
   scene = new THREE.Scene()
-  scene.background = new THREE.Color('#141132')
+  scene.background = new THREE.Color(themeVar('--void-1', '#141132'))
 
   camera = new THREE.PerspectiveCamera(40, el.clientWidth / Math.max(1, el.clientHeight), 0.1, 100)
   camera.position.set(0, 0.7, 12)
@@ -228,6 +245,11 @@ function build(): void {
     composer.setSize(el.clientWidth, el.clientHeight)
   }
 
+  // 皮肤切换：重涂舞台底色
+  themeWatcher = onThemeChange(() => {
+    if (scene) scene.background = new THREE.Color(themeVar('--void-1', '#141132'))
+  })
+
   nextBlinkAt = clock.getElapsedTime() + 2 + Math.random() * 3
   bindEvents(el)
   animate()
@@ -288,6 +310,42 @@ function celebrate(): void {
 
 defineExpose({ celebrate })
 
+/* ---------- 抚摸（长按 600ms）：爱心上浮 + 分物种叫声 ---------- */
+const PET_SOUND: Record<string, () => void> = {
+  cat: () => { sfx.blip(); window.setTimeout(() => sfx.blip(), 90) },
+  owl: () => sfx.toggle(),
+  numi: () => { sfx.blip(); window.setTimeout(() => sfx.ding(), 70) },
+  golem: () => { sfx.pop(); window.setTimeout(() => sfx.pop(), 150) },
+  twins: () => { sfx.blip(); window.setTimeout(() => sfx.ding(), 80) },
+  comet: () => sfx.whoosh(),
+}
+
+function spawnHearts(el: HTMLElement): void {
+  for (let i = 0; i < 5; i++) {
+    const h = document.createElement('span')
+    h.className = 'pet-heart'
+    h.textContent = Math.random() < 0.5 ? '❤' : '💗'
+    h.style.left = `${34 + Math.random() * 32}%`
+    h.style.top = `${26 + Math.random() * 20}%`
+    h.style.fontSize = `${11 + Math.random() * 9}px`
+    h.style.animationDelay = `${i * 75}ms`
+    el.appendChild(h)
+    window.setTimeout(() => h.remove(), 1100)
+  }
+}
+
+function startPetting(el: HTMLElement): void {
+  if (petting || !dragging) return
+  petting = true
+  const zh = !navigator.language.toLowerCase().startsWith('en')
+  showMood(zh ? '❤ 被摸摸头…好开心' : '❤ head pats… so happy')
+  spawnHearts(el)
+  ;(PET_SOUND[props.id] ?? sfx.blip)()
+  window.setTimeout(() => {
+    if (petting) spawnHearts(el)
+  }, 380)
+}
+
 function bindEvents(el: HTMLElement): void {
   el.addEventListener('pointerdown', (e) => {
     dragging = true
@@ -305,6 +363,12 @@ function bindEvents(el: HTMLElement): void {
     if (dragging) {
       autoRotY += (e.clientX - lastX) * 0.012
       lastX = e.clientX
+      // 拖着蹭：累计行程够长就算一次抚摸
+      strokeAccum += Math.abs(e.movementX ?? 0) + Math.abs(e.movementY ?? 0)
+      if (strokeAccum > 120 && !petting && !asleep.value) {
+        strokeAccum = 0
+        startPetting(el)
+      }
       return
     }
     // 光标追踪：视线跟随
@@ -316,11 +380,25 @@ function bindEvents(el: HTMLElement): void {
       doAction()
     }
     dragging = false
+    strokeAccum = 0
+    window.setTimeout(() => (petting = false), 500)
     if (idleTimer !== null) window.clearTimeout(idleTimer)
     idleTimer = window.setTimeout(() => (hint.value = true), 4000)
   }
   el.addEventListener('pointerup', endDrag)
   el.addEventListener('pointercancel', endDrag)
+  // 双击彩蛋：庆祝 + 双份星屑
+  el.addEventListener('dblclick', () => {
+    celebrate()
+    spawnBurst()
+    window.setTimeout(() => spawnBurst(), 160)
+  })
+  // 闲置自言自语：每 26 秒概率冒一句 tips
+  chatterTimer = window.setInterval(() => {
+    if (disposed || dragging || document.visibilityState !== 'visible') return
+    if (moodText.value || Math.random() < 0.55) return
+    showMood(t(`pet.${props.id}.tip${1 + (Math.random() < 0.5 ? 0 : 1)}`))
+  }, 26000)
   el.addEventListener('pointerleave', () => {
     leanY = 0
     leanX = 0.08
@@ -340,6 +418,18 @@ function bindEvents(el: HTMLElement): void {
 
 function markInteract(): void {
   lastInteractAt = performance.now()
+  if (asleep.value) wakeUp()
+}
+
+/** 睡着了被吵醒：快速眨两下眼 */
+function wakeUp(): void {
+  asleep.value = false
+  blinkUntil = 0
+  setEyeScale(1)
+  window.setTimeout(() => setEyeScale(0.12), 120)
+  window.setTimeout(() => setEyeScale(1), 260)
+  window.setTimeout(() => setEyeScale(0.12), 400)
+  window.setTimeout(() => setEyeScale(1), 520)
 }
 
 function onResize(): void {
@@ -358,32 +448,83 @@ function animate(): void {
   raf = requestAnimationFrame(animate)
   const now = clock.getElapsedTime()
 
-  // 自动眨眼
-  if (now > nextBlinkAt && now > blinkUntil) {
+  // 自动眨眼（偶尔连眨两下）
+  if (!asleep.value && now > nextBlinkAt && now > blinkUntil) {
     blinkUntil = now + 0.15
-    nextBlinkAt = now + 2.4 + Math.random() * 3.2
+    if (doubleBlinkPending) {
+      doubleBlinkPending = false
+      nextBlinkAt = now + 0.42
+    } else {
+      doubleBlinkPending = Math.random() < 0.28
+      nextBlinkAt = now + 2.4 + Math.random() * 3.2
+    }
   }
-  const closed = now < blinkUntil
+  const closed = asleep.value || now < blinkUntil
   if ((closed ? 0.1 : 1) !== lastEyeScale) {
     setEyeScale(closed ? 0.1 : 1)
     lastEyeScale = closed ? 0.1 : 1
   }
 
+  // 久坐入睡（40 秒没互动）
+  if (!asleep.value && !dragging && performance.now() - lastInteractAt > 40000) {
+    asleep.value = true
+  }
+
+  // 待机小动作池：左顾右盼 / 扭一扭 / 原地小跳
+  const idleMs = performance.now() - lastInteractAt
+  if (!asleep.value && !dragging && idleMs > 3000 && now > nextTrickAt) {
+    nextTrickAt = now + 9 + Math.random() * 9
+    const roll = Math.random()
+    if (roll < 0.45) {
+      trickLeanY = (Math.random() < 0.5 ? -1 : 1) * (0.4 + Math.random() * 0.3)
+    } else if (roll < 0.75) {
+      wiggleUntil = now + 0.65
+    } else {
+      jumpVel = Math.max(jumpVel, 0.055)
+    }
+  }
+  trickLeanY *= 0.955
+
   if (petGroup) {
     // 闲置自转
-    if (!dragging && !reducedMotion && performance.now() - lastInteractAt > 2600) {
-      autoRotY += 0.004
+    if (!dragging && !reducedMotion && idleMs > 2600) {
+      autoRotY += asleep.value ? 0.0012 : 0.004
     }
-    targetRotY = autoRotY + leanY
-    targetRotX = leanX
+    targetRotY = autoRotY + leanY + trickLeanY
+    targetRotX = leanX * (asleep.value ? 1.6 : 1) // 睡着时头垂一点
     petGroup.rotation.y += (targetRotY - petGroup.rotation.y) * 0.1
     petGroup.rotation.x += (targetRotX - petGroup.rotation.x) * 0.1
+    // 睡着时轻轻左右摇
+    petGroup.rotation.z =
+      wiggleUntil > now ? Math.sin(now * 26) * 0.055 : asleep.value ? Math.sin(now * 0.9) * 0.04 : 0
+
+    // 跳跃物理 + 落地挤压回弹
     jumpVel -= 0.011
     if (jumpVel < 0) jumpVel = Math.max(jumpVel, -0.28)
+    prevJumpOffset = jumpOffset
     jumpOffset = Math.max(0, jumpOffset + jumpVel)
-    petGroup.position.y = Math.sin(now * 1.5) * 0.18 + jumpOffset
+    if (prevJumpOffset > 0.001 && jumpOffset === 0 && landSquashUntil < now) {
+      landSquashUntil = now + 0.18
+    }
+
+    // 呼吸挤压拉伸：清醒快浅、睡着慢深；跳跃时纵向拉伸，落地压扁
+    const T = asleep.value ? 4.2 : 2.6
+    const A = asleep.value ? 0.04 : 0.02
+    const br = Math.sin((now * Math.PI * 2) / T)
+    let sy = 1 + A * br
+    let sx = 1 - (A / 2) * br
+    if (jumpVel > 0) {
+      sy *= 1 + Math.min(0.16, jumpVel * 1.15)
+      sx *= 1 - Math.min(0.07, jumpVel * 0.5)
+    }
+    if (landSquashUntil > now) {
+      sy *= 0.84
+      sx *= 1.13
+    }
+    petGroup.scale.set(sx, sy, sx)
+    petGroup.position.y = Math.sin(now * (asleep.value ? 0.8 : 1.5)) * (asleep.value ? 0.08 : 0.18) + jumpOffset
   }
-  if (starField) starField.rotation.y = now * 0.14
+  if (starField) starField.rotation.y = now * (asleep.value ? 0.05 : 0.14)
   if (satellite) {
     satellite.position.set(Math.cos(now * 0.7) * 3.4, Math.sin(now * 1.05) * 1.9 + 0.5, Math.sin(now * 0.7) * 3.4)
     satellite.rotation.y = now * 1.6
@@ -423,6 +564,10 @@ onBeforeUnmount(() => {
     <Transition name="pop">
       <span v-if="moodText" class="pet-bubble">{{ moodText }}</span>
     </Transition>
+    <!-- 睡着的 Zzz -->
+    <div v-if="asleep" class="zzz-layer" aria-hidden="true">
+      <i v-for="n in 3" :key="n" class="zzz" :style="{ animationDelay: n * 0.9 + 's' }">Z</i>
+    </div>
   </div>
 </template>
 
@@ -483,5 +628,52 @@ onBeforeUnmount(() => {
 .pop-enter-from, .pop-leave-to { opacity: 0; transform: translateY(-8px) scale(0.85); }
 @media (prefers-reduced-motion: reduce) {
   .pet-hint { animation: none; }
+}
+
+/* 睡着的 Zzz：右上角错拍上浮渐隐 */
+.zzz-layer {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  pointer-events: none;
+}
+.zzz {
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-family: var(--cute);
+  font-style: normal;
+  color: var(--lavender-soft);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--lavender) 60%, transparent);
+  opacity: 0;
+  animation: zzz-rise 2.7s ease-out infinite;
+}
+.zzz:nth-child(1) { font-size: 0.8rem; }
+.zzz:nth-child(2) { font-size: 1.05rem; }
+.zzz:nth-child(3) { font-size: 1.3rem; }
+@keyframes zzz-rise {
+  0% { opacity: 0; transform: translate(0, 6px) rotate(-8deg) scale(0.7); }
+  25% { opacity: 0.95; }
+  100% { opacity: 0; transform: translate(14px, -30px) rotate(14deg) scale(1.15); }
+}
+
+/* 抚摸爱心：拖着蹭过时从身上冒出上飘（元素由 spawnHearts 动态插入） */
+.pet-heart {
+  position: absolute;
+  z-index: 3;
+  color: var(--pink);
+  text-shadow: 0 0 10px rgba(255, 159, 206, 0.85);
+  font-size: 1rem;
+  pointer-events: none;
+  opacity: 0;
+  animation: pet-heart-rise 0.9s ease-out forwards;
+}
+@keyframes pet-heart-rise {
+  0% { opacity: 0; transform: translate(0, 6px) scale(0.5); }
+  22% { opacity: 1; transform: translate(3px, -10px) scale(1.15); }
+  100% { opacity: 0; transform: translate(-5px, -42px) scale(0.85); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .zzz, .zzz-layer { display: none; }
 }
 </style>

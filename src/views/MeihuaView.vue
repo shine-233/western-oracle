@@ -255,7 +255,7 @@ const HOUR_OPTIONS = Array.from({ length: 24 }, (_, h) => h)
   display: block;
   height: 100%;
   border-radius: 6px;
-  background: linear-gradient(180deg, #ffe3a8, #c9a24f);
+  background: linear-gradient(180deg, var(--gold-bright), var(--gold));
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 .bar.solid { flex: 1; }

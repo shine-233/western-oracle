@@ -453,7 +453,7 @@ const verdict = computed(() => (answer.value ? VERDICTS[answer.value] : null))
   width: 2px;
   height: 154px;
   transform: translateX(-50%);
-  background: linear-gradient(rgba(179, 166, 247, 0.15), var(--gold));
+  background: linear-gradient(color-mix(in srgb, var(--lavender) 15%, transparent), var(--gold));
   transition: opacity 0.2s;
 }
 .bob {
@@ -464,7 +464,7 @@ const verdict = computed(() => (answer.value ? VERDICTS[answer.value] : null))
   height: 52px;
   margin-left: -26px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #6b5bd6, #241d52);
+  background: radial-gradient(circle at 35% 30%, var(--lavender), var(--void-2));
   border: 3px solid rgba(245, 200, 110, 0.8);
   box-shadow: 0 0 22px rgba(255, 215, 110, 0.45);
   display: grid;

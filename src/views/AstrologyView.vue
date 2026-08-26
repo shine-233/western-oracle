@@ -498,6 +498,60 @@ export default {}
         </div>
       </section>
 
+      <!-- 古典书房：Ptolemy 论命专题 + Alan Leo 原典 -->
+      <section class="panel reading-panel classics-panel">
+        <h3 style="margin-top: 0;">🏛️ {{ locale === 'zh' ? '古典书房' : 'The Classical Study' }}<span class="tag">公版原典</span></h3>
+
+        <p class="hint" style="margin: 10px 0 8px;">
+          {{ locale === 'zh'
+            ? 'Ptolemy《Tetrabiblos》卷三·卷四把人生拆成十个专题，逐章告诉你古人是怎么看婚姻、子女、职业这些事的。'
+            : 'Ptolemy’s Tetrabiblos (Books III–IV) splits a life into ten topics — pick one to read how the ancients judged it.' }}
+        </p>
+        <div class="topic-chips">
+          <button
+            v-for="(tp, i) in topicList"
+            :key="tp.key"
+            class="topic-chip"
+            :class="{ active: topicKey === tp.key }"
+            :style="{ '--td': i * 0.04 + 's' }"
+            @click="topicKey = tp.key; sfx.blip()"
+          >
+            {{ locale === 'zh' ? TOPIC_ZH[tp.key] ?? tp.title : tp.title }}
+            <small>H{{ tp.houseHint }}</small>
+          </button>
+        </div>
+        <Transition name="topic-fade" mode="out-in">
+          <article v-if="activeTopic" :key="topicKey" class="topic-reader">
+            <header class="tr-head">
+              <b>{{ locale === 'zh' ? TOPIC_ZH[topicKey] ?? activeTopic.title : activeTopic.title }}</b>
+              <span class="tr-src">{{ activeTopic.source }}</span>
+            </header>
+            <p class="tr-quote">{{ activeTopic.quote }} …</p>
+          </article>
+        </Transition>
+
+        <p class="hint" style="margin: 20px 0 8px;">
+          {{ locale === 'zh'
+            ? 'Alan Leo《How to Judge a Nativity》三段讲义：十二宫总论、太阳与月亮落座——维多利亚时代的口吻，读个氛围。'
+            : 'Three lectures from Alan Leo’s “How to Judge a Nativity”: the twelve houses, the Sun and the Moon through the signs.' }}
+        </p>
+        <div class="leo-tabs">
+          <button
+            v-for="lt in LEO_TABS"
+            :key="lt.key"
+            class="leo-tab"
+            :class="{ active: leoTab === lt.key }"
+            @click="leoTab = lt.key; sfx.blip()"
+          >{{ locale === 'zh' ? lt.zh : lt.en }}</button>
+        </div>
+        <Transition name="topic-fade" mode="out-in">
+          <article v-if="leoSection" :key="leoTab" class="leo-reader">
+            <p class="tr-anchor">§ {{ leoSection.anchor }}</p>
+            <p class="tr-quote">{{ leoSection.passage }}</p>
+          </article>
+        </Transition>
+      </section>
+
       <MascotCard ref="pet" id="owl" />
       <ApprenticeReact module="astrology" :score="Math.min(95, 55 + (chart.patterns?.length ?? 0) * 9)" />
       <AiChat :context="aiContext" :title="t('ai.astro.title')" :intro="t('ai.astro.intro')" />
@@ -510,6 +564,16 @@ export default {}
           <div class="modal-panel panel bounce-in">
             <button class="modal-close btn small ghost" @click="signModal = null">✕ 关闭</button>
             <span class="dc-label">{{ SIGNS[signModal]!.en.toUpperCase() }}</span>
+            <div v-if="zodiacFactOf(SIGNS[signModal]!.en)" class="zf-strip">
+              <span class="zf-sym">{{ zodiacFactOf(SIGNS[signModal]!.en)!.unicodeSymbol }}</span>
+              <span class="zf-item"><label>gloss</label>{{ zodiacFactOf(SIGNS[signModal]!.en)!.gloss }}</span>
+              <span class="zf-item"><label>element</label>{{ zodiacFactOf(SIGNS[signModal]!.en)!.element }}</span>
+              <span class="zf-item"><label>ruler</label>{{ zodiacFactOf(SIGNS[signModal]!.en)!.rulerClassic }}<template v-if="zodiacFactOf(SIGNS[signModal]!.en)!.rulerModern !== zodiacFactOf(SIGNS[signModal]!.en)!.rulerClassic"> / {{ zodiacFactOf(SIGNS[signModal]!.en)!.rulerModern }}</template></span>
+              <span class="zf-item"><label>dates</label>{{ zodiacFactOf(SIGNS[signModal]!.en)!.approximateDates }}</span>
+              <span class="zf-kw">
+                <i v-for="k in zodiacFactOf(SIGNS[signModal]!.en)!.keywords" :key="k">{{ k }}</i>
+              </span>
+            </div>
             <pre class="reading sign-full">{{ signFullText(signModal!) }}</pre>
           </div>
         </div>
@@ -667,6 +731,101 @@ export default {}
 }
 .zodiac-chip:hover { transform: translateY(-2px) scale(1.05); border-color: var(--gold); }
 .zg-glyph { color: var(--gold-bright); font-size: 1em; }
+
+/* ---------- 古典书房 ---------- */
+.classics-panel { margin-top: 18px; }
+.topic-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.topic-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1.5px solid color-mix(in srgb, var(--gold) 32%, transparent);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.82rem;
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: tp-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation-delay: var(--td);
+}
+@keyframes tp-in { from { opacity: 0; transform: translateY(10px) rotate(-2deg); } }
+.topic-chip small { font-family: var(--pixel); font-size: 0.52rem; letter-spacing: 0.08em; color: var(--ink-dim); }
+.topic-chip:hover { transform: translateY(-2px); border-color: var(--gold); }
+.topic-chip.active {
+  border-color: var(--gold);
+  color: var(--gold-bright);
+  background: color-mix(in srgb, var(--gold) 10%, transparent);
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--gold) 35%, transparent));
+}
+.topic-reader {
+  margin-top: 14px;
+  padding: 13px 16px;
+  border-radius: 10px;
+  background: rgba(21, 18, 50, 0.55);
+  border-left: 3px solid var(--gold);
+}
+.tr-head { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 7px; }
+.tr-head b { font-family: var(--cute); font-weight: 400; color: var(--gold-bright); font-size: 1rem; }
+.tr-src { font-size: 0.72rem; color: var(--ink-dim); font-style: italic; }
+.tr-quote {
+  margin: 0;
+  max-height: 240px;
+  overflow-y: auto;
+  line-height: 2;
+  font-size: 0.87rem;
+  color: var(--ink);
+  opacity: 0.94;
+  white-space: pre-wrap;
+}
+.leo-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.leo-tab {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1.5px solid color-mix(in srgb, var(--lavender) 32%, transparent);
+  background: transparent;
+  color: var(--lavender-soft);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.82rem;
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.leo-tab:hover { transform: translateY(-2px); border-color: var(--lavender); }
+.leo-tab.active { border-color: var(--lavender-soft); background: color-mix(in srgb, var(--lavender) 12%, transparent); }
+.leo-reader { margin-top: 12px; padding: 13px 16px; border-radius: 10px; background: rgba(21, 18, 50, 0.55); border-left: 3px solid var(--lavender); }
+.tr-anchor { margin: 0 0 8px; font-family: var(--pixel); font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lavender-soft); }
+
+/* 星座弹窗 corpora 数据条 */
+.zf-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin: 8px 0 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(143, 211, 232, 0.07);
+  border: 1.5px solid rgba(143, 211, 232, 0.28);
+}
+.zf-sym { font-size: 1.5rem; color: #bfeaf5; }
+.zf-item label { display: block; font-family: var(--pixel); font-size: 0.5rem; letter-spacing: 0.1em; color: var(--ink-dim); }
+.zf-item { font-size: 0.84rem; color: var(--ink); line-height: 1.5; }
+.zf-kw { display: flex; gap: 5px; flex-wrap: wrap; }
+.zf-kw i {
+  font-style: normal;
+  font-size: 0.74rem;
+  color: #bfeaf5;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(143, 211, 232, 0.4);
+}
+
+.topic-fade-enter-active { transition: all 0.3s ease; }
+.topic-fade-enter-from { opacity: 0; transform: translateY(8px); }
+.topic-fade-leave-active { transition: all 0.15s ease; }
+.topic-fade-leave-to { opacity: 0; }
 
 .dc-label { font-family: var(--pixel); font-size: 0.55rem; letter-spacing: 0.15em; color: var(--pink-soft); }
 .sign-full { font-family: inherit; white-space: pre-wrap; }

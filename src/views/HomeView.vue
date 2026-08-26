@@ -7,6 +7,7 @@ import { dailyRune } from '../data/runes'
 import { moonPhase } from '../lib/astrology'
 import { todayAlmanac } from '../lib/daily'
 import { PLANETS } from '../data/corpus'
+import { ZODIAC_FACTS } from '../data/zodiacFacts'
 import { loadJSON } from '../lib/storage'
 import { vTilt } from '../lib/tilt'
 import { vReveal } from '../lib/reveal'
@@ -116,6 +117,30 @@ const rulerName = computed(() =>
   locale.value === 'zh' ? PLANETS[almanac.rulerKey]?.cn ?? '' : almanac.rulerKey,
 )
 
+/** 今日太阳星座（corpora/zodiac CC0 数据层） */
+const SIGN_ZH: Record<string, string> = {
+  Aries: '白羊座', Taurus: '金牛座', Gemini: '双子座', Cancer: '巨蟹座',
+  Leo: '狮子座', Virgo: '处女座', Libra: '天秤座', Scorpio: '天蝎座',
+  Sagittarius: '射手座', Capricorn: '摩羯座', Aquarius: '水瓶座', Pisces: '双鱼座',
+}
+/** 各星座起始（月, 日），按年序扫描，最后一个已过的起点即当前太阳星座 */
+const SIGN_STARTS: Array<[number, number, string]> = [
+  [1, 20, 'Aquarius'], [2, 19, 'Pisces'], [3, 21, 'Aries'], [4, 20, 'Taurus'],
+  [5, 21, 'Gemini'], [6, 21, 'Cancer'], [7, 23, 'Leo'], [8, 23, 'Virgo'],
+  [9, 23, 'Libra'], [10, 23, 'Scorpio'], [11, 22, 'Sagittarius'], [12, 22, 'Capricorn'],
+]
+function sunSignKey(): string {
+  const now = new Date()
+  const m = now.getMonth() + 1
+  const d = now.getDate()
+  let current = 'Capricorn'
+  for (const [sm, sd, sign] of SIGN_STARTS) {
+    if (m > sm || (m === sm && d >= sd)) current = sign
+  }
+  return current
+}
+const zodiacToday = ZODIAC_FACTS[sunSignKey()] ?? null
+
 const savedName = loadJSON<{ name?: string }>('num-profile', {}).name
 
 const greeting = computed(() => {
@@ -163,6 +188,20 @@ const greeting = computed(() => {
       <p class="luna-face">🧙‍♀️</p>
       <p class="dc-value">{{ lunaSays }}</p>
       <p class="dc-sub"><RouterLink to="/tarot" class="mini-link">{{ t('home.luna.go') }}</RouterLink></p>
+    </div>
+    <!-- 今日太阳星座（corpora/zodiac 数据层） -->
+    <div v-if="zodiacToday" class="daily-card zodiac-card" v-reveal="4">
+      <span class="dc-label">{{ locale === 'zh' ? '今日太阳' : 'Sun today' }}</span>
+      <p class="zodiac-sym">{{ zodiacToday.unicodeSymbol }}</p>
+      <p class="dc-value">{{ locale === 'zh' ? SIGN_ZH[zodiacToday.sign] : zodiacToday.sign }} · {{ zodiacToday.gloss }}</p>
+      <p class="dc-sub">
+        {{ locale === 'zh' ? '元素' : 'Element' }} {{ zodiacToday.element }} ·
+        {{ locale === 'zh' ? '古典守护' : 'classic ruler' }} {{ zodiacToday.rulerClassic }}
+        <span class="zf-dates">{{ zodiacToday.approximateDates }}</span>
+        <span class="zf-keywords">
+          <i v-for="k in zodiacToday.keywords" :key="k">{{ k }}</i>
+        </span>
+      </p>
     </div>
   </section>
 
@@ -303,6 +342,17 @@ const greeting = computed(() => {
 }
 .daily-rune-glyph.upside { display: inline-block; transform: rotate(180deg); }
 .moon-emoji { font-size: 3rem; margin: 6px 0 10px; line-height: 1; }
+.zodiac-sym { font-size: 3rem; margin: 6px 0 10px; line-height: 1; color: #bfeaf5; text-shadow: 0 0 18px rgba(143, 211, 232, 0.45); animation: floaty 4.5s ease-in-out infinite; }
+.zf-dates { display: block; font-family: var(--pixel); font-size: 0.55rem; letter-spacing: 0.08em; color: var(--ink-dim); margin-top: 6px; }
+.zf-keywords { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; margin-top: 7px; }
+.zf-keywords i {
+  font-style: normal;
+  font-size: 0.72rem;
+  color: #bfeaf5;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(143, 211, 232, 0.4);
+}
 .luna-face { font-size: 3rem; margin: 6px 0 10px; line-height: 1; animation: floaty 4s ease-in-out infinite; }
 .mini-link { color: var(--pink-soft); }
 .voxel-panel { margin-top: 10px; }
