@@ -774,7 +774,7 @@ html {
     position: fixed;
     left: 12px;
     right: 12px;
-    top: 118px;
+    top: var(--nav-menu-top, 118px);
     z-index: 9990;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -864,12 +864,14 @@ html {
     visibility 0.2s;
 }
 .nav-group:hover .nav-menu,
-.nav-group:focus-within .nav-menu {
+.nav-group:focus-within .nav-menu,
+.nav-group.open .nav-menu {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
   transform: translateX(-50%) translateY(0);
 }
+.nav-group.open .caret { transform: rotate(180deg); }
 .nav-menu a {
   display: flex;
   align-items: center;
@@ -884,7 +886,8 @@ html {
     color 0.2s;
 }
 .nav-group:hover .nav-menu a,
-.nav-group:focus-within .nav-menu a {
+.nav-group:focus-within .nav-menu a,
+.nav-group.open .nav-menu a {
   opacity: 1;
   transform: translateX(0);
 }
@@ -898,4 +901,32 @@ html {
 @media (prefers-reduced-motion: reduce) {
   .nav-menu, .nav-menu a, .nav-trigger .caret { transition: none !important; }
   .nav-menu a { opacity: 1; transform: none; }
+}
+
+/* ---------- 触屏专项：命中区与防缩放（对齐 A 站基建） ---------- */
+@media (pointer: coarse) {
+  .btn,
+  .lang-toggle,
+  .sound-toggle,
+  .site-nav > a,
+  .nav-trigger,
+  .filter-chip,
+  .zodiac-chip,
+  .topic-chip,
+  .m-chip,
+  .pat-chip,
+  .chip-book,
+  .hour-chip {
+    min-height: 40px;
+    min-width: 40px;
+  }
+  input[type='text'],
+  input[type='date'],
+  input[type='email'],
+  input[type='password'],
+  select,
+  textarea {
+    /* iOS 聚焦时若字号 <16px 会强制缩放页面 */
+    font-size: 16px;
+  }
 }

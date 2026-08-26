@@ -88,4 +88,8 @@ export const SECRET_LINES: Record<string, { zh: string; en: string }> = {
     zh: '七十六年绕一圈的星有很多。愿意为一句话停下来的，只有我一个。',
     en: 'Plenty of stars orbit every 76 years. Only one stops mid-orbit for a single sentence.',
   },
+  mist: {
+    zh: '水晶球里其实没有画面。你们看到的东西，都是从你们自己眼睛里借来的。',
+    en: 'There\'s nothing inside my orb. What you see is borrowed from your own eyes.',
+  },
 }

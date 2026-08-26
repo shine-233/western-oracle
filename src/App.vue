@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
-import { RouterLink, RouterView } from 'vue-router'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { RouterLink, RouterView, useRoute } from 'vue-router'
 import PixelWitch from './components/PixelWitch.vue'
 import { isSoundOn, toggleSound, sfx } from './lib/sfx'
 import { t, toggleLocale, locale } from './lib/i18n'
@@ -55,6 +55,36 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
 
 const soundOn = ref(isSoundOn())
 
+/* ---------- 导航分组：点击开合兜底（触屏没有 hover） ---------- */
+const route = useRoute()
+const openGroup = ref<string | null>(null)
+function toggleNavGroup(label: string): void {
+  openGroup.value = openGroup.value === label ? null : label
+  sfx.blip()
+}
+function closeNavOnOutside(e: Event): void {
+  const t = e.target as HTMLElement
+  if (!t.closest('.nav-group')) openGroup.value = null
+}
+watch(() => route.path, () => (openGroup.value = null))
+
+/** 移动端下拉面板的 top 用实测 header 高度（避免字体加载/换行导致错位） */
+const headerEl = ref<HTMLElement | null>(null)
+function updateNavTop(): void {
+  const h = headerEl.value?.offsetHeight ?? 118
+  document.documentElement.style.setProperty('--nav-menu-top', `${Math.round(h) + 8}px`)
+}
+
+onMounted(() => {
+  document.addEventListener('click', closeNavOnOutside)
+  updateNavTop()
+  window.addEventListener('resize', updateNavTop)
+})
+onBeforeUnmount(() => {
+  document.removeEventListener('click', closeNavOnOutside)
+  window.removeEventListener('resize', updateNavTop)
+})
+
 /** 顶部滚动进度条 */
 const progress = ref(0)
 let progRaf = 0
@@ -65,6 +95,17 @@ function onScroll(): void {
     progress.value = max > 0 ? Math.min(100, (window.scrollY / max) * 100) : 0
     progRaf = 0
   })
+}
+
+/** 回到顶部：长页面滚动超过一屏后出现 */
+const showTop = ref(false)
+function onTopScroll(): void {
+  showTop.value = window.scrollY > window.innerHeight * 1.2
+}
+function scrollTop(): void {
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' })
+  sfx.whoosh()
 }
 
 function onToggleSound(): void {
@@ -162,12 +203,15 @@ onMounted(() => {
     scheduleBroomFlight()
   }
   window.addEventListener('scroll', onScroll, { passive: true })
+  window.addEventListener('scroll', onTopScroll, { passive: true })
   onScroll()
+  onTopScroll()
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('mousemove', onMouseMove)
   window.removeEventListener('scroll', onScroll)
+  window.removeEventListener('scroll', onTopScroll)
   if (raf) cancelAnimationFrame(raf)
   if (progRaf) cancelAnimationFrame(progRaf)
   if (starTimer !== null) window.clearTimeout(starTimer)
@@ -190,11 +234,11 @@ onBeforeUnmount(() => {
     <div class="nebula n2" />
   </div>
 
-  <header class="site-header">
+  <header ref="headerEl" class="site-header">
     <RouterLink to="/" class="brand">🧙‍♀️ {{ t('app.brand') }}<span class="en">WESTERN ORACLE</span></RouterLink>
     <nav class="site-nav">
-      <div v-for="g in NAV_GROUPS" :key="g.label" class="nav-group">
-        <button type="button" class="nav-trigger" :aria-label="t(g.label)">
+      <div v-for="g in NAV_GROUPS" :key="g.label" class="nav-group" :class="{ open: openGroup === g.label }">
+        <button type="button" class="nav-trigger" :aria-label="t(g.label)" :aria-expanded="openGroup === g.label" @click.stop="toggleNavGroup(g.label)">
           <span>{{ t(g.label) }}</span><i class="caret" aria-hidden="true">▾</i>
         </button>
         <div class="nav-menu">
@@ -228,6 +272,12 @@ onBeforeUnmount(() => {
   </footer>
 
   <PixelWitch />
+
+  <Transition name="top-fade">
+    <button v-show="showTop" class="back-top" :aria-label="t('app.top')" title="回到顶部" @click="scrollTop">
+      ✦<span class="bt-arrow">↑</span>
+    </button>
+  </Transition>
 </template>
 
 <style scoped>

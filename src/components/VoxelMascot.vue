@@ -152,10 +152,12 @@ function makeSatGeo(id: string): THREE.BufferGeometry {
       return new THREE.IcosahedronGeometry(0.4) // 符文宝石
     case 'twins':
       return new THREE.TorusGeometry(0.3, 0.12, 10, 20) // 爱心光环
-    case 'comet':
-      return new THREE.ConeGeometry(0.32, 0.72, 8) // 彗核
-    default:
-      return new THREE.BoxGeometry(0.5, 0.5, 0.5)
+case 'comet':
+return new THREE.ConeGeometry(0.32, 0.72, 8) // 彗核
+case 'mist':
+return new THREE.SphereGeometry(0.36, 14, 10) // 雾中水晶球
+default:
+return new THREE.BoxGeometry(0.5, 0.5, 0.5)
   }
 }
 
@@ -424,6 +426,23 @@ function specialAction(): void {
       showMood('☄️ ～')
       break
     }
+    case 'mist': {
+      // Mist：雾气升腾 + 水晶微光
+      const fogs = ['🌫️', '☁️', '✧', '🌫️', '✧']
+      for (let i = 0; i < fogs.length; i++) {
+        const f = document.createElement('span')
+        f.className = 'mascot-fx fx-mist-rise'
+        f.textContent = fogs[i]!
+        f.style.left = `${18 + Math.random() * 64}%`
+        f.style.animationDelay = `${i * 130}ms`
+        el.appendChild(f)
+        window.setTimeout(() => f.remove(), 1500 + i * 130)
+      }
+      sfx.ding()
+      window.setTimeout(() => sfx.blip(), 260)
+      showMood('🌫 ✧ 🌫')
+      break
+    }
   }
 }
 
@@ -444,6 +463,7 @@ const PET_SOUND: Record<string, () => void> = {
   golem: () => { sfx.pop(); window.setTimeout(() => sfx.pop(), 150) },
   twins: () => { sfx.blip(); window.setTimeout(() => sfx.ding(), 80) },
   comet: () => sfx.whoosh(),
+  mist: () => { sfx.ding(); window.setTimeout(() => sfx.toggle(), 160) },
 }
 
 function spawnHearts(el: HTMLElement): void {
@@ -690,11 +710,14 @@ function animate(): void {
       case 'golem':
         satellite.rotation.set(0, now * 0.5, Math.sin(now * 0.6) * 0.25) // 宝石沉稳
         break
-      case 'twins':
-        satellite.rotation.set(Math.sin(now * 1.2) * 0.5, now * 1.4, 0) // 光环摇摆
-        break
-      default:
-        satellite.rotation.set(now * 2.6, now * 0.9, 0.4) // 彗核疾旋
+case 'twins':
+satellite.rotation.set(Math.sin(now * 1.2) * 0.5, now * 1.4, 0) // 光环摇摆
+break
+case 'mist':
+satellite.rotation.set(Math.sin(now * 0.6) * 0.3, now * 0.45, Math.cos(now * 0.5) * 0.2) // 梦般慢旋
+break
+default:
+satellite.rotation.set(now * 2.6, now * 0.9, 0.4) // 彗核疾旋
     }
   }
   tickBursts(now)
@@ -749,7 +772,7 @@ onBeforeUnmount(() => {
   height: 100%;
   min-height: 180px;
   cursor: grab;
-  touch-action: none;
+  touch-action: pan-y;
   border-radius: 12px;
   overflow: hidden;
 }
@@ -921,6 +944,21 @@ onBeforeUnmount(() => {
   from { opacity: 0; transform: translate(0, 0) scale(0.6); }
   25% { opacity: 1; }
   to { opacity: 0; transform: translate(var(--dx), -34px) scale(1.2); }
+}
+/* Mist：雾气升腾 */
+.fx-mist-rise {
+  position: absolute;
+  bottom: 18%;
+  font-size: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  filter: blur(0.4px);
+  animation: mist-rise 1.4s ease-out forwards;
+}
+@keyframes mist-rise {
+  0% { opacity: 0; transform: translateY(14px) scale(0.7); }
+  30% { opacity: 0.9; }
+  100% { opacity: 0; transform: translateY(-46px) scale(1.5); }
 }
 @media (prefers-reduced-motion: reduce) {
   .pet-heart, .mascot-fx { animation-duration: 0.01s !important; }

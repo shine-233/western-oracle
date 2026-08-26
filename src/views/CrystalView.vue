@@ -6,7 +6,7 @@
  * - 凝视时星尘加速旋舞再炸开，随后揭晓答案
  * - 答案按「日期 + 问题」稳定生成：同一天问同一件事，答案不变
  */
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import { locale } from '../lib/i18n'
 import { tt, OMENS, CRYSTAL_GOODFOR, hashSeed } from '../lib/i18nExtra'
 import { BIRTHSTONES_BY_MONTH, BREASTPLATE_STONES, CRYSTAL_GAZING_PASSAGE } from '../data/kunzBirthstones'
@@ -14,7 +14,12 @@ import { sfx } from '../lib/sfx'
 import { sparkleFromEvent } from '../lib/sparkle'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
+/** 雾语 Mist——水晶门廊的住客，终于回家了 */
+const MascotCard = defineAsyncComponent(() => import('../components/MascotCard.vue'))
+const mistPet = ref<InstanceType<typeof MascotCard> | null>(null)
+
 import type * as THREE_NS from 'three'
+import { addHistory } from '../lib/history'
 
 const question = ref('')
 const gazing = ref(false)
@@ -356,6 +361,12 @@ function ask(e?: MouseEvent): void {
     ...(log.history ?? []),
   ].slice(0, 8)
   saveLog(log)
+  addHistory({
+    type: 'crystal',
+    label: zh.value ? '水晶球 · 问事' : 'Crystal Ball · Asking',
+    summary: ${'{'}(question.value.trim() || (zh.value ? '（没写问题）' : '(no question)')){'}'} → ${'}res.omen},
+    detail: res.text ?? '',
+  })
   histList.value = log.history
   askCount.value = Object.keys(log.asks).length
 
@@ -370,6 +381,7 @@ function ask(e?: MouseEvent): void {
     gazing.value = false
     setSpinBoost?.(1)
     sfx.ding()
+    mistPet.value?.celebrate()
     if (e) sparkleFromEvent(e, 14)
   }, delay)
 }
@@ -534,6 +546,9 @@ const showBreastplate = ref(false)
         <p class="gazing-src">{{ zh ? '—— Pausanias 记载的水晶凝视古法，转引自 Kunz，1913' : '— crystal gazing as recorded by Pausanias, via Kunz, 1913' }}</p>
       </details>
     </section>
+
+    <!-- 雾语的 3D 小舞台 -->
+    <MascotCard ref="mistPet" id="mist" />
   </div>
 </template>
 
