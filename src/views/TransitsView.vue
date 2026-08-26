@@ -14,6 +14,7 @@ import { PLANETS } from '../data/corpus'
 import { readTransits, type TransitReading } from '../lib/interpret'
 import { addHistory } from '../lib/history'
 import { sfx } from '../lib/sfx'
+import { sparkleFromEvent } from '../lib/sparkle'
 import { vTilt } from '../lib/tilt'
 import { t, locale } from '../lib/i18n'
 import { SIGNS } from '../data/corpus'
@@ -137,7 +138,7 @@ const aiContext = (): string => {
         <div class="sky-item"><span class="dc-label">{{ t('tr.moonNow') }}</span><strong>{{ skyMoonSign }}</strong></div>
         <div class="sky-item"><span class="dc-label">{{ t('tr.phase') }}</span><strong>{{ phase.emoji }} {{ moonName }}</strong><small>{{ moonDesc }}</small></div>
         <div class="sky-item next-moon"><span class="dc-label">{{ t('tr.nextPhase') }}</span><strong>{{ nextPhaseInfo.emoji }} {{ nextPhaseName }}</strong><small class="countdown">{{ daysText }}</small></div>
-        <div class="sky-item"><span class="dc-label">{{ t('tr.refreshed') }}</span><strong>{{ lastRefresh }}</strong><button class="btn ghost small" style="margin-top: 6px;" @click="refresh()">{{ t('tr.refresh') }}</button></div>
+        <div class="sky-item"><span class="dc-label">{{ t('tr.refreshed') }}</span><strong>{{ lastRefresh }}</strong><button class="btn ghost small" style="margin-top: 6px;" @click="refresh(); sparkleFromEvent($event, 6)">{{ t('tr.refresh') }}</button></div>
       </section>
 
       <!-- 今日主线 -->

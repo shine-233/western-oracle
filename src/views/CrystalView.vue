@@ -9,6 +9,7 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { locale } from '../lib/i18n'
 import { tt, OMENS, CRYSTAL_GOODFOR, hashSeed } from '../lib/i18nExtra'
+import { BIRTHSTONES_BY_MONTH, BREASTPLATE_STONES, CRYSTAL_GAZING_PASSAGE } from '../data/kunzBirthstones'
 import { sfx } from '../lib/sfx'
 import { sparkleFromEvent } from '../lib/sparkle'
 import DecryptTitle from '../components/DecryptTitle.vue'
@@ -383,6 +384,49 @@ onBeforeUnmount(() => {
 })
 
 const askLabel = computed(() => (gazing.value ? tt('crystal.gazing') : tt('crystal.ask')))
+
+/* ---------- Kunz 生辰石志（1913 公版） ---------- */
+const MONTH_KEYS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] as const
+const MONTH_ZH = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+const activeMonth = ref(new Date().getMonth())
+
+/** 同名石头跨榜单合并票数，按票数降序 */
+const monthStones = computed(() => {
+  const merged = new Map<string, number>()
+  for (const it of BIRTHSTONES_BY_MONTH[MONTH_KEYS[activeMonth.value]!] ?? []) {
+    merged.set(it.stone, (merged.get(it.stone) ?? 0) + it.lists)
+  }
+  return [...merged.entries()].map(([stone, lists]) => ({ stone, lists })).sort((a, b) => b.lists - a.lists)
+})
+const maxVotes = computed(() => Math.max(1, ...monthStones.value.map((s) => s.lists)))
+const topStone = computed(() => monthStones.value[0]?.stone ?? '')
+
+const STONE_ZH: Record<string, string> = {
+  Garnet: '石榴石', Amethyst: '紫水晶', Hyacinth: '风信子石', Pearl: '珍珠', Jasper: '碧玉',
+  Bloodstone: '血石', Sapphire: '蓝宝石', Diamond: '钻石', Agate: '玛瑙', Emerald: '祖母绿',
+  Chalcedony: '玉髓', Carnelian: '红玉髓', Turquoise: '绿松石', Onyx: '缟玛瑙', Sardonyx: '缠丝玛瑙',
+  Ruby: '红宝石', Moonstone: '月光石', Topaz: '黄玉', Beryl: '绿柱石', Aquamarine: '海蓝宝',
+  Opal: '蛋白石', Chrysolite: '橄榄石', Chrysoprase: '绿玉髓', "Cat's-eye": '猫眼石',
+}
+const STONE_HUE: Record<string, string> = {
+  Garnet: '#d3544e', Amethyst: '#a06cd5', Hyacinth: '#e8896b', Pearl: '#efe6da', Jasper: '#8a6f4a',
+  Bloodstone: '#4a7d55', Sapphire: '#4a6fb8', Diamond: '#dfe8f2', Agate: '#b08d57', Emerald: '#3fae7a',
+  Chalcedony: '#9fc4d8', Carnelian: '#c96b45', Turquoise: '#4ab8a8', Onyx: '#3a3a44', Sardonyx: '#a8623f',
+  Ruby: '#c92a4e', Moonstone: '#cfd8ee', Topaz: '#e0a83f', Beryl: '#7dc0a8', Aquamarine: '#63c3d8',
+  Opal: '#c9b8e8', Chrysolite: '#9ab84a', Chrysoprase: '#7dc95e', "Cat's-eye": '#c8b26a',
+}
+function stoneName(s: string): string {
+  return zh.value ? STONE_ZH[s] ?? s : s
+}
+function stoneHue(s: string): string {
+  return STONE_HUE[s] ?? '#b3a6f7'
+}
+function pickMonth(i: number, e?: MouseEvent): void {
+  activeMonth.value = i
+  sfx.blip()
+  if (e) sparkleFromEvent(e, 4)
+}
+const showBreastplate = ref(false)
 </script>
 
 <template>
@@ -433,6 +477,62 @@ const askLabel = computed(() => (gazing.value ? tt('crystal.gazing') : tt('cryst
           </li>
         </TransitionGroup>
       </div>
+    </section>
+
+    <!-- Kunz 生辰石志 -->
+    <section class="panel stone-panel">
+      <div class="stone-head">
+        <h3 class="stone-title">💎 {{ zh ? '生辰石志 · 1913' : 'Birthstone Lore · 1913' }}</h3>
+        <small class="hint">{{ zh ? 'Kunz《奇石传说》汇总八份传统榜单的投票 · 点月份换页' : 'Kunz’s tally across eight historic lists · tap a month' }}</small>
+      </div>
+
+      <div class="month-chips">
+        <button
+          v-for="(m, i) in MONTH_KEYS"
+          :key="m"
+          class="m-chip"
+          :class="{ active: activeMonth === i }"
+          @click="pickMonth(i, $event)"
+        >
+          {{ zh ? MONTH_ZH[i] : m.slice(0, 3) }}
+        </button>
+      </div>
+
+      <Transition name="stone-swap" mode="out-in">
+        <ul :key="activeMonth" class="stone-bars">
+          <li
+            v-for="(s, i) in monthStones"
+            :key="s.stone"
+            class="stone-row"
+            :style="{ animationDelay: (i * 70) + 'ms' }"
+          >
+            <span class="sb-glyph" :style="{ color: stoneHue(s.stone), textShadow: `0 0 8px ${stoneHue(s.stone)}` }">◆</span>
+            <span class="sb-name" :class="{ top: s.stone === topStone }">{{ stoneName(s.stone) }}</span>
+            <span class="sb-track">
+              <i class="sb-fill" :style="{ width: (s.lists / maxVotes * 100) + '%', background: `linear-gradient(90deg, ${stoneHue(s.stone)}55, ${stoneHue(s.stone)})` }" />
+            </span>
+            <small class="sb-votes">{{ s.lists }}/{{ maxVotes }}</small>
+          </li>
+        </ul>
+      </Transition>
+      <p v-if="topStone" class="stone-verdict">
+        ✧ {{ zh ? `${MONTH_ZH[activeMonth]}的传统榜首是` : `The traditional favourite for ${MONTH_KEYS[activeMonth]} is` }}
+        <b :style="{ color: stoneHue(topStone) }">{{ stoneName(topStone) }}</b>。
+        {{ zh ? '——1913 年以前的旧俗，图个讲究。' : '— lore from before 1913, taken with a pinch of glitter.' }}
+      </p>
+
+      <details class="bp-box" @toggle="showBreastplate = ($event.target as HTMLDetailsElement).open; sfx.blip()">
+        <summary class="bp-summary">🛡️ {{ zh ? '大祭司胸甲十二石对照（出埃及记）' : 'The Breastplate’s twelve stones (Exodus)' }}</summary>
+        <TransitionGroup v-if="showBreastplate" name="omen-pop" tag="ol" class="bp-list">
+          <li v-for="(row, i) in BREASTPLATE_STONES" :key="row.no" class="bp-row" :style="{ transitionDelay: (i * 30) + 'ms' }">
+            <span class="bp-no">{{ row.no }}</span>
+            <span>{{ row.authorizedVersion }}</span>
+            <em v-if="row.laterCorrection">→ {{ row.laterCorrection }}</em>
+          </li>
+        </TransitionGroup>
+        <p class="gazing-quote">“{{ CRYSTAL_GAZING_PASSAGE }}”</p>
+        <p class="gazing-src">{{ zh ? '—— Pausanias 记载的水晶凝视古法，转引自 Kunz，1913' : '— crystal gazing as recorded by Pausanias, via Kunz, 1913' }}</p>
+      </details>
     </section>
   </div>
 </template>
@@ -504,4 +604,70 @@ const askLabel = computed(() => (gazing.value ? tt('crystal.gazing') : tt('cryst
 
 .omen-pop-enter-active { transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
 .omen-pop-enter-from { opacity: 0; transform: translateY(14px) scale(0.92); }
+
+/* ---------- 生辰石志 ---------- */
+.stone-panel { margin-top: 22px; }
+.stone-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.stone-title { margin: 0; font-family: var(--cute); font-weight: 400; color: var(--gold-bright); font-size: 1.1rem; }
+.month-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 13px; }
+.m-chip {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1.5px solid color-mix(in srgb, var(--lavender) 30%, transparent);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.8rem;
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.m-chip:hover { transform: translateY(-2px); border-color: var(--lavender-soft); }
+.m-chip.active {
+  border-color: var(--gold);
+  color: var(--gold-bright);
+  background: color-mix(in srgb, var(--gold) 12%, transparent);
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--gold) 40%, transparent));
+}
+.stone-bars { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+.stone-row {
+  display: grid;
+  grid-template-columns: auto minmax(90px, 150px) 1fr auto;
+  align-items: center;
+  gap: 10px;
+  animation: sb-in 0.55s cubic-bezier(0.34, 1.4, 0.64, 1) backwards;
+}
+@keyframes sb-in { from { opacity: 0; transform: translateX(-14px); } }
+.sb-glyph { font-size: 0.95rem; }
+.sb-name { font-size: 0.88rem; color: var(--ink); }
+.sb-name.top { color: var(--gold-bright); font-family: var(--cute); }
+.sb-track { height: 9px; border-radius: 5px; background: color-mix(in srgb, var(--void-1) 60%, transparent); overflow: hidden; }
+.sb-fill { display: block; height: 100%; border-radius: 5px; transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+.sb-votes { font-family: var(--pixel); font-size: 0.55rem; letter-spacing: 0.08em; color: var(--ink-dim); }
+.stone-verdict { margin: 14px 0 0; line-height: 1.9; color: var(--ink-dim); font-size: 0.86rem; }
+.bp-box { margin-top: 16px; border: 1.5px solid color-mix(in srgb, var(--gold) 30%, transparent); border-radius: 10px; overflow: hidden; }
+.bp-summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 10px 13px;
+  font-family: var(--cute);
+  color: var(--lavender-soft);
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+.bp-summary::-webkit-details-marker { display: none; }
+.bp-summary:hover { background: color-mix(in srgb, var(--gold) 8%, transparent); }
+.bp-list { margin: 4px 18px 8px; padding-left: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 6px 14px; }
+.bp-row { font-size: 0.82rem; color: var(--ink); line-height: 1.8; }
+.bp-no { font-family: var(--pixel); color: var(--gold-bright); margin-right: 6px; }
+.bp-row em { color: var(--ink-dim); font-size: 0.76rem; margin-left: 5px; }
+.gazing-quote { margin: 10px 16px 2px; font-style: italic; line-height: 1.9; color: var(--ink-dim); font-size: 0.84rem; }
+.gazing-src { margin: 2px 16px 12px; text-align: right; font-size: 0.72rem; color: var(--ink-dim); opacity: 0.85; }
+.stone-swap-enter-active { transition: all 0.35s ease; }
+.stone-swap-enter-from { opacity: 0; transform: translateY(10px); }
+.stone-swap-leave-active { transition: all 0.15s ease; }
+.stone-swap-leave-to { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .stone-row { animation: none; }
+}
 </style>

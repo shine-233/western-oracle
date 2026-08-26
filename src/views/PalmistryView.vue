@@ -1,13 +1,50 @@
-<script setup lang="ts">
-/** 手相阅览室：星座图风格的互动手掌——掌纹如星座，点亮即解读 */
+﻿<script setup lang="ts">
+/** 手相阅览室：星座图风格的互动手掌——掌纹如星座，点亮即解读；附 Cheiro 1916 原典阅读器 */
 import { computed, onMounted, ref } from 'vue'
 import { LINE_PATHS, PALM_FEATURES, L, type PalmFeature } from '../data/palmistry'
+import { CHEIRO_SECTIONS } from '../data/palmistrySections'
+import { locale } from '../lib/i18n'
 import { sparkleFromEvent } from '../lib/sparkle'
 import { sfx } from '../lib/sfx'
 import DecryptTitle from '../components/DecryptTitle.vue'
 
 const selected = ref<PalmFeature | null>(null)
 const drawn = ref(false)
+
+/** 特征 id → Cheiro 章节原文 */
+const SECTION_OF: Record<string, string> = {
+  heart: 'line_of_heart',
+  head: 'line_of_head',
+  life: 'line_of_life',
+  fate: 'line_of_destiny',
+  sun: 'line_of_sun',
+  venus: 'mount_venus',
+  jupiter: 'mount_jupiter',
+  saturn: 'mount_saturn',
+  apollo: 'mount_sun',
+  mercury: 'mount_mercury',
+}
+const cheiroSection = computed(() => {
+  const key = selected.value ? SECTION_OF[selected.value.id] : null
+  return key ? CHEIRO_SECTIONS[key as keyof typeof CHEIRO_SECTIONS] : null
+})
+const cheiroOpen = ref(false)
+
+/** 原典书架：全部章节 */
+const chapterList = Object.entries(CHEIRO_SECTIONS).map(([id, s]) => ({ id, ...s }))
+const activeChapter = ref<string | null>(null)
+function openChapter(id: string): void {
+  activeChapter.value = activeChapter.value === id ? null : id
+  sfx.blip()
+}
+/** 章节标题中文化（阅读器小标签用） */
+const CHAPTER_ZH: Record<string, string> = {
+  line_of_head: '智慧线', line_of_life: '生命线', line_of_mars: '火星线', line_of_destiny: '命运线',
+  line_of_sun: '太阳线', line_of_heart: '感情线', marriage: '婚姻线', children: '子女线',
+  line_of_health: '健康线', girdle_of_venus: '金星带', line_of_intuition: '直觉线',
+  mount_mars: '火星丘', mount_jupiter: '木星丘', mount_saturn: '土星丘', mount_sun: '太阳丘',
+  mount_mercury: '水星丘', mount_moon: '月丘', mount_venus: '金星丘',
+}
 
 onMounted(() => {
   // 等下一帧再触发描边动画，保证 transition 生效
@@ -16,12 +53,14 @@ onMounted(() => {
 
 function pick(f: PalmFeature, e?: MouseEvent): void {
   selected.value = f
+  cheiroOpen.value = false
   sfx.ding()
   if (e) sparkleFromEvent(e, 6)
 }
 
 const lines = computed(() => PALM_FEATURES.filter((f) => f.kind === 'line'))
 const mounts = computed(() => PALM_FEATURES.filter((f) => f.kind === 'mount'))
+const zh = computed(() => locale.value === 'zh')
 
 /** 六条掌纹各自的星座配色 */
 const LINE_COLORS = ['#ff8fb8', '#7de8c3', '#ffb37a', '#b3a6f7', '#ffe3a8', '#ff9fce']
@@ -113,6 +152,21 @@ const STARS = [
             <p class="rp-essence">{{ L([selected.zhEssence, selected.enEssence]) }}</p>
             <p class="rp-detail">{{ L([selected.zhDetail, selected.enDetail]) }}</p>
             <div class="rp-tip">✧ {{ L([selected.zhTip, selected.enTip]) }}</div>
+            <!-- Cheiro 原典对照 -->
+            <Transition name="cheiro">
+              <details v-if="cheiroSection" :open="cheiroOpen" class="cheiro-box" @toggle="cheiroOpen = ($event.target as HTMLDetailsElement).open">
+                <summary class="cheiro-summary" @click.prevent="cheiroOpen = !cheiroOpen; sfx.blip()">
+                  📜 {{ zh ? 'Cheiro 原典对照' : 'Cheiro’s original text' }}
+                  <span class="cheiro-ch">· {{ zh ? CHAPTER_ZH[selected.id] ?? cheiroSection.title : cheiroSection.title }} · Ch.{{ cheiroSection.chapter }}</span>
+                </summary>
+                <p class="cheiro-title">{{ cheiroSection.title }}</p>
+                <p class="cheiro-text">{{ cheiroSection.text }}</p>
+                <p class="cheiro-note">{{ L([
+                  '——摘自 Cheiro《Palmistry for All》（1916 公版），百年前的口吻，读个趣味。',
+                  '— from Cheiro’s “Palmistry for All” (1916, public domain). Read it as period flavour, not medical advice.',
+                ]) }}</p>
+              </details>
+            </Transition>
           </div>
           <div v-else key="empty">
             <h3 class="rp-title">{{ L(['先从感情线开始？', 'Start with the heart line?']) }}</h3>
@@ -126,6 +180,33 @@ const STARS = [
         </Transition>
       </section>
     </div>
+
+    <!-- Cheiro 原典书架 -->
+    <section class="panel shelf-panel">
+      <div class="shelf-head">
+        <h3 class="shelf-title">📜 {{ L(['Cheiro 原典书架 · 1916', 'The Cheiro Shelf · 1916']) }}</h3>
+        <small class="hint">{{ L([`${chapterList.length} 个章节全文，点开即读`, `${chapterList.length} chapters, full text`]) }}</small>
+      </div>
+      <div class="shelf-chips">
+        <button
+          v-for="(c, i) in chapterList"
+          :key="c.id"
+          class="chip-book"
+          :class="{ active: activeChapter === c.id }"
+          :style="{ animationDelay: (i * 40) + 'ms' }"
+          @click="openChapter(c.id); sparkleFromEvent($event, 4)"
+        >
+          <span class="chip-zh">{{ zh ? CHAPTER_ZH[c.id] ?? c.title.slice(0, 18) : c.title.replace('THE ', '').slice(0, 22) }}</span>
+          <span class="chip-no">Ch.{{ c.chapter }}</span>
+        </button>
+      </div>
+      <Transition name="chapter">
+        <article v-if="activeChapter" :key="activeChapter" class="chapter-reader">
+          <p class="cheiro-title">{{ CHEIRO_SECTIONS[activeChapter as keyof typeof CHEIRO_SECTIONS].title }}</p>
+          <p class="cheiro-text">{{ CHEIRO_SECTIONS[activeChapter as keyof typeof CHEIRO_SECTIONS].text }}</p>
+        </article>
+      </Transition>
+    </section>
   </div>
 </template>
 
@@ -186,8 +267,76 @@ const STARS = [
 .slide-fade-enter-from { opacity: 0; transform: translateX(18px); }
 .slide-fade-leave-to { opacity: 0; transform: translateX(-10px); }
 
+/* ---------- Cheiro 原典对照 ---------- */
+.cheiro-box {
+  margin-top: 14px;
+  border: 1.5px solid rgba(179, 166, 247, 0.35);
+  border-radius: 10px;
+  background: rgba(179, 166, 247, 0.06);
+  overflow: hidden;
+}
+.cheiro-summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 10px 13px;
+  font-family: var(--cute);
+  color: var(--lavender-soft);
+  font-size: 0.9rem;
+  transition: background 0.2s, color 0.2s;
+}
+.cheiro-summary::-webkit-details-marker { display: none; }
+.cheiro-summary:hover { background: rgba(179, 166, 247, 0.12); color: var(--gold-bright); }
+.cheiro-ch { font-family: var(--pixel); font-size: 0.6rem; letter-spacing: 0.08em; opacity: 0.8; margin-left: 6px; }
+.cheiro-title { margin: 2px 14px 8px; font-family: var(--pixel); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-bright); }
+.cheiro-text {
+  margin: 0 14px 10px;
+  max-height: 260px;
+  overflow-y: auto;
+  line-height: 1.95;
+  font-size: 0.85rem;
+  color: var(--ink);
+  opacity: 0.92;
+  padding-right: 6px;
+}
+.cheiro-note { margin: 0 14px 12px; font-size: 0.72rem; color: var(--ink-dim); font-style: italic; }
+.cheiro-enter-active { transition: all 0.3s ease; }
+.cheiro-enter-from { opacity: 0; transform: translateY(-6px); }
+
+/* ---------- 原典书架 ---------- */
+.shelf-panel { margin-top: 20px; }
+.shelf-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.shelf-title { margin: 0; font-family: var(--cute); font-weight: 400; color: var(--gold-bright); font-size: 1.1rem; }
+.shelf-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.chip-book {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(245, 200, 110, 0.35);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 0.82rem;
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: book-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+}
+@keyframes book-in { from { opacity: 0; transform: translateY(12px) rotate(-4deg); } }
+.chip-book:hover { transform: translateY(-3px) rotate(1deg); border-color: var(--gold); box-shadow: 0 6px 16px rgba(245, 200, 110, 0.15); }
+.chip-book.active {
+  border-color: var(--gold);
+  background: linear-gradient(140deg, rgba(245, 200, 110, 0.22), rgba(245, 200, 110, 0.08));
+  color: var(--gold-bright);
+  filter: drop-shadow(0 0 6px rgba(245, 200, 110, 0.4));
+}
+.chip-no { font-family: var(--pixel); font-size: 0.55rem; letter-spacing: 0.08em; opacity: 0.75; }
+.chapter-reader { margin-top: 16px; padding-top: 14px; border-top: 1.5px dashed rgba(245, 200, 110, 0.3); max-height: 420px; overflow-y: auto; }
+.chapter-enter-active { transition: all 0.4s cubic-bezier(0.34, 1.4, 0.64, 1); }
+.chapter-enter-from { opacity: 0; transform: translateY(14px); }
+.chapter-leave-active { transition: all 0.12s ease; position: absolute; opacity: 0; }
+
 @media (prefers-reduced-motion: reduce) {
   .line-path { transition: none; stroke-dashoffset: 0 !important; }
-  .twinkle, .stage-hint { animation: none; }
+  .twinkle, .stage-hint, .chip-book { animation: none; }
 }
 </style>

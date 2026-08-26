@@ -1,10 +1,17 @@
 <script setup lang="ts">
-/** 灵摆占卜：按住蓄力 → 放手摆动 → 判读倾向。纯前端动画，答案先定后演（经典灵摆手法）。 */
-import { computed, ref } from 'vue'
+/** 灵摆占卜 v2：真实阻尼球摆物理（rAF 积分）。
+ * 两种玩法：① 按住蓄力松手——答案先定后演，蓄力决定振幅与时长；
+ * ② 直接抓住摆锤甩起来——往哪甩它就怎么答（前后=是 左右=否 斜着=画圈），全靠你手上的真实方向。
+ * 运动带残影拖尾；判定后写入历史并召唤当值学徒点评。 */
+import { computed, defineAsyncComponent, onBeforeUnmount, ref } from 'vue'
 import { L } from '../data/oracleArcade'
 import { sparkleFromEvent } from '../lib/sparkle'
 import { sfx } from '../lib/sfx'
+import { addHistory } from '../lib/history'
+import ApprenticeReact from '../components/ApprenticeReact.vue'
 import DecryptTitle from '../components/DecryptTitle.vue'
+
+const MascotCard = defineAsyncComponent(() => import('../components/MascotCard.vue'))
 
 type Answer = 'yes' | 'no' | 'wait'
 type Phase = 'idle' | 'charging' | 'swinging' | 'verdict'
@@ -13,6 +20,8 @@ const phase = ref<Phase>('idle')
 const question = ref('')
 const chargeLevel = ref(0)
 const answer = ref<Answer | null>(null)
+const reactScore = ref(70)
+const reactKey = ref(0)
 let chargeTimer: number | null = null
 
 const VERDICTS: Record<Answer, { zh: string; en: string; zhLine: string; enLine: string; cls: string }> = {
@@ -36,6 +45,133 @@ const VERDICTS: Record<Answer, { zh: string; en: string; zhLine: string; enLine:
   },
 }
 
+/* ================= 物理引擎：阻尼球面单摆 ================= */
+// 状态：th=离铅垂线夹角(rad)，ph=方位角(0=屏幕左右摆, PI/2=朝向/远离你的前后摆)
+// om=dθ/dt，wp=dφ/dt。半隐式欧拉积分。
+const PIVOT_Y = 12 // 悬点像素
+const LEN = 150 // 摆长像素
+const G_L = 9.2 // g/L，决定固有周期
+const DAMP_T = 0.62 // 角向阻尼
+const DAMP_P = 0.34 // 方位阻尼
+
+let th = 0.03
+let ph = Math.PI / 2
+let om = 0
+let wp = 0
+let raf = 0
+let prevT = 0
+let swingClock = 0 // 本轮摆动已持续秒数
+let simActive = false
+let trailTick = 0
+let recorded = false
+
+interface TrailDot { x: number; y: number }
+const TRAIL_N = 22
+let trailPool: HTMLElement[] = []
+let trailData: TrailDot[] = []
+
+const pendEl = ref<HTMLElement | null>(null)
+const bobEl = ref<HTMLElement | null>(null)
+const chainEl = ref<HTMLElement | null>(null)
+const trailEl = ref<HTMLElement | null>(null)
+
+function ensureTrailPool(): void {
+  if (!trailEl.value || trailPool.length > 0) return
+  for (let i = 0; i < TRAIL_N; i++) {
+    const d = document.createElement('i')
+    d.className = 'trail-dot'
+    trailEl.value.appendChild(d)
+    trailPool.push(d)
+  }
+}
+
+function clearTrail(): void {
+  trailData = []
+  for (const d of trailPool) d.style.opacity = '0'
+}
+
+/** 物理推进一步 */
+function integrate(dt: number): void {
+  const st = Math.sin(th)
+  const ct = Math.cos(th)
+  const aTh = st * ct * wp * wp - G_L * st - DAMP_T * om
+  const aPh = (-2 * om * wp * ct) / Math.max(st, 0.08) - DAMP_P * wp
+  om += aTh * dt
+  th += om * dt
+  wp += aPh * dt
+  if (th < 0) { th = -th; om *= -0.6 } // 摆线不可穿透
+}
+
+/** 把物理状态渲染到 DOM */
+function render(): void {
+  const sx = Math.sin(th) * Math.cos(ph)
+  const dz = Math.sin(th) * Math.sin(ph) // >0 朝向你
+  if (pendEl.value) {
+    const deg = (Math.asin(Math.max(-0.94, Math.min(0.94, sx))) * 180) / Math.PI
+    pendEl.value.style.transform = `rotate(${deg.toFixed(2)}deg)`
+  }
+  if (bobEl.value) {
+    const depthY = dz * 16
+    const sc = 1 + dz * 0.09
+    bobEl.value.style.transform = `translateY(${depthY.toFixed(1)}px) scale(${sc.toFixed(3)})`
+    bobEl.value.style.filter = `brightness(${(1 + Math.abs(dz) * 0.14).toFixed(2)})`
+  }
+  if (chainEl.value) {
+    chainEl.value.style.opacity = String(0.9 - Math.abs(dz) * 0.18)
+  }
+}
+
+function sampleTrail(): void {
+  if (!trailEl.value || !bobEl.value) return
+  ensureTrailPool()
+  const br = bobEl.value.getBoundingClientRect()
+  const tr = trailEl.value.getBoundingClientRect()
+  trailData.push({ x: br.left + br.width / 2 - tr.left, y: br.top + br.height / 2 - tr.top })
+  if (trailData.length > TRAIL_N) trailData.shift()
+  trailData.forEach((p, i) => {
+    const d = trailPool[i]
+    if (!d) return
+    const f = (i + 1) / trailData.length
+    d.style.left = `${p.x}px`
+    d.style.top = `${p.y}px`
+    d.style.opacity = String(f * 0.4)
+    d.style.transform = `translate(-50%,-50%) scale(${(0.4 + f * 0.6).toFixed(2)})`
+  })
+}
+
+function loop(t: number): void {
+  raf = requestAnimationFrame(loop)
+  if (!simActive || prevT === 0) { prevT = t; return }
+  let dt = (t - prevT) / 1000
+  prevT = t
+  if (dt > 0.05) dt = 0.05
+  if (dragging) { render(); return }
+
+  // 子步进积分，稳
+  const steps = 3
+  for (let i = 0; i < steps; i++) integrate(dt / steps)
+  swingClock += dt
+  render()
+  if (++trailTick % 2 === 0) sampleTrail()
+
+  // 能量衰减到位 → 出判定
+  const energy = Math.abs(om) + Math.abs(wp) * Math.sin(th)
+  if (!recorded && swingClock > 1.2 && ((energy < 0.22 && Math.abs(th) < 0.16) || swingClock > 6.5)) {
+    finishReading()
+  }
+}
+
+function startSim(): void {
+  if (simActive) return
+  simActive = true
+  prevT = 0
+  swingClock = 0
+  recorded = false
+  clearTrail()
+  if (!raf) raf = requestAnimationFrame(loop)
+}
+
+/* ================= 蓄力玩法（答案先定后演） ================= */
 function startCharge(e?: MouseEvent): void {
   if (phase.value !== 'idle' && phase.value !== 'verdict') return
   answer.value = null
@@ -60,26 +196,130 @@ function onPointerLeave(e?: MouseEvent): void {
 function doRelease(e?: MouseEvent): void {
   if (chargeTimer !== null) window.clearInterval(chargeTimer)
   chargeTimer = null
-  // 先定答案，动画只是演出
+  const power = chargeLevel.value / 100
   const roll = Math.random()
   const hasQuestion = question.value.trim().length > 0
-  answer.value = roll < (hasQuestion ? 0.42 : 0.34) ? 'yes' : roll < (hasQuestion ? 0.78 : 0.68) ? 'no' : 'wait'
+  const ans: Answer =
+    roll < (hasQuestion ? 0.42 : 0.34) ? 'yes' : roll < (hasQuestion ? 0.78 : 0.68) ? 'no' : 'wait'
+  answer.value = ans
+  // 用真实初条件"演"出这个答案：蓄力越满，振幅越大
+  const amp = 0.38 + power * 0.5
+  if (ans === 'yes') { th = amp; ph = Math.PI / 2; om = 0; wp = 0 }
+  else if (ans === 'no') { th = amp; ph = 0; om = 0; wp = 0 }
+  else { th = amp * 0.66; ph = 0; om = 0.9 + power; wp = 1.5 + power * 1.3 }
+  beginSwing(e)
+}
+
+function beginSwing(e?: MouseEvent): void {
   phase.value = 'swinging'
   sfx.whoosh()
   if (e) sparkleFromEvent(e, 8)
-  window.setTimeout(() => {
-    phase.value = 'verdict'
-    sfx.ding()
-  }, 3400)
+  startSim()
 }
 
-const swingClass = computed(() => {
-  if (phase.value === 'charging') return 'charging'
-  if (phase.value === 'swinging' || phase.value === 'verdict') {
-    return answer.value === 'yes' ? 'swing-v' : answer.value === 'no' ? 'swing-h' : 'swing-circle'
-  }
+/* ================= 抓住甩动玩法（方向即答案） ================= */
+let dragging = false
+let grabbed = false
+let startX = 0
+let startY = 0
+let hist: Array<{ t: number; x: number; y: number }> = []
+
+function onBobDown(e: PointerEvent): void {
+  if (phase.value !== 'idle' && phase.value !== 'verdict') return
+  dragging = true
+  grabbed = false
+  startX = e.clientX
+  startY = e.clientY
+  hist = [{ t: performance.now(), x: e.clientX, y: e.clientY }]
+  phase.value = 'idle'
+  answer.value = null
+  window.addEventListener('pointermove', onBobMove)
+  window.addEventListener('pointerup', onBobUp, { once: true })
+  e.preventDefault()
+}
+
+function onBobMove(e: PointerEvent): void {
+  if (!dragging) return
+  const dx = e.clientX - startX
+  const dy = e.clientY - startY
+  if (!grabbed && Math.hypot(dx, dy) < 6) return
+  grabbed = true
+  hint.value = false
+  const r = Math.min(1.15, Math.hypot(dx, dy * 0.75) / LEN)
+  th = Math.asin(r)
+  ph = Math.atan2(dy * 0.75, dx)
+  hist.push({ t: performance.now(), x: e.clientX, y: e.clientY })
+  if (hist.length > 6) hist.shift()
+  render()
+}
+
+function onBobUp(e: PointerEvent): void {
+  window.removeEventListener('pointermove', onBobMove)
+  if (!dragging) return
+  dragging = false
+  if (!grabbed) return // 单击：交给宠物/其他逻辑
+  const now = performance.now()
+  const a = hist[0]!
+  const b = hist[hist.length - 1]!
+  const dt = Math.max(16, now - b.t) / 1000
+  const vx = (b.x - a.x) / ((b.t - a.t) / 1000 || dt)
+  const vy = (b.y - a.y) / ((b.t - a.t) / 1000 || dt)
+  const speed = Math.hypot(vx, vy)
+  const ax = Math.abs(vx)
+  const ay = Math.abs(vy)
+  let ans: Answer
+  if (speed < 60) ans = 'wait'
+  else if (ax > ay * 1.45) ans = 'no'
+  else if (ay > ax * 1.45) ans = 'yes'
+  else ans = 'wait'
+  answer.value = ans
+  // 把手上速度转成真实初速度
+  if (ans === 'no') { ph = 0; wp = 0; om = Math.sign(vx) * Math.min(2.4, ax / 130) }
+  else if (ans === 'yes') { ph = Math.PI / 2; wp = 0; om = Math.sign(vy) * Math.min(2.4, ay / 130) }
+  else { th = Math.max(th, 0.32); om = 0.6; wp = (vx * vy >= 0 ? 1 : -1) * Math.min(2.2, 0.9 + speed / 260) }
+  beginSwing(e as unknown as MouseEvent)
+}
+
+/* ================= 判定与收尾 ================= */
+const pet = ref<InstanceType<typeof MascotCard> | null>(null)
+
+function finishReading(): void {
+  if (recorded) return
+  recorded = true
+  phase.value = 'verdict'
+  sfx.ding()
+  const ans = (answer.value ?? 'wait') as Answer
+  reactScore.value = ans === 'yes' ? 86 : ans === 'no' ? 42 : 26
+  reactKey.value++
+  pet.value?.celebrate()
+  const v = VERDICTS[ans]
+  addHistory({
+    type: 'pendulum',
+    label: `灵摆 · ${v.zh.split(' —— ')[1] ?? ''}`,
+    question: question.value.trim() || undefined,
+    summary: `${v.zh}${question.value.trim() ? `：「${question.value.trim()}」` : ''}`,
+    detail: [`${question.value.trim() ? `问题：${question.value.trim()}` : '（开放一问）'}`, v.zh, v.zhLine].join('\n'),
+  })
+}
+
+const swingHint = computed(() => {
+  if (phase.value === 'charging') return L(['保持专注……松手即提问', 'Stay focused… release to ask'])
+  if (phase.value === 'swinging') return L(['它在回答……', 'It is answering…'])
   return ''
 })
+
+onBeforeUnmount(() => {
+  if (raf) cancelAnimationFrame(raf)
+  raf = 0
+  simActive = false
+  if (chargeTimer !== null) window.clearInterval(chargeTimer)
+  window.removeEventListener('pointermove', onBobMove)
+})
+
+const reducedMotion =
+  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+const hint = ref(true)
 
 const verdict = computed(() => (answer.value ? VERDICTS[answer.value] : null))
 </script>
@@ -88,18 +328,26 @@ const verdict = computed(() => (answer.value ? VERDICTS[answer.value] : null))
   <div class="page-root">
     <h2><DecryptTitle :text="L(['灵摆占卜', 'Pendulum Oracle'])" /></h2>
     <p class="hint">{{ L([
-      '闭眼默念你的问题，按住灵摆蓄力——越专注，充得越满。松手，它自己会回答：前后为是，左右为否，画圈就是再等等。',
-      'Hold your question in mind, press and hold the pendulum to charge it, then release. Forth-back means yes, left-right means no, circling means wait.',
+      '两种问法：按住蓄力再松手，或者直接揪住摆锤朝你想问的方向甩出去——前后为是，左右为否，斜着就是画圈。这次它是真的在 obey 物理。',
+      'Two ways to ask: hold to charge and release, or grab the bob and fling it — forth-back is yes, sideways is no, diagonal circles for wait. This time the physics is real.',
     ]) }}</p>
 
     <div class="pend-layout">
       <!-- 灵摆舞台 -->
       <section class="panel stage">
-        <div class="pendulum" :class="[swingClass, 'phase-' + phase]" @pointerdown.stop>
-          <div class="chain" />
-          <div class="bob">
-            <span class="bob-glyph">☾</span>
+        <div class="pend-wrap">
+          <div ref="pendEl" class="pendulum" :class="'phase-' + phase" @pointerdown.stop>
+            <div ref="chainEl" class="chain" />
+            <div
+              ref="bobEl"
+              class="bob"
+              @pointerdown="onBobDown"
+              :style="{ cursor: phase === 'idle' || phase === 'verdict' ? 'grab' : 'default' }"
+            >
+              <span class="bob-glyph">☾</span>
+            </div>
           </div>
+          <div ref="trailEl" class="trail-layer" aria-hidden="true" />
         </div>
         <div class="charge-bar" aria-hidden="true">
           <i :style="{ width: chargeLevel + '%' }" />
@@ -114,9 +362,11 @@ const verdict = computed(() => (answer.value ? VERDICTS[answer.value] : null))
         >
           {{ L(['✊ 按住蓄力 · 松手发问', '✊ Hold to charge · release to ask']) }}
         </button>
-        <p v-else-if="phase === 'charging'" class="hint charging-tip">
-          {{ L(['保持专注……松手即提问', 'Stay focused… release to ask']) }}
-        </p>
+        <p v-if="swingHint" class="hint charging-tip">{{ swingHint }}</p>
+        <p class="drag-hint">{{ L([
+          '☝ 也可以直接抓住月亮石甩出去',
+          '☝ or grab the moonstone and fling it',
+        ]) }}</p>
       </section>
 
       <!-- 问题与判读 -->
@@ -146,8 +396,15 @@ const verdict = computed(() => (answer.value ? VERDICTS[answer.value] : null))
             <small v-if="question.trim()">「{{ question.trim() }}」</small>
           </div>
         </Transition>
+
+        <ApprenticeReact v-if="phase === 'verdict'" :key="reactKey" module="pendulum" :score="reactScore" />
       </section>
     </div>
+
+    <MascotCard ref="pet" id="twins" :height="210" />
+
+    <!-- 减少动态的隐藏按钮：蓄力后由 release 兜底 -->
+    <span v-if="reducedMotion" hidden>rm</span>
   </div>
 </template>
 
@@ -167,25 +424,43 @@ const verdict = computed(() => (answer.value ? VERDICTS[answer.value] : null))
   min-height: 380px;
 }
 
+.pend-wrap { position: relative; width: 220px; height: 250px; }
+.trail-layer { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
+:deep(.trail-dot) {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--gold-bright);
+  box-shadow: 0 0 8px rgba(255, 215, 110, 0.85);
+  opacity: 0;
+  pointer-events: none;
+}
+
 .pendulum {
-  position: relative;
+  position: absolute;
+  left: 50%;
+  top: 0;
   width: 160px;
   height: 240px;
+  margin-left: -80px;
   transform-origin: top center;
+  will-change: transform;
 }
 .chain {
   position: absolute;
   left: 50%;
   top: 12px;
   width: 2px;
-  height: 150px;
+  height: 154px;
   transform: translateX(-50%);
   background: linear-gradient(rgba(179, 166, 247, 0.15), var(--gold));
+  transition: opacity 0.2s;
 }
 .bob {
   position: absolute;
   left: 50%;
-  top: 158px;
+  top: 162px;
   width: 52px;
   height: 52px;
   margin-left: -26px;
@@ -195,44 +470,27 @@ const verdict = computed(() => (answer.value ? VERDICTS[answer.value] : null))
   box-shadow: 0 0 22px rgba(255, 215, 110, 0.45);
   display: grid;
   place-items: center;
+  touch-action: none;
+  transition: filter 0.2s;
 }
-.bob-glyph { font-size: 1.5rem; color: #ffe3a8; }
+.bob:active { cursor: grabbing !important; }
+.bob-glyph { font-size: 1.5rem; color: #ffe3a8; pointer-events: none; }
 
-/* 待机轻晃 */
+/* 待机轻晃（仅视觉，物理待命时叠加） */
 .pendulum.phase-idle { animation: idle-sway 3.6s ease-in-out infinite; }
 @keyframes idle-sway { 0%, 100% { transform: rotate(-1.6deg); } 50% { transform: rotate(1.6deg); } }
 
 /* 蓄力抖动 */
-.pendulum.charging { animation: charge-jitter 0.12s linear infinite; }
+.pendulum.phase-charging { animation: charge-jitter 0.12s linear infinite; }
 @keyframes charge-jitter {
   0%, 100% { transform: translateX(-1.5px); }
   50% { transform: translateX(1.5px); }
 }
 
-/* 三种答案的摆法 */
-.pendulum.swing-v { animation: swing-vertical 1.15s ease-in-out infinite; }
-@keyframes swing-vertical {
-  0%, 100% { transform: rotateX(0deg) translateY(0); }
-  25% { transform: rotateX(24deg) translateY(-4px); }
-  75% { transform: rotateX(-24deg) translateY(-4px); }
-}
-.pendulum.swing-h { animation: swing-horizontal 1.15s ease-in-out infinite; }
-@keyframes swing-horizontal {
-  0%, 100% { transform: rotate(16deg); }
-  50% { transform: rotate(-16deg); }
-}
-.pendulum.swing-circle { animation: swing-circle 1.5s linear infinite; }
-@keyframes swing-circle {
-  0% { transform: translateX(14px) rotate(9deg); }
-  25% { transform: translateX(0) rotate(0) translateY(-8px); }
-  50% { transform: translateX(-14px) rotate(-9deg); }
-  75% { transform: translateX(0) rotate(0) translateY(-8px); }
-}
-
 .charge-bar {
   width: 200px;
   height: 8px;
-  margin: 18px 0 16px;
+  margin: 18px 0 10px;
   border-radius: 999px;
   background: rgba(13, 11, 32, 0.85);
   border: 1px solid rgba(179, 166, 247, 0.35);
@@ -245,6 +503,15 @@ const verdict = computed(() => (answer.value ? VERDICTS[answer.value] : null))
   transition: width 0.09s linear;
 }
 .charging-tip { color: var(--gold-bright); }
+.drag-hint {
+  font-family: var(--pixel);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-dim);
+  opacity: 0.8;
+  animation: hint-bob 2.2s ease-in-out infinite;
+}
+@keyframes hint-bob { 50% { transform: translateY(-4px); } }
 
 .side-panel .field { display: block; }
 .legend { list-style: none; padding: 0; margin: 16px 0; display: flex; flex-direction: column; gap: 10px; }
@@ -273,10 +540,7 @@ const verdict = computed(() => (answer.value ? VERDICTS[answer.value] : null))
 .pop-leave-to { opacity: 0; }
 
 @media (prefers-reduced-motion: reduce) {
-  .pendulum.idle-sway, .pendulum.charging,
-  .pendulum.swing-v, .pendulum.swing-h, .pendulum.swing-circle { animation: none !important; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .phase-idle { animation: none !important; }
+  .pendulum.phase-idle, .pendulum.phase-charging { animation: none !important; }
+  .drag-hint { animation: none; }
 }
 </style>
