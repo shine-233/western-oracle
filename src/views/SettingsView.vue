@@ -288,4 +288,19 @@ function onClearHistory(): void {
 .switch.on { background: rgba(125, 232, 195, 0.25); border-color: var(--mint); }
 .switch.on i { left: 23px; background: var(--mint); box-shadow: 0 0 10px var(--mint); }
 .danger-sw i { color: #ff8a8a; font-style: normal; font-weight: bold; line-height: 15px; text-align: center; font-size: 10px !important; }
+
+@media (max-width: 560px) {
+  .pref-row { padding: 11px 13px; gap: 11px; }
+  .pref-icon { font-size: 1.25rem; }
+  .arcana-lab { gap: 9px; }
+}
+</style>
+
+<style>
+/* 窄屏专属微调：设置页表单与皮肤卡 */
+@media (max-width: 640px) {
+  .theme-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  .arcana-lab { gap: 8px; }
+  .field input { font-size: 16px; }
+}
 </style>

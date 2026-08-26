@@ -8,6 +8,7 @@
 import { computed, ref, watch } from 'vue'
 import { APPRENTICES } from '../data/apprenticeProfiles'
 import { MASCOTS, mascotVoxels } from '../data/mascots'
+import { shadeHex } from '../lib/pixelShade'
 import { MODULE_APPRENTICE, moodFromScore } from '../lib/reactMood'
 import type { MoodKey } from '../data/apprenticeProfiles'
 import { locale } from '../lib/i18n'
@@ -39,17 +40,21 @@ const line = computed(() => who.value.moods[mood.value][zh.value ? 'zh' : 'en'])
 const pixels = computed(() => {
   const def = MASCOTS[who.value.id]
   if (!def) return []
-  const out: Array<{ x: number; y: number; color: string }> = []
   const rows = def.sprite
-  const same = (y: number, x: number, ch: string): boolean => rows[y]?.[x] === ch
+  const out: Array<{ x: number; y: number; color: string }> = []
   mascotVoxels(def).forEach((v) => {
+    const ch = rows[v.y]?.[v.x] ?? ''
     let f = 1
-    if (!same(v.y + 1, v.x, def.sprite[v.y]?.[v.x] ?? '')) f = 0.86
-    else if (!same(v.y - 1, v.x, v.color === def.sprite[v.y]?.[v.x] ? def.sprite[v.y]![v.x]! : '\0')) f = 1.07
+    if (!same(rows, v.y + 1, v.x, ch)) f = 0.86
+    else if (!same(rows, v.y - 1, v.x, ch)) f = 1.07
     out.push({ x: v.x, y: v.y, color: f === 1 ? v.color : shadeHex(v.color, f) })
   })
   return out
 })
+
+function same(rows: readonly string[], y: number, x: number, ch: string): boolean {
+  return rows[y]?.[x] === ch
+}
 const gridW = computed(() => {
   const def = MASCOTS[who.value.id]
   return def ? Math.max(...def.sprite.map((r) => r.length)) : 20
@@ -109,11 +114,13 @@ const MOOD_FACE: Record<MoodKey, string> = { great: '🌟', good: '🌤️', meh
   flex-shrink: 0;
   image-rendering: pixelated;
   filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.4));
-  animation: react-bounce 3.2s ease-in-out infinite;
+  animation: react-idle 3.2s ease-in-out infinite;
 }
-@keyframes react-bounce {
-  0%, 100% { transform: translateY(0) rotate(-2deg); }
-  50% { transform: translateY(-4px) rotate(2.5deg); }
+@keyframes react-idle {
+  0%, 100% { transform: translateY(0) scale(1, 1); }
+  30% { transform: translateY(-1px) scale(0.995, 1.016); }
+  50% { transform: translateY(-3px) scale(0.99, 1.03); }
+  70% { transform: translateY(-1px) scale(0.995, 1.016); }
 }
 .react-bubble {
   position: relative;

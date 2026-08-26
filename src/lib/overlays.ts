@@ -446,6 +446,51 @@ function installLunaPress(): void {
   )
 }
 
+/* ---------- 10. 卡片悬停显影：光标在卡面内游走时亮起一盏随行小灯 ---------- */
+function installCardSpotlight(): void {
+  if (!FINE || REDUCED) return
+  const SEL =
+    '.oracle-card,.lib-card,.daily-card,.omen-box,.pattern-card,.hist-item,.transit-item,.pet-card,.mem-card'
+  const style = document.createElement('style')
+  style.id = 'wo-spotlight-style'
+  style.textContent = `
+    ${SEL} { position: relative; }
+    ${SEL}::after {
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .3s ease;
+      background: radial-gradient(210px circle at var(--wo-sx, 50%) var(--wo-sy, 50%),
+        color-mix(in srgb, var(--gold, #ffd76e) 15%, transparent), transparent 62%);
+      mix-blend-mode: screen;
+    }
+    ${SEL}:hover::after { opacity: 1; }`
+  document.head.appendChild(style)
+
+  let pending: Element | null = null
+  let px = 0
+  let py = 0
+  let raf = 0
+  const flush = (): void => {
+    raf = 0
+    if (!pending) return
+    const r = pending.getBoundingClientRect()
+    pending.style.setProperty('--wo-sx', `${px - r.left}px`)
+    pending.style.setProperty('--wo-sy', `${py - r.top}px`)
+    pending = null
+  }
+  document.addEventListener('pointermove', (e) => {
+    const t = (e.target as Element | null)?.closest?.(SEL) ?? null
+    if (!t) return
+    pending = t
+    px = e.clientX
+    py = e.clientY
+    if (!raf) raf = requestAnimationFrame(flush)
+  }, { passive: true })
+}
+
 /** main.ts 里调用一次 */
 export function installOverlays(): void {
   if (typeof document === 'undefined') return
@@ -459,4 +504,5 @@ export function installOverlays(): void {
   installScrollSkew()
   installMouseReveal()
   installLunaPress()
+  installCardSpotlight()
 }

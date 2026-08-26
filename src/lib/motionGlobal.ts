@@ -326,6 +326,78 @@ function installClickBurst(): void {
   )
 }
 
+/* ---------- 6. mouse-reveal 悬停显影（awwwards 招牌）：光斑跟随指针游走卡片 ---------- */
+const REVEAL_SEL = '.oracle-card, .daily-card, .lib-card, .theme-card, .alm-item'
+
+function installMouseReveal(): void {
+  if (!window.matchMedia('(pointer: fine)').matches || reducedMotion()) return
+  const style = document.createElement('style')
+  style.textContent = `
+.reveal-glow {
+  position: absolute;
+  width: 190px; height: 190px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 227, 168, 0.16), rgba(255, 159, 206, 0.07) 45%, transparent 70%);
+  mix-blend-mode: screen;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+  z-index: 3;
+}`
+  document.head.appendChild(style)
+
+  let active: HTMLElement | null = null
+  let glow: HTMLDivElement | null = null
+  let raf = 0
+
+  const move = (e: MouseEvent): void => {
+    if (!active || !glow) return
+    if (raf) return
+    raf = requestAnimationFrame(() => {
+      raf = 0
+      if (!active || !glow) return
+      const rect = active.getBoundingClientRect()
+      glow.style.left = `${e.clientX - rect.left}px`
+      glow.style.top = `${e.clientY - rect.top}px`
+    })
+  }
+
+  document.addEventListener('pointerover', (e) => {
+    const t = (e.target as HTMLElement)?.closest?.(REVEAL_SEL) as HTMLElement | null
+    if (!t || t === active || t.classList.contains('no-reveal')) return
+    if (!t.style.position || t.style.position === 'static') t.style.position = 'relative'
+    t.style.overflow = t.classList.contains('oracle-card') ? t.style.overflow : t.style.overflow
+    active = t
+    glow = document.createElement('div')
+    glow.className = 'reveal-glow'
+    glow.style.opacity = '0'
+    t.appendChild(glow)
+    move(e as MouseEvent)
+    requestAnimationFrame(() => {
+      if (glow) glow.style.opacity = '1'
+    })
+  })
+
+  document.addEventListener(
+    'pointermove',
+    move as EventListener,
+    { passive: true },
+  )
+
+  document.addEventListener('pointerout', (e) => {
+    const t = (e.target as HTMLElement)?.closest?.(REVEAL_SEL) as HTMLElement | null
+    if (t && t === active) {
+      const g = glow
+      if (g) {
+        g.style.opacity = '0'
+        window.setTimeout(() => g.remove(), 320)
+      }
+      active = null
+      glow = null
+    }
+  })
+}
+
 /** 应用启动时调用一次（main.ts） */
 export function installMotionGlobal(): void {
   if (installed) return
@@ -336,5 +408,6 @@ export function installMotionGlobal(): void {
   installAutoTilt()
   installNavScramble()
   installHoverSfx()
+  installMouseReveal()
   installClickBurst()
 }

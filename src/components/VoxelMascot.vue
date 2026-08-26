@@ -207,7 +207,7 @@ function build(): void {
   const COLS = Math.max(...def.sprite.map((r) => r.length))
   const ROWS = def.sprite.length
   const S = Math.min(0.62, 8 / Math.max(COLS, ROWS))
-    const SUB = 2
+    const SUB = low ? 2 : 3
   const s2 = S / SUB
   const geo = new THREE.BoxGeometry(s2, s2, S)
 
@@ -227,7 +227,7 @@ function build(): void {
           m.setPosition(px, py, (layer - 0.5) * S * 1.1)
           mesh.setMatrixAt(idx, m)
           // 同色像素内的微差明暗 → 观感分辨率显著提升
-          const jitter = v.isEye ? 1 : 0.93 + ((sx * 3 + sy * 5 + layer * 2) % 4) * 0.023
+          const jitter = v.isEye ? 1 : 0.93 + ((sx * 5 + sy * 3 + layer * 2) % 6) * 0.018
           mesh.setColorAt(idx, color.set(v.color).multiplyScalar((layer === 0 ? 1 : 0.72) * jitter))
           if (v.isEye && layer === 0) {
             eyeIndices.push(idx)
@@ -710,6 +710,9 @@ const now = clock.getElapsedTime()
     targetRotY = autoRotY + leanY + trickLeanY
     targetRotX = leanX * (asleep.value ? 1.6 : 1) // 睡着时头垂一点
     petGroup.rotation.y += (targetRotY - petGroup.rotation.y) * 0.1
+  // 呼吸起伏 + 重心微摆：让体素小人"活"着
+  petGroup.position.y = Math.sin(now * 1.15) * 0.04
+  petGroup.rotation.z = Math.sin(now * 0.6) * 0.02
     petGroup.rotation.x += (targetRotX - petGroup.rotation.x) * 0.1
     // 睡着时轻轻左右摇
     petGroup.rotation.z =

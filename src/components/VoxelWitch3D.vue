@@ -400,6 +400,9 @@ function animate(): void {
       targetRotX += (wantX - targetRotX) * 0.07
     }
     witchGroup.rotation.y += (targetRotY - witchGroup.rotation.y) * 0.12
+  // 呼吸起伏 + 重心微摆
+  witchGroup.position.y = Math.sin(t * 1.1) * 0.045
+  witchGroup.rotation.z = Math.sin(t * 0.55) * 0.02
     witchGroup.rotation.x += (targetRotX - witchGroup.rotation.x) * 0.12
     // 悬浮 + 跳跃物理
     jumpVel -= 0.012

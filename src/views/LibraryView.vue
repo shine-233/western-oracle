@@ -235,4 +235,21 @@ function open(c: TarotCard, e: MouseEvent): void {
 .modal-enter-from { opacity: 0; }
 .modal-enter-from .modal-panel { transform: scale(0.85) translateY(20px); }
 .modal-leave-to { opacity: 0; }
+
+@media (max-width: 560px) {
+  .modal-backdrop { padding: 12px; }
+  .modal-body > img { width: 132px; }
+  .lib-grid { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 10px; }
+  .lib-search { max-width: 100%; flex-basis: 100%; }
+  .filter-chip { padding: 5px 11px; font-size: 0.82rem; }
+}
+</style>
+
+<style>
+/* 窄屏专属微调：牌库网格与工具栏 */
+@media (max-width: 640px) {
+  .lib-toolbar { flex-direction: column; align-items: stretch; }
+  .lib-search { width: 100%; }
+  .arcana-lab { gap: 10px; }
+}
 </style>
