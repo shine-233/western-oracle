@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 学徒弹幕：任何模块完成占卜（addHistory 触发 wo-divination 事件）后，
  * 当值学徒的像素小人从右下角冒出一句现场点评。
  * 全局生效——包括未来新增的模块，零视图侵入。
@@ -19,7 +19,7 @@ function injectStyles(): void {
   const tag = document.createElement('style')
   tag.textContent = `
 .rp-wrap {
-  position: fixed; right: 18px; bottom: 86px; z-index: 9400;
+  position: fixed; left: 18px; bottom: 18px; z-index: 9400;
   display: flex; align-items: flex-end; gap: 10px;
   max-width: min(88vw, 380px);
   animation: rp-in .45s cubic-bezier(.34,1.56,.64,1);
@@ -44,7 +44,11 @@ function injectStyles(): void {
 }
 .rp-line { margin: 2px 0 0; line-height: 1.65; color: var(--ink,#f0edfb); font-size: .85rem; }
 .rp-out { opacity: 0; transform: translateY(10px); transition: all .3s ease; }
-@media (max-width: 560px) { .rp-wrap { right: 10px; bottom: 10px; } .rp-sprite { width: 46px; } }
+/* 小屏：抬到露娜(z1000)与回到顶部(z1100)上方错开，且收窄气泡避免盖住弹窗内容 */
+@media (max-width: 560px) {
+  .rp-wrap { left: 10px; right: auto; bottom: 96px; max-width: min(74vw, 420px); }
+  .rp-sprite { width: 46px; }
+}
 @media (prefers-reduced-motion: reduce) { .rp-wrap { animation: none; } }
 `
   document.head.appendChild(tag)
