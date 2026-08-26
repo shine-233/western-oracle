@@ -12,7 +12,8 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js'
 import { isLowEnd } from '../lib/perf'
-import { witchVoxels, WITCH_W, WITCH_H } from '../data/witchSprite'
+import { WITCH_SPRITE, WITCH_PALETTE, WITCH_W } from '../data/witchSprite'
+import { hdVoxels } from '../lib/hdSprite'
 import { sfx } from '../lib/sfx'
 import { t } from '../lib/i18n'
 import { themeVar, onThemeChange } from '../lib/themeColors'
@@ -156,11 +157,13 @@ renderer.setPixelRatio(Math.min(MAX_DPR, low ? 1.5 : 2))
   scene.add(rim)
 
   // ---- 体素女巫 ----
-  const voxels = witchVoxels()
-  const COLS = WITCH_W
-  const ROWS = WITCH_H
-  const S = 0.44
-    const SUB = 2
+  // HD 管线：边缘描边环 + 确定性噪声，桌面 F3（≈84×81 档），低档 F2
+  const hd = hdVoxels(WITCH_SPRITE, WITCH_PALETTE, { F: low ? 2 : 3, outline: '#151232', eyeChars: ['E'] })
+  const voxels = hd.voxels
+  const COLS = hd.cols
+  const ROWS = hd.rows
+  const S = 0.44 * (WITCH_W / COLS)
+    const SUB = 1
   const s2 = S / SUB
   const geo = new THREE.BoxGeometry(s2, s2, S)
 
@@ -173,7 +176,7 @@ renderer.setPixelRatio(Math.min(MAX_DPR, low ? 1.5 : 2))
 
   let idx = 0
   voxels.forEach((v) => {
-    const isEye = v.color.toLowerCase() === '#3a2e5c'
+    const isEye = v.isEye
     for (let sx = 0; sx < SUB; sx++) {
       for (let sy = 0; sy < SUB; sy++) {
         const px = (v.x - COLS / 2 + 0.5) * S + (sx - (SUB - 1) / 2) * s2
