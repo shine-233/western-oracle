@@ -469,7 +469,7 @@ function installCardSpotlight(): void {
     ${SEL}:hover::after { opacity: 1; }`
   document.head.appendChild(style)
 
-  let pending: Element | null = null
+  let pending: HTMLElement | null = null
   let px = 0
   let py = 0
   let raf = 0
@@ -482,9 +482,9 @@ function installCardSpotlight(): void {
     pending = null
   }
   document.addEventListener('pointermove', (e) => {
-    const t = (e.target as Element | null)?.closest?.(SEL) ?? null
+    const t = ((e.target as Element | null)?.closest?.(SEL) ?? null) as HTMLElement | null
     if (!t) return
-    pending = t
+    pending = t as HTMLElement
     px = e.clientX
     py = e.clientY
     if (!raf) raf = requestAnimationFrame(flush)
