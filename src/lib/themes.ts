@@ -24,11 +24,40 @@ export const THEMES: OracleTheme[] = [
     id: 'midnight',
     nameZh: '午夜星野',
     nameEn: 'Midnight Starfield',
-    descZh: '默认的紫金夜空，露娜出生的地方。',
-    descEn: 'The default violet-gold night sky where Luna was born.',
+    descZh: '默认的紫金夜空，露娜出生的地方：面板镀着金色微尘。',
+    descEn: 'The default violet-gold night sky where Luna was born — panels dusted with gold.',
     swatch: ['#1e1a45', '#f5c86e', '#ff9fce'],
     vars: {},
-    extras: '',
+    extras: `
+[data-theme='midnight'] .panel {
+  background-image:
+    radial-gradient(140px 70px at 88% 0%, rgba(245, 200, 110, 0.07), transparent 72%),
+    radial-gradient(90px 50px at 6% 100%, rgba(255, 159, 206, 0.05), transparent 70%),
+    linear-gradient(160deg, var(--void-2), var(--void-1));
+}
+[data-theme='midnight'] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 22%, rgba(245, 200, 110, 0.5), transparent 100%),
+    radial-gradient(1.5px 1.5px at 64% 8%, rgba(255, 159, 206, 0.4), transparent 100%),
+    radial-gradient(1.5px 1.5px at 84% 52%, rgba(245, 200, 110, 0.4), transparent 100%),
+    radial-gradient(1.5px 1.5px at 30% 76%, rgba(179, 166, 247, 0.45), transparent 100%),
+    radial-gradient(1.5px 1.5px at 52% 40%, rgba(245, 200, 110, 0.35), transparent 100%);
+  animation: wo-midnight-dust 18s ease-in-out infinite alternate;
+}
+@keyframes wo-midnight-dust {
+  from { opacity: 0.5; transform: translateY(0); }
+  to { opacity: 1; transform: translateY(-14px); }
+}
+[data-theme='midnight'] ::selection { background: rgba(255, 159, 206, 0.45); }
+@media (prefers-reduced-motion: reduce) {
+  [data-theme='midnight'] body::after { animation: none; }
+}
+`,
   },
   {
     id: 'inkpaper',
