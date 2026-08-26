@@ -109,6 +109,8 @@ research/
     ├── kunz_front_matter_v1.json        # Kunz 卷首：Morgan 题献/序言/目录与插图清单 [2026-08-26]
     ├── sepharial_numbers_v4.json        # Sepharial v4：+INTRODUCTION（数字科学与对应论）[2026-08-26]
     ├── tetrabiblos_appendices_v2.json   # 附录卷 v2：卷首起点提前至题献页（WAVERLEY 题献+Advertisement+序言全收）[2026-08-26]
+    ├── fixed_stars_robson_v3.json      # Robson 恒星目录 v3：截断上限移除+章尾三篇论述正确分离（Zosma 尾巴归位）[2026-08-26]
+    ├── robson_medieval_magic_v2.json    # Robson 魔法章 v2：Rules/Image 小节截断上限移除 [2026-08-26]
     ├── tarot_modern_v1.json             # Tarotoo 现代结构化塔罗（78张×love/career/mood/spiritual/yes_no；56数字牌与 Book T 表交叉验证一致）[2026-08-25]
     ├── zodiac_facts_v1.json             # 黄道事实层（12星座：黄经/元素/古典现代守护/日期；古典守护与 Ptolemy 庙宫表互证）[2026-08-25]
     ├── alignment_cn_en_v1.json          # 中文-原文语义对齐（22大牌逐张+小牌规则模板）
@@ -346,7 +348,8 @@ python research/pipeline/02_mine/mine_kunz_birthstones_v2.py  # Kunz 扩容（v2
 python research/pipeline/02_mine/mine_leo_nativity_v2.py     # Leo 五星/百条格言/逐宫（v2）
 python research/pipeline/02_mine/mine_lilly_signs_v2.py      # Lilly 逐星座+格言章（v2）
 python research/pipeline/02_mine/mine_sepharial_numbers_v2.py # Sepharial Ch X/XII（v2）
-python research/pipeline/02_mine/mine_fixed_stars_v2.py      # Robson 漏星/截断修复（v2）
+python research/pipeline/02_mine/mine_fixed_stars_v3.py      # Robson 截断上限精修（v3）
+python research/pipeline/02_mine/mine_robson_medieval_magic.py # Robson 魔法章（v2）
 python research/pipeline/02_mine/mine_tetrabiblos_book1.py   # Tetrabiblos B1 全章
 python research/pipeline/02_mine/mine_tetrabiblos_books34_v2.py # B3/B4 全文体 v2
 python research/pipeline/02_mine/mine_robson_constellations.py  # 星座目录/月宿/魔法清单
@@ -460,6 +463,10 @@ IA=Internet Archive 公版扫描件 OCR；PG=Project Gutenberg。
       插图清单）、Sepharial INTRODUCTION、Tetrabiblos 题献+Advertisement+序言开头，
       全部补挖；lilly 卷首确认仅书名页维持不挖；六源覆盖 95.6–100%；
       audit 40 数据集全绿、fidelity 624 抽样全绿、qa_scan 无残留（2026-08-26）
+- [x] 清洗程序精修：Robson 截断上限放宽——恒星条目分节 1600→无上限、notes 900→无上限，
+      并将末星（Zosma）误吞的章尾三篇论述（世俗占星结论/新星论/魔法导论 ≈1.66 万字符）
+      分离为独立 chapter_end_essays 字段；魔法章 Rules/Image 上限移除；
+      audit 44 数据集全绿、fidelity 673 抽样全绿、qa_scan 无残留（2026-08-26）
 - [x] 清洗程序完备性证明：覆盖率证明器（全部数据集文本反向回标原文字节）
       又揪出四处漏挖——Leo Ch II 黄道开篇论述、Kunz Ch IX 整章正文与三张表
       （印度月宝石/美国各州宝石/美德宝石对应）、Robson 月宿双清单（印度详表+

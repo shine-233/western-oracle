@@ -2,7 +2,7 @@
 Medieval Magic 章与星陨气象学 v1（第三轮扩容）。
 
 输入: classics/robson_fixed_stars_1923_raw.txt (Internet Archive OCR, 公版)
-输出: data/robson_medieval_magic_v1.json
+输出: data/robson_medieval_magic_v2.json
 
 robson_constellations_v1 只收了魔法章的星座效应清单；本文件补齐该章其余：
   A. magic_fixed_stars：Magical Influences of Fixed Stars 编号清单
@@ -69,7 +69,7 @@ def parse_star_magic(seg: str) -> list[dict]:
         if not (rules or image):
             continue
         out.append({'num': int(num_m.group(1)), 'name': name,
-                    'rules': rules[:300], 'image_effect': image[:900]})
+                    'rules': rules, 'image_effect': image})
     return out
 
 
@@ -137,7 +137,7 @@ def main() -> None:
 
     out = {
         'dataset': 'robson_medieval_magic_and_meteorology',
-        'version': 'v1',
+        'version': 'v2',
         'generated': '2026-08-26',
         'source': {
             'work': "Vivian E. Robson, The Fixed Stars and Constellations in Astrology",
@@ -162,7 +162,7 @@ def main() -> None:
         'astro_meteorology': {'passages': meteorology},
         'mathematical_formulae': {'passages': formulae},
     }
-    outp = DATA / 'robson_medieval_magic_v1.json'
+    outp = DATA / 'robson_medieval_magic_v2.json'
     outp.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding='utf-8')
     print(f"robson magic mined: stars={len(star_magic)} seals={len(seals)}P "
           f"mans={len(mansions_magic)}P meteor={len(meteorology)}P form={len(formulae)}P "

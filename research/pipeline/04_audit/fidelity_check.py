@@ -181,11 +181,11 @@ def main() -> None:
 
     # --- robson v2（influence/notes/aspects 抽样）---
     raw = load_raw('robson_fixed_stars_1923_raw.txt')
-    d = json.loads((DATA / 'fixed_stars_robson_v2.json').read_text(encoding='utf-8'))
+    d = json.loads((DATA / 'fixed_stars_robson_v3.json').read_text(encoding='utf-8'))
     for s in rng.sample(d['stars'], 18):
         for field in ('influence', 'notes', 'with_sun', 'culminating'):
             if s[field]:
-                f.check(f"fixed_stars_v2[{s['name']}].{field}", s[field], raw)
+                f.check(f"fixed_stars_v3[{s['name']}].{field}", s[field], raw)
         for ak, av in list(s['aspects'].items())[:2]:
             f.check(f"fixed_stars_v2[{s['name']}].aspects.{ak}", av, raw)
 

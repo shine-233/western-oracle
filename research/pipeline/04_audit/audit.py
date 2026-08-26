@@ -409,7 +409,7 @@ def audit_tetrabiblos_book2(report: dict) -> None:
 
 
 def audit_fixed_stars_v2(report: dict) -> None:
-    d = _load('fixed_stars_robson_v2.json')
+    d = _load('fixed_stars_robson_v3.json')
     stars = d['stars']
     keys = {s['name_key'] for s in stars}
     required = ['algol', 'aldebaran', 'regulus', 'antares', 'arcturus', 'spica', 'sirius', 'pleiades']
@@ -426,8 +426,11 @@ def audit_fixed_stars_v2(report: dict) -> None:
         'unique_names': len(keys) == len(stars),
         'nature_extracted': sum(1 for s in stars if s['nature']) >= 30,
     }
-    report['fixed_stars_robson_v2'] = {
+    n_essays = sum(map(len, d.get('chapter_end_essays', {}).get('passages', [])))
+    checks['chapter_end_essays'] = n_essays >= 12000
+    report['fixed_stars_robson_v3'] = {
         'checks': checks, 'count': len(stars), 'aspects_total': n_aspects,
+        'essays_chars': n_essays,
         'pass': all(checks.values()),
     }
 
@@ -622,7 +625,7 @@ def audit_kunz_v4(report: dict) -> None:
 
 
 def audit_robson_magic(report: dict) -> None:
-    d = _load('robson_medieval_magic_v1.json')
+    d = _load('robson_medieval_magic_v2.json')
     star_names = {re.sub(r'\s+', '', x['name']).casefold() for x in d['magic_fixed_stars']}
     met_blob = ' '.join(d['astro_meteorology']['passages']).lower()
     checks = {
@@ -635,7 +638,7 @@ def audit_robson_magic(report: dict) -> None:
         'meteorology_weather_words': all(k in met_blob for k in ('rain', 'wind')),
         'formulae': len(d['mathematical_formulae']['passages']) >= 30,
     }
-    report['robson_medieval_magic_v1'] = {
+    report['robson_medieval_magic_v2'] = {
         'checks': checks, 'counts': d['counts'], 'pass': all(checks.values()),
     }
 

@@ -257,7 +257,7 @@
    "count": 12,
    "pass": true
   },
-  "fixed_stars_robson_v2": {
+  "fixed_stars_robson_v3": {
    "checks": {
     "count_ge_96": true,
     "required_stars": true,
@@ -266,10 +266,12 @@
     "aspects_captured": true,
     "all_have_text": true,
     "unique_names": true,
-    "nature_extracted": true
+    "nature_extracted": true,
+    "chapter_end_essays": true
    },
    "count": 99,
    "aspects_total": 322,
+   "essays_chars": 16551,
    "pass": true
   },
   "tetrabiblos_book1_v2": {
@@ -413,7 +415,7 @@
    },
    "pass": true
   },
-  "robson_medieval_magic_v1": {
+  "robson_medieval_magic_v2": {
    "checks": {
     "star_magic_ge_12": true,
     "star_magic_anchors": true,
