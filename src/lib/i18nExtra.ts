@@ -26,6 +26,7 @@ const M: Record<string, Pair> = {
   'crystal.hour': ['时辰', 'Hour window'],
   'crystal.count': ['今天已经问过 {n} 次', 'Asked {n} time(s) today'],
   'crystal.drag': ['拖拽旋转 · 滚轮推近', 'drag to spin · wheel to zoom'],
+  'crystal.hist': ['最近问过的', 'Recent asks'],
 
   /* ---------- 行星时 ---------- */
   'hours.nav': ['行星时', 'Planet Hours'],

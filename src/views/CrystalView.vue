@@ -424,6 +424,7 @@ const askLabel = computed(() => (gazing.value ? tt('crystal.gazing') : tt('cryst
           {{ tt('crystal.count', { n: askCount }) }}
         </p>
 
+        <p v-if="histList.length > 0" class="hist-title">✦ {{ tt('crystal.hist') }}</p>
         <TransitionGroup v-if="histList.length > 0" name="omen-pop" tag="ul" class="hist-list">
           <li v-for="(it, i) in histList" :key="it.at + i" class="hist-row">
             <small class="hr-at">{{ it.at }}</small>
@@ -475,6 +476,7 @@ const askLabel = computed(() => (gazing.value ? tt('crystal.gazing') : tt('cryst
 .omen-hint { margin: 10px 0 0; color: var(--ink-dim); font-size: 0.8rem; font-style: italic; }
 .count-hint { margin-top: 4px; opacity: 0.75; }
 
+.hist-title { margin: 14px 0 0; font-family: var(--cute); color: var(--lavender-soft); letter-spacing: 0.08em; }
 .hist-list {
   list-style: none;
   margin: 6px 0 0;
