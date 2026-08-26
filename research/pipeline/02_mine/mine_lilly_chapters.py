@@ -1,7 +1,7 @@
 """02_mine: Lilly《Christian Astrology》(1647) 章节库 v1（第三轮扩容）。
 
 输入: classics/lilly_christian_astrology_1647_raw.txt (Internet Archive OCR, 公版)
-输出: data/lilly_chapters_v1.json
+输出: data/lilly_chapters_v2.json
 
 lilly_signs_v2 只挖星座章/尊贵章/格言章（raw 的 ≈3%）。本书其余部分：
   A. book1_terms_and_book2_opening：Ch XIX 行星术语/相位词汇起，至问卦格言章前
@@ -36,24 +36,35 @@ def clean_passage(s: str) -> str:
     s = re.sub(r"(?m)^[ \t]*[^a-z\n]{3,60}[ \t]*$", ' ', s)
     # 行内页眉残片（'7 ONO KAUK' / '2 ELS OF' 类断裂运行页眉）
     s = re.sub(r"\b\d{1,2}\s+[A-Z][A-Z&'\s]{2,18}(?=\s+[A-Z][a-z])", ' ', s)
+    # 图版混排残片：数字 + 全大写串 + 逗号/句点收尾（如 '7 ONO KAUK,'）
+    s = re.sub(r"\b\d{1,2}\s+[A-Z][A-Z&\.\?\s']{4,24}[\.,]", ' ', s)
     return re.sub(r'\s+', ' ', s).strip()
 
 
-def region_paragraphs(seg: str, min_len: int = 150) -> list[str]:
+def region_paragraphs(seg: str, min_len: int = 120) -> list[str]:
+    """行级清洗：仅丢弃网格/噪声行（数字标点密度高的短行、无小写短行），
+    保留混排段落中的散文部分。"""
     out = []
+
+    def is_grid_line(x: str) -> bool:
+        s = x.strip()
+        if not s:
+            return True
+        if sum(c.islower() for c in s) == 0 and len(s) <= 60:
+            return True
+        dense = sum(not c.isalpha() for c in s) / max(len(s), 1)
+        return dense > 0.45 and len(s) < 90
+
     for p in re.split(r'\n\s*\n', seg):
-        lines = [x.strip() for x in p.splitlines()]
-        # 无小写字母的短行（页眉残行/图版网格噪声）整行剔除
-        kept = [x for x in lines if x and not (
-            len(x) <= 60 and sum(c.islower() for c in x) == 0)]
+        kept = [x.strip() for x in p.splitlines() if not is_grid_line(x)]
         para = clean_passage(' '.join(kept))
         if len(para) < min_len:
             continue
         letters = [c for c in para if c.isalpha()]
         if not letters or sum(c.islower() for c in letters) / max(len(letters), 1) < 0.25:
             continue
-        # 图例网格碾碎正文的低质量段（星盘示例页）：管道符多/字母占比低则整段弃收
-        if para.count('|') >= 3 or len(letters) / max(len(para), 1) < 0.55:
+        # 纯网格段（几乎无散文）整体弃收；混排段保留
+        if len(letters) / max(len(para), 1) < 0.40:
             continue
         out.append(para)
     return out
@@ -76,9 +87,9 @@ def main() -> None:
 
     region_a = region_paragraphs(text[a_start:a_end])
     region_b = region_paragraphs(text[b_start:len(text)])
-    if len(region_a) < 250 or sum(map(len, region_a)) < 120000:
+    if len(region_a) < 250 or sum(map(len, region_a)) < 100000:
         problems.append(f'A 区不足: {len(region_a)} 段 {sum(map(len, region_a))} 字符')
-    if len(region_b) < 900 or sum(map(len, region_b)) < 500000:
+    if len(region_b) < 1100 or sum(map(len, region_b)) < 600000:
         problems.append(f'B 区不足: {len(region_b)} 段 {sum(map(len, region_b))} 字符')
 
     blob_a = ' '.join(region_a[:60])
@@ -94,7 +105,7 @@ def main() -> None:
 
     out = {
         'dataset': 'lilly_chapter_library',
-        'version': 'v1',
+        "version": "v2",
         'generated': '2026-08-26',
         'source': {
             'work': 'William Lilly, Christian Astrology in Three Books',
@@ -118,7 +129,7 @@ def main() -> None:
         'chapter_markers': markers,
     }
     total = sum(map(len, region_a)) + sum(map(len, region_b))
-    outp = DATA / 'lilly_chapters_v1.json'
+    outp = DATA / 'lilly_chapters_v2.json'
     outp.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding='utf-8')
     print(f'lilly chapters mined: A={len(region_a)}P/{sum(map(len, region_a))}ch '
           f'B={len(region_b)}P/{sum(map(len, region_b))}ch, markers={len(markers)} -> {outp}')

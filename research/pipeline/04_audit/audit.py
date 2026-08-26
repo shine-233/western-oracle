@@ -749,6 +749,100 @@ def audit_tetrabiblos_appendices_v2(report: dict) -> None:
     report['tetrabiblos_appendices_v2'] = {'checks': checks, 'pass': all(checks.values())}
 
 
+# ---------- 第七轮补漏（覆盖率证明器驱动）----------
+
+def audit_lilly_chapters_v2(report: dict) -> None:
+    d = _load('lilly_chapters_v2.json')
+    a = d['regions']['book1_terms_and_book2_opening']['paragraphs']
+    b = d['regions']['book2_houses_and_book34']['paragraphs']
+    blob_a = ' '.join(a)
+    blob_b = ' '.join(b)
+    checks = {
+        'region_a_count': len(a) >= 300 and sum(map(len, a)) >= 130000,
+        'region_b_count': len(b) >= 1100 and sum(map(len, b)) >= 600000,
+        'buying_selling_chapter': 'Buying and Selling' in blob_b or 'Buying' in blob_b,
+        'friends_rules': 'Friends' in blob_b,
+        'wood_on_ground_example': 'Wood on the ground' in blob_a or 'Wood' in blob_b,
+    }
+    report['lilly_chapters_v2'] = {'checks': checks, 'counts': d['counts'], 'pass': all(checks.values())}
+
+
+def audit_kunz_birthstones_v5(report: dict) -> None:
+    d = _load('kunz_birthstones_v5.json')
+    ch9 = d['chapters']['birth_stones_chapter_prose']['passages']
+    tables = d['chapters']['tables']
+    ch9_blob = ' '.join(ch9)
+    checks = {
+        'ch9_prose': len(ch9) >= 150 and sum(map(len, ch9)) >= 35000,
+        'ch9_anchors': all(k in ch9_blob for k in ('Josephus', 'Napoleon')),
+        'hindu_table': any('Zircon' in p for p in tables['hindu_month_gems']),
+        'us_states_table': any('California' in p for p in tables['us_state_stones']),
+        'virtue_lists': any('CHARITY' in p for p in tables['virtue_gem_lists']),
+        'sentiments_kept': set(d['sentiments_of_months']) == MONTH_NAMES,
+    }
+    report['kunz_birthstones_v5'] = {'checks': checks, 'pass': all(checks.values())}
+
+
+def audit_sepharial_v5(report: dict) -> None:
+    d = _load('sepharial_numbers_v5.json')
+    items = d.get('numbered_items', {})
+    lost = items.get('xii', [])
+    pyth = items.get('iii', [])
+    chart = items.get('iv', [])
+    iv_blob = ' '.join(i['text'] for i in pyth)
+    checks = {
+        'lost_list_ge_15': len(lost) >= 15,
+        'pyth_table_ge_30': len(pyth) >= 30,
+        'pyth_anchor': 'Death, fatality' in iv_blob,
+        'chart_ge_9': len(chart) >= 9
+        and 'individuality' in ' '.join(i['text'] for i in chart[:3]),
+        'intro_kept': len(d.get('introduction', {}).get('passages', [])) >= 3,
+    }
+    report['sepharial_numbers_v5'] = {
+        'checks': checks,
+        'counts': {k: len(v) for k, v in items.items()},
+        'pass': all(checks.values()),
+    }
+
+
+def audit_leo_v6(report: dict) -> None:
+    d = _load('leo_nativity_v6.json')
+    exp = d['expansions']
+    seg = exp['ch2_zodiac_signs_opening']['passage']
+    checks = {
+        'ch2_present': 'ch2_zodiac_signs_opening' in exp and len(seg) >= 12000,
+        'ch2_anchors': all(k.lower() in seg.lower()
+                           for k in ('group of animals', 'Twelve Signs of the Zodiac')),
+        'v5_sections_kept': len(d['sections']) == 3,
+        'v4_blocks_kept': LEO_V4_BLOCKS <= set(exp),
+        'rising_still_12': len(exp['planets_rising_in_signs']) == 12,
+        'aphorisms_still_100': len(d['centiloquy']['aphorisms']) == 100,
+    }
+    report['leo_nativity_v6'] = {'checks': checks, 'pass': all(checks.values())}
+
+
+def audit_robson_constellations_v2(report: dict) -> None:
+    d = _load('robson_constellations_v2.json')
+    hindu = d['lunar_mansions_hindu']
+    chinese = d['lunar_mansions_chinese']
+    ch2 = ' '.join(d['ch2_influence_of_constellations']['passages'])
+    prec = ' '.join(d['precession_and_constellational_ages']['passages'])
+    fm = ' '.join(d['front_matter']['passages'])
+    checks = {
+        'hindu_mansions_28': len(hindu) == 28,
+        'hindu_fields': all(m.get('name') and m.get('meaning') for m in hindu),
+        'chinese_sieu_ge_20': len(chinese) >= 20,
+        'chinese_fields': all(m.get('name') and m.get('meaning') for m in chinese),
+        'ch2_passages_ge_200': len(d['ch2_influence_of_constellations']['passages']) >= 200,
+        'ch2_anchors': all(k.casefold() in ch2.casefold() for k in ('48 in number', 'Andromeda')),
+        'precession_passages_ge_30': len(d['precession_and_constellational_ages']['passages']) >= 30,
+        'precession_anchor': 'precession' in prec.casefold(),
+        'front_matter_kept': (len(d['front_matter']['passages']) >= 3
+                              and 'fixed stars' in fm.casefold()),
+    }
+    report['robson_constellations_v2'] = {'checks': checks, 'counts': d['counts'], 'pass': all(checks.values())}
+
+
 def main() -> None:
     report: dict = {'generated': '2026-08-26', 'datasets': {}}
     audit_tarot(report['datasets'])
@@ -791,6 +885,11 @@ def main() -> None:
     audit_kunz_front_matter(report['datasets'])
     audit_sepharial_v4(report['datasets'])
     audit_tetrabiblos_appendices_v2(report['datasets'])
+    audit_lilly_chapters_v2(report['datasets'])
+    audit_kunz_birthstones_v5(report['datasets'])
+    audit_sepharial_v5(report['datasets'])
+    audit_leo_v6(report['datasets'])
+    audit_robson_constellations_v2(report['datasets'])
 
     all_pass = all(d['pass'] for d in report['datasets'].values())
     report['all_pass'] = all_pass

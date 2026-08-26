@@ -353,6 +353,39 @@ def main() -> None:
     for p in rng.sample(fm[:10], min(4, len(fm[:10]))):
         f.check('tet_app_v2[fm head]', p, raw)
 
+    # ========= 第七轮补漏（覆盖率证明器驱动）=========
+
+    # --- lilly chapters v2（新恢复的散文段）---
+    raw = load_raw('lilly_christian_astrology_1647_raw.txt')
+    d = json.loads((DATA / 'lilly_chapters_v2.json').read_text(encoding='utf-8'))
+    for reg_key, region in d['regions'].items():
+        for p in rng.sample(region['paragraphs'], min(10, len(region['paragraphs']))):
+            f.check(f'lilly_ch2[{reg_key}]', p, raw, min_len=80)
+
+    # --- kunz v5（Ch IX 散文与三表）---
+    raw = load_raw('kunz_curious_lore_precious_stones_1913_raw.txt')
+    d = json.loads((DATA / 'kunz_birthstones_v5.json').read_text(encoding='utf-8'))
+    for p in rng.sample(d['chapters']['birth_stones_chapter_prose']['passages'],
+                        min(8, len(d['chapters']['birth_stones_chapter_prose']['passages']))):
+        f.check('kunz_v5[ch9]', p, raw)
+    for p in d['chapters']['tables']['us_state_stones'][:1]:
+        f.check('kunz_v5[us_states]', p[:1200], raw)
+
+    # --- sepharial v5（短编号条目）---
+    raw = load_raw('sepharial_kabala_of_numbers_raw.txt')
+    d = json.loads((DATA / 'sepharial_numbers_v5.json').read_text(encoding='utf-8'))
+    for ch_key in ('xii', 'iii', 'iv'):
+        for it in rng.sample(d['numbered_items'][ch_key],
+                             min(6, len(d['numbered_items'][ch_key]))):
+            f.check(f"sep_v5[{ch_key} {it['no']}]", it['text'], raw, min_len=30)
+
+    # --- leo v6（Ch II 开头）---
+    raw = load_raw('leo_how_to_judge_nativity_1928_raw.txt')
+    d = json.loads((DATA / 'leo_nativity_v6.json').read_text(encoding='utf-8'))
+    seg = d['expansions']['ch2_zodiac_signs_opening']['passage']
+    f.check('leo_v6[ch2 head]', seg[:1500], raw)
+    f.check('leo_v6[ch2 mid]', seg[len(seg) // 2:][:1500], raw)
+
     print(f'fidelity checked: {f.checked} samples')
     if f.problems:
         print(f'PROBLEMS ({len(f.problems)}):')

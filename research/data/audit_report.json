@@ -505,6 +505,83 @@
     "planisphere": true
    },
    "pass": true
+  },
+  "lilly_chapters_v2": {
+   "checks": {
+    "region_a_count": true,
+    "region_b_count": true,
+    "buying_selling_chapter": true,
+    "friends_rules": true,
+    "wood_on_ground_example": true
+   },
+   "counts": {
+    "region_a_paragraphs": 780,
+    "region_b_paragraphs": 2080,
+    "chapter_markers_detected": 4
+   },
+   "pass": true
+  },
+  "kunz_birthstones_v5": {
+   "checks": {
+    "ch9_prose": true,
+    "ch9_anchors": true,
+    "hindu_table": true,
+    "us_states_table": true,
+    "virtue_lists": true,
+    "sentiments_kept": true
+   },
+   "pass": true
+  },
+  "sepharial_numbers_v5": {
+   "checks": {
+    "lost_list_ge_15": true,
+    "pyth_table_ge_30": true,
+    "pyth_anchor": true,
+    "chart_ge_9": true,
+    "intro_kept": true
+   },
+   "counts": {
+    "i": 9,
+    "iii": 49,
+    "iv": 10,
+    "vi": 6,
+    "x": 6,
+    "xi": 58,
+    "xii": 39
+   },
+   "pass": true
+  },
+  "leo_nativity_v6": {
+   "checks": {
+    "ch2_present": true,
+    "ch2_anchors": true,
+    "v5_sections_kept": true,
+    "v4_blocks_kept": true,
+    "rising_still_12": true,
+    "aphorisms_still_100": true
+   },
+   "pass": true
+  },
+  "robson_constellations_v2": {
+   "checks": {
+    "hindu_mansions_28": true,
+    "hindu_fields": true,
+    "chinese_sieu_ge_20": true,
+    "chinese_fields": true,
+    "ch2_passages_ge_200": true,
+    "ch2_anchors": true,
+    "precession_passages_ge_30": true,
+    "precession_anchor": true,
+    "front_matter_kept": true
+   },
+   "counts": {
+    "lunar_mansions_hindu": 28,
+    "lunar_mansions_chinese": 23,
+    "ch2_passages": 244,
+    "precession_passages": 35,
+    "preface_passages": 5
+   },
+   "pass": true
   }
  },
  "all_pass": true
