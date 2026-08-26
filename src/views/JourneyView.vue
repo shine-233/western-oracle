@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 /**
  * 愚人之旅 · The Fool's Journey —— 全站招牌滚动叙事页。
  * 二十二张大牌按三幕（觉醒 0-7 / 试炼 8-14 / 归返 15-21）排成一条向下的路：
@@ -24,21 +24,21 @@ interface Stage {
 }
 
 const STAGES: Stage[] = [
-  { id: 'fool', num: '0', zh: '愚人', en: 'The Fool', lineZh: '一切从一步之差开始。包袱是轻的，狗是兴奋的，你不知道悬崖对面有什么——这正是出发的最好理由。', lineEn: 'It begins with a step off the edge. The pack is light, the dog thrilled, and not knowing is the best reason to go.' },
-  { id: 'magician', num: 'I', zh: '魔术师', en: 'The Magician', lineZh: '桌上摆齐了四样元素，手指天指地。你第一次发现：原来工具一直都在，缺的只是那句"我来"。', lineEn: 'Four elements on the table, one hand up, one down. The tools were always there — all you lacked was saying "I will."' },
-  { id: 'high-priestess', num: 'II', zh: '女祭司', en: 'High Priestess', lineZh: '帷幕后面有东西在等你，但它不说。有些答案要靠安静才能听见，问得太急它就装睡。', lineEn: 'Something waits behind the veil, and it won\'t be rushed. Some answers only surface when you stop demanding them.' },
+  { id: 'fool', num: '0', zh: '愚人', en: 'The Fool', lineZh: '一切从一步之差开始。包袱轻，狗兴奋。对面有什么？不知道。这正是最好的出发理由。', lineEn: 'It begins with a step off the edge. The pack is light, the dog thrilled, and not knowing is the best reason to go.' },
+  { id: 'magician', num: 'I', zh: '魔术师', en: 'The Magician', lineZh: '桌上摆齐了四样元素，手指天指地。你头一回发现工具早就在桌上，缺的只是那句"我来"。', lineEn: 'Four elements on the table, one hand up, one down. The tools were always there — all you lacked was saying "I will."' },
+  { id: 'high-priestess', num: 'II', zh: '女祭司', en: 'High Priestess', lineZh: '帷幕后面有东西在等你，但它不说。问得越急它越装睡。安静下来，才听得见。', lineEn: 'Something waits behind the veil, and it won\'t be rushed. Some answers only surface when you stop demanding them.' },
   { id: 'empress', num: 'III', zh: '女皇', en: 'The Empress', lineZh: '麦子熟了，花园不用命令就自己生长。你学会的第一课是：丰饶不是抓来的，是养出来的。', lineEn: 'Wheat ripens; gardens grow without orders. First lesson of abundance: it cannot be grabbed, only tended.' },
-  { id: 'emperor', num: 'IV', zh: '皇帝', en: 'The Emperor', lineZh: '石头王座又冷又硬，但边界立起来了。你说"不"的时候，世界才第一次认真听你说话。', lineEn: 'The stone throne is cold, but boundaries stand. The first time you say no, the world starts taking notes.' },
+  { id: 'emperor', num: 'IV', zh: '皇帝', en: 'The Emperor', lineZh: '石头王座又冷又硬，但边界立起来了。第一声"不"出口，世界才开始认真听你。', lineEn: 'The stone throne is cold, but boundaries stand. The first time you say no, the world starts taking notes.' },
   { id: 'hierophant', num: 'V', zh: '教皇', en: 'The Hierophant', lineZh: '传统递给你一本现成的答案册。抄近道很方便——直到你发现钥匙串里没有自己那把。', lineEn: 'Tradition hands you a ready answer book. Convenient shortcuts — until you notice none of the keys are yours.' },
   { id: 'lovers', num: 'VI', zh: '恋人', en: 'The Lovers', lineZh: '这不是关于遇见谁，而是关于选择成为谁。每一次心动背后，都藏着一道价值观的选择题。', lineEn: 'Less about who you meet than who you choose to be. Behind every flutter hides a values exam.' },
-  { id: 'chariot', num: 'VII', zh: '战车', en: 'The Chariot', lineZh: '两匹方向相反的兽拉着同一辆车。出发不难，难的是一路上不让它们把你撕成两种人生。', lineEn: 'Two beasts pull one chariot in opposite directions. Departing is easy; not being torn into two lives is the work.' },
+  { id: 'chariot', num: 'VII', zh: '战车', en: 'The Chariot', lineZh: '两匹方向相反的兽拉着同一辆车。出发容易。难的是别让它们把你撕成两半人生。', lineEn: 'Two beasts pull one chariot in opposite directions. Departing is easy; not being torn into two lives is the work.' },
   // ─── 第二幕 · 试炼 ───
-  { id: 'strength', num: 'VIII', zh: '力量', en: 'Strength', lineZh: '狮子不需要被打败，只需要被理解。你收起拳头，轻轻合上兽口——温柔原来是最重的那只手。', lineEn: 'The lion needn\'t be beaten, only understood. You close its jaws gently — softness turns out to be the heaviest hand.' },
+  { id: 'strength', num: 'VIII', zh: '力量', en: 'Strength', lineZh: '狮子不需要被打败，只需要被理解。你收起拳头，轻轻合上兽口——温柔，原来是最重的那只手。', lineEn: 'The lion needn\'t be beaten, only understood. You close its jaws gently — softness turns out to be the heaviest hand.' },
   { id: 'hermit', num: 'IX', zh: '隐士', en: 'The Hermit', lineZh: '上山的人自带灯笼。人群散了以后你才发现，那些安静的日子才是真正往前走的日子。', lineEn: 'Hermits carry their own lanterns. When the crowd thins out, you find the quiet days were the ones that moved you.' },
   { id: 'wheel-of-fortune', num: 'X', zh: '命运之轮', en: 'Wheel of Fortune', lineZh: '轮子转起来的那一刻，好坏都留不住。你唯一能选的是姿势：被甩下来，还是骑上去。', lineEn: 'Once the wheel spins, neither fortune nor ruin stays. Your only move is posture: flung off, or riding.' },
-  { id: 'justice', num: 'XI', zh: '正义', en: 'Justice', lineZh: '天平两端各放一个事实，剑竖在中间。这一站不看你的心情，只看你的账。', lineEn: 'One fact on each pan, sword upright between. This station reads your ledger, not your mood.' },
+  { id: 'justice', num: 'XI', zh: '正义', en: 'Justice', lineZh: '天平两端各放一个事实，剑竖在中间。这站不讲情面，只对账。', lineEn: 'One fact on each pan, sword upright between. This station reads your ledger, not your mood.' },
   { id: 'hanged-man', num: 'XII', zh: '倒吊人', en: 'The Hanged Man', lineZh: '倒挂着的人看起来输了，其实他在换眼睛。有些路口，停九天比走九步离答案更近。', lineEn: 'The hanging man looks defeated — he\'s changing eyes. At some crossroads, nine days still beats nine steps.' },
-  { id: 'death', num: 'XIII', zh: '死神', en: 'Death', lineZh: '别怕，这站没人真的死。死的是那个不肯更新的版本的你——而新的一集已经排好档期了。', lineEn: 'Nobody actually dies here. What ends is the version of you that refused updates — the next season is already scheduled.' },
+  { id: 'death', num: 'XIII', zh: '死神', en: 'Death', lineZh: '别怕，这站没人真的死。死的只是不肯更新的旧版你。新一集已经排好档期。', lineEn: 'Nobody actually dies here. What ends is the version of you that refused updates — the next season is already scheduled.' },
   // ─── 第三幕 · 归返 ───
   { id: 'temperance', num: 'XIV', zh: '节制', en: 'Temperance', lineZh: '两只杯子之间来回倒水，永远差一点才能对味。原来"刚刚好"是一种练出来的手艺。', lineEn: 'Water poured between two cups, never quite right on the first pass. "Just right" turns out to be a craft.' },
   { id: 'devil', num: 'XV', zh: '恶魔', en: 'The Devil', lineZh: '链子其实没锁死，低头一看是松的。让你留下的从来不是铁链，是"习惯了"。', lineEn: 'Look down: the chain was never locked. What keeps you isn\'t iron — it\'s "used to it."' },
