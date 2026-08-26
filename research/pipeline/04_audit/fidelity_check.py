@@ -189,6 +189,76 @@ def main() -> None:
         for ak, av in list(s['aspects'].items())[:2]:
             f.check(f"fixed_stars_v2[{s['name']}].aspects.{ak}", av, raw)
 
+    # ========= 第三轮扩容（第二轮 remine）=========
+
+    # --- tetrabiblos Book I 全章 ---
+    raw = load_raw('tetrabiblos_ashmand_full_1822_raw.txt')
+    d = json.loads((DATA / 'tetrabiblos_book1_v2.json').read_text(encoding='utf-8'))
+    for c in rng.sample(d['chapters'], min(6, len(d['chapters']))):
+        f.check(f"tet_b1[{c['index']}].quote", c['quote'], raw, min_len=120)
+        body_mid = c['body'][len(c['body']) // 2:]
+        f.check(f"tet_b1[{c['index']}].body", body_mid[:2000], raw)
+
+    # --- tetrabiblos B3/B4 全文体 ---
+    d = json.loads((DATA / 'tetrabiblos_books34_v2.json').read_text(encoding='utf-8'))
+    for c in rng.sample(d['chapters'], min(6, len(d['chapters']))):
+        f.check(f"tet_b34v2[B{c['book']}C{c['index_in_book']}]", c['body'][300:2300], raw)
+
+    # --- robson 星座/月宿/魔法 ---
+    raw = load_raw('robson_fixed_stars_1923_raw.txt')
+    d = json.loads((DATA / 'robson_constellations_v1.json').read_text(encoding='utf-8'))
+    for c in rng.sample(d['constellations'], 10):
+        for field in ('legend', 'history', 'influence'):
+            if c[field]:
+                f.check(f"const[{c['num']} {c['name']}].{field}", c[field][:1200], raw)
+    for m in rng.sample(d['lunar_mansions'], 8):
+        f.check(f"mansion[{m['num']}] {m['name']}", m['meaning'], raw, min_len=40)
+        if m['with_moon']:
+            f.check(f"mansion[{m['num']}].with_moon", m['with_moon'], raw, min_len=25)
+    for m in rng.sample(d['magic_influences'], 10):
+        f.check(f"magic[{m['constellation']}]", m['effect'], raw, min_len=40)
+
+    # --- sepharial v3 章库 ---
+    raw = load_raw('sepharial_kabala_of_numbers_raw.txt')
+    d = json.loads((DATA / 'sepharial_numbers_v3.json').read_text(encoding='utf-8'))
+    for ch_key in rng.sample(sorted(d['chapters']), 6):
+        pas = d['chapters'][ch_key]['passages']
+        for p in rng.sample(pas, min(3, len(pas))):
+            f.check(f'sepharial_v3[{ch_key}]', p, raw)
+
+    # --- leo v3 扩容区块 ---
+    raw = load_raw('leo_how_to_judge_nativity_1928_raw.txt')
+    d = json.loads((DATA / 'leo_nativity_v3.json').read_text(encoding='utf-8'))
+    exp = d['expansions']
+    for key in ('fiery', 'watery', 'airy', 'earthy'):
+        seg = exp['element_sign_groups'][key]['passage']
+        f.check(f'leo_v3[elem {key}]', seg[len(seg) // 3:][:1800], raw)
+    for key, sec in list(exp['planets_rising_in_signs'].items())[:4]:
+        mid = sec['passage'][len(sec['passage']) // 3:][:1500]
+        f.check(f'leo_v3[rising {key}]', mid, raw)
+    for key, sec in exp['concluding_chapters'].items():
+        mid = sec[len(sec) // 3:][:1500]
+        f.check(f'leo_v3[{key}]', mid, raw)
+    for key in ('ch3_luminaries_and_planets', 'ch5_three_centres', 'solar_aspects',
+                'apheta_and_anareta', 'houses_conclusion', 'uranus_neptune_aspects'):
+        seg = exp[key]['passage']
+        f.check(f'leo_v3[{key}]', seg[len(seg) // 3:][:1600], raw)
+
+    # --- kunz v3 两整章 ---
+    raw = load_raw('kunz_curious_lore_precious_stones_1913_raw.txt')
+    d = json.loads((DATA / 'kunz_birthstones_v3.json').read_text(encoding='utf-8'))
+    for ch_key in ('religious_uses', 'therapeutic_uses'):
+        pas = d['chapters'][ch_key]['passages']
+        for p in rng.sample(pas, min(5, len(pas))):
+            f.check(f'kunz_v3[{ch_key}]', p, raw)
+
+    # --- lilly chapters 章节库 ---
+    raw = load_raw('lilly_christian_astrology_1647_raw.txt')
+    d = json.loads((DATA / 'lilly_chapters_v1.json').read_text(encoding='utf-8'))
+    for reg_key, region in d['regions'].items():
+        for p in rng.sample(region['paragraphs'], min(14, len(region['paragraphs']))):
+            f.check(f'lilly_chapters[{reg_key}]', p, raw, min_len=80)
+
     print(f'fidelity checked: {f.checked} samples')
     if f.problems:
         print(f'PROBLEMS ({len(f.problems)}):')

@@ -43,6 +43,13 @@ research/
 │   ├── 02_mine/mine_leo_nativity_v2.py # Leo v2：五星入星座五章+Centiloquy 百条+逐宫切分 [2026-08-26]
 │   ├── 02_mine/mine_tetrabiblos_books34.py # Tetrabiblos B3/B4 命盘专题十章按主题切分 [2026-08-25]
 │   ├── 02_mine/mine_tetrabiblos_book2.py   # Tetrabiblos B2 政治气象占星十二章（quote+全文）[2026-08-26]
+│   ├── 02_mine/mine_tetrabiblos_book1.py   # Tetrabiblos B1 基础原理卷全文（quote+全文）[2026-08-26]
+│   ├── 02_mine/mine_tetrabiblos_books34_v2.py # B3/B4 全文体 v2（21 章整章正文）[2026-08-26]
+│   ├── 02_mine/mine_robson_constellations.py  # Robson 星座目录/月宿二十八宿/魔法效应清单 [2026-08-26]
+│   ├── 02_mine/mine_sepharial_numbers_v3.py   # Sepharial v3：19 章逐章段落库 [2026-08-26]
+│   ├── 02_mine/mine_leo_nativity_v3.py        # Leo v3：元素星座/行星升起/太阳相位/结论章 [2026-08-26]
+│   ├── 02_mine/mine_kunz_birthstones_v3.py    # Kunz v3：宗教用途/医疗用途两整章 [2026-08-26]
+│   ├── 02_mine/mine_lilly_chapters.py         # Lilly 章节库：Book II 逐宫问事+Book III/IV 本命盘 [2026-08-26]
 │   ├── 02_mine/curate_bookt_decans.py  # Golden Dawn Book T 三十六旬对应表（程序化生成+锚点校验）[2026-08-25]
 │   ├── 03_clean/clean_tarot.py         # 清洗：78张结构校验/去重/空值/与站点id集合对齐
 │   ├── 03_clean/clean_tarot_sources.py # 清洗：三源合并对照（waite+papus+mcelroy 78×3）
@@ -73,6 +80,13 @@ research/
     ├── sepharial_numbers_v2.json        # Sepharial 扩容：v1 全量 + Ch X 读心 / Ch XII 失物章 [2026-08-26]
     ├── tetrabiblos_book2_v2.json        # Tetrabiblos Book II 政治气象占星十二章（quote+全文）[2026-08-26]
     ├── fixed_stars_robson_v2.json       # Robson v2：99 星 + With Mercury..Fortuna 小节全收（322 节）[2026-08-26]
+    ├── tetrabiblos_book1_v2.json        # Tetrabiblos B1 基础原理卷全文按章收录 [2026-08-26]
+    ├── tetrabiblos_books34_v2.json      # Tetrabiblos B3/B4 全文体 v2（21 章整章正文+主题标注）[2026-08-26]
+    ├── robson_constellations_v1.json    # Robson 星座目录 89 条/月宿 28 宿/魔法效应清单 26 条 [2026-08-26]
+    ├── sepharial_numbers_v3.json        # Sepharial v3：19 章逐章段落库（≈20 万字符散文）[2026-08-26]
+    ├── leo_nativity_v3.json             # Leo v3：四元素星座深义/行星升起 12 座/太阳相位/Apheta/结论章 [2026-08-26]
+    ├── kunz_birthstones_v3.json         # Kunz v3：宗教用途 255 段/医疗用途 143 段 [2026-08-26]
+    ├── lilly_chapters_v1.json           # Lilly 章节库：Book II 逐宫问事 + Book III/IV 本命盘（≈94 万字符）[2026-08-26]
     ├── tarot_modern_v1.json             # Tarotoo 现代结构化塔罗（78张×love/career/mood/spiritual/yes_no；56数字牌与 Book T 表交叉验证一致）[2026-08-25]
     ├── zodiac_facts_v1.json             # 黄道事实层（12星座：黄经/元素/古典现代守护/日期；古典守护与 Ptolemy 庙宫表互证）[2026-08-25]
     ├── alignment_cn_en_v1.json          # 中文-原文语义对齐（22大牌逐张+小牌规则模板）
@@ -205,6 +219,24 @@ v1 全量（minor_key/things_thought_of/resultant_meanings）+ 新增
 | aspects | 新增 With Mercury/Venus/Mars/Jupiter/Saturn/Uranus/Neptune/Fortuna 小节全收（322 节，Aldebaran 单星回收 6 节） |
 | 名称归一 | SnARATAN→Sheratan（以条目正文 'Sharatain' 上下文为证断言） |
 
+### 第三轮扩容数据集（2026-08-26 第二批）
+
+覆盖率审计显示 v2 后仍有大量未挖区块（lilly 仅 3%、B1 全文未挖、
+Robson 星座/月宿目录整块跳过等），第二批扩容：
+
+| 数据集 | 新增内容 | 说明 |
+|---|---|---|
+| tetrabiblos_book1_v2.json | B1 基础原理卷全文按章收录（≈10.4 万字符） | 通走 Chapter 标题行；个别章标题行 OCR 损坏时正文并入相邻章，文本零丢失 |
+| tetrabiblos_books34_v2.json | B3/B4 全文体：21 章整章正文（≈22 万字符） | 替代 v1 的首段引文；TOPICS 主题+house_hint 标注保留；B4 止于书末 Almagest 附录前 |
+| robson_constellations_v1.json | 星座目录 89 条（Legend/History/Influence 分节）+ 月宿 28 宿 + Medieval Magic 星座魔法效应清单 26 条 | 与 fixed_stars_robson_v2 的恒星目录互补；OCR 编号别名 'z.'='1.' 已处理 |
+| sepharial_numbers_v3.json | 全部 19 章逐章段落库（≈20 万字符散文） | Ch I/XI 表格保持独立字段；章界以 CHAPTER 行+标题行双重锚定 |
+| leo_nativity_v3.json | 四元素星座深义 4 章 / Ch III·V / 行星升起十二星座逐座章 / 太阳相位章 / Apheta 与 Anareta / 宫位结语与天王海王相位 / Ch XXI-XXII 结论章（共 ≈23 万字符） | v2 内容全数保留 |
+| kunz_birthstones_v3.json | Religious Uses 整章 255 段 / Therapeutic Uses 整章 143 段（≈20 万字符） | 含原书图版图注，按原貌保留 |
+| lilly_chapters_v1.json | 区域 A=Ch XIX 相位术语至格言章前；区域 B=Book II 逐宫问事章（买卖/朋友/旅行…）与 Book III/IV 本命盘判断（合计 ≈94 万字符） | OCR 页裂严重不做章节切分，段落级收录；图版网格噪声段已滤除 |
+
+**第三轮后整体覆盖情况**：leo ≈72%、kunz ≈51%、robson ≈64%、sepharial ≈86%、
+tetrabiblos 全书 ≈90%（B1/B2/B3/B4 正文全收）、lilly ≈64%。
+
 ## 复现方式
 
 ```bash
@@ -228,9 +260,16 @@ python research/pipeline/02_mine/mine_leo_nativity_v2.py     # Leo 五星/百条
 python research/pipeline/02_mine/mine_lilly_signs_v2.py      # Lilly 逐星座+格言章（v2）
 python research/pipeline/02_mine/mine_sepharial_numbers_v2.py # Sepharial Ch X/XII（v2）
 python research/pipeline/02_mine/mine_fixed_stars_v2.py      # Robson 漏星/截断修复（v2）
+python research/pipeline/02_mine/mine_tetrabiblos_book1.py   # Tetrabiblos B1 全章
+python research/pipeline/02_mine/mine_tetrabiblos_books34_v2.py # B3/B4 全文体 v2
+python research/pipeline/02_mine/mine_robson_constellations.py  # 星座目录/月宿/魔法清单
+python research/pipeline/02_mine/mine_sepharial_numbers_v3.py   # Sepharial 19 章库（v3）
+python research/pipeline/02_mine/mine_leo_nativity_v3.py        # Leo 扩容区块（v3）
+python research/pipeline/02_mine/mine_kunz_birthstones_v3.py    # Kunz 宗教/医疗章（v3）
+python research/pipeline/02_mine/mine_lilly_chapters.py         # Lilly 章节库
 python research/pipeline/02_mine/curate_bookt_decans.py  # Book T 三十六旬
-python research/pipeline/04_audit/audit.py               # 审计22数据集（不过则退出码1）
-python research/pipeline/04_audit/fidelity_check.py      # 保真度抽查：352抽样回查原始文献
+python research/pipeline/04_audit/audit.py               # 审计29数据集（不过则退出码1）
+python research/pipeline/04_audit/fidelity_check.py      # 保真度抽查：489抽样回查原始文献
 python research/pipeline/04_audit/qa_scan.py             # 清洗质量扫描（OCR噪声/页眉/编码）
 python research/pipeline/04_audit/export_ts.py           # 导出站点 TS（15个模块）
 ```
@@ -238,7 +277,7 @@ python research/pipeline/04_audit/export_ts.py           # 导出站点 TS（15�
 ### 验证方法论（三层）
 
 1. **确定性**：全部挖掘脚本重跑后数据集 SHA256 逐字节一致（无随机性、无顺序依赖）；
-2. **保真度**：`fidelity_check.py` 按 seed=1901 抽样 352 条，词块化回查原始文献，
+2. **保真度**：`fidelity_check.py` 按 seed=1901 抽样 489 条，词块化回查原始文献，
    命中率阈值 70%（页眉清除造成的"空洞"允许跨洞，超短字段命中 ≥1 块即通过）——
    防止挖掘过程张冠李戴或凭空造文；
 3. **交叉验证**：Tarotoo 56 数字牌行星/星座 ↔ Book T 三十六旬表逐张互证；
@@ -301,6 +340,10 @@ IA=Internet Archive 公版扫描件 OCR；PG=Project Gutenberg。
       sepharial 4.0%→+Ch X·XII / tetrabiblos Book II 零→十二章全文 /
       leo 5.7%→~45% 五星+百条格言+逐宫 / robson 截断漏星修复+322 小节）；
       audit 22 数据集全绿、fidelity 352 抽样全绿、qa_scan 无残留（2026-08-26）
+- [x] 清洗程序扩容第二批：覆盖率审计驱动，补挖 B1 全文/B3B4 全文体/星座月宿目录/
+      Sepharial 19 章/Leo 元素与行星升起章/Kunz 宗教医疗章/Lilly Book II+III/IV 章节库；
+      整体覆盖 leo≈72% kunz≈51% robson≈64% sepharial≈86% tetrabiblos≈90% lilly≈64%；
+      audit 29 数据集全绿、fidelity 489 抽样全绿、qa_scan 无残留（2026-08-26）
 - [ ] 对齐 v2：小牌逐张人工对齐 + 语义相似度评分
 - [ ] fixed_stars v3：与现代星表交叉补齐黄经与星座（候选方案：HYG database RA/Dec + 岁差计算至 J1923 黄经；注意 HYG 为 CC BY-SA，衍生数据需同许可）
 - [ ] 站点 corpus.ts 语义层接入研究层 v2 引用（lilly 逐座/leo 百条格言/kunz 十二月表）

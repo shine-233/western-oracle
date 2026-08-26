@@ -271,6 +271,94 @@
    "count": 99,
    "aspects_total": 322,
    "pass": true
+  },
+  "tetrabiblos_book1_v2": {
+   "checks": {
+    "count_ge_20": true,
+    "proem_present": true,
+    "bodies_long": true,
+    "quotes_present": true,
+    "all_cited": true
+   },
+   "count": 20,
+   "pass": true
+  },
+  "tetrabiblos_books34_v2": {
+   "checks": {
+    "count_ge_18": true,
+    "both_books": true,
+    "required_topics": true,
+    "topic_bodies_long": true,
+    "all_cited": true
+   },
+   "count": 21,
+   "pass": true
+  },
+  "robson_constellations_v1": {
+   "checks": {
+    "constellations_ge_80": true,
+    "const_num_anchors": true,
+    "const_have_text": true,
+    "mansions_28": true,
+    "mansions_all_meaning": true,
+    "magics_ge_25": true,
+    "magic_anchors": true
+   },
+   "counts": {
+    "constellations": 89,
+    "lunar_mansions": 28,
+    "magic_influences": 26
+   },
+   "pass": true
+  },
+  "sepharial_numbers_v3": {
+   "checks": {
+    "minor_key_9": true,
+    "thought_of_9": true,
+    "resultant_ge_55": true,
+    "chapters_19": true,
+    "prose_substantial": true,
+    "titles_present": true
+   },
+   "pass": true
+  },
+  "leo_nativity_v3": {
+   "checks": {
+    "expansion_groups": true,
+    "elements_4": true,
+    "elements_min_len": true,
+    "rising_12": true,
+    "rising_min_len": true,
+    "concluding_3": true,
+    "aphorisms_still_100": true,
+    "houses_still_11": true,
+    "uranus_neptune_len": true
+   },
+   "pass": true
+  },
+  "kunz_birthstones_v3": {
+   "checks": {
+    "sentiments_kept": true,
+    "crystal_kept": true,
+    "religious_passages": true,
+    "therapeutic_passages": true
+   },
+   "pass": true
+  },
+  "lilly_chapters_v1": {
+   "checks": {
+    "region_a_count": true,
+    "region_b_count": true,
+    "aspect_definitions": true,
+    "buying_selling_chapter": true,
+    "friends_rules": true
+   },
+   "counts": {
+    "region_a_paragraphs": 587,
+    "region_b_paragraphs": 1602,
+    "chapter_markers_detected": 4
+   },
+   "pass": true
   }
  },
  "all_pass": true

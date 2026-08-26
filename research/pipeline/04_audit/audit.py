@@ -9,6 +9,7 @@
 """
 import json
 import random
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -431,6 +432,136 @@ def audit_fixed_stars_v2(report: dict) -> None:
     }
 
 
+# ---------- 第三轮扩容数据集（第二轮 remine）----------
+
+def audit_tetrabiblos_book1(report: dict) -> None:
+    d = _load('tetrabiblos_book1_v2.json')
+    chapters = d['chapters']
+    blob = ' '.join(c['title'].lower() for c in chapters)
+    checks = {
+        'count_ge_20': len(chapters) >= 20,
+        'proem_present': 'proem' in blob,
+        'bodies_long': all(len(c['body']) >= 400 for c in chapters),
+        'quotes_present': all(len(c['quote']) >= 100 for c in chapters),
+        'all_cited': all('Ashmand 1822' in c['source'] for c in chapters),
+    }
+    report['tetrabiblos_book1_v2'] = {'checks': checks, 'count': len(chapters), 'pass': all(checks.values())}
+
+
+def audit_books34_v2(report: dict) -> None:
+    d = _load('tetrabiblos_books34_v2.json')
+    chapters = d['chapters']
+    by_topic = {c['topic']: c for c in chapters if c['topic']}
+    required = ('siblings', 'marriage', 'children', 'travel', 'death_quality',
+                'occupation', 'body', 'mind', 'longevity')
+    checks = {
+        'count_ge_18': len(chapters) >= 18,
+        'both_books': {c['book'] for c in chapters} == {3, 4},
+        'required_topics': all(t in by_topic for t in required),
+        'topic_bodies_long': all(len(by_topic[t]['body']) >= 800 for t in required if t in by_topic),
+        'all_cited': all('Ashmand 1822' in c['source'] for c in chapters),
+    }
+    report['tetrabiblos_books34_v2'] = {'checks': checks, 'count': len(chapters), 'pass': all(checks.values())}
+
+
+def audit_robson_constellations(report: dict) -> None:
+    d = _load('robson_constellations_v1.json')
+    consts = d['constellations']
+    mansions = d['lunar_mansions']
+    magics = d['magic_influences']
+    mnames = {re.sub(r'\s+', '', m['constellation']).casefold() for m in magics}
+    checks = {
+        'constellations_ge_80': len(consts) >= 80,
+        'const_num_anchors': all(n in {c['num'] for c in consts}
+                                 for n in (4, 21, 24, 37, 55, 80, 84, 87, 92, 98, 105)),
+        'const_have_text': all(c['legend'] or c['history'] or c['influence'] for c in consts),
+        'mansions_28': len(mansions) == 28,
+        'mansions_all_meaning': all(m['meaning'] for m in mansions),
+        'magics_ge_25': len(magics) >= 25,
+        'magic_anchors': all(n.casefold() in mnames for n in ('Andromeda', 'Aquila', 'Draco')),
+    }
+    report['robson_constellations_v1'] = {
+        'checks': checks, 'counts': d['counts'], 'pass': all(checks.values()),
+    }
+
+
+def audit_sepharial_v3(report: dict) -> None:
+    d = _load('sepharial_numbers_v3.json')
+    mk = d['minor_key']
+    covered = [int(k) for k in d['resultant_meanings'] if 12 <= int(k) <= 84]
+    chs = d['chapters']
+    checks = {
+        'minor_key_9': len(mk) == 9,
+        'thought_of_9': len(d['things_thought_of']) == 9,
+        'resultant_ge_55': len(covered) >= 55,
+        'chapters_19': set(chs) == {'i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii',
+                                    'ix', 'x', 'xi', 'xii', 'xiii', 'xiv', 'xv',
+                                    'xvi', 'xvii', 'xviii', 'xix'},
+        'prose_substantial': sum(len(p) for c in chs.values() for p in c['passages']) >= 150000,
+        'titles_present': all(c['title'] for c in chs.values()),
+    }
+    report['sepharial_numbers_v3'] = {'checks': checks, 'pass': all(checks.values())}
+
+
+LEO_EXPANSIONS = {'element_sign_groups', 'planets_rising_in_signs', 'solar_aspects',
+                  'apheta_and_anareta', 'houses_conclusion', 'uranus_neptune_aspects',
+                  'concluding_chapters'}
+
+
+def audit_leo_v3(report: dict) -> None:
+    d = _load('leo_nativity_v3.json')
+    exp = d['expansions']
+    aph = d['centiloquy']['aphorisms']
+    elems = exp.get('element_sign_groups', {})
+    rising = exp.get('planets_rising_in_signs', {})
+    concluding = exp.get('concluding_chapters', {})
+    checks = {
+        'expansion_groups': LEO_EXPANSIONS <= set(exp),
+        'elements_4': set(elems) == {'fiery', 'watery', 'airy', 'earthy'},
+        'elements_min_len': all(len(v['passage']) >= 3000 for v in elems.values()),
+        'rising_12': set(rising) == {s.lower() for s in
+                                     ('ARIES', 'TAURUS', 'GEMINI', 'CANCER', 'LEO', 'VIRGO',
+                                      'LIBRA', 'SCORPIO', 'SAGITTARIUS', 'CAPRICORN',
+                                      'AQUARIUS', 'PISCES')},
+        'rising_min_len': all(len(v['passage']) >= 2500 for v in rising.values()),
+        'concluding_3': set(concluding) == {'ch21_judgment', 'moon_disposition', 'ch22_onward'},
+        'aphorisms_still_100': len(aph) == 100,
+        'houses_still_11': len(d['houses']) == 11,
+        'uranus_neptune_len': len(exp.get('uranus_neptune_aspects', {}).get('passage', '')) >= 12000,
+    }
+    report['leo_nativity_v3'] = {'checks': checks, 'pass': all(checks.values())}
+
+
+def audit_kunz_v3(report: dict) -> None:
+    d = _load('kunz_birthstones_v3.json')
+    rel = d['chapters']['religious_uses']['passages']
+    th = d['chapters']['therapeutic_uses']['passages']
+    sent = d['sentiments_of_months']
+    checks = {
+        'sentiments_kept': set(sent) == MONTH_NAMES and len(d['breastplate_and_foundation']) == 12,
+        'crystal_kept': sum(map(len, d['chapters']['crystal_gazing']['passages'])) >= 30000,
+        'religious_passages': len(rel) >= 30 and sum(map(len, rel)) >= 25000,
+        'therapeutic_passages': len(th) >= 20 and sum(map(len, th)) >= 20000,
+    }
+    report['kunz_birthstones_v3'] = {'checks': checks, 'pass': all(checks.values())}
+
+
+def audit_lilly_chapters(report: dict) -> None:
+    d = _load('lilly_chapters_v1.json')
+    a = d['regions']['book1_terms_and_book2_opening']['paragraphs']
+    b = d['regions']['book2_houses_and_book34']['paragraphs']
+    blob_a = ' '.join(a[:60])
+    blob_b = ' '.join(b)
+    checks = {
+        'region_a_count': len(a) >= 250 and sum(map(len, a)) >= 120000,
+        'region_b_count': len(b) >= 900 and sum(map(len, b)) >= 500000,
+        'aspect_definitions': 'Sextil' in blob_a,
+        'buying_selling_chapter': 'Buying' in blob_b,
+        'friends_rules': 'Friends' in blob_b,
+    }
+    report['lilly_chapters_v1'] = {'checks': checks, 'counts': d['counts'], 'pass': all(checks.values())}
+
+
 def main() -> None:
     report: dict = {'generated': '2026-08-26', 'datasets': {}}
     audit_tarot(report['datasets'])
@@ -455,6 +586,13 @@ def main() -> None:
     audit_sepharial_v2(report['datasets'])
     audit_tetrabiblos_book2(report['datasets'])
     audit_fixed_stars_v2(report['datasets'])
+    audit_tetrabiblos_book1(report['datasets'])
+    audit_books34_v2(report['datasets'])
+    audit_robson_constellations(report['datasets'])
+    audit_sepharial_v3(report['datasets'])
+    audit_leo_v3(report['datasets'])
+    audit_kunz_v3(report['datasets'])
+    audit_lilly_chapters(report['datasets'])
 
     all_pass = all(d['pass'] for d in report['datasets'].values())
     report['all_pass'] = all_pass
