@@ -684,6 +684,71 @@ def audit_robson_front_matter(report: dict) -> None:
     }
 
 
+# ---------- 第六轮补漏（卷首前置内容）----------
+
+def audit_leo_front_matter(report: dict) -> None:
+    d = _load('leo_front_matter_v1.json')
+    pre3 = d['prefaces']['third_edition_with_history']['passages']
+    tbl = d['signs_reference_tables']
+    hist_blob = ' '.join(pre3).lower()
+    checks = {
+        'preface_first': sum(map(len, d['prefaces']['first_edition']['passages'])) >= 2000,
+        'history_essay': sum(map(len, pre3)) >= 9000
+        and all(k in hist_blob for k in ('chaldea', 'kepler', 'lilly')),
+        'detailed_contents': sum(map(len, d['detailed_contents']['passages'])) >= 6000,
+        'body_parts_12': set(tbl['body_parts_ruled']) == {
+            'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
+            'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'},
+        'trinities_4': len(tbl['trinities']) == 4,
+        'introduction': sum(map(len, d['introduction']['passages'])) >= 6000,
+    }
+    report['leo_front_matter_v1'] = {'checks': checks, 'pass': all(checks.values())}
+
+
+def audit_kunz_front_matter(report: dict) -> None:
+    d = _load('kunz_front_matter_v1.json')
+    pre_blob = ' '.join(d['preface']['passages'])
+    checks = {
+        'dedication': len(d['dedication']['passages']) >= 1
+        and 'MORGAN' in d['dedication']['passages'][0].upper(),
+        'preface_text': sum(map(len, d['preface']['passages'])) >= 4000,
+        'preface_anchors': all(k in pre_blob for k in ('Morgan', 'Natal Stones')),
+        'contents_list': len(d['contents_and_illustrations']['passages']) >= 15,
+    }
+    report['kunz_front_matter_v1'] = {'checks': checks, 'pass': all(checks.values())}
+
+
+def audit_sepharial_v4(report: dict) -> None:
+    d = _load('sepharial_numbers_v4.json')
+    intro = d.get('introduction', {}).get('passages', [])
+    blob = ' '.join(intro)
+    chs = d['chapters']
+    covered = [int(k) for k in d['resultant_meanings'] if 12 <= int(k) <= 84]
+    checks = {
+        'introduction_present': len(intro) >= 3 and sum(map(len, intro)) >= 2000,
+        'intro_anchors': all(k in blob for k in ('God geometrises', 'Swedenborg')),
+        'v3_chapters_kept': len(chs) == 19,
+        'minor_key_9': len(d['minor_key']) == 9,
+        'resultant_ge_55': len(covered) >= 55,
+    }
+    report['sepharial_numbers_v4'] = {'checks': checks, 'pass': all(checks.values())}
+
+
+def audit_tetrabiblos_appendices_v2(report: dict) -> None:
+    d = _load('tetrabiblos_appendices_v2.json')
+    cq = d['centiloquy']
+    fm_blob = ' '.join(d['ashmand_front_matter']['passages'])[:4000]
+    checks = {
+        'fm_starts_at_advert': 'poetical machinery' in fm_blob,
+        'front_matter_full': sum(map(len, d['ashmand_front_matter']['passages'])) >= 45000,
+        'waverley_dedication': 'WAVERLEY' in d['dedication_to_the_author_of_waverley']['text'].upper(),
+        'centiloquy_ge_85': len(cq['aphorisms']) >= 85,
+        'almagest_extract': sum(map(len, d['almagest_extract']['passages'])) >= 4000,
+        'planisphere': sum(map(len, d['planisphere_appendix']['passages'])) >= 3000,
+    }
+    report['tetrabiblos_appendices_v2'] = {'checks': checks, 'pass': all(checks.values())}
+
+
 def main() -> None:
     report: dict = {'generated': '2026-08-26', 'datasets': {}}
     audit_tarot(report['datasets'])
@@ -722,6 +787,10 @@ def main() -> None:
     audit_lilly_introduction(report['datasets'])
     audit_leo_v5(report['datasets'])
     audit_robson_front_matter(report['datasets'])
+    audit_leo_front_matter(report['datasets'])
+    audit_kunz_front_matter(report['datasets'])
+    audit_sepharial_v4(report['datasets'])
+    audit_tetrabiblos_appendices_v2(report['datasets'])
 
     all_pass = all(d['pass'] for d in report['datasets'].values())
     report['all_pass'] = all_pass

@@ -1,7 +1,7 @@
-"""02_mine + 03_clean: Ptolemy《Tetrabiblos》Ashmand 1822 版附录卷挖掘 v1。
+﻿"""02_mine + 03_clean: Ptolemy《Tetrabiblos》Ashmand 1822 版附录卷挖掘 v1。
 
 输入: classics/tetrabiblos_ashmand_full_1822_raw.txt (Internet Archive OCR, 公版)
-输出: data/tetrabiblos_appendices_v1.json
+输出: data/tetrabiblos_appendices_v2.json
 
 Book I–IV 正文之外的全部内容（此前完全未挖，≈8 万字符）:
   A. ashmand_front_matter：译者序/前言/庞托莱谟生平（书首 ≈5500–59907）
@@ -162,10 +162,26 @@ def main() -> None:
     assert 5500 < b1 < alm < tbl < cq_end_anchor < end_marker, \
         f'附录边界异常 ({b1}, {alm}, {tbl}, {cq_end_anchor}, {end_marker})'
 
-    # ---- A. 译者前言/导论 ----
-    fm = passages(text[5500:b1])
+    # ---- A. 译者前言/导论（含题献页与 Advertisement，自卷首起）----
+    waverley = text.find('WAVERLEY', 500)
+    adv = text.find('Advertisement', 1000)
+    starts = [x for x in (waverley - 400 if waverley > 0 else None,
+                          adv if adv > 0 else None, 5500) if x is not None]
+    fm_start = min(starts)
+    fm = passages(text[fm_start:b1])
     if sum(map(len, fm)) < 30000:
         problems.append(f'front_matter 过短: {sum(map(len, fm))}')
+    for kw in ('WAVERLEY', 'poetical machinery'):
+        if kw not in text[fm_start:fm_start + 3500]:
+            problems.append(f'front_matter 缺卷首锚词 {kw!r}')
+    # 题献页为全大写排版，专用通道收录
+    ded_lines = []
+    if waverley > 0:
+        ded_seg = text[max(fm_start, waverley - 500):adv if adv > waverley else waverley + 400]
+        ded_lines = [x.strip() for x in ded_seg.splitlines()
+                     if x.strip() and len(x.strip()) >= 4
+                     and sum(c.isalpha() for c in x) >= 3]
+    dedication = norm(' '.join(ded_lines))
 
     # ---- B/C. Almagest 摘录 + 表册说明 ----
     ex1 = passages(text[alm:tbl])
@@ -195,7 +211,7 @@ def main() -> None:
         + cq_total + sum(map(len, pl))
     out = {
         'dataset': 'tetrabiblos_appendices',
-        'version': 'v1',
+        "version": "v2",
         'generated': '2026-08-26',
         'source': {
             'work': 'Ptolemy, Tetrabiblos (Ptolemy\u2019s Quadripartite)',
@@ -213,13 +229,14 @@ def main() -> None:
             'planisphere_passages': len(pl),
         },
         'ashmand_front_matter': {'passages': fm},
+        'dedication_to_the_author_of_waverley': {'text': dedication},
         'almagest_extract': {'passages': ex1},
         'tables_and_extracts': {'passages': ex2},
         'centiloquy': {'aphorisms': aphorisms,
                        'numbers_missing': missing},
         'planisphere_appendix': {'passages': pl},
     }
-    outp = DATA / 'tetrabiblos_appendices_v1.json'
+    outp = DATA / 'tetrabiblos_appendices_v2.json'
     outp.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding='utf-8')
     print(f'tet appendices mined: fm={len(fm)}P alm={len(ex1)}P tbl={len(ex2)}P '
           f'cq={len(aphorisms)}/100 pl={len(pl)}P total={total}ch -> {outp}')

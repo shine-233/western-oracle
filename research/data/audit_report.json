@@ -464,6 +464,47 @@
     "intro_passages": 33
    },
    "pass": true
+  },
+  "leo_front_matter_v1": {
+   "checks": {
+    "preface_first": true,
+    "history_essay": true,
+    "detailed_contents": true,
+    "body_parts_12": true,
+    "trinities_4": true,
+    "introduction": true
+   },
+   "pass": true
+  },
+  "kunz_front_matter_v1": {
+   "checks": {
+    "dedication": true,
+    "preface_text": true,
+    "preface_anchors": true,
+    "contents_list": true
+   },
+   "pass": true
+  },
+  "sepharial_numbers_v4": {
+   "checks": {
+    "introduction_present": true,
+    "intro_anchors": true,
+    "v3_chapters_kept": true,
+    "minor_key_9": true,
+    "resultant_ge_55": true
+   },
+   "pass": true
+  },
+  "tetrabiblos_appendices_v2": {
+   "checks": {
+    "fm_starts_at_advert": true,
+    "front_matter_full": true,
+    "waverley_dedication": true,
+    "centiloquy_ge_85": true,
+    "almagest_extract": true,
+    "planisphere": true
+   },
+   "pass": true
   }
  },
  "all_pass": true

@@ -321,6 +321,38 @@ def main() -> None:
     for p in rng.sample(d['introduction']['passages'], min(6, len(d['introduction']['passages']))):
         f.check('rob_front', p, raw)
 
+    # ========= 第六轮补漏（卷首前置内容）=========
+
+    # --- leo 卷首（序言/历史/导论做词块回查；目录为页码已剥的导航清单，
+    #     词块回查不适用，由 audit.py 的锚点校验覆盖）---
+    raw = load_raw('leo_how_to_judge_nativity_1928_raw.txt')
+    d = json.loads((DATA / 'leo_front_matter_v1.json').read_text(encoding='utf-8'))
+    for sec_key in ('first_edition', 'third_edition_with_history'):
+        for p in rng.sample(d['prefaces'][sec_key]['passages'],
+                            min(5, len(d['prefaces'][sec_key]['passages']))):
+            f.check(f'leo_fm[{sec_key}]', p, raw)
+    for p in rng.sample(d['introduction']['passages'], 6):
+        f.check('leo_fm[intro]', p, raw)
+
+    # --- kunz 卷首（序言回查；图版清单同上豁免，audit 锚点覆盖）---
+    raw = load_raw('kunz_curious_lore_precious_stones_1913_raw.txt')
+    d = json.loads((DATA / 'kunz_front_matter_v1.json').read_text(encoding='utf-8'))
+    for p in rng.sample(d['preface']['passages'], min(6, len(d['preface']['passages']))):
+        f.check('kunz_fm[preface]', p, raw)
+
+    # --- sepharial v4 导论 ---
+    raw = load_raw('sepharial_kabala_of_numbers_raw.txt')
+    d = json.loads((DATA / 'sepharial_numbers_v4.json').read_text(encoding='utf-8'))
+    for p in rng.sample(d['introduction']['passages'], min(3, len(d['introduction']['passages']))):
+        f.check('sepharial_v4[intro]', p, raw)
+
+    # --- tetrabiblos 附录 v2（新增卷首段）---
+    raw = load_raw('tetrabiblos_ashmand_full_1822_raw.txt')
+    d = json.loads((DATA / 'tetrabiblos_appendices_v2.json').read_text(encoding='utf-8'))
+    fm = d['ashmand_front_matter']['passages']
+    for p in rng.sample(fm[:10], min(4, len(fm[:10]))):
+        f.check('tet_app_v2[fm head]', p, raw)
+
     print(f'fidelity checked: {f.checked} samples')
     if f.problems:
         print(f'PROBLEMS ({len(f.problems)}):')
