@@ -19,6 +19,10 @@ import { installParadeEgg } from './lib/paradeEgg'
 
 installViewTransitions(router)
 const app = createApp(App).use(router)
+// 全局错误兜底：组件异常时不白屏，控制台可见
+app.config.errorHandler = (err, _instance, info) => {
+  console.error('[oracle] unhandled error:', info, err)
+}
 app.directive('reveal', vReveal)
 app.directive('magnetic', vMagnetic)
 initThemes()
