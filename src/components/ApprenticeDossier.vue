@@ -9,6 +9,24 @@ import { MASCOTS, mascotVoxels } from '../data/mascots'
 import { locale } from '../lib/i18n'
 import { sfx } from '../lib/sfx'
 import { sparkleFromEvent } from '../lib/sparkle'
+import { getPoints, levelOf, pointsToNext, LEVEL_TITLES_ZH, LEVEL_TITLES_EN, SECRET_LINES } from '../lib/affection'
+
+/** 当前学徒的羁绊状态 */
+const bond = computed(() => {
+  const pts = getPoints(who.value.id)
+  const lv = levelOf(pts)
+  const next = pointsToNext(who.value.id)
+  const zh = locale.value === 'zh'
+  return {
+    pts,
+    lv,
+    title: zh ? LEVEL_TITLES_ZH[lv - 1]! : LEVEL_TITLES_EN[lv - 1]!,
+    next,
+    pct: next === null ? 100 : Math.min(100, Math.round((pts / (pts + next)) * 100)),
+    secret: SECRET_LINES[who.value.id],
+    unlocked: lv >= 3,
+  }
+})
 
 /** 当前角色的像素预览块（与体素模型同一份精灵数据） */
 const spritePixels = computed(() => {
@@ -104,6 +122,14 @@ function toggleMood(k: MoodKey): void {
             </header>
 
         <p class="ap-trait">✧ {{ zh ? who.traitZh : who.traitEn }}</p>
+
+        <!-- 羁绊等级 -->
+        <div class="ap-bond">
+          <span class="bond-badge">Lv{{ bond.lv }} · {{ bond.title }}</span>
+          <span class="bond-track"><i :style="{ width: bond.pct + '%' }" /></span>
+          <small>{{ bond.next === null ? 'MAX' : `${bond.pts}/${bond.pts + bond.next}` }}</small>
+        </div>
+
         <p class="ap-story">{{ zh ? who.storyZh : who.storyEn }}</p>
         <p class="ap-catch">「{{ zh ? who.catchZh : who.catchEn }}」</p>
 
@@ -133,6 +159,11 @@ function toggleMood(k: MoodKey): void {
             {{ who.moods[moodFilter ?? 'great'][zh ? 'zh' : 'en'] }}
           </p>
         </Transition>
+
+        <!-- 秘密台词：Lv3 解锁 -->
+        <div class="ap-sec-title">{{ zh ? '🔒 羁绊秘密' : '🔒 Bond Secret' }}</div>
+        <p v-if="bond.unlocked" class="ap-secret">🤫 「{{ zh ? bond.secret!.zh : bond.secret!.en }}」</p>
+        <p v-else class="hint" style="margin: 0;">{{ zh ? '继续抚摸这位学徒，到 Lv3「心意相通」时会告诉你一个秘密……' : 'Keep petting this apprentice — at Lv3 Kindred they\'ll let a secret slip…' }}</p>
       </article>
     </Transition>
   </section>
@@ -181,6 +212,43 @@ function toggleMood(k: MoodKey): void {
 }
 .ap-head small { color: var(--ink-dim); }
 .ap-trait { color: var(--lavender-soft); margin: 0 0 8px; }
+.ap-bond {
+  display: flex; align-items: center; gap: 10px;
+  margin: 0 0 10px; flex-wrap: wrap;
+}
+.bond-badge {
+  font-family: var(--pixel);
+  font-size: 0.5rem;
+  letter-spacing: 0.08em;
+  color: var(--gold-bright);
+  border: 1.5px solid var(--gold);
+  border-radius: 999px;
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+.bond-track {
+  flex: 1; min-width: 90px; height: 8px;
+  background: rgba(13, 11, 32, 0.75);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(245, 200, 110, 0.3);
+}
+.bond-track i {
+  display: block; height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--pink));
+  border-radius: 999px;
+  box-shadow: 0 0 8px rgba(245, 200, 110, 0.5);
+}
+.bond-track + small { font-family: var(--pixel); font-size: 0.46rem; color: var(--ink-dim); }
+.ap-secret {
+  margin: 0;
+  padding: 11px 14px;
+  background: rgba(124, 107, 214, 0.14);
+  border-left: 3px solid var(--pink);
+  border-radius: 8px;
+  line-height: 1.85;
+  font-style: italic;
+}
 .ap-story {
   color: var(--ink);
   line-height: 1.9;

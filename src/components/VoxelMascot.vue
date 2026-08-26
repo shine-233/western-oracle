@@ -15,6 +15,7 @@ import { MASCOTS, mascotVoxels } from '../data/mascots'
 import { sfx } from '../lib/sfx'
 import { t } from '../lib/i18n'
 import { themeVar, onThemeChange } from '../lib/themeColors'
+import { addAffection, levelOf, getPoints, SECRET_LINES } from '../lib/affection'
 
 const props = withDefaults(defineProps<{ id: string; height?: number }>(), { height: 230 })
 
@@ -138,6 +139,26 @@ function tickBursts(now: number): void {
   }
 }
 
+/** 每只吉祥物的专属卫星道具：形状即身份 */
+function makeSatGeo(id: string): THREE.BufferGeometry {
+  switch (id) {
+    case 'cat':
+      return new THREE.BoxGeometry(0.62, 0.88, 0.08) // 悬浮塔罗牌
+    case 'owl':
+      return new THREE.SphereGeometry(0.36, 14, 12) // 小行星
+    case 'numi':
+      return new THREE.OctahedronGeometry(0.44) // 八面命运骰
+    case 'golem':
+      return new THREE.IcosahedronGeometry(0.4) // 符文宝石
+    case 'twins':
+      return new THREE.TorusGeometry(0.3, 0.12, 10, 20) // 爱心光环
+    case 'comet':
+      return new THREE.ConeGeometry(0.32, 0.72, 8) // 彗核
+    default:
+      return new THREE.BoxGeometry(0.5, 0.5, 0.5)
+  }
+}
+
 function build(): void {
   const el = container.value
   const def = MASCOTS[props.id]
@@ -214,10 +235,7 @@ function build(): void {
   scene.add(starField)
 
   // ---- 环绕卫星体素 ----
-  satellite = new THREE.Mesh(
-    new THREE.BoxGeometry(0.55, 0.55, 0.55),
-    new THREE.MeshLambertMaterial({ color: def.satelliteColor }),
-  )
+  satellite = new THREE.Mesh(makeSatGeo(props.id), new THREE.MeshLambertMaterial({ color: def.satelliteColor }))
   scene.add(satellite)
 
   // ---- 地面光晕 ----
@@ -274,8 +292,25 @@ function setEyeScale(scaleY: number): void {
   mesh.instanceMatrix.needsUpdate = true
 }
 
-/** 点击动作：跳跃 / 转圈 / wink / 害羞 */
+/** 点击动作：38% 概率触发学徒专属小动作，否则跳跃 / 转圈 / wink / 害羞 */
+let pokeCount = 0
+
 function doAction(): void {
+  pokeCount++
+  if (pokeCount % 5 === 0) {
+    // 羁绊彩蛋：连戳五次的专属回应
+    sfx.ding()
+    spawnBurst()
+    spawnBurst()
+    if (container.value) spawnHearts(container.value)
+    jumpVel = 0.17
+    showMood(t(`pet.${props.id}.bond`))
+    return
+  }
+  if (Math.random() < 0.38) {
+    specialAction()
+    return
+  }
   const actions = ['jump', 'spin', 'wink', 'shy'] as const
   const action = actions[Math.floor(Math.random() * actions.length)]!
   sfx.pop()
@@ -298,6 +333,97 @@ function doAction(): void {
     case 'shy':
       showMood(t(`pet.${props.id}.shy`))
       break
+  }
+}
+
+/** 学徒专属小动作：每只都有独门戏法 */
+function specialAction(): void {
+  const el = container.value
+  if (!el) return
+  switch (props.id) {
+    case 'cat': {
+      // 墨墨抛牌：一张小牌翻着跃起再落回
+      const card = document.createElement('span')
+      card.className = 'mascot-fx fx-card-toss'
+      card.textContent = '🂠'
+      el.appendChild(card)
+      window.setTimeout(() => card.remove(), 1150)
+      sfx.flip()
+      showMood('🂠 ✦')
+      break
+    }
+    case 'owl': {
+      // 阿斯特拉：星环绕帽一周
+      const ring = document.createElement('div')
+      ring.className = 'mascot-fx fx-star-ring'
+      for (let i = 0; i < 6; i++) {
+        const s = document.createElement('i')
+        s.textContent = '✦'
+        s.style.setProperty('--a', `${i * 60}deg`)
+        ring.appendChild(s)
+      }
+      el.appendChild(ring)
+      window.setTimeout(() => ring.remove(), 1700)
+      sfx.ding()
+      showMood('✦ ✧ ✦')
+      break
+    }
+    case 'numi': {
+      // Numi：数字喷泉
+      for (let i = 0; i < 7; i++) {
+        const n = document.createElement('span')
+        n.className = 'mascot-fx fx-num-pop'
+        n.textContent = String(1 + Math.floor(Math.random() * 9))
+        n.style.left = `${28 + Math.random() * 44}%`
+        n.style.animationDelay = `${i * 90}ms`
+        el.appendChild(n)
+        window.setTimeout(() => n.remove(), 1000 + i * 90)
+      }
+      sfx.blip()
+      window.setTimeout(() => sfx.blip(), 180)
+      showMood('1 2 3 ✧')
+      break
+    }
+    case 'golem': {
+      // Runa：符文震地
+      el.classList.remove('fx-thud')
+      void el.offsetWidth
+      el.classList.add('fx-thud')
+      const g = document.createElement('span')
+      g.className = 'mascot-fx fx-rune-flash'
+      g.textContent = 'ᚱ'
+      el.appendChild(g)
+      window.setTimeout(() => {
+        g.remove()
+        el.classList.remove('fx-thud')
+      }, 720)
+      sfx.pop()
+      showMood('ᚱ ⩨')
+      break
+    }
+    case 'twins': {
+      // Cupie：双心弧线飞向两侧
+      for (const side of [-1, 1]) {
+        const h = document.createElement('span')
+        h.className = 'mascot-fx fx-heart-arc'
+        h.textContent = '💗'
+        h.style.setProperty('--dx', `${side * 74}px`)
+        h.style.animationDelay = side < 0 ? '0ms' : '110ms'
+        el.appendChild(h)
+        window.setTimeout(() => h.remove(), 950)
+      }
+      sfx.ding()
+      showMood('💗 ➹ 💗')
+      break
+    }
+    case 'comet': {
+      // Comet：拖尾加速自旋
+      autoRotY += Math.PI * 4.5
+      for (let i = 0; i < 3; i++) window.setTimeout(() => spawnBurst(), i * 130)
+      sfx.whoosh()
+      showMood('☄️ ～')
+      break
+    }
   }
 }
 
@@ -338,9 +464,27 @@ function startPetting(el: HTMLElement): void {
   if (petting || !dragging) return
   petting = true
   const zh = !navigator.language.toLowerCase().startsWith('en')
-  showMood(zh ? '❤ 被摸摸头…好开心' : '❤ head pats… so happy')
+  const aff = addAffection(props.id, 1)
+  const secretUnlocked = levelOf(getPoints(props.id)) >= 3 && SECRET_LINES[props.id]
+  showMood(
+    aff.leveledUp
+      ? zh
+        ? `❤✦ 羁绊升到 Lv${aff.level}！`
+        : `❤✦ Bond reached Lv${aff.level}!`
+      : zh
+        ? '❤ 被摸摸头…好开心'
+        : '❤ head pats… so happy',
+  )
+  if (aff.leveledUp) window.setTimeout(() => spawnBurst(), 300)
   spawnHearts(el)
   ;(PET_SOUND[props.id] ?? sfx.blip)()
+  // Lv3 且有秘密：偶尔抚摸时说漏嘴
+  if (secretUnlocked && Math.random() < 0.35) {
+    const s = SECRET_LINES[props.id]!
+    window.setTimeout(() => {
+      if (!disposed) showMood(zh ? `🤫 ${s.zh}` : `🤫 ${s.en}`)
+    }, 1400)
+  }
   window.setTimeout(() => {
     if (petting) spawnHearts(el)
   }, 380)
@@ -393,10 +537,16 @@ function bindEvents(el: HTMLElement): void {
     spawnBurst()
     window.setTimeout(() => spawnBurst(), 160)
   })
-  // 闲置自言自语：每 26 秒概率冒一句 tips
+  // 闲置自言自语：每 26 秒概率冒一句 tips；Lv3 后偶尔说漏秘密
   chatterTimer = window.setInterval(() => {
     if (disposed || dragging || document.visibilityState !== 'visible') return
     if (moodText.value || Math.random() < 0.55) return
+    const secret = levelOf(getPoints(props.id)) >= 3 ? SECRET_LINES[props.id] : undefined
+    if (secret && Math.random() < 0.25) {
+      const zh = !navigator.language.toLowerCase().startsWith('en')
+      showMood(zh ? `🤫 ${secret.zh}` : `🤫 ${secret.en}`)
+      return
+    }
     showMood(t(`pet.${props.id}.tip${1 + (Math.random() < 0.5 ? 0 : 1)}`))
   }, 26000)
   el.addEventListener('pointerleave', () => {
@@ -527,8 +677,25 @@ function animate(): void {
   if (starField) starField.rotation.y = now * (asleep.value ? 0.05 : 0.14)
   if (satellite) {
     satellite.position.set(Math.cos(now * 0.7) * 3.4, Math.sin(now * 1.05) * 1.9 + 0.5, Math.sin(now * 0.7) * 3.4)
-    satellite.rotation.y = now * 1.6
-    satellite.rotation.x = now * 0.8
+    switch (props.id) {
+      case 'cat':
+        satellite.rotation.set(now * 2.1, now * 0.6, 0) // 卡牌翻面
+        break
+      case 'owl':
+        satellite.rotation.set(0.35, now * 0.9, 0) // 星球自转
+        break
+      case 'numi':
+        satellite.rotation.set(now * 1.8, now * 1.3, now * 0.7) // 骰子乱翻
+        break
+      case 'golem':
+        satellite.rotation.set(0, now * 0.5, Math.sin(now * 0.6) * 0.25) // 宝石沉稳
+        break
+      case 'twins':
+        satellite.rotation.set(Math.sin(now * 1.2) * 0.5, now * 1.4, 0) // 光环摇摆
+        break
+      default:
+        satellite.rotation.set(now * 2.6, now * 0.9, 0.4) // 彗核疾旋
+    }
   }
   tickBursts(now)
 
@@ -679,5 +846,83 @@ onBeforeUnmount(() => {
 }
 @media (prefers-reduced-motion: reduce) {
   .zzz, .zzz-layer { display: none; }
+}
+</style>
+
+<style>
+/* mascot-fx: DOM overlay effects (unscoped so injected spans match) */
+.pet-heart {
+  position: absolute;
+  pointer-events: none;
+  z-index: 5;
+  animation: pet-heart-float 0.95s ease-out forwards;
+}
+@keyframes pet-heart-float {
+  from { opacity: 1; transform: translateY(0) scale(0.7); }
+  to { opacity: 0; transform: translateY(-48px) scale(1.3); }
+}
+.mascot-fx { position: absolute; pointer-events: none; z-index: 6; }
+.fx-card-toss {
+  left: 50%; bottom: 46%;
+  font-size: 1.7rem; color: var(--gold-bright);
+  animation: card-toss-up 1.1s cubic-bezier(0.3, 0.9, 0.4, 1) forwards;
+}
+@keyframes card-toss-up {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  15% { opacity: 1; }
+  60% { transform: translateY(-58px) rotate(360deg); }
+  100% { transform: translateY(6px) rotate(720deg); opacity: 0; }
+}
+.fx-star-ring {
+  left: 50%; top: 30%; width: 0; height: 0;
+  animation: ring-spin 1.6s linear forwards;
+}
+.fx-star-ring i {
+  position: absolute;
+  color: var(--lavender-soft);
+  font-size: 0.8rem;
+  transform: rotate(var(--a)) translateX(46px);
+  animation: star-pulse 1.6s ease-in-out infinite;
+}
+@keyframes ring-spin { to { transform: rotate(360deg); } }
+@keyframes star-pulse { 50% { opacity: 0.35; } }
+.fx-num-pop {
+  bottom: 40%;
+  font-family: var(--pixel);
+  color: var(--mint);
+  animation: num-rise 0.95s ease-out forwards;
+}
+@keyframes num-rise {
+  from { opacity: 0; transform: translateY(10px) scale(0.6); }
+  25% { opacity: 1; }
+  to { opacity: 0; transform: translateY(-44px) scale(1.15); }
+}
+.fx-thud { animation: ground-shake 0.55s ease-in-out; }
+@keyframes ground-shake {
+  20% { transform: translateX(-3px); } 45% { transform: translateX(3px); }
+  70% { transform: translateX(-2px); } 100% { transform: none; }
+}
+.fx-rune-flash {
+  left: 50%; bottom: 8%; transform: translateX(-50%);
+  font-size: 2.2rem; color: var(--mint);
+  text-shadow: 0 0 16px var(--mint);
+  animation: rune-flash 0.68s ease-out forwards;
+}
+@keyframes rune-flash {
+  0% { opacity: 0; transform: translateX(-50%) scale(2.2); }
+  35% { opacity: 1; transform: translateX(-50%) scale(1); }
+  100% { opacity: 0; transform: translateX(-50%) scale(1.4); }
+}
+.fx-heart-arc {
+  left: 50%; top: 42%;
+  animation: heart-arc-fly 0.9s cubic-bezier(0.25, 0.8, 0.4, 1) forwards;
+}
+@keyframes heart-arc-fly {
+  from { opacity: 0; transform: translate(0, 0) scale(0.6); }
+  25% { opacity: 1; }
+  to { opacity: 0; transform: translate(var(--dx), -34px) scale(1.2); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pet-heart, .mascot-fx { animation-duration: 0.01s !important; }
 }
 </style>
