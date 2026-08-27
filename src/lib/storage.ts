@@ -37,5 +37,3 @@ export function migrateRaw(oldRawKey: string, newKey: string): void {
     /* 存储不可用时静默降级 */
   }
 }
-  }
-}
