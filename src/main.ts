@@ -16,6 +16,7 @@ import { installReactPopups } from './lib/reactPopups'
 import { installViewTransitions } from './lib/viewTrans'
 import { installConstella } from './lib/constella'
 import { installParadeEgg } from './lib/paradeEgg'
+import { installAudioUnlock } from './lib/sfx'
 
 installViewTransitions(router)
 const app = createApp(App).use(router)
@@ -35,6 +36,7 @@ installConstella()
 installMotionGlobal()
 installReactPopups()
 installParadeEgg()
+installAudioUnlock()
 
 // PWA：离线缓存注册（sw.js 位于 public/，随构建拷贝到 dist 根）
 if ('serviceWorker' in navigator) {

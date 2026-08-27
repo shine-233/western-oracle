@@ -16,9 +16,18 @@ const birthHour = ref<number | ''>('')
 
 const cast = ref<MeihuaCast | null>(null)
 const revealed = ref(false)
+/** 起卦进行中：防连点叠加多个 setTimeout */
+let casting = false
+
+function numOutOfRange(): boolean {
+  return picked.value === '' || Number(picked.value) < 1 || Number(picked.value) > 999
+}
 
 function canCast(): boolean {
-  return picked.value !== '' && !!birthDate.value && birthHour.value !== ''
+  if (numOutOfRange()) return false
+  if (!birthDate.value || birthHour.value === '') return false
+  const [y, m, d] = birthDate.value.split('-').map(Number)
+  return [y, m, d].every((n) => Number.isFinite(n)) && birthHour.value >= 0 && birthHour.value <= 23
 }
 
 /* ---------- 摇签筒：晃一晃让数字自己跳出来 ---------- */
@@ -38,7 +47,8 @@ function shakeTube(e?: MouseEvent): void {
 }
 
 function doCast(e?: MouseEvent): void {
-  if (!canCast()) return
+  if (!canCast() || casting) return
+  casting = true
   const [y, m, d] = birthDate.value.split('-').map(Number)
   cast.value = castMeihua({
     picked: Number(picked.value),
@@ -54,6 +64,7 @@ function doCast(e?: MouseEvent): void {
   window.setTimeout(() => {
     revealed.value = true
     sfx.ding()
+    casting = false
   }, 6 * 260)
   if (e) sparkleFromEvent(e, 12)
 }
@@ -80,7 +91,7 @@ const yaos = computed<YaoView[]>(() => {
 })
 
 /** 变卦：动爻翻转后的那一卦 */
-const changedName = computed(() => {
+const changedHex = computed(() => {
   if (!cast.value) return null
   const lo = cast.value.lower.bits.split('')
   const up = cast.value.upper.bits.split('')
@@ -91,7 +102,7 @@ const changedName = computed(() => {
   const find = (bits: string[]) => TRIGRAMS.find((t) => t.bits === bits.join(''))!
   const upT = find(up)
   const loT = find(lo)
-  return HEX[upT.name]?.[loT.name]?.zh ?? null
+  return HEX[upT.name]?.[loT.name] ?? null
 })
 
 /* ---------- 断语亮出后：入历史 + 学徒点评 ---------- */
@@ -106,13 +117,27 @@ function recordOnce(e?: MouseEvent): void {
   if (e) sparkleFromEvent(e, 6)
   addHistory({
     type: 'meihua',
-    label: `梅花易数 · ${cast.value.hexa.zh}`,
+    label: L([`梅花易数 · ${cast.value.hexa.zh}`, `Plum Blossom · ${cast.value.hexa.en}`]),
     question: question.value.trim() || undefined,
-    summary: `${cast.value.upper.sym}${cast.value.lower.sym} ${cast.value.hexa.zh}（动爻${cast.value.moving}）`,
+    summary: L([
+      `${cast.value.upper.sym}${cast.value.lower.sym} ${cast.value.hexa.zh}（动爻${cast.value.moving}）`,
+      `${cast.value.upper.sym}${cast.value.lower.sym} ${cast.value.hexa.en} (line ${cast.value.moving} moves)`,
+    ]),
     detail: [
-      question.value.trim() ? `问题：${question.value.trim()}` : '（未填问项）',
-      `本卦：${cast.value.hexa.zh} · ${L([cast.value.hexa.zhWord, cast.value.hexa.enWord])}`,
-      changedName.value ? `变卦：${changedName.value}` : '',
+      L([
+        question.value.trim() ? `问题：${question.value.trim()}` : '（未填问项）',
+        question.value.trim() ? `Question: ${question.value.trim()}` : '(no question given)',
+      ]),
+      L([
+        `本卦：${cast.value.hexa.zh} · ${cast.value.hexa.zhWord}`,
+        `Cast: ${cast.value.hexa.en} · ${cast.value.hexa.enWord}`,
+      ]),
+      changedHex.value
+        ? L([
+            `变卦：${changedHex.value.zh} · ${changedHex.value.zhWord}`,
+            `Changes to: ${changedHex.value.en} · ${changedHex.value.enWord}`,
+          ])
+        : '',
     ]
       .filter(Boolean)
       .join('\n'),
@@ -139,6 +164,7 @@ const HOUR_OPTIONS = Array.from({ length: 24 }, (_, h) => h)
         <label class="field">
           <span>{{ L(['心中浮现的数字', 'The number that surfaced']) }}</span>
           <input v-model.number="picked" type="number" min="1" max="999" :placeholder="L(['比如 7', 'e.g. 7'])" />
+          <small v-if="numOutOfRange()" class="range-warn">{{ L(['要一个 1~999 之间的数', 'Pick a number between 1 and 999']) }}</small>
         </label>
         <label class="field">
           <span>{{ L(['出生日期', 'Birth date']) }}</span>
@@ -161,7 +187,7 @@ const HOUR_OPTIONS = Array.from({ length: 24 }, (_, h) => h)
           ☯ {{ L(['起 卦', 'Cast the hexagram']) }}
         </button>
         <button class="btn ghost small tube-btn" :class="{ shaking: tubeShaking }" :title="L(['不想数字？摇一摇', 'Shake for a number'])" @click="shakeTube($event)">
-          🎋 {{ tubeShaking ? L(['签筒摇晃中…', 'shaking…']) : L(['摇签筒取数', 'Shake the tube']) }}
+          {{ tubeShaking ? L(['签筒摇晃中…', 'shaking…']) : L(['摇签筒取数', 'Shake the tube']) }}
         </button>
       </div>
     </section>
@@ -177,7 +203,7 @@ const HOUR_OPTIONS = Array.from({ length: 24 }, (_, h) => h)
             class="yao-row"
             :style="{ animationDelay: (5 - i) * 0.26 + 's' }"
           >
-            <span class="yao-label">{{ ['上爻','五爻','四爻','三爻','二爻','初爻'][i] }}</span>
+            <span class="yao-label">{{ L([['上爻','五爻','四爻','三爻','二爻','初爻'][i]!, ['6th','5th','4th','3rd','2nd','1st'][i]!]) }}</span>
             <div class="yao" :class="{ yang: y.yang, yin: !y.yang, moving: y.moving }">
               <template v-if="y.yang"><i class="bar solid" /></template>
               <template v-else><i class="bar half" /><i class="bar half gap" /></template>
@@ -200,7 +226,7 @@ const HOUR_OPTIONS = Array.from({ length: 24 }, (_, h) => h)
               <div><dt>{{ L(['上卦', 'Upper']) }}</dt><dd>{{ cast.upper.sym }} {{ cast.upper.name }}（{{ L([cast.upper.nature[0], cast.upper.nature[1]]) }}）</dd></div>
               <div><dt>{{ L(['下卦', 'Lower']) }}</dt><dd>{{ cast.lower.sym }} {{ cast.lower.name }}（{{ L([cast.lower.nature[0], cast.lower.nature[1]]) }}）</dd></div>
               <div><dt>{{ L(['动爻', 'Moving']) }}</dt><dd>{{ L(['第', 'Line']) }} {{ cast.moving }} {{ L(['爻动', 'moves']) }}</dd></div>
-              <div v-if="changedName"><dt>{{ L(['变卦', 'Changes to']) }}</dt><dd>「{{ changedName }}」</dd></div>
+              <div v-if="changedHex"><dt>{{ L(['变卦', 'Changes to']) }}</dt><dd>「{{ L([changedHex.zh, changedHex.en]) }}」</dd></div>
             </dl>
             <p v-if="question.trim()" class="asked">「{{ question.trim() }}」</p>
           </div>
@@ -209,7 +235,7 @@ const HOUR_OPTIONS = Array.from({ length: 24 }, (_, h) => h)
 
       <!-- 推演过程 -->
       <details class="steps-box">
-        <summary>{{ L(['🧮 看看这卦是怎么算出来的', '🧮 How this was computed']) }}</summary>
+        <summary>{{ L(['✦ 看看这卦是怎么算出来的', '✦ How this was computed']) }}</summary>
         <div v-for="(s, i) in cast.steps" :key="i" class="step-line">
           <strong>{{ L(s.label) }}</strong>
           <code>{{ s.formula }}</code>
@@ -241,6 +267,7 @@ const HOUR_OPTIONS = Array.from({ length: 24 }, (_, h) => h)
 
 /* 六爻 */
 .yaos { display: flex; flex-direction: column-reverse; gap: 12px; }
+.range-warn { display: block; margin-top: 4px; color: var(--pink); font-size: 0.75rem; }
 .yao-row { display: flex; align-items: center; gap: 12px; animation: yao-in 0.45s cubic-bezier(0.34, 1.5, 0.64, 1) both; }
 @keyframes yao-in { from { opacity: 0; transform: translateY(-14px) scale(0.85); } }
 .yao-label {
@@ -310,7 +337,7 @@ const HOUR_OPTIONS = Array.from({ length: 24 }, (_, h) => h)
 .meta dd { margin: 2px 0 0; color: var(--ink); font-size: 0.92rem; }
 .asked {
   padding: 9px 13px;
-  border-left: 3px solid var(--gold);
+  border: 1.5px dashed rgba(245, 200, 110, 0.45);
   background: rgba(13, 11, 32, 0.55);
   border-radius: 6px;
   font-style: italic;
@@ -337,5 +364,8 @@ const HOUR_OPTIONS = Array.from({ length: 24 }, (_, h) => h)
 
 @media (prefers-reduced-motion: reduce) {
   .yao-row, .yao.moving .bar { animation: none !important; }
+}
+@media (max-width: 480px) {
+  .moving-mark { right: 4px; top: -18px; transform: none; font-size: 0.95rem; }
 }
 </style>

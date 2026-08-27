@@ -5,3 +5,7 @@ dist/
 
 __pycache__/
 *.pyc
+
+dev.log
+scripts/dev/*.bmp
+scripts/dev/*.png

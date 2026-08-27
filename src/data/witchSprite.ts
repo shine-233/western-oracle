@@ -56,7 +56,7 @@ export const WITCH_FACE = {
   eyeR: { x: 18, y: 12, w: 2, h: 2 },
   mouth: { x: 13, y: 14, w: 2, h: 1 },
   blushL: { x: 8, y: 14, w: 2, h: 1 },
-  blushR: { x: 19, y: 14, w: 2, h: 1 },
+  blushR: { x: 18, y: 14, w: 2, h: 1 },
 }
 
 export interface WitchVoxel {

@@ -93,6 +93,7 @@ let stream: MediaStream | null = null
 let rafId = 0
 let lastVideoTime = -1
 let grabHoldUntil = 0
+let handGone = false
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 /** 多 CDN 回退：jsDelivr 主源，unpkg 备源，npmmirror 国内镜像 */
@@ -122,12 +123,23 @@ async function enableHand(): Promise<void> {
         numHands: 1,
       })
       stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480, facingMode: 'user' } })
+      if (handGone) {
+        stream.getTracks().forEach((t) => t.stop())
+        stream = null
+        return
+      }
       const v = videoRef.value!
       v.srcObject = stream
       await v.play()
+      if (handGone) {
+        stream.getTracks().forEach((t) => t.stop())
+        stream = null
+        mode.value = 'idle'
+        return
+      }
       mode.value = 'hand'
       sfx.ding()
-      requestAnimationFrame(tickHand)
+      rafId = requestAnimationFrame(tickHand)
       loaded = true
       break
     } catch (e) {
@@ -246,6 +258,7 @@ function onMouseUp(): void {
 }
 
 onBeforeUnmount(() => {
+  handGone = true
   if (rafId) cancelAnimationFrame(rafId)
   if (mouseChargeTimer !== null) window.clearInterval(mouseChargeTimer)
   stream?.getTracks().forEach((t) => t.stop())

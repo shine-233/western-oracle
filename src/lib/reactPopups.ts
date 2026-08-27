@@ -19,7 +19,7 @@ function injectStyles(): void {
   const tag = document.createElement('style')
   tag.textContent = `
 .rp-wrap {
-  position: fixed; left: 18px; bottom: 18px; z-index: 9400;
+  position: fixed; left: 18px; bottom: 74px; z-index: 1500;
   display: flex; align-items: flex-end; gap: 10px;
   max-width: min(88vw, 380px);
   animation: rp-in .45s cubic-bezier(.34,1.56,.64,1);
@@ -57,7 +57,7 @@ function injectStyles(): void {
 /** 从摘要文本猜情绪（关键词 + 分数） */
 function moodFromSummary(s: string): MoodKey {
   if (/daikichi|大吉|master|大师数|满分|perfect/i.test(s)) return 'great'
-  if (/\b(kyo|凶)\b|失败|翻车|error/i.test(s)) return 'oops'
+  if (/kyo|凶|失败|翻车|error/i.test(s)) return 'oops'
   const m = s.match(/(\d{1,3})\s*\/\s*100|指数\s*(\d{1,3})/)
   const score = Number(m?.[1] ?? m?.[2] ?? NaN)
   if (!Number.isNaN(score)) {

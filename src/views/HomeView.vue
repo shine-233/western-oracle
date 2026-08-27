@@ -302,7 +302,7 @@ function onLetterMove(e: PointerEvent): void {
       <h3 style="margin: 0">🌙 {{ locale === 'zh' ? '隐秘星笺' : 'SECRET LETTER' }} <span class="hall-en">{{ locale === 'zh' ? 'MOUSE REVEAL' : '' }}</span></h3>
       <p class="hint" style="margin: 8px 0 0">
         {{ locale === 'zh'
-            ? '月光只照亮你指尖的位置——移动指针（触屏划过），读出今晚的密语。'
+            ? '月光只照亮你指尖的位置。移动指针（触屏划过），读出今晚的密语。'
             : 'Moonlight only lights where you point — move to read tonight\'s secret.' }}
       </p>
       <p class="sl-ghost" aria-hidden="true">✦ ✧ ⋆ ✦ ✧ ⋆ ✦ ✧ ⋆ ✦ ✧ ⋆</p>
@@ -347,7 +347,7 @@ function onLetterMove(e: PointerEvent): void {
         :to="m.to"
         v-reveal="i % 4"
         v-tilt="7"
-        class="oracle-card mod-card"
+        class="oracle-card mod-card no-tilt"
         :style="{ '--ac': m.accent }"
       >
         <span class="rank-chip">#{{ rankOf(m) }}</span>

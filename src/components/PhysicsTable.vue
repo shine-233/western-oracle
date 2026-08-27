@@ -2,8 +2,7 @@
 /**
  * 物理抽牌桌原型（matter.js 式手感，零依赖 verlet 实现）。
  * 卡片受重力下落、可抓取甩出、互相碰撞堆叠、墙壁反弹。
- * 定位：微游戏方向的可行性验证件，尚未接入路由——
- * 评审通过后可挂进街机页当新玩法，或作为占卜结果的庆祝彩蛋场景。
+ * 定位：已挂进街机页（/arcade 物理桌页签）作为可甩卡的实体牌桌玩法。
  */
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { locale } from '../lib/i18n'

@@ -32,6 +32,20 @@ function ac(): AudioContext | null {
   }
 }
 
+/** iOS/Safari 手势解锁：首次触摸/按键时提前建好并 resume AudioContext，
+ *  之后 setTimeout 等非手势回调里播声不再被浏览器拦成静音。 */
+export function installAudioUnlock(): void {
+  const warm = (): void => {
+    ac()
+    window.removeEventListener('pointerdown', warm)
+    window.removeEventListener('touchstart', warm)
+    window.removeEventListener('keydown', warm)
+  }
+  window.addEventListener('pointerdown', warm, { once: true, passive: true })
+  window.addEventListener('touchstart', warm, { once: true, passive: true })
+  window.addEventListener('keydown', warm, { once: true })
+}
+
 function tone(freq: number, dur: number, type: OscillatorType = 'square', vol = 0.045, slideTo?: number, delay = 0): void {
   const c = ac()
   if (!c) return
@@ -99,11 +113,18 @@ export const sfx = {
   riffle(): void {
     noise(0.09, 0.04)
     tone(180 + Math.random() * 120, 0.07, 'triangle', 0.02, 90)
-    window.setTimeout(() => noise(0.07, 0.03), 70)
     window.setTimeout(() => {
+      if (!isSoundOn()) return
+      noise(0.07, 0.03)
+    }, 70)
+    window.setTimeout(() => {
+      if (!isSoundOn()) return
       noise(0.1, 0.035)
       tone(150 + Math.random() * 100, 0.08, 'triangle', 0.02, 80)
     }, 150)
-    window.setTimeout(() => noise(0.12, 0.03), 240)
+    window.setTimeout(() => {
+      if (!isSoundOn()) return
+      noise(0.12, 0.03)
+    }, 240)
   },
 }

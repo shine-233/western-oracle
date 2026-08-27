@@ -763,6 +763,11 @@ const dust = Array.from({ length: 26 }, (_, i) => ({
 .fade-swap-leave-active { transition: all 0.5s ease; }
 .fade-swap-leave-to { opacity: 0; }
 .seq-grid { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+/* 窄屏：16 格改 8×2 网格，不靠 flex 换行挤成参差两排 */
+@media (max-width: 640px) {
+  .seq-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 5px; padding: 0 4px; }
+  .seq-cell { width: 100%; height: 40px; }
+}
 .seq-cell {
   width: 34px;
   height: 44px;

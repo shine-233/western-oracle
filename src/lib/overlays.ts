@@ -44,6 +44,19 @@ function installPreloader(): void {
   const start = performance.now()
   const DUR = 1500
   let raf = 0
+  let done = false
+  let hardTimer = 0
+  const finish = (): void => {
+    if (done) return
+    done = true
+    window.clearTimeout(hardTimer)
+    cancelAnimationFrame(raf)
+    el.classList.add('pl-done')
+    window.setTimeout(() => el.remove(), 700)
+    try {
+      sessionStorage.setItem('wo.opened', '1')
+    } catch { /* ignore */ }
+  }
   const tick = (): void => {
     const t = Math.min(1, (performance.now() - start) / DUR)
     // 缓出曲线，结尾减速更有仪式感
@@ -55,18 +68,9 @@ function installPreloader(): void {
       finish()
     }
   }
-  let done = false
-  const finish = (): void => {
-    if (done) return
-    done = true
-    cancelAnimationFrame(raf)
-    el.classList.add('pl-done')
-    window.setTimeout(() => el.remove(), 700)
-    try {
-      sessionStorage.setItem('wo.opened', '1')
-    } catch { /* ignore */ }
-  }
   el.addEventListener('click', finish)
+  // 墙钟兜底：即使 rAF 被冻结（后台标签页 / headless 截图），到点也强制揭幕
+  hardTimer = window.setTimeout(finish, DUR + 1200)
   raf = requestAnimationFrame(tick)
 }
 
@@ -195,13 +199,17 @@ function installScrollReveal(): void {
 function installTabWitch(): void {
   const BASE_TITLE = document.title
   let swapped = false
+  // iOS 首次 AudioContext 解锁需要用户手势：没互动过就不自动出声
+  let userGestured = false
+  document.addEventListener('pointerdown', () => { userGestured = true }, { once: true, passive: true })
+  document.addEventListener('keydown', () => { userGestured = true }, { once: true })
 
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
       document.title = ['✧ 牌还在桌上呢…', '✧ 星星等你回来', '✧ 别走呀，水晶球还亮着'][Math.floor(Math.random() * 3)]
     } else {
       document.title = BASE_TITLE
-      sfx.blip()
+      if (userGestured) sfx.blip()
     }
   })
 

@@ -30,7 +30,7 @@ const STAGES: Stage[] = [
   { id: 'empress', num: 'III', zh: '女皇', en: 'The Empress', lineZh: '麦子熟了，花园不用命令就自己生长。你学会的第一课是：丰饶不是抓来的，是养出来的。', lineEn: 'Wheat ripens; gardens grow without orders. First lesson of abundance: it cannot be grabbed, only tended.' },
   { id: 'emperor', num: 'IV', zh: '皇帝', en: 'The Emperor', lineZh: '石头王座又冷又硬，但边界立起来了。第一声"不"出口，世界才开始认真听你。', lineEn: 'The stone throne is cold, but boundaries stand. The first time you say no, the world starts taking notes.' },
   { id: 'hierophant', num: 'V', zh: '教皇', en: 'The Hierophant', lineZh: '传统递给你一本现成的答案册。抄近道很方便——直到你发现钥匙串里没有自己那把。', lineEn: 'Tradition hands you a ready answer book. Convenient shortcuts — until you notice none of the keys are yours.' },
-  { id: 'lovers', num: 'VI', zh: '恋人', en: 'The Lovers', lineZh: '这不是关于遇见谁，而是关于选择成为谁。每一次心动背后，都藏着一道价值观的选择题。', lineEn: 'Less about who you meet than who you choose to be. Behind every flutter hides a values exam.' },
+  { id: 'lovers', num: 'VI', zh: '恋人', en: 'The Lovers', lineZh: '遇见谁只是引子，选成什么样的人才是那道题。每一次心动背后，都藏着一张价值观的考卷。', lineEn: 'Less about who you meet than who you choose to be. Behind every flutter hides a values exam.' },
   { id: 'chariot', num: 'VII', zh: '战车', en: 'The Chariot', lineZh: '两匹方向相反的兽拉着同一辆车。出发容易。难的是别让它们把你撕成两半人生。', lineEn: 'Two beasts pull one chariot in opposite directions. Departing is easy; not being torn into two lives is the work.' },
   // ─── 第二幕 · 试炼 ───
   { id: 'strength', num: 'VIII', zh: '力量', en: 'Strength', lineZh: '狮子不需要被打败，只需要被理解。你收起拳头，轻轻合上兽口——温柔，原来是最重的那只手。', lineEn: 'The lion needn\'t be beaten, only understood. You close its jaws gently — softness turns out to be the heaviest hand.' },
@@ -225,7 +225,7 @@ const staticMode = reducedMotion
               :aria-label="`${i} ${s.zh}`"
               @click="jumpTo(i, $event)"
             >
-              <i v-if="i === stageIdx" class="rail-you">你</i>
+              <i v-if="i === stageIdx" class="rail-you">{{ locale === 'zh' ? '你' : 'You' }}</i>
             </button>
           </nav>
 

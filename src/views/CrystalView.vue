@@ -85,11 +85,14 @@ const reducedMotion =
 
 let disposeScene: (() => void) | null = null
 let setSpinBoost: ((v: number) => void) | null = null
+/** 组件存活标志：动态 import three 期间用户离开页面时，放弃后续场景搭建（防 rAF/WebGL 泄漏） */
+let sceneGone = false
 
 async function initThree(): Promise<void> {
   const mount = mountRef.value
   if (!mount) return
   const THREE = await import('three')
+  if (sceneGone) return
 
   const W = () => mount.clientWidth
   const H = () => mount.clientHeight
@@ -406,6 +409,7 @@ onMounted(() => {
   histList.value = loadLog().history ?? []
 })
 onBeforeUnmount(() => {
+  sceneGone = true
   disposeScene?.()
 })
 

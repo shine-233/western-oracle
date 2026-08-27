@@ -154,6 +154,10 @@ function tickBursts(now: number): void {
   }
 }
 
+let wanderX: number | null = null
+let nextWanderAt = 8
+let lastTick = 0
+
 /** 每只吉祥物的专属卫星道具：形状即身份 */
 function makeSatGeo(id: string): THREE.BufferGeometry {
   switch (id) {
@@ -243,7 +247,10 @@ function build(): void {
             mesh.setColorAt(idx, color.set(outlineColor))
           } else {
             const jitter = v.isEye ? 1 : 0.94 + hashN(v.x * SUB + sx, v.y * SUB + sy) * 0.12
-            mesh.setColorAt(idx, color.set(v.color).multiplyScalar((layer === 0 ? 1 : 0.74) * jitter))
+            const topLight = 1 + (1 - v.y / ROWS) * 0.08
+            color.set(v.color).multiplyScalar((layer === 0 ? 1 : 0.74) * jitter * topLight)
+            if (v.y > ROWS - 6) color.b *= 0.93
+            mesh.setColorAt(idx, color)
           }
           if (v.isEye && layer === 0) {
             eyeIndices.push(idx)
@@ -743,6 +750,22 @@ const now = clock.getElapsedTime()
       landSquashUntil = now + 0.18
     }
 
+    // 时不时溜达两步（对标 PetDex / openclaw 的 idle↔walk 小状态机）
+    const dt = Math.min(0.05, Math.max(0.001, now - lastTick))
+    lastTick = now
+    if (!dragging && !asleep.value && jumpVel <= 0) {
+      if (wanderX === null && now > nextWanderAt) wanderX = (Math.random() * 2 - 1) * 2.2
+      if (wanderX !== null) {
+        const dx = wanderX - petGroup.position.x
+        if (Math.abs(dx) < 0.06) {
+          wanderX = null
+          nextWanderAt = now + 7 + Math.random() * 9
+        } else {
+          petGroup.position.x += Math.sign(dx) * Math.min(Math.abs(dx), 1.15 * dt)
+        }
+      }
+    }
+
     // 呼吸挤压拉伸：清醒快浅、睡着慢深；跳跃时纵向拉伸，落地压扁
     const T = asleep.value ? 4.2 : 2.6
     const A = asleep.value ? 0.04 : 0.02
@@ -811,6 +834,15 @@ viewIO.disconnect()
     ;(b.points.material as THREE.PointsMaterial).dispose()
   }
   bursts = []
+  // GPU 回收兜底：体素 InstancedMesh / 卫星 / 光晕等常驻对象逐个释放（dispose 幂等）
+  scene?.traverse((obj) => {
+    const node = obj as THREE.Mesh
+    node.geometry?.dispose()
+    const mat = node.material as THREE.Material | THREE.Material[] | undefined
+    if (Array.isArray(mat)) mat.forEach((mm) => mm.dispose())
+    else mat?.dispose()
+  })
+  scene?.clear()
   composer?.dispose()
   renderer?.dispose()
   renderer?.domElement.remove()

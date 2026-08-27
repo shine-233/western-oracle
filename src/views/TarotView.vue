@@ -47,7 +47,7 @@ const arcLine = computed(() => {
   return MINOR_RANK_ARC[c.id.split('-')[1] ?? ''] ?? null
 })
 
-/** 扇形牌堆 */
+/** 扇形牌堆：27 个扇位各绑定一张不重复的牌，杜绝同一牌阵抽出两张相同的牌 */
 const FAN_COUNT = 27
 const FAN_ARC = 96
 const deck = ref<TarotCard[]>([])
@@ -89,7 +89,7 @@ function beginRitual(): void {
   stage.value = 'shuffle'
   drawn.value = []
   pickedSet.value = new Set()
-  deck.value = shuffle(ALL_CARDS)
+  deck.value = shuffle(ALL_CARDS).slice(0, FAN_COUNT)
   sfx.riffle()
   shuffleTimers.forEach((t) => window.clearTimeout(t))
   shuffleTimers = [
@@ -126,7 +126,7 @@ function pickFromFan(e: MouseEvent, i: number): void {
   if (pickedSet.value.has(i)) return
   if (drawn.value.length >= spread.value.positions.length) return
 
-  const card = deck.value[(i * 7 + drawn.value.length * 3) % deck.value.length]!
+  const card = deck.value[i] ?? ALL_CARDS[0]!
   drawn.value.push({
     card,
     reversed: allowReversed.value && randInt(2) === 0,

@@ -7,7 +7,7 @@
 import { computed, onBeforeUnmount, ref } from 'vue'
 import { locale } from '../lib/i18n'
 import { sfx } from '../lib/sfx'
-import { loadJSON, saveJSON } from '../lib/storage'
+import { loadJSON, saveJSON, migrateRaw } from '../lib/storage'
 import { shuffle } from '../lib/random'
 
 const L = (p: [string, string]): string => (locale.value === 'zh' ? p[0]! : p[1]!)
@@ -21,7 +21,9 @@ interface Cell {
 
 const GLYPHS = ['✦', '☽', '☉', '♃', 'ᛟ', '☄']
 const ROUND_SECS = 40
-const BEST_KEY = 'wo-memflash-best'
+const BEST_KEY = 'memflash-best'
+// 历史上误存成 wo-wo-memflash-best，搬一次家
+migrateRaw('wo-wo-memflash-best', BEST_KEY)
 
 const deck = ref<Cell[]>([])
 const started = ref(false)
@@ -142,6 +144,7 @@ onBeforeUnmount(() => {
         class="mf-card"
         :class="{ up: c.open || c.done, done: c.done }"
         :disabled="!started || over"
+        :aria-label="c.open || c.done ? c.glyph : L(['扣着的星符', 'Face-down glyph'])"
         @click="flip(i)"
       >
         <span class="mf-inner">

@@ -140,7 +140,7 @@ function build(): void {
   scene.background = new THREE.Color(themeVar('--void-1', '#141132'))
 
   camera = new THREE.PerspectiveCamera(42, el.clientWidth / el.clientHeight, 0.1, 100)
-  camera.position.set(0, 0.8, 14.5)
+  camera.position.set(0, 0.8, 15.6)
 
   renderer = new THREE.WebGLRenderer({ antialias: true })
 
@@ -196,6 +196,7 @@ renderer.setPixelRatio(Math.min(MAX_DPR, low ? 1.5 : 2))
     }
   })
   mesh.instanceMatrix.needsUpdate = true
+  witchGroup.add(mesh)
 
   witchGroup.rotation.y = targetRotY
   witchGroup.rotation.x = targetRotX
@@ -452,6 +453,18 @@ io = null
     ;(b.points.material as THREE.PointsMaterial).dispose()
   }
   bursts = []
+  // GPU 回收兜底：女巫/星尘/月球/光晕等常驻对象的几何与材质逐个释放，
+  // 防止反复进出首页时 WebGL 资源累积（dispose 幂等，重复调用无害）
+  scene?.traverse((obj) => {
+    const node = obj as THREE.Mesh
+    node.geometry?.dispose()
+    const mat = node.material as THREE.Material | THREE.Material[] | undefined
+    if (Array.isArray(mat)) mat.forEach((mm) => mm.dispose())
+    else mat?.dispose()
+  })
+  scene?.clear()
+  composer?.dispose()
+  composer = null
   renderer?.dispose()
   renderer?.domElement.remove()
 })

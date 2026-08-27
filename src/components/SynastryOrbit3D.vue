@@ -33,12 +33,12 @@ const reducedMotion =
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 /** 相位类型 → 颜色与中文 */
-const ASPECT_META: Record<string, { color: string; zh: string }> = {
-  conjunction: { color: '#f5c86e', zh: '合' },
-  sextile: { color: '#7de8c3', zh: '六合' },
-  square: { color: '#ff8a8a', zh: '刑' },
-  trine: { color: '#b3a6f7', zh: '拱' },
-  opposition: { color: '#ff9fce', zh: '冲' },
+const ASPECT_META: Record<string, { color: string; zh: string; en: string }> = {
+  conjunction: { color: '#f5c86e', zh: '合', en: 'Conj' },
+  sextile: { color: '#7de8c3', zh: '六合', en: 'Sextile' },
+  square: { color: '#ff8a8a', zh: '刑', en: 'Square' },
+  trine: { color: '#b3a6f7', zh: '拱', en: 'Trine' },
+  opposition: { color: '#ff9fce', zh: '冲', en: 'Opp' },
 }
 function metaOf(type: string) {
   return ASPECT_META[type] ?? { color: '#b3a6f7', zh: type }
@@ -74,21 +74,30 @@ function ringPos(lon: number, radius: number): [number, number, number] {
   return [Math.cos(rad) * radius, 0, Math.sin(rad) * radius]
 }
 
+let gone = false
+
 async function initThree(): Promise<void> {
   const mount = mountRef.value
   if (!mount) return
   const THREE = await import('three')
+  if (gone) return
   let disposed = false
 
   const W = () => mount.clientWidth
   const H = () => mount.clientHeight
 
   const scene = new THREE.Scene()
-  const camera = new THREE.PerspectiveCamera(42, W() / H(), 0.1, 100)
+  const camera = new THREE.PerspectiveCamera(42, W() / Math.max(1, H()), 0.1, 100)
   camera.position.set(0, 7.5, 9)
   camera.lookAt(0, 0, 0)
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+  let renderer: THREE.WebGLRenderer
+  try {
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+  } catch {
+    mount.innerHTML = '<p class="orbit-hint">✧ WebGL unavailable — the orbit chart is resting.</p>'
+    return
+  }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
   renderer.setSize(W(), H())
   mount.appendChild(renderer.domElement)
@@ -265,7 +274,15 @@ async function initThree(): Promise<void> {
     disposed = true
     cancelAnimationFrame(raf)
     window.removeEventListener('resize', onResize)
+    scene.traverse((o) => {
+      const mesh = o as THREE.Mesh
+      mesh.geometry?.dispose()
+      const mat = mesh.material as THREE.Material | THREE.Material[] | undefined
+      if (Array.isArray(mat)) mat.forEach((x) => x.dispose())
+      else mat?.dispose()
+    })
     renderer.dispose()
+    renderer.forceContextLoss()
     el.remove()
   }
 }
@@ -274,6 +291,7 @@ onMounted(() => {
   initThree()
 })
 onBeforeUnmount(() => {
+  gone = true
   disposeScene?.()
 })
 </script>
@@ -290,7 +308,7 @@ onBeforeUnmount(() => {
         @click="toggleType(ty)"
       >
         <i class="asp-dot" :style="{ background: m.color }" />
-        {{ m.zh }}
+        {{ zh ? m.zh : m.en }}
       </button>
       <button class="asp-chip toggle-all" :class="{ off: !showAspects }" @click="showAspects = !showAspects; sfx.toggle()">
         {{ showAspects ? (zh ? '🌌 光弧 开' : '🌌 Arcs on') : (zh ? '🌫 光弧 关' : '🌫 Arcs off') }}
