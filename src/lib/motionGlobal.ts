@@ -256,6 +256,7 @@ const SCRAMBLE_CHARS = '✦✧⋆STARORACLUMEN'
 function installNavScramble(): void {
   if (reducedMotion()) return
   document.addEventListener('pointerover', (e) => {
+    if (document.hidden) return // 后台标签页里 setInterval 被节流，乱码会冻在屏上
     const a = (e.target as HTMLElement)?.closest?.('.site-nav a') as HTMLElement | null
     if (!a || a.dataset.scrambling === '1') return
     const original = a.textContent ?? ''

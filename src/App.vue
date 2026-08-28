@@ -261,7 +261,9 @@ onBeforeUnmount(() => {
 
   <main>
     <RouterView v-slot="{ Component }">
-      <Transition :name="vtActive ? 'vt-off' : 'page'">
+      <!-- 显式 duration：transitionend 被节流吞掉时 Vue 也能按表收尾，
+           避免旧视图以半透明残影长期叠在新视图上 -->
+      <Transition :name="vtActive ? 'vt-off' : 'page'" :duration="{ enter: 520, leave: 240 }">
         <component :is="Component" :key="$route.fullPath" />
       </Transition>
     </RouterView>

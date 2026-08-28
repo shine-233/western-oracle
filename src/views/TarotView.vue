@@ -570,17 +570,19 @@ watch(allFlipped, (done) => {
 .fan-tip strong { color: var(--pink-soft); font-size: 1.1em; }
 .fan-board {
   position: relative;
-  height: 320px;
+  height: 340px;
   margin-top: 12px;
   overflow: hidden;
 }
 .fan-card {
   position: absolute;
   left: 50%;
-  top: 108%;
+  top: 95px;
   width: 104px;
   height: 168px;
-  transform-origin: 50% 118%;
+  /* 扇轴（560px）藏在板底之外：±48° 展开时牌尖最高 95px、最低约 280px，
+     始终落在 340px 高的可视区内；此前 top:108% + 118% 轴让整副牌都在裁剪线以下 */
+  transform-origin: 50% 560px;
   transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
   cursor: pointer;
   background:
@@ -614,7 +616,7 @@ watch(allFlipped, (done) => {
 
 @media (max-width: 640px) {
   .fan-board { height: 250px; }
-  .fan-card { width: 78px; height: 128px; }
+  .fan-card { width: 78px; height: 128px; top: 70px; transform-origin: 50% 400px; }
 }
 
 /* ---------- 凯尔特十字 ---------- */

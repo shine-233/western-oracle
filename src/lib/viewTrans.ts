@@ -27,14 +27,23 @@ export function installViewTransitions(router: unknown): void {
   for (const method of ['push', 'replace'] as const) {
     const orig = r[method].bind(r)
     ;(r as unknown as Record<string, unknown>)[method] = (...args: unknown[]) => {
+      // 页面被遮蔽/切后台时 rAF 不再触发，VT 快照会永久挂起（视图冻结在旧页），
+      // 此时直接走普通导航兜底
+      if (document.visibilityState !== 'visible') return orig(...(args as never[]))
       if (vtActive.value) return orig(...(args as never[]))
       vtActive.value = true
       const nav = document.startViewTransition!(async () => {
         try {
           await orig(...(args as never[]))
         } finally {
-          // 等新页面渲染一帧再解除快照
-          await new Promise<void>((res) => requestAnimationFrame(() => res()))
+          // 等新页面渲染一帧再解除快照；rAF 挂起时 260ms 后强制放行
+          await new Promise<void>((res) => {
+            const bail = window.setTimeout(res, 260)
+            requestAnimationFrame(() => {
+              window.clearTimeout(bail)
+              res()
+            })
+          })
         }
       })
       void nav.finished.finally(() => {
