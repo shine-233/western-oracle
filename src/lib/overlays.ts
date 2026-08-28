@@ -149,8 +149,8 @@ function installClickFeedback(): void {
   }, { passive: true })
 }
 
-/* ---------- 4. 滚动编排：面板进入视口时自动浮现 ---------- */
-function installScrollReveal(): void {
+/* ---------- 4. 滚动编排：面板进入视口时自动浮现（已随特效减负下线） ---------- */
+export function installScrollReveal(): void {
   if (REDUCED || !('IntersectionObserver' in window)) return
 
   const style = document.createElement('style')
@@ -186,6 +186,8 @@ function installScrollReveal(): void {
       const r = el.getBoundingClientRect()
       if (r.top < innerHeight && r.bottom > 0) return
       el.setAttribute('data-wo-reveal', '')
+      // 兜底：IO 偶发不回调（路由过渡期间挂载等），最长 1.6s 强制揭开
+      window.setTimeout(() => el.classList.add('wo-in'), 1600)
       io.observe(el)
     })
   }
@@ -260,8 +262,8 @@ function installNavSfx(): void {
   }, { passive: true })
 }
 
-/* ---------- 7. 滚动速度倾斜（快速滚动时内容轻微斜切，awwwards 手感） ---------- */
-function installScrollSkew(): void {
+/* ---------- 7. 滚动速度倾斜（快速滚动时内容轻微斜切，awwwards 手感；已下线） ---------- */
+export function installScrollSkew(): void {
   if (REDUCED || !FINE) return
   // 只斜切内容区 <main>；#app 里含 fixed 星野层，transform 会产生新的包含块导致其失效
   const app = document.querySelector('main')
@@ -297,8 +299,8 @@ function installScrollSkew(): void {
   window.addEventListener('beforeunload', () => cancelAnimationFrame(rafId))
 }
 
-/* ---------- 8. 鼠标揭幕：光标是一盏灯，照亮藏在页面里的星语（mouse reveal） ---------- */
-function installMouseReveal(): void {
+/* ---------- 8. 鼠标揭幕：光标是一盏灯，照亮藏在页面里的星语（mouse reveal；已下线） ---------- */
+export function installMouseReveal(): void {
   if (!FINE || REDUCED) return
 
   const GLYPHS = ['✦', '✧', '⋆', '☽', '☉', '☿', '♀', '♃', '♄', '♆', '♇', '☄']
@@ -386,7 +388,8 @@ const LUNA_WHISPERS: Array<[string, string]> = [
   ['你被记挂着一整晚，知道吗。', 'You were on someone\'s mind all night. Just so you know.'],
 ]
 
-function installLunaPress(): void {
+/** 长按耳语（已下线：按住 600ms 弹一句话，容易误触发） */
+export function installLunaPress(): void {
   if (REDUCED) return
 
   const style = document.createElement('style')
@@ -505,12 +508,14 @@ export function installOverlays(): void {
   installPreloader()
   installCursor()
   installClickFeedback()
-  installScrollReveal()
+  // 特效减负：两套全局滚动显现与卡片跟随灯全部下线——
+  // 内容默认可见是底线，入场动效交给页面级 transition 和 .stagger-in（纯 CSS、时间驱动、必然完成）
+  // installScrollReveal()
   installTabWitch()
   installThemeRipple()
   installNavSfx()
-  installScrollSkew()
-  installMouseReveal()
-  installLunaPress()
+  // installScrollSkew()
+  // installMouseReveal()
+  // installLunaPress()
   installCardSpotlight()
 }

@@ -33,7 +33,8 @@ function injectStyle(): void {
   document.head.appendChild(tag)
 }
 
-function getObserver(): IntersectionObserver {
+/** 已随特效减负停用（保留以便恢复滚动显现） */
+export function getObserver(): IntersectionObserver {
   if (!observer) {
     observer = new IntersectionObserver(
       (entries) => {
@@ -52,12 +53,14 @@ function getObserver(): IntersectionObserver {
 
 export const vReveal: Directive<HTMLElement, number | undefined> = {
   mounted(el, binding): void {
+    // 特效减负：不再把内容藏进 .reveal-pending 等滚动显现——
+    // 多套 reveal 叠加曾把整页卡在透明态、卡片层叠到 hero 上。
+    // 指令保留以兼容所有视图模板，元素直接可见。
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     injectStyle()
-    el.classList.add('reveal-pending')
+    el.classList.add('revealed')
     const order = typeof binding.value === 'number' ? binding.value : -1
     if (order > 0) el.style.transitionDelay = `${Math.min(order * 90, 720)}ms`
-    getObserver().observe(el)
   },
   unmounted(el): void {
     observer?.unobserve(el)

@@ -261,9 +261,10 @@ onBeforeUnmount(() => {
 
   <main>
     <RouterView v-slot="{ Component }">
-      <!-- 显式 duration：transitionend 被节流吞掉时 Vue 也能按表收尾，
+      <!-- mode=out-in：新旧视图不再同帧叠渲染（hero 压字根因）。
+           显式 duration：transitionend 被节流吞掉时 Vue 也能按表收尾，
            避免旧视图以半透明残影长期叠在新视图上 -->
-      <Transition :name="vtActive ? 'vt-off' : 'page'" :duration="{ enter: 520, leave: 240 }">
+      <Transition :name="vtActive ? 'vt-off' : 'page'" mode="out-in" :duration="{ enter: 520, leave: 240 }">
         <component :is="Component" :key="$route.fullPath" />
       </Transition>
     </RouterView>

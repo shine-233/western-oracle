@@ -40,6 +40,7 @@
 """
 import json
 import sys
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -48,6 +49,17 @@ CLASSICS = ROOT / 'classics'
 
 TAROT_URL = 'https://raw.githubusercontent.com/ekelen/tarot-api/main/static/card_data.json'
 UA = {'User-Agent': 'Mozilla/5.0 (western-oracle research corpus fetch)'}
+
+# SSRF 加固：来源 URL 一律写死且只允许 https + 下列公版文献站点
+ALLOWED_HOSTS = {'raw.githubusercontent.com', 'archive.org', 'www.gutenberg.org'}
+
+
+def open_source(url: str, timeout: int):
+    parts = urllib.parse.urlsplit(url)
+    if parts.scheme != 'https' or parts.hostname not in ALLOWED_HOSTS:
+        raise ValueError(f'non-allowlisted source URL blocked: {url}')
+    req = urllib.request.Request(url, headers=UA)
+    return urllib.request.urlopen(req, timeout=timeout)
 
 # (文件名, URL, 最小字节数, 内容锚点之一)
 SOURCES = [
@@ -96,8 +108,7 @@ def dl_tarot() -> None:
         print(f'SKIP {out.name} (exists, {out.stat().st_size} bytes)')
         return
     print(f'fetching {TAROT_URL}')
-    req = urllib.request.Request(TAROT_URL, headers=UA)
-    with urllib.request.urlopen(req, timeout=60) as r:
+    with open_source(TAROT_URL, timeout=60) as r:
         data = json.loads(r.read().decode('utf-8'))
     cards = data.get('cards', [])
     assert len(cards) == 78, f'expect 78 cards, got {len(cards)}'
@@ -120,8 +131,7 @@ def fetch(name: str, url: str, min_bytes: int, anchor: str) -> None:
         print(f'SKIP {name} (exists, {out.stat().st_size} bytes)')
         return
     print(f'fetching {url}')
-    req = urllib.request.Request(url, headers=UA)
-    with urllib.request.urlopen(req, timeout=300) as r:
+    with open_source(url, timeout=300) as r:
         content = r.read()
     assert len(content) >= min_bytes, f'{name}: {len(content)} bytes < {min_bytes}'
     text = content.decode('utf-8', errors='replace')

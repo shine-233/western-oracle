@@ -47,12 +47,25 @@ function ensureRevealStyles(): void {
   document.head.appendChild(tag)
 }
 
+function revealNow(el: Element): void {
+  el.classList.add('wo-auto-revealed')
+  el.classList.remove('wo-auto-reveal')
+  io?.unobserve(el)
+}
+
 function observeEl(el: Element): void {
   if (handled.has(el)) return
   // 已有自带入场动画的元素不重复处理
   if (ENTRANCE_CLASSES.some((c) => el.classList.contains(c))) return
   handled.add(el)
+  // 已在视口内：直接落定；否则最长 1.6s 强制可见，内容绝不卡在透明态
+  const r = el.getBoundingClientRect()
+  if (r.top < innerHeight && r.bottom > 0) {
+    el.classList.add('wo-auto-revealed')
+    return
+  }
   el.classList.add('wo-auto-reveal')
+  window.setTimeout(() => revealNow(el), 1600)
   io?.observe(el)
 }
 
@@ -60,7 +73,8 @@ function scan(root: ParentNode): void {
   root.querySelectorAll?.('.panel:not(header .panel)').forEach(observeEl)
 }
 
-function installAutoReveal(): void {
+/** 已随特效减负下线：保留代码，想恢复只需在 installMotionGlobal 里取消注释 */
+export function installAutoReveal(): void {
   if (reducedMotion()) return
   ensureRevealStyles()
   io = new IntersectionObserver(
@@ -404,7 +418,8 @@ export function installMotionGlobal(): void {
   if (installed) return
   installed = true
   installCurtain()
-  installAutoReveal()
+  // 特效减负：全局 IO 滚动显现下线（偶发不回调会把整页卡在 opacity:0）
+  // installAutoReveal()
   installAutoMagnetic()
   installAutoTilt()
   installNavScramble()
