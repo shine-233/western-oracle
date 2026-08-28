@@ -5,7 +5,6 @@ import PixelWitch from './components/PixelWitch.vue'
 import { isSoundOn, toggleSound, sfx } from './lib/sfx'
 import { t, toggleLocale, locale } from './lib/i18n'
 import { tt } from './lib/i18nExtra'
-import { vtActive } from './lib/viewTrans'
 
 interface NavItem { to: string; label: string; emoji: string; extra?: boolean; labelPair?: [string, string] }
 const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
@@ -261,12 +260,11 @@ onBeforeUnmount(() => {
 
   <main>
     <RouterView v-slot="{ Component }">
-      <!-- mode=out-in：新旧视图不再同帧叠渲染（hero 压字根因）。
-           显式 duration：transitionend 被节流吞掉时 Vue 也能按表收尾，
-           避免旧视图以半透明残影长期叠在新视图上 -->
-      <Transition :name="vtActive ? 'vt-off' : 'page'" mode="out-in" :duration="{ enter: 520, leave: 240 }">
-        <component :is="Component" :key="$route.fullPath" />
-      </Transition>
+      <!-- 不用 <Transition> 包裹：VT 快照期间 transitionend 永不触发时，
+           out-in/sim 模式都可能把页面卡在 page-enter-from(opacity:0)。
+           内容直接渲染（默认可见）；现代浏览器的整页切换动画由
+           router 级 View Transitions（viewTrans.ts）提供。 -->
+      <component :is="Component" :key="$route.fullPath" />
     </RouterView>
   </main>
 
