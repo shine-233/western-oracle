@@ -12,6 +12,7 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js'
 import { isLowEnd } from '../lib/perf'
+import { createClock } from '../lib/clock'
 import { WITCH_SPRITE, WITCH_PALETTE, WITCH_W } from '../data/witchSprite'
 import { hdVoxels } from '../lib/hdSprite'
 import { sfx } from '../lib/sfx'
@@ -375,7 +376,7 @@ function onResize(): void {
   composer?.setSize(el.clientWidth, el.clientHeight)
 }
 
-const clock = new THREE.Clock()
+const clock = createClock()
 function animate(): void {
   if (disposed) return
   raf = requestAnimationFrame(animate)

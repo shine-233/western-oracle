@@ -12,6 +12,7 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js'
 import { isLowEnd } from '../lib/perf'
+import { createClock } from '../lib/clock'
 
 export interface OrreryBody {
   key: string
@@ -326,7 +327,7 @@ watch(
   },
 )
 
-const clock = new THREE.Clock()
+const clock = createClock()
 
 function placePlanets(): void {
   for (const p of planets) {

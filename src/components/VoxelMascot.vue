@@ -18,6 +18,7 @@ import { lowPowerActive } from '../lib/perf'
 import { themeVar, onThemeChange } from '../lib/themeColors'
 import { isLowEnd } from '../lib/perf'
 import { addAffection, levelOf, getPoints, SECRET_LINES } from '../lib/affection'
+import { createClock } from '../lib/clock'
 
 const props = withDefaults(defineProps<{ id: string; height?: number }>(), { height: 230 })
 
@@ -669,7 +670,7 @@ function onResize(): void {
   composer?.setSize(el.clientWidth, el.clientHeight)
 }
 
-const clock = new THREE.Clock()
+const clock = createClock()
 let lastEyeScale = 1
 let inView = true
 const viewIO = new IntersectionObserver(
