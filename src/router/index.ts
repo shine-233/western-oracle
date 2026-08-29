@@ -10,7 +10,7 @@ import { locale } from '../lib/i18n'
 const routes = [
   { path: '/', component: HomeView },
   { path: '/tarot', component: () => import('../views/TarotView.vue') },
-{ path: '/journey', component: JourneyView },
+  { path: '/journey', component: JourneyView },
   { path: '/astrology', component: () => import('../views/AstrologyView.vue') },
   { path: '/synastry', component: () => import('../views/SynastryView.vue') },
   { path: '/transits', component: () => import('../views/TransitsView.vue') },
@@ -37,6 +37,7 @@ const routes = [
 const TITLES: Record<string, [string, string]> = {
   '/': ['神谕 · 星辰不语，自有答案', 'ORACLE · The stars answer'],
   '/tarot': ['塔罗占卜', 'Tarot'],
+  '/journey': ['愚人之旅', 'The Fool\'s Journey'],
   '/astrology': ['西洋占星', 'Natal Chart'],
   '/synastry': ['合盘缘分', 'Synastry'],
   '/transits': ['行运天象', 'Transits'],

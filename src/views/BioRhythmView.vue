@@ -1,16 +1,18 @@
 <script setup lang="ts">
 /** 节律三重奏：从生日推算体力(23天)/情绪(28天)/智力(33天)三条正弦曲线。
  *  可拖动时间轴查看任意一天，自动标出"临界日"。纯数学，纯本地。 */
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import { L } from '../data/oracleArcade'
 import { loadJSON } from '../lib/storage'
 import { sparkleFromEvent } from '../lib/sparkle'
 import { sfx } from '../lib/sfx'
 import { addHistory } from '../lib/history'
 import DecryptTitle from '../components/DecryptTitle.vue'
+import ApprenticeReact from '../components/ApprenticeReact.vue'
 
 const birth = ref<string>(loadJSON<{ date?: string }>('num-profile', {}).date ?? '')
 const submitted = ref(false)
+const chartPanel = ref<HTMLElement | null>(null)
 
 const WINDOW_DAYS = 30 // 显示窗口：今天前后各15天
 
@@ -152,6 +154,11 @@ function onSubmit(e?: MouseEvent): void {
   submitted.value = true
   sfx.ding()
   if (e) sparkleFromEvent(e, 10)
+  // 图表在首屏下方（v-if 刚挂载），生成后带用户过去
+  void nextTick(() => {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    chartPanel.value?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' })
+  })
   const b = parseBirth()
   addHistory({
     type: 'biorhythm',
@@ -240,7 +247,7 @@ function selectedDateFor(off: number): Date {
 
     <template v-if="submitted">
       <!-- 图表 -->
-      <section class="panel chart-panel bounce-in">
+      <section ref="chartPanel" class="panel chart-panel bounce-in">
         <svg
           ref="svgEl"
           :viewBox="`0 0 ${W} ${H}`"

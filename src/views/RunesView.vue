@@ -8,6 +8,7 @@ import { sfx } from '../lib/sfx'
 import { t } from '../lib/i18n'
 import AiChat from '../components/AiChat.vue'
 import ApprenticeReact from '../components/ApprenticeReact.vue'
+import DecryptTitle from '../components/DecryptTitle.vue'
 
 const MascotCard = defineAsyncComponent(() => import('../components/MascotCard.vue'))
 
